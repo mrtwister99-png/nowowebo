@@ -331,7 +331,7 @@ export const LoyoHeaderCard: React.FC<LoyoHeaderCardProps> = ({
             </div>
           </div>
 
-                    <div className="flex-1 w-full flex flex-col min-w-0 sm:-ml-0.5 mt-3 sm:mt-0 justify-start relative z-30">
+                    <div className="flex-1 w-full flex flex-col min-w-0 mt-0 sm:-ml-[2px] sm:mt-0 justify-start relative z-30">
             
             <div
               id="card-premium-developer"
@@ -347,9 +347,9 @@ export const LoyoHeaderCard: React.FC<LoyoHeaderCardProps> = ({
               </h1>
             </div>
 
-            <div
+                        <div
               id="card-uvod"
-              className="bg-white border-2 border-[#18181b] rounded-2xl sm:rounded-3xl p-3.5 sm:p-4 md:p-5 shadow-[4px_4px_0px_#18181b] mt-2.5 mb-2.5 sm:mb-3 sm:ml-3 text-center relative z-10"
+              className="bg-white border-2 border-[#18181b] rounded-2xl sm:rounded-3xl p-3.5 sm:p-4 md:p-5 shadow-[4px_4px_0px_#18181b] mt-4 sm:mt-5 mb-2.5 sm:mb-3 sm:ml-3 text-center relative z-10"
             >
               <div className="flex justify-center mb-2">
                 <div className="text-xs sm:text-sm font-mono font-bold uppercase tracking-wider text-loyo-blue flex items-center gap-2 px-3 py-0.5 bg-loyo-blue/8 rounded-full border border-loyo-blue/20">
