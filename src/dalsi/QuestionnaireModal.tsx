@@ -180,21 +180,21 @@ Poznámka: ${submittedData.notes || '-'}
   return (
     <div className="fixed inset-0 z-50 overflow-y-auto bg-black/60 backdrop-blur-xs flex items-center justify-center p-3 sm:p-6">
       {/* Modal Card */}
-      <div className="relative w-full max-w-4xl bg-loyo-bg border-2 border-[#c2c2c2] shadow-2xl overflow-hidden flex flex-col max-h-[92vh] text-[#18181b]">
+      <div className="relative w-full max-w-4xl bg-loyo-bg border-2 border-loyo-line shadow-2xl overflow-hidden flex flex-col max-h-[92vh] text-loyo-ink">
         {/* Header Bar */}
-        <div className="flex items-center justify-between px-6 py-3.5 border-b border-[#c8c8c8] bg-loyo-bar">
+        <div className="flex items-center justify-between px-6 py-3.5 border-b border-loyo-line-field bg-loyo-bar">
           <div className="flex items-center gap-2.5">
-            <div className="w-6 h-6 bg-[#18181b] text-white flex items-center justify-center font-mono font-bold text-2.5">
+            <div className="w-6 h-6 bg-loyo-ink text-white flex items-center justify-center font-mono font-bold text-2.5">
               LY
             </div>
-            <span className="font-heading font-extrabold text-xs uppercase tracking-wider text-[#18181b]">
+            <span className="font-heading font-extrabold text-xs uppercase tracking-wider text-loyo-ink">
               LoYo • Interaktivní dotazník projektu na míru
             </span>
           </div>
 
           <button
             onClick={onClose}
-            className="p-1.5 bg-loyo-bg hover:bg-[#e4e4e4] border border-[#c8c8c8] text-[#18181b] transition-colors cursor-pointer"
+            className="p-1.5 bg-loyo-bg hover:bg-loyo-hover border border-loyo-line-field text-loyo-ink transition-colors cursor-pointer"
             aria-label="Zavřít"
           >
             <X className="w-4 h-4" />
@@ -203,7 +203,7 @@ Poznámka: ${submittedData.notes || '-'}
 
         {/* Tab Selector: 4 Tailored Options */}
         {currentStep < 5 && (
-          <div className="grid grid-cols-2 sm:grid-cols-4 border-b border-[#c8c8c8] bg-loyo-bar text-xs font-semibold">
+          <div className="grid grid-cols-2 sm:grid-cols-4 border-b border-loyo-line-field bg-loyo-bar text-xs font-semibold">
             {/* 01. Automatizace (Modrá) */}
             <button
               type="button"
@@ -211,7 +211,7 @@ Poznámka: ${submittedData.notes || '-'}
               className={`py-3 px-2 sm:px-3 flex items-center justify-center gap-1.5 transition-all cursor-pointer uppercase tracking-wider text-2.75 font-bold ${
                 selectedService === 'automation'
                   ? 'bg-loyo-bg text-loyo-blue border-b-3 border-loyo-blue'
-                  : 'text-[#555] hover:bg-[#d0d0d0]'
+                  : 'text-loyo-muted hover:bg-[#d0d0d0]'
               }`}
             >
               <Cpu className="w-3.5 h-3.5 text-loyo-blue shrink-0" />
@@ -224,11 +224,11 @@ Poznámka: ${submittedData.notes || '-'}
               onClick={() => handleServiceChange('fullstack')}
               className={`py-3 px-2 sm:px-3 flex items-center justify-center gap-1.5 transition-all cursor-pointer uppercase tracking-wider text-2.75 font-bold ${
                 selectedService === 'fullstack'
-                  ? 'bg-loyo-bg text-[#8a6b28] border-b-3 border-loyo-mustard'
-                  : 'text-[#555] hover:bg-[#d0d0d0]'
+                  ? 'bg-loyo-bg text-loyo-mustard-dark border-b-3 border-loyo-mustard'
+                  : 'text-loyo-muted hover:bg-[#d0d0d0]'
               }`}
             >
-              <Code2 className="w-3.5 h-3.5 text-[#8a6b28] shrink-0" />
+              <Code2 className="w-3.5 h-3.5 text-loyo-mustard-dark shrink-0" />
               <span className="truncate">02. Aplikace (Zlatá)</span>
             </button>
 
@@ -239,7 +239,7 @@ Poznámka: ${submittedData.notes || '-'}
               className={`py-3 px-2 sm:px-3 flex items-center justify-center gap-1.5 transition-all cursor-pointer uppercase tracking-wider text-2.75 font-bold ${
                 selectedService === 'web-branding'
                   ? 'bg-loyo-bg text-loyo-red border-b-3 border-loyo-red'
-                  : 'text-[#555] hover:bg-[#d0d0d0]'
+                  : 'text-loyo-muted hover:bg-[#d0d0d0]'
               }`}
             >
               <Sparkles className="w-3.5 h-3.5 text-loyo-red shrink-0" />
@@ -252,11 +252,11 @@ Poznámka: ${submittedData.notes || '-'}
               onClick={() => handleServiceChange('consultation')}
               className={`py-3 px-2 sm:px-3 flex items-center justify-center gap-1.5 transition-all cursor-pointer uppercase tracking-wider text-2.75 font-bold ${
                 selectedService === 'consultation'
-                  ? 'bg-loyo-bg text-[#18181b] border-b-3 border-[#18181b]'
-                  : 'text-[#555] hover:bg-[#d0d0d0]'
+                  ? 'bg-loyo-bg text-loyo-ink border-b-3 border-loyo-ink'
+                  : 'text-loyo-muted hover:bg-[#d0d0d0]'
               }`}
             >
-              <MessageSquare className="w-3.5 h-3.5 text-[#18181b] shrink-0" />
+              <MessageSquare className="w-3.5 h-3.5 text-loyo-ink shrink-0" />
               <span className="truncate">04. Konzultace</span>
             </button>
           </div>
@@ -264,12 +264,12 @@ Poznámka: ${submittedData.notes || '-'}
 
         {/* Progress Bar */}
         {currentStep < 5 && (
-          <div className="px-6 py-2.5 bg-loyo-bg border-b border-[#dcdcdc] flex items-center justify-between text-xs text-[#555]">
+          <div className="px-6 py-2.5 bg-loyo-bg border-b border-[#dcdcdc] flex items-center justify-between text-xs text-loyo-muted">
             <div className="flex items-center gap-2">
-              <span className="font-mono text-[#18181b] font-bold uppercase tracking-wider">
+              <span className="font-mono text-loyo-ink font-bold uppercase tracking-wider">
                 KROK {currentStep} / 4:
               </span>
-              <span className="font-medium text-[#18181b]">
+              <span className="font-medium text-loyo-ink">
                 {currentStep === 1 && 'Rozsah a charakteristika poptávky'}
                 {currentStep === 2 &&
                   (selectedService === 'automation'
@@ -291,7 +291,7 @@ Poznámka: ${submittedData.notes || '-'}
                 <div
                   key={step}
                   className={`w-6 sm:w-8 h-1 transition-all ${
-                    step <= currentStep ? 'bg-[#18181b]' : 'bg-loyo-bar'
+                    step <= currentStep ? 'bg-loyo-ink' : 'bg-loyo-bar'
                   }`}
                 />
               ))}
@@ -305,13 +305,15 @@ Poznámka: ${submittedData.notes || '-'}
           {isSubmitting ? (
             <div className="py-8 sm:py-12 space-y-8 animate-in fade-in duration-200 text-center max-w-lg mx-auto">
               <div className="space-y-3">
-                <div className="w-12 h-12 bg-loyo-bar border-2 border-[#18181b] text-[#18181b] flex items-center justify-center mx-auto animate-pulse shadow-sm">
+                <div className="w-12 h-12 bg-loyo-bar border-2 border-loyo-ink text-loyo-ink flex items-center justify-center mx-auto animate-pulse shadow-sm">
                   <Cpu className="w-6 h-6 animate-spin" />
                 </div>
-                <h3 className="font-heading font-black text-xl sm:text-2xl text-[#18181b]">
+                <h3 className="font-heading font-black text-xl sm:text-2xl text-loyo-ink">
                   Zpracování specifikace projektu...
                 </h3>
-                <p className="text-xs font-mono text-[#666] tracking-wide">{submitPhaseText}</p>
+                <p className="text-xs font-mono text-loyo-subtle tracking-wide">
+                  {submitPhaseText}
+                </p>
               </div>
 
               {/* High-end subtle progress indicator */}
@@ -322,7 +324,7 @@ Poznámka: ${submittedData.notes || '-'}
                     style={{ width: `${submitProgress}%` }}
                   />
                 </div>
-                <div className="flex justify-between text-2.75 font-mono font-bold text-[#555]">
+                <div className="flex justify-between text-2.75 font-mono font-bold text-loyo-muted">
                   <span>ASYNC DISPATCHING</span>
                   <span>{submitProgress}%</span>
                 </div>
@@ -330,9 +332,9 @@ Poznámka: ${submittedData.notes || '-'}
 
               {/* Shimmering skeleton rows representing incoming generated artifact */}
               <div className="space-y-2.5 pt-2 text-left bg-loyo-bar p-4 sm:p-5 border border-[#c5c5c5] rounded-xs animate-pulse">
-                <div className="h-3.5 bg-[#c2c2c2] rounded-xs w-2/5" />
+                <div className="h-3.5 bg-loyo-line rounded-xs w-2/5" />
                 <div className="h-4.5 bg-[#b5b5b5] rounded-xs w-4/5" />
-                <div className="h-3.5 bg-[#c2c2c2] rounded-xs w-3/5" />
+                <div className="h-3.5 bg-loyo-line rounded-xs w-3/5" />
                 <div className="h-2.5 bg-[#cecece] rounded-xs w-1/2" />
               </div>
             </div>
@@ -359,14 +361,16 @@ Poznámka: ${submittedData.notes || '-'}
               {currentStep === 1 && (
                 <div className="space-y-5 animate-in fade-in duration-200">
                   <div>
-                    <h3 className="font-heading font-extrabold text-xl sm:text-2xl text-[#18181b] mb-1">
+                    <h3 className="font-heading font-extrabold text-xl sm:text-2xl text-loyo-ink mb-1">
                       {currentConfig.title}
                     </h3>
-                    <p className="text-xs sm:text-sm text-[#555]">{currentConfig.description}</p>
+                    <p className="text-xs sm:text-sm text-loyo-muted">
+                      {currentConfig.description}
+                    </p>
                   </div>
 
                   <div className="space-y-3 pt-2">
-                    <label className="text-xs font-mono uppercase tracking-wider text-[#18181b] font-bold block">
+                    <label className="text-xs font-mono uppercase tracking-wider text-loyo-ink font-bold block">
                       Vyberte primární typ / záměr:
                     </label>
                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
@@ -379,16 +383,16 @@ Poznámka: ${submittedData.notes || '-'}
                             onClick={() => setFormData({ ...formData, projectScope: scope })}
                             className={`p-4 text-left border transition-all cursor-pointer flex items-start justify-between gap-3 ${
                               isSelected
-                                ? 'bg-loyo-bar border-[#18181b] text-[#18181b] shadow-xs'
-                                : 'bg-loyo-bg border-[#c8c8c8] text-[#444] hover:bg-[#e4e4e4]'
+                                ? 'bg-loyo-bar border-loyo-ink text-loyo-ink shadow-xs'
+                                : 'bg-loyo-bg border-loyo-line-field text-loyo-body hover:bg-loyo-hover'
                             }`}
                           >
                             <span className="text-xs sm:text-sm font-semibold">{scope}</span>
                             <div
                               className={`w-4 h-4 flex items-center justify-center shrink-0 border ${
                                 isSelected
-                                  ? 'bg-[#18181b] border-[#18181b] text-white'
-                                  : 'border-[#999] text-transparent'
+                                  ? 'bg-loyo-ink border-loyo-ink text-white'
+                                  : 'border-loyo-line-strong text-transparent'
                               }`}
                             >
                               <Check className="w-3 h-3 stroke-3" />
@@ -411,7 +415,7 @@ Poznámka: ${submittedData.notes || '-'}
                         <h3 className="font-heading font-bold text-xl text-loyo-blue mb-1">
                           Klíčové funkce fullstack architektury
                         </h3>
-                        <p className="text-xs sm:text-sm text-[#555]">
+                        <p className="text-xs sm:text-sm text-loyo-muted">
                           Označte technologie a moduly, které má aplikace obsahovat:
                         </p>
                       </div>
@@ -427,7 +431,7 @@ Poznámka: ${submittedData.notes || '-'}
                               className={`p-3 border text-left flex items-center justify-between text-xs sm:text-sm transition-all cursor-pointer ${
                                 active
                                   ? 'bg-loyo-bar border-loyo-blue text-loyo-blue font-bold'
-                                  : 'bg-loyo-bg border-[#c8c8c8] text-[#444] hover:bg-[#e4e4e4]'
+                                  : 'bg-loyo-bg border-loyo-line-field text-loyo-body hover:bg-loyo-hover'
                               }`}
                             >
                               <span>{feat}</span>
@@ -435,7 +439,7 @@ Poznámka: ${submittedData.notes || '-'}
                                 className={`w-4 h-4 border flex items-center justify-center shrink-0 ${
                                   active
                                     ? 'bg-loyo-blue border-loyo-blue text-white'
-                                    : 'border-[#999]'
+                                    : 'border-loyo-line-strong'
                                 }`}
                               >
                                 {active && <Check className="w-3 h-3 stroke-3" />}
@@ -451,17 +455,17 @@ Poznámka: ${submittedData.notes || '-'}
                   {selectedService === 'automation' && (
                     <div className="space-y-5">
                       <div>
-                        <h3 className="font-heading font-bold text-xl text-[#8a6b28] mb-1">
+                        <h3 className="font-heading font-bold text-xl text-loyo-mustard-dark mb-1">
                           Zabezpečení & automatizační moduly
                         </h3>
-                        <p className="text-xs sm:text-sm text-[#555]">
+                        <p className="text-xs sm:text-sm text-loyo-muted">
                           Jaký typ ochrany preferujete? Přes telefon, NFC, e-mailem, hrou... prostě
                           čímkoliv:
                         </p>
                       </div>
 
                       <div className="space-y-2">
-                        <label className="text-xs font-mono uppercase tracking-wider text-[#8a6b28] font-bold block">
+                        <label className="text-xs font-mono uppercase tracking-wider text-loyo-mustard-dark font-bold block">
                           Možnosti přihlášení a ochrany na přání:
                         </label>
                         <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
@@ -481,16 +485,16 @@ Poznámka: ${submittedData.notes || '-'}
                                 onClick={() => toggleArrayItem('securityOptions', sec)}
                                 className={`p-3 border text-left flex items-center justify-between text-xs sm:text-sm transition-all cursor-pointer ${
                                   active
-                                    ? 'bg-loyo-bar border-loyo-mustard text-[#8a6b28] font-bold'
-                                    : 'bg-loyo-bg border-[#c8c8c8] text-[#444] hover:bg-[#e4e4e4]'
+                                    ? 'bg-loyo-bar border-loyo-mustard text-loyo-mustard-dark font-bold'
+                                    : 'bg-loyo-bg border-loyo-line-field text-loyo-body hover:bg-loyo-hover'
                                 }`}
                               >
                                 <span>{sec}</span>
                                 <span
                                   className={`w-4 h-4 border flex items-center justify-center shrink-0 ${
                                     active
-                                      ? 'bg-loyo-mustard border-loyo-mustard text-[#18181b]'
-                                      : 'border-[#999]'
+                                      ? 'bg-loyo-mustard border-loyo-mustard text-loyo-ink'
+                                      : 'border-loyo-line-strong'
                                   }`}
                                 >
                                   {active && <Check className="w-3 h-3 stroke-3" />}
@@ -502,7 +506,7 @@ Poznámka: ${submittedData.notes || '-'}
                       </div>
 
                       <div className="space-y-2 pt-2">
-                        <label className="text-xs font-mono uppercase tracking-wider text-[#8a6b28] font-bold block">
+                        <label className="text-xs font-mono uppercase tracking-wider text-loyo-mustard-dark font-bold block">
                           Oblasti procesů k automatizaci & úložiště:
                         </label>
                         <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
@@ -515,16 +519,16 @@ Poznámka: ${submittedData.notes || '-'}
                                 onClick={() => toggleArrayItem('selectedFeatures', feat)}
                                 className={`p-3 border text-left flex items-center justify-between text-xs sm:text-sm transition-all cursor-pointer ${
                                   active
-                                    ? 'bg-loyo-bar border-loyo-mustard text-[#8a6b28] font-bold'
-                                    : 'bg-loyo-bg border-[#c8c8c8] text-[#444] hover:bg-[#e4e4e4]'
+                                    ? 'bg-loyo-bar border-loyo-mustard text-loyo-mustard-dark font-bold'
+                                    : 'bg-loyo-bg border-loyo-line-field text-loyo-body hover:bg-loyo-hover'
                                 }`}
                               >
                                 <span>{feat}</span>
                                 <span
                                   className={`w-4 h-4 border flex items-center justify-center shrink-0 ${
                                     active
-                                      ? 'bg-loyo-mustard border-loyo-mustard text-[#18181b]'
-                                      : 'border-[#999]'
+                                      ? 'bg-loyo-mustard border-loyo-mustard text-loyo-ink'
+                                      : 'border-loyo-line-strong'
                                   }`}
                                 >
                                   {active && <Check className="w-3 h-3 stroke-3" />}
@@ -544,7 +548,7 @@ Poznámka: ${submittedData.notes || '-'}
                         <h3 className="font-heading font-bold text-xl text-loyo-red mb-1">
                           Restyling, rebranding, logo & NFC vizitka
                         </h3>
-                        <p className="text-xs sm:text-sm text-[#555]">
+                        <p className="text-xs sm:text-sm text-loyo-muted">
                           Vyberte grafické a interaktivní požadavky na nový web či digitální
                           identitu:
                         </p>
@@ -561,7 +565,7 @@ Poznámka: ${submittedData.notes || '-'}
                               className={`p-3 border text-left flex items-center justify-between text-xs sm:text-sm transition-all cursor-pointer ${
                                 active
                                   ? 'bg-loyo-bar border-loyo-red text-loyo-red font-bold'
-                                  : 'bg-loyo-bg border-[#c8c8c8] text-[#444] hover:bg-[#e4e4e4]'
+                                  : 'bg-loyo-bg border-loyo-line-field text-loyo-body hover:bg-loyo-hover'
                               }`}
                             >
                               <span>{feat}</span>
@@ -569,7 +573,7 @@ Poznámka: ${submittedData.notes || '-'}
                                 className={`w-4 h-4 border flex items-center justify-center shrink-0 ${
                                   active
                                     ? 'bg-loyo-red border-loyo-red text-white'
-                                    : 'border-[#999]'
+                                    : 'border-loyo-line-strong'
                                 }`}
                               >
                                 {active && <Check className="w-3 h-3 stroke-3" />}
@@ -585,16 +589,16 @@ Poznámka: ${submittedData.notes || '-'}
                   {selectedService === 'consultation' && (
                     <div className="space-y-5">
                       <div>
-                        <h3 className="font-heading font-bold text-xl text-[#18181b] mb-1">
+                        <h3 className="font-heading font-bold text-xl text-loyo-ink mb-1">
                           Témata k prodiskutování & Forma konzultace
                         </h3>
-                        <p className="text-xs sm:text-sm text-[#555]">
+                        <p className="text-xs sm:text-sm text-loyo-muted">
                           Vyberte, co bychom měli na konzultaci společně rozebrat:
                         </p>
                       </div>
 
                       <div className="space-y-2">
-                        <label className="text-xs font-mono uppercase tracking-wider text-[#18181b] font-bold block">
+                        <label className="text-xs font-mono uppercase tracking-wider text-loyo-ink font-bold block">
                           Témata k rozboru:
                         </label>
                         <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
@@ -608,16 +612,16 @@ Poznámka: ${submittedData.notes || '-'}
                                   onClick={() => toggleArrayItem('consultationTopics', topic)}
                                   className={`p-3 border text-left flex items-center justify-between text-xs sm:text-sm transition-all cursor-pointer ${
                                     active
-                                      ? 'bg-loyo-bar border-[#18181b] text-[#18181b] font-bold'
-                                      : 'bg-loyo-bg border-[#c8c8c8] text-[#444] hover:bg-[#e4e4e4]'
+                                      ? 'bg-loyo-bar border-loyo-ink text-loyo-ink font-bold'
+                                      : 'bg-loyo-bg border-loyo-line-field text-loyo-body hover:bg-loyo-hover'
                                   }`}
                                 >
                                   <span>{topic}</span>
                                   <span
                                     className={`w-4 h-4 border flex items-center justify-center shrink-0 ${
                                       active
-                                        ? 'bg-[#18181b] border-[#18181b] text-white'
-                                        : 'border-[#999]'
+                                        ? 'bg-loyo-ink border-loyo-ink text-white'
+                                        : 'border-loyo-line-strong'
                                     }`}
                                   >
                                     {active && <Check className="w-3 h-3 stroke-3" />}
@@ -630,7 +634,7 @@ Poznámka: ${submittedData.notes || '-'}
                       </div>
 
                       <div className="space-y-2 pt-2">
-                        <label className="text-xs font-mono uppercase tracking-wider text-[#18181b] font-bold block">
+                        <label className="text-xs font-mono uppercase tracking-wider text-loyo-ink font-bold block">
                           Preferovaná forma setkání:
                         </label>
                         <div className="grid grid-cols-1 sm:grid-cols-3 gap-2.5">
@@ -649,8 +653,8 @@ Poznámka: ${submittedData.notes || '-'}
                                 }
                                 className={`p-3 border text-left text-xs sm:text-sm transition-all cursor-pointer ${
                                   isSelected
-                                    ? 'bg-loyo-bar border-[#18181b] text-[#18181b] font-bold'
-                                    : 'bg-loyo-bg border-[#c8c8c8] text-[#444] hover:bg-[#e4e4e4]'
+                                    ? 'bg-loyo-bar border-loyo-ink text-loyo-ink font-bold'
+                                    : 'bg-loyo-bg border-loyo-line-field text-loyo-body hover:bg-loyo-hover'
                                 }`}
                               >
                                 {format}
@@ -668,12 +672,12 @@ Poznámka: ${submittedData.notes || '-'}
               {currentStep === 3 && (
                 <div className="space-y-6 animate-in fade-in duration-200">
                   <div>
-                    <h3 className="font-heading font-extrabold text-xl text-[#18181b] mb-1">
+                    <h3 className="font-heading font-extrabold text-xl text-loyo-ink mb-1">
                       {selectedService === 'consultation'
                         ? 'Termín a formát konzultace'
                         : 'Časový rámec & orientační rozpočet'}
                     </h3>
-                    <p className="text-xs sm:text-sm text-[#555]">
+                    <p className="text-xs sm:text-sm text-loyo-muted">
                       {selectedService === 'consultation'
                         ? 'Kdy by vám konzultace nejlépe vyhovovala a jaký rozsah zvažujete?'
                         : 'Správná řešení potřebují svůj čas pro preciznost – vyberte vaše představy:'}
@@ -682,7 +686,7 @@ Poznámka: ${submittedData.notes || '-'}
 
                   {/* Timeline options */}
                   <div className="space-y-2">
-                    <label className="text-xs font-mono uppercase tracking-wider text-[#18181b] font-bold block">
+                    <label className="text-xs font-mono uppercase tracking-wider text-loyo-ink font-bold block">
                       {selectedService === 'consultation'
                         ? 'Časová preference termínu:'
                         : 'Požadovaný termín dodání:'}
@@ -703,8 +707,8 @@ Poznámka: ${submittedData.notes || '-'}
                             onClick={() => setFormData({ ...formData, timeline: time })}
                             className={`p-3.5 text-left border transition-all cursor-pointer ${
                               isSelected
-                                ? 'bg-loyo-bar border-[#18181b] text-[#18181b] font-bold'
-                                : 'bg-loyo-bg border-[#c8c8c8] text-[#444] hover:bg-[#e4e4e4]'
+                                ? 'bg-loyo-bar border-loyo-ink text-loyo-ink font-bold'
+                                : 'bg-loyo-bg border-loyo-line-field text-loyo-body hover:bg-loyo-hover'
                             }`}
                           >
                             <span className="text-xs sm:text-sm">{time}</span>
@@ -717,13 +721,13 @@ Poznámka: ${submittedData.notes || '-'}
                   {/* Budget range options */}
                   <div className="space-y-2 pt-2">
                     <div className="flex flex-wrap items-center justify-between gap-1">
-                      <label className="text-xs font-mono uppercase tracking-wider text-[#18181b] font-bold block">
+                      <label className="text-xs font-mono uppercase tracking-wider text-loyo-ink font-bold block">
                         {selectedService === 'consultation'
                           ? 'Zvažovaný rozsah / formát:'
                           : 'Orientační finanční rámec:'}
                       </label>
                       {selectedService === 'consultation' && (
-                        <span className="text-2.75 font-mono text-[#18181b] bg-loyo-bar px-2 py-0.5 border border-[#c8c8c8] font-bold">
+                        <span className="text-2.75 font-mono text-loyo-ink bg-loyo-bar px-2 py-0.5 border border-loyo-line-field font-bold">
                           Cena cca 800 Kč / hod dle složitosti
                         </span>
                       )}
@@ -745,8 +749,8 @@ Poznámka: ${submittedData.notes || '-'}
                             onClick={() => setFormData({ ...formData, budgetRange: budget })}
                             className={`p-3.5 text-left border transition-all cursor-pointer ${
                               isSelected
-                                ? 'bg-loyo-bar border-[#18181b] text-[#18181b] font-bold'
-                                : 'bg-loyo-bg border-[#c8c8c8] text-[#444] hover:bg-[#e4e4e4]'
+                                ? 'bg-loyo-bar border-loyo-ink text-loyo-ink font-bold'
+                                : 'bg-loyo-bg border-loyo-line-field text-loyo-body hover:bg-loyo-hover'
                             }`}
                           >
                             <span className="text-xs sm:text-sm">{budget}</span>
@@ -762,19 +766,19 @@ Poznámka: ${submittedData.notes || '-'}
               {currentStep === 4 && (
                 <form onSubmit={handleSubmit} className="space-y-6 animate-in fade-in duration-200">
                   <div>
-                    <h3 className="font-heading font-extrabold text-xl text-[#18181b] mb-1">
+                    <h3 className="font-heading font-extrabold text-xl text-loyo-ink mb-1">
                       Kontaktní údaje a odeslání specifikace
                     </h3>
-                    <p className="text-xs sm:text-sm text-[#555]">
+                    <p className="text-xs sm:text-sm text-loyo-muted">
                       Kam vám mohu zaslat úvodní rozbor a návrh termínu?
                     </p>
                   </div>
 
                   {/* Summary of choices */}
-                  <div className="p-4 bg-loyo-bar border border-[#c2c2c2] text-xs space-y-1 text-[#333]">
+                  <div className="p-4 bg-loyo-bar border border-loyo-line text-xs space-y-1 text-loyo-strong">
                     <div>
                       <strong>Vybraná oblast:</strong>{' '}
-                      <span className="font-bold text-[#18181b]">
+                      <span className="font-bold text-loyo-ink">
                         {selectedService === 'fullstack' &&
                           '01. Vývoj aplikace (Fullstack - Modrá)'}
                         {selectedService === 'automation' &&
@@ -805,7 +809,7 @@ Poznámka: ${submittedData.notes || '-'}
                   {/* Input fields */}
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 text-xs">
                     <div>
-                      <label className="block text-[#18181b] font-semibold mb-1">
+                      <label className="block text-loyo-ink font-semibold mb-1">
                         Jméno a příjmení *
                       </label>
                       <input
@@ -814,12 +818,12 @@ Poznámka: ${submittedData.notes || '-'}
                         value={formData.name}
                         onChange={(e) => setFormData({ ...formData, name: e.target.value })}
                         placeholder="např. Jan Novák"
-                        className="w-full px-3.5 py-2.5 bg-loyo-bg border border-[#c8c8c8] text-[#18181b] focus:outline-none focus:border-[#18181b]"
+                        className="w-full px-3.5 py-2.5 bg-loyo-bg border border-loyo-line-field text-loyo-ink focus:outline-none focus:border-loyo-ink"
                       />
                     </div>
 
                     <div>
-                      <label className="block text-[#18181b] font-semibold mb-1">
+                      <label className="block text-loyo-ink font-semibold mb-1">
                         E-mailová adresa *
                       </label>
                       <input
@@ -828,12 +832,12 @@ Poznámka: ${submittedData.notes || '-'}
                         value={formData.email}
                         onChange={(e) => setFormData({ ...formData, email: e.target.value })}
                         placeholder="jan@firma.cz"
-                        className="w-full px-3.5 py-2.5 bg-loyo-bg border border-[#c8c8c8] text-[#18181b] focus:outline-none focus:border-[#18181b]"
+                        className="w-full px-3.5 py-2.5 bg-loyo-bg border border-loyo-line-field text-loyo-ink focus:outline-none focus:border-loyo-ink"
                       />
                     </div>
 
                     <div>
-                      <label className="block text-[#18181b] font-semibold mb-1">
+                      <label className="block text-loyo-ink font-semibold mb-1">
                         Telefonní číslo (volitelné)
                       </label>
                       <input
@@ -841,12 +845,12 @@ Poznámka: ${submittedData.notes || '-'}
                         value={formData.phone}
                         onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
                         placeholder="+420 777 000 000"
-                        className="w-full px-3.5 py-2.5 bg-loyo-bg border border-[#c8c8c8] text-[#18181b] focus:outline-none focus:border-[#18181b]"
+                        className="w-full px-3.5 py-2.5 bg-loyo-bg border border-loyo-line-field text-loyo-ink focus:outline-none focus:border-loyo-ink"
                       />
                     </div>
 
                     <div>
-                      <label className="block text-[#18181b] font-semibold mb-1">
+                      <label className="block text-loyo-ink font-semibold mb-1">
                         Společnost / Projekt
                       </label>
                       <input
@@ -854,13 +858,13 @@ Poznámka: ${submittedData.notes || '-'}
                         value={formData.company}
                         onChange={(e) => setFormData({ ...formData, company: e.target.value })}
                         placeholder="např. Novák & Partneři s.r.o."
-                        className="w-full px-3.5 py-2.5 bg-loyo-bg border border-[#c8c8c8] text-[#18181b] focus:outline-none focus:border-[#18181b]"
+                        className="w-full px-3.5 py-2.5 bg-loyo-bg border border-loyo-line-field text-loyo-ink focus:outline-none focus:border-loyo-ink"
                       />
                     </div>
                   </div>
 
                   <div>
-                    <label className="block text-[#18181b] font-semibold mb-1 text-xs">
+                    <label className="block text-loyo-ink font-semibold mb-1 text-xs">
                       Doplňující poznámka, odkaz na stávající web nebo specifické přání
                     </label>
                     <textarea
@@ -868,14 +872,14 @@ Poznámka: ${submittedData.notes || '-'}
                       value={formData.notes}
                       onChange={(e) => setFormData({ ...formData, notes: e.target.value })}
                       placeholder="Popište cokoliv dalšího, co je pro vás podstatné..."
-                      className="w-full px-3.5 py-2.5 bg-loyo-bg border border-[#c8c8c8] text-xs text-[#18181b] focus:outline-none focus:border-[#18181b]"
+                      className="w-full px-3.5 py-2.5 bg-loyo-bg border border-loyo-line-field text-xs text-loyo-ink focus:outline-none focus:border-loyo-ink"
                     />
                   </div>
 
                   <div className="pt-2">
                     <button
                       type="submit"
-                      className="w-full py-3.5 bg-[#18181b] hover:bg-loyo-blue text-white font-bold text-xs uppercase tracking-widest flex items-center justify-center gap-2 cursor-pointer shadow-xs transition-colors"
+                      className="w-full py-3.5 bg-loyo-ink hover:bg-loyo-blue text-white font-bold text-xs uppercase tracking-widest flex items-center justify-center gap-2 cursor-pointer shadow-xs transition-colors"
                     >
                       <Send className="w-4 h-4" />
                       <span>Nezávazně odeslat specifikaci projektu</span>
@@ -887,7 +891,7 @@ Poznámka: ${submittedData.notes || '-'}
               {/* STEP 5: SUCCESS */}
               {currentStep === 5 && submittedData && (
                 <div className="text-center py-8 space-y-6 animate-in zoom-in-95 duration-200">
-                  <div className="w-16 h-16 mx-auto bg-[#18181b] text-white flex items-center justify-center">
+                  <div className="w-16 h-16 mx-auto bg-loyo-ink text-white flex items-center justify-center">
                     <CheckCircle2 className="w-8 h-8 text-loyo-mustard" />
                   </div>
 
@@ -895,12 +899,12 @@ Poznámka: ${submittedData.notes || '-'}
                     <span className="font-mono text-xs font-bold uppercase tracking-wider text-loyo-blue">
                       Kód poptávky: #{submittedData.id}
                     </span>
-                    <h3 className="font-heading font-extrabold text-2xl text-[#18181b]">
+                    <h3 className="font-heading font-extrabold text-2xl text-loyo-ink">
                       Poptávka byla úspěšně odeslána!
                     </h3>
-                    <p className="text-xs sm:text-sm text-[#555] max-w-lg mx-auto leading-relaxed">
+                    <p className="text-xs sm:text-sm text-loyo-muted max-w-lg mx-auto leading-relaxed">
                       Děkuji za vyplnění specifikace,{' '}
-                      <span className="text-[#18181b] font-semibold">{submittedData.name}</span>.
+                      <span className="text-loyo-ink font-semibold">{submittedData.name}</span>.
                       Vaše zadání podrobně zanalyzuji a do 24 hodin se vám ozvu na{' '}
                       <span className="font-mono text-loyo-blue font-bold">
                         {submittedData.email}
@@ -913,7 +917,7 @@ Poznámka: ${submittedData.notes || '-'}
                     <button
                       type="button"
                       onClick={copySummaryText}
-                      className="px-4 py-2.5 bg-loyo-bar hover:bg-[#d0d0d0] border border-[#c2c2c2] text-[#18181b] text-xs font-bold uppercase tracking-wider flex items-center gap-2 cursor-pointer"
+                      className="px-4 py-2.5 bg-loyo-bar hover:bg-[#d0d0d0] border border-loyo-line text-loyo-ink text-xs font-bold uppercase tracking-wider flex items-center gap-2 cursor-pointer"
                     >
                       <Copy className="w-3.5 h-3.5" />
                       <span>{copied ? 'Zkopírováno!' : 'Zkopírovat shrnutí'}</span>
@@ -922,7 +926,7 @@ Poznámka: ${submittedData.notes || '-'}
                     <button
                       type="button"
                       onClick={onClose}
-                      className="px-5 py-2.5 bg-[#18181b] hover:bg-loyo-blue text-white text-xs font-bold uppercase tracking-wider cursor-pointer"
+                      className="px-5 py-2.5 bg-loyo-ink hover:bg-loyo-blue text-white text-xs font-bold uppercase tracking-wider cursor-pointer"
                     >
                       Zavřít dotazník
                     </button>
@@ -935,12 +939,12 @@ Poznámka: ${submittedData.notes || '-'}
 
         {/* Footer Navigation Bar for steps 1-3 */}
         {currentStep < 4 && (
-          <div className="px-6 py-3.5 bg-loyo-bar border-t border-[#c8c8c8] flex items-center justify-between">
+          <div className="px-6 py-3.5 bg-loyo-bar border-t border-loyo-line-field flex items-center justify-between">
             {currentStep > 1 ? (
               <button
                 type="button"
                 onClick={() => setCurrentStep(currentStep - 1)}
-                className="px-3 py-1.5 bg-loyo-bg border border-[#c8c8c8] text-xs font-bold uppercase tracking-wider text-[#18181b] flex items-center gap-1.5 cursor-pointer hover:bg-[#e4e4e4]"
+                className="px-3 py-1.5 bg-loyo-bg border border-loyo-line-field text-xs font-bold uppercase tracking-wider text-loyo-ink flex items-center gap-1.5 cursor-pointer hover:bg-loyo-hover"
               >
                 <ArrowLeft className="w-3.5 h-3.5" />
                 <span>Zpět</span>
@@ -952,7 +956,7 @@ Poznámka: ${submittedData.notes || '-'}
             <button
               type="button"
               onClick={() => setCurrentStep(currentStep + 1)}
-              className="px-5 py-2 bg-[#18181b] hover:bg-loyo-blue text-white font-bold text-xs uppercase tracking-wider flex items-center gap-2 cursor-pointer shadow-xs transition-colors"
+              className="px-5 py-2 bg-loyo-ink hover:bg-loyo-blue text-white font-bold text-xs uppercase tracking-wider flex items-center gap-2 cursor-pointer shadow-xs transition-colors"
             >
               <span>Pokračovat na krok {currentStep + 1}</span>
               <ArrowRight className="w-3.5 h-3.5" />
@@ -961,11 +965,11 @@ Poznámka: ${submittedData.notes || '-'}
         )}
 
         {currentStep === 4 && (
-          <div className="px-6 py-2.5 bg-loyo-bar border-t border-[#c8c8c8] flex items-center justify-between text-xs text-[#666]">
+          <div className="px-6 py-2.5 bg-loyo-bar border-t border-loyo-line-field flex items-center justify-between text-xs text-loyo-subtle">
             <button
               type="button"
               onClick={() => setCurrentStep(3)}
-              className="flex items-center gap-1 hover:text-[#18181b] font-bold uppercase tracking-wider text-2.75"
+              className="flex items-center gap-1 hover:text-loyo-ink font-bold uppercase tracking-wider text-2.75"
             >
               <ArrowLeft className="w-3.5 h-3.5" />
               <span>Upravit rozpočet a termín</span>

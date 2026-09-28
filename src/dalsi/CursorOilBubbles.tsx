@@ -1,5 +1,6 @@
 import React, { useEffect, useRef } from 'react';
 import { CursorParticleMode } from '../types';
+import { BRAND } from '../lib/colors';
 
 interface BubbleParticle {
   x: number;
@@ -51,9 +52,9 @@ export const CursorOilBubbles: React.FC<CursorOilBubblesProps> = ({ mode = 'none
     let animId: number | null = null;
 
     const brandColors = [
-      { color: '#040b8d', glowRgb: '4, 11, 141' },
-      { color: '#CDA24D', glowRgb: '205, 162, 77' },
-      { color: '#ac0001', glowRgb: '172, 0, 1' },
+      { color: BRAND.blue, glowRgb: '4, 11, 141' },
+      { color: BRAND.mustard, glowRgb: '205, 162, 77' },
+      { color: BRAND.red, glowRgb: '172, 0, 1' },
     ];
 
     // Spawn rich bubble trail on mouse move (flying in from left and right towards behind the cursor)

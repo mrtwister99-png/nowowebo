@@ -21,8 +21,8 @@ body {
     Helvetica,
     Arial,
     sans-serif;
-  background-color: #ededed;
-  color: #18181b;
+  background-color: var(--color-loyo-bg);
+  color: var(--color-loyo-ink);
   overflow-x: hidden;
   max-width: 100%;
   margin: 0;
@@ -66,14 +66,14 @@ h4,
     width: 7px;
   }
   ::-webkit-scrollbar-track {
-    background: #dbdbdb;
+    background: var(--color-loyo-bar);
   }
   ::-webkit-scrollbar-thumb {
     background: #b5b5b5;
     border-radius: 2px;
   }
   ::-webkit-scrollbar-thumb:hover {
-    background: #040b8d;
+    background: var(--color-loyo-blue);
   }
 }
 
@@ -275,13 +275,13 @@ h4,
 
 /* Big section letter with crisp black outline and solid color fill */
 .loyo-outlined-letter {
-  -webkit-text-stroke: 3.5px #18181b;
+  -webkit-text-stroke: 3.5px var(--color-loyo-ink);
   paint-order: stroke fill;
 }
 
 @media (min-width: 640px) {
   .loyo-outlined-letter {
-    -webkit-text-stroke: 5px #18181b;
+    -webkit-text-stroke: 5px var(--color-loyo-ink);
   }
 }
 
@@ -322,7 +322,7 @@ h4,
   50% {
     transform: scale(2);
     opacity: 1;
-    filter: drop-shadow(0 0 12px #040b8d);
+    filter: drop-shadow(0 0 12px var(--color-loyo-blue));
   }
   100% {
     transform: scale(1);
@@ -338,7 +338,7 @@ h4,
   50% {
     transform: scale(2);
     opacity: 1;
-    filter: drop-shadow(0 0 12px #cda24d);
+    filter: drop-shadow(0 0 12px var(--color-loyo-mustard));
   }
   100% {
     transform: scale(1);
@@ -354,7 +354,7 @@ h4,
   50% {
     transform: scale(2);
     opacity: 1;
-    filter: drop-shadow(0 0 12px #ac0001);
+    filter: drop-shadow(0 0 12px var(--color-loyo-red));
   }
   100% {
     transform: scale(1);
@@ -488,7 +488,7 @@ h4,
   }
   45% {
     transform: translateY(-16px) scale(0.92, 1.14) rotate(-5deg);
-    box-shadow: 5px 14px 0px #18181b;
+    box-shadow: 5px 14px 0px var(--color-loyo-ink);
   }
   70% {
     transform: translateY(0) scale(1.12, 0.88) rotate(2deg);
@@ -506,24 +506,24 @@ h4,
   }
   25% {
     transform: rotate(90deg) scale(1.12);
-    box-shadow: 4px 4px 0px #cda24d;
-    border-color: #cda24d;
+    box-shadow: 4px 4px 0px var(--color-loyo-mustard);
+    border-color: var(--color-loyo-mustard);
   }
   50% {
     transform: rotate(180deg) scale(0.93);
-    box-shadow: 3px 3px 0px #18181b;
+    box-shadow: 3px 3px 0px var(--color-loyo-ink);
   }
   75% {
     transform: rotate(270deg) scale(1.1);
-    box-shadow: 4px 4px 0px #cda24d;
-    border-color: #cda24d;
+    box-shadow: 4px 4px 0px var(--color-loyo-mustard);
+    border-color: var(--color-loyo-mustard);
   }
   90% {
     transform: rotate(370deg) scale(1.03);
   }
   100% {
     transform: rotate(360deg) scale(1);
-    border-color: #18181b;
+    border-color: var(--color-loyo-ink);
   }
 }
 @keyframes loyoSwingY {
@@ -532,12 +532,12 @@ h4,
   }
   20% {
     transform: rotate(-14deg) skewX(-10deg) scale(1.12, 0.92);
-    box-shadow: 6px 4px 0px #ac0001;
-    border-color: #ac0001;
+    box-shadow: 6px 4px 0px var(--color-loyo-red);
+    border-color: var(--color-loyo-red);
   }
   40% {
     transform: rotate(12deg) skewX(8deg) scale(0.92, 1.12);
-    box-shadow: 2px 4px 0px #18181b;
+    box-shadow: 2px 4px 0px var(--color-loyo-ink);
   }
   60% {
     transform: rotate(-7deg) skewX(-4deg) scale(1.05, 0.96);
@@ -547,36 +547,36 @@ h4,
   }
   100% {
     transform: rotate(0deg) skewX(0deg) scale(1);
-    border-color: #18181b;
+    border-color: var(--color-loyo-ink);
   }
 }
 @keyframes loyoPulseO2 {
   0% {
     transform: scale(1);
-    box-shadow: 3px 3px 0px #18181b;
+    box-shadow: 3px 3px 0px var(--color-loyo-ink);
   }
   18% {
     transform: scale(1.16) translate(-2px, -2px);
-    box-shadow: 7px 7px 0px #18181b;
+    box-shadow: 7px 7px 0px var(--color-loyo-ink);
     border-color: #bef264;
   }
   38% {
     transform: scale(1.02) translate(0, 0);
-    box-shadow: 4px 4px 0px #18181b;
+    box-shadow: 4px 4px 0px var(--color-loyo-ink);
   }
   56% {
     transform: scale(1.2) translate(-3px, -3px);
-    box-shadow: 8px 8px 0px #18181b;
+    box-shadow: 8px 8px 0px var(--color-loyo-ink);
     border-color: #bef264;
   }
   76% {
     transform: scale(0.96) translate(1px, 1px);
-    box-shadow: 2px 2px 0px #18181b;
+    box-shadow: 2px 2px 0px var(--color-loyo-ink);
   }
   100% {
     transform: scale(1) translate(0, 0);
-    box-shadow: 3px 3px 0px #18181b;
-    border-color: #18181b;
+    box-shadow: 3px 3px 0px var(--color-loyo-ink);
+    border-color: var(--color-loyo-ink);
   }
 }
 

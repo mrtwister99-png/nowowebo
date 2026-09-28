@@ -1,10 +1,11 @@
 import React, { useEffect, useState, useRef, useCallback } from 'react';
+import { BRAND } from '../lib/colors';
 
 // LoYo Brand Colors - Strictly the 3 classic brand colors plus ordinary black/white/neutrals
-const COLOR_BLUE = '#040b8d';
-const COLOR_GOLD = '#CDA24D';
-const COLOR_RED = '#ac0001';
-const COLOR_BLACK = '#18181b';
+const COLOR_BLUE = BRAND.blue;
+const COLOR_GOLD = BRAND.mustard;
+const COLOR_RED = BRAND.red;
+const COLOR_BLACK = BRAND.ink;
 const COLOR_FALLING = '#bef264'; // Žlutozelená pro padající kostičky
 
 const CUBE_SIZE = 11; // 11px per square (~50% smaller to fit perfectly)
@@ -972,10 +973,10 @@ export const MiniFallingCubesInGap: React.FC = () => {
             {/* VLEVO: HIGHSCORE */}
             <button
               onClick={() => setShowHighScoresModal((prev) => !prev)}
-              className={`h-6 sm:h-7 px-2.5 rounded-lg border-2 border-[#18181b] font-heading font-black text-2.5 sm:text-xs tracking-wider uppercase flex items-center cursor-pointer transition-all ${
+              className={`h-6 sm:h-7 px-2.5 rounded-lg border-2 border-loyo-ink font-heading font-black text-2.5 sm:text-xs tracking-wider uppercase flex items-center cursor-pointer transition-all ${
                 showHighScoresModal
-                  ? 'bg-loyo-mustard text-[#18181b] shadow-[2px_2px_0px_#18181b] -translate-y-0.5'
-                  : 'bg-white hover:bg-zinc-100 text-[#18181b] shadow-[2px_2px_0px_#18181b] hover:-translate-y-0.5 active:translate-x-0.5 active:translate-y-0.5 active:shadow-[1px_1px_0px_#18181b]'
+                  ? 'bg-loyo-mustard text-loyo-ink shadow-brutal-2 -translate-y-0.5'
+                  : 'bg-white hover:bg-zinc-100 text-loyo-ink shadow-brutal-2 hover:-translate-y-0.5 active:translate-x-0.5 active:translate-y-0.5 active:shadow-brutal-1'
               }`}
               title="Zobrazit HIGHSCORE"
             >
@@ -985,7 +986,7 @@ export const MiniFallingCubesInGap: React.FC = () => {
             {/* VPRAVO: HRÁT? */}
             <button
               onClick={startGame}
-              className="h-6 sm:h-7 px-3 rounded-lg bg-loyo-blue hover:bg-[#03086b] text-white border-2 border-[#18181b] shadow-[2px_2px_0px_#18181b] hover:-translate-y-0.5 hover:shadow-[3px_3px_0px_#18181b] active:translate-x-0.5 active:translate-y-0.5 active:shadow-[1px_1px_0px_#18181b] font-heading font-black text-2.5 sm:text-xs tracking-wider uppercase flex items-center gap-1.5 cursor-pointer transition-all"
+              className="h-6 sm:h-7 px-3 rounded-lg bg-loyo-blue hover:bg-[#03086b] text-white border-2 border-loyo-ink shadow-brutal-2 hover:-translate-y-0.5 hover:shadow-brutal-3 active:translate-x-0.5 active:translate-y-0.5 active:shadow-brutal-1 font-heading font-black text-2.5 sm:text-xs tracking-wider uppercase flex items-center gap-1.5 cursor-pointer transition-all"
             >
               <span>HRÁT?</span>
               <span className="text-loyo-mustard">▶</span>
@@ -995,7 +996,7 @@ export const MiniFallingCubesInGap: React.FC = () => {
           {/* 2. VLEVO: KOMIKSOVÁ BUBLINA "MINIGAME" JDE MÍRNĚ NAHORU A DOLEVA (POZICE LOCK NA VŠECH ZAŘÍZENÍCH) */}
           {/* NADPIS: POUZE MINIGAME (HOŘČIČNÁ BARVA #CDA24D, JEDNOU ZA 5s PROBLIKNE), POPIS: ŠEDÝ */}
           <div
-            className={`absolute z-40 bg-[#18181b] border-2 border-[#18181b] rounded-xl p-2 shadow-[3px_3px_0px_#000] text-white flex flex-col justify-center min-w-31.25 max-w-37.5 -rotate-2 origin-bottom-right ${
+            className={`absolute z-40 bg-loyo-ink border-2 border-loyo-ink rounded-xl p-2 shadow-[3px_3px_0px_#000] text-white flex flex-col justify-center min-w-31.25 max-w-37.5 -rotate-2 origin-bottom-right ${
               infoPhase === 'active'
                 ? 'opacity-100 translate-x-0 -translate-y-1 transition-all duration-300 pointer-events-auto'
                 : infoPhase === 'exiting'
@@ -1008,7 +1009,7 @@ export const MiniFallingCubesInGap: React.FC = () => {
             }}
           >
             {/* Ocas komiksové bubliny mířící dolů doprava ke hře */}
-            <div className="absolute -bottom-1.5 right-3 w-3 h-3 bg-[#18181b] border-r-2 border-b-2 border-[#18181b] rotate-45 pointer-events-none" />
+            <div className="absolute -bottom-1.5 right-3 w-3 h-3 bg-loyo-ink border-r-2 border-b-2 border-loyo-ink rotate-45 pointer-events-none" />
 
             <div
               className="font-heading font-black text-2.75 sm:text-3 text-loyo-mustard uppercase tracking-wider flex items-center gap-1.5 leading-tight whitespace-nowrap"
@@ -1028,7 +1029,7 @@ export const MiniFallingCubesInGap: React.FC = () => {
           {/* 3. VPRAVO: KOMIKSOVÁ BUBLINA "OVLÁDÁNÍ:" JDE MÍRNĚ NAHORU A DOPRAVA (POZICE LOCK) */}
           {/* NADPIS: OVLÁDÁNÍ: (HOŘČIČNÁ #CDA24D), MEZERNÍK + ŠIPKY, 0% DO 100% V 3s, MIZÍ 2.5s */}
           <div
-            className={`absolute z-40 bg-[#18181b] border-2 border-[#18181b] rounded-xl p-2 shadow-[3px_3px_0px_#000] text-white flex flex-col items-start min-w-35 rotate-2 origin-bottom-left ${
+            className={`absolute z-40 bg-loyo-ink border-2 border-loyo-ink rounded-xl p-2 shadow-[3px_3px_0px_#000] text-white flex flex-col items-start min-w-35 rotate-2 origin-bottom-left ${
               infoPhase === 'active'
                 ? 'opacity-100 pointer-events-auto -translate-y-1 transition-all duration-300'
                 : infoPhase === 'exiting'
@@ -1041,7 +1042,7 @@ export const MiniFallingCubesInGap: React.FC = () => {
             }}
           >
             {/* Ocas komiksové bubliny mířící dolů doleva ke hře */}
-            <div className="absolute -bottom-1.5 left-3 w-3 h-3 bg-[#18181b] border-l-2 border-b-2 border-[#18181b] -rotate-45 pointer-events-none" />
+            <div className="absolute -bottom-1.5 left-3 w-3 h-3 bg-loyo-ink border-l-2 border-b-2 border-loyo-ink -rotate-45 pointer-events-none" />
 
             {/* NADPIS VPRAVO: OVLÁDÁNÍ: */}
             <div className="font-heading font-black text-2.625 sm:text-2.75 text-loyo-mustard uppercase tracking-wider flex items-center gap-1.5 leading-tight mb-1 whitespace-nowrap">
@@ -1051,25 +1052,25 @@ export const MiniFallingCubesInGap: React.FC = () => {
 
             {/* PILULKA KLÁVES SE SPOJITÝM ODKRÝVÁNÍM Z 0% DO 100% A ZATAHOVÁNÍM 100% -> 0% */}
             <div
-              className="flex items-center gap-1 bg-[#27272a] text-white border border-zinc-600 rounded-lg px-1.5 py-0.5 shadow-[1px_1px_0px_#000] overflow-hidden transition-all"
+              className="flex items-center gap-1 bg-loyo-ink-soft text-white border border-zinc-600 rounded-lg px-1.5 py-0.5 shadow-[1px_1px_0px_#000] overflow-hidden transition-all"
               style={{
                 clipPath: `inset(0 ${100 - loadProgress}% 0 0)`,
               }}
             >
               {/* MEZERNÍK */}
-              <div className="px-1.5 py-0.5 rounded font-mono font-black text-2.125 sm:text-2.375 tracking-tight uppercase bg-loyo-mustard text-[#18181b] shadow-[1px_1px_0px_#fff] whitespace-nowrap">
+              <div className="px-1.5 py-0.5 rounded font-mono font-black text-2.125 sm:text-2.375 tracking-tight uppercase bg-loyo-mustard text-loyo-ink shadow-[1px_1px_0px_#fff] whitespace-nowrap">
                 MEZERNÍK
               </div>
 
               {/* 3 KOSTIČKY ŠIPEK: ← ↓ → */}
               <div className="flex items-center gap-0.5 shrink-0">
-                <div className="w-4 h-4 sm:w-4.5 sm:h-4.5 rounded bg-white text-[#18181b] border border-[#18181b] font-black text-2.25 flex items-center justify-center shadow-[1px_1px_0px_#18181b]">
+                <div className="w-4 h-4 sm:w-4.5 sm:h-4.5 rounded bg-white text-loyo-ink border border-loyo-ink font-black text-2.25 flex items-center justify-center shadow-brutal-1">
                   ←
                 </div>
-                <div className="w-4 h-4 sm:w-4.5 sm:h-4.5 rounded bg-white text-[#18181b] border border-[#18181b] font-black text-2.25 flex items-center justify-center shadow-[1px_1px_0px_#18181b]">
+                <div className="w-4 h-4 sm:w-4.5 sm:h-4.5 rounded bg-white text-loyo-ink border border-loyo-ink font-black text-2.25 flex items-center justify-center shadow-brutal-1">
                   ↓
                 </div>
-                <div className="w-4 h-4 sm:w-4.5 sm:h-4.5 rounded bg-white text-[#18181b] border border-[#18181b] font-black text-2.25 flex items-center justify-center shadow-[1px_1px_0px_#18181b]">
+                <div className="w-4 h-4 sm:w-4.5 sm:h-4.5 rounded bg-white text-loyo-ink border border-loyo-ink font-black text-2.25 flex items-center justify-center shadow-brutal-1">
                   →
                 </div>
               </div>
@@ -1077,7 +1078,7 @@ export const MiniFallingCubesInGap: React.FC = () => {
 
             {/* INDIKÁTOR NAČÍTÁNÍ (0% -> 100% PŘI NAJETÍ, 100% -> 0% PŘI ODJETÍ) */}
             <div
-              className="h-1 bg-zinc-700/60 rounded-full mt-1 overflow-hidden border border-[#18181b] w-full"
+              className="h-1 bg-zinc-700/60 rounded-full mt-1 overflow-hidden border border-loyo-ink w-full"
               style={{
                 clipPath: `inset(0 ${100 - loadProgress}% 0 0)`,
               }}
@@ -1095,7 +1096,7 @@ export const MiniFallingCubesInGap: React.FC = () => {
       {gameState === 'playing' && (
         <div className="absolute top-1 right-2 z-30 pointer-events-none">
           <div
-            className={`w-8 h-8 sm:w-9 sm:h-9 rounded-full bg-[#18181b] border-2 shadow-[2px_2px_0px_#18181b] flex items-center justify-center transition-all duration-200 ${
+            className={`w-8 h-8 sm:w-9 sm:h-9 rounded-full bg-loyo-ink border-2 shadow-brutal-2 flex items-center justify-center transition-all duration-200 ${
               [10, 5, 4, 3, 2, 1].includes(timeLeft)
                 ? 'border-loyo-red scale-125 shadow-[0_0_10px_rgba(172,0,1,0.85)]'
                 : 'border-orange-500 scale-100'
@@ -1118,15 +1119,15 @@ export const MiniFallingCubesInGap: React.FC = () => {
       {/* HIGHSCORE OVERLAY: POUZE "HIGHSCORE" - 4 A 4 (8 MÍST) VEDLE SEBE */}
       {/* ========================================================================= */}
       {showHighScoresModal && gameState === 'demo' && (
-        <div className="absolute inset-x-1.5 bottom-1 top-8 z-40 bg-white/95 backdrop-blur-xs border-2 border-[#18181b] rounded-xl shadow-[3px_3px_0px_#18181b] p-1.5 flex flex-col justify-between animate-in fade-in zoom-in-95">
+        <div className="absolute inset-x-1.5 bottom-1 top-8 z-40 bg-white/95 backdrop-blur-xs border-2 border-loyo-ink rounded-xl shadow-brutal-3 p-1.5 flex flex-col justify-between animate-in fade-in zoom-in-95">
           <div>
-            <div className="flex items-center justify-between border-b border-[#18181b]/15 pb-0.5 mb-1">
+            <div className="flex items-center justify-between border-b border-loyo-ink/15 pb-0.5 mb-1">
               <span className="font-heading font-black text-2.75 uppercase tracking-wider text-loyo-blue">
                 HIGHSCORE
               </span>
               <button
                 onClick={() => setShowHighScoresModal(false)}
-                className="w-4 h-4 rounded bg-zinc-200 hover:bg-zinc-300 text-[#18181b] flex items-center justify-center text-2.5 font-black cursor-pointer"
+                className="w-4 h-4 rounded bg-zinc-200 hover:bg-zinc-300 text-loyo-ink flex items-center justify-center text-2.5 font-black cursor-pointer"
                 title="Zavřít"
               >
                 ✕
@@ -1146,7 +1147,7 @@ export const MiniFallingCubesInGap: React.FC = () => {
                       key={idx}
                       className="flex items-center text-2.25 sm:text-2.5 font-mono px-1 py-0.5 rounded bg-[#f4f4f5] border border-zinc-200"
                     >
-                      <span className="font-bold text-[#18181b] w-3.5 shrink-0">{idx + 1}.</span>
+                      <span className="font-bold text-loyo-ink w-3.5 shrink-0">{idx + 1}.</span>
                       <span
                         className={`font-black tracking-wider ${
                           isPresent ? 'text-loyo-blue' : 'text-zinc-400'
@@ -1156,7 +1157,7 @@ export const MiniFallingCubesInGap: React.FC = () => {
                       </span>
                       <strong
                         className={`ml-1.5 font-heading font-black truncate ${
-                          isPresent ? 'text-[#18181b]' : 'text-zinc-400'
+                          isPresent ? 'text-loyo-ink' : 'text-zinc-400'
                         }`}
                       >
                         {isPresent ? `${item.score}b` : '-'}
@@ -1177,7 +1178,7 @@ export const MiniFallingCubesInGap: React.FC = () => {
                       key={idx}
                       className="flex items-center text-2.25 sm:text-2.5 font-mono px-1 py-0.5 rounded bg-[#f4f4f5] border border-zinc-200"
                     >
-                      <span className="font-bold text-[#18181b] w-3.5 shrink-0">{idx + 1}.</span>
+                      <span className="font-bold text-loyo-ink w-3.5 shrink-0">{idx + 1}.</span>
                       <span
                         className={`font-black tracking-wider ${
                           isPresent ? 'text-loyo-blue' : 'text-zinc-400'
@@ -1187,7 +1188,7 @@ export const MiniFallingCubesInGap: React.FC = () => {
                       </span>
                       <strong
                         className={`ml-1.5 font-heading font-black truncate ${
-                          isPresent ? 'text-[#18181b]' : 'text-zinc-400'
+                          isPresent ? 'text-loyo-ink' : 'text-zinc-400'
                         }`}
                       >
                         {isPresent ? `${item.score}b` : '-'}
@@ -1203,7 +1204,7 @@ export const MiniFallingCubesInGap: React.FC = () => {
             <span className="text-2.25 font-mono text-zinc-500">--- = neumístěn</span>
             <button
               onClick={() => setShowHighScoresModal(false)}
-              className="px-2 py-0.5 bg-[#18181b] hover:bg-zinc-800 text-white rounded font-heading font-bold text-2.25 uppercase cursor-pointer transition-all"
+              className="px-2 py-0.5 bg-loyo-ink hover:bg-zinc-800 text-white rounded font-heading font-bold text-2.25 uppercase cursor-pointer transition-all"
             >
               OK
             </button>
@@ -1221,13 +1222,13 @@ export const MiniFallingCubesInGap: React.FC = () => {
       >
         {/* PŘI SAMOTNÉM HRANÍ (gameState === 'playing') MÁ HRÁČ DOSTUPNÉ TLAČÍTKA DOLE PRO TOUCH/MYŠ */}
         {gameState === 'playing' && (
-          <div className="flex items-center gap-1 bg-[#18181b] text-white border-2 border-[#18181b] rounded-lg px-1.5 py-0.5 shadow-[2px_2px_0px_#18181b] animate-in fade-in">
+          <div className="flex items-center gap-1 bg-loyo-ink text-white border-2 border-loyo-ink rounded-lg px-1.5 py-0.5 shadow-brutal-2 animate-in fade-in">
             {/* TLAČÍTKO MEZERNÍK */}
             <button
               onClick={triggerBomb}
               className={`px-1.5 py-0.5 rounded font-mono font-bold text-2.25 sm:text-2.5 tracking-tight uppercase flex items-center gap-0.5 transition-all ${
                 bombCooldown === 0
-                  ? 'bg-loyo-mustard text-[#18181b] cursor-pointer shadow-[1px_1px_0px_#fff] active:scale-95 animate-pulse'
+                  ? 'bg-loyo-mustard text-loyo-ink cursor-pointer shadow-[1px_1px_0px_#fff] active:scale-95 animate-pulse'
                   : 'bg-zinc-800 text-loyo-mustard hover:bg-zinc-700 cursor-default'
               }`}
               title="Mezerník = Speciální bomba"
@@ -1239,21 +1240,21 @@ export const MiniFallingCubesInGap: React.FC = () => {
             <div className="flex items-center gap-0.5">
               <button
                 onClick={() => moveHorizontal(-1)}
-                className="w-4.5 h-4.5 sm:w-5 sm:h-5 rounded bg-white hover:bg-zinc-100 text-[#18181b] border border-[#18181b] font-bold text-2.5 flex items-center justify-center cursor-pointer shadow-[1px_1px_0px_#18181b] active:translate-y-0.5"
+                className="w-4.5 h-4.5 sm:w-5 sm:h-5 rounded bg-white hover:bg-zinc-100 text-loyo-ink border border-loyo-ink font-bold text-2.5 flex items-center justify-center cursor-pointer shadow-brutal-1 active:translate-y-0.5"
                 title="Doleva (←)"
               >
                 ←
               </button>
               <button
                 onClick={dropFast}
-                className="w-4.5 h-4.5 sm:w-5 sm:h-5 rounded bg-white hover:bg-zinc-100 text-[#18181b] border border-[#18181b] font-bold text-2.5 flex items-center justify-center cursor-pointer shadow-[1px_1px_0px_#18181b] active:translate-y-0.5"
+                className="w-4.5 h-4.5 sm:w-5 sm:h-5 rounded bg-white hover:bg-zinc-100 text-loyo-ink border border-loyo-ink font-bold text-2.5 flex items-center justify-center cursor-pointer shadow-brutal-1 active:translate-y-0.5"
                 title="Dolů / Zrychlit (↓)"
               >
                 ↓
               </button>
               <button
                 onClick={() => moveHorizontal(1)}
-                className="w-4.5 h-4.5 sm:w-5 sm:h-5 rounded bg-white hover:bg-zinc-100 text-[#18181b] border border-[#18181b] font-bold text-2.5 flex items-center justify-center cursor-pointer shadow-[1px_1px_0px_#18181b] active:translate-y-0.5"
+                className="w-4.5 h-4.5 sm:w-5 sm:h-5 rounded bg-white hover:bg-zinc-100 text-loyo-ink border border-loyo-ink font-bold text-2.5 flex items-center justify-center cursor-pointer shadow-brutal-1 active:translate-y-0.5"
                 title="Doprava (→)"
               >
                 →
@@ -1267,10 +1268,10 @@ export const MiniFallingCubesInGap: React.FC = () => {
           onMouseEnter={() => setIsHovered(true)}
           onMouseLeave={() => setIsHovered(false)}
           onClick={() => setIsHovered((prev) => !prev)}
-          className={`w-6 h-6 sm:w-7 sm:h-7 rounded-full border-2 border-[#18181b] shadow-[1.5px_1.5px_0px_#18181b] flex items-center justify-center font-heading font-black text-xs cursor-pointer active:translate-x-0.5 active:translate-y-0.5 transition-all shrink-0 z-40 ${
+          className={`w-6 h-6 sm:w-7 sm:h-7 rounded-full border-2 border-loyo-ink shadow-[1.5px_1.5px_0px_#18181b] flex items-center justify-center font-heading font-black text-xs cursor-pointer active:translate-x-0.5 active:translate-y-0.5 transition-all shrink-0 z-40 ${
             infoPhase !== 'idle'
-              ? 'bg-loyo-mustard text-[#18181b] scale-105 shadow-[2px_2px_0px_#18181b]'
-              : 'bg-white hover:bg-zinc-100 text-[#18181b]'
+              ? 'bg-loyo-mustard text-loyo-ink scale-105 shadow-brutal-2'
+              : 'bg-white hover:bg-zinc-100 text-loyo-ink'
           }`}
           title="Minigame pauza • Nápověda ovládání"
         >
@@ -1286,7 +1287,7 @@ export const MiniFallingCubesInGap: React.FC = () => {
           <div className="font-heading font-black text-4xl sm:text-5xl text-loyo-blue tracking-tight animate-bounce">
             {countdown > 0 ? countdown : 'START!'}
           </div>
-          <span className="text-2.5 font-mono uppercase tracking-widest text-[#555] mt-0.5">
+          <span className="text-2.5 font-mono uppercase tracking-widest text-loyo-muted mt-0.5">
             Použij mezerník a šipky!
           </span>
         </div>
@@ -1317,7 +1318,7 @@ export const MiniFallingCubesInGap: React.FC = () => {
             {endReason === 'gameover' ? 'PŘETEČENÍ KOSTIČEK!' : '1 MINUTA UPLYNULA!'}
           </div>
 
-          <div className="font-heading font-black text-base sm:text-lg text-[#18181b] tracking-tight">
+          <div className="font-heading font-black text-base sm:text-lg text-loyo-ink tracking-tight">
             SKÓRE: <span className="text-loyo-blue">{score} BODŮ</span>
           </div>
 
@@ -1335,14 +1336,14 @@ export const MiniFallingCubesInGap: React.FC = () => {
                   }}
                   className={`w-8 h-9 rounded-lg border-2 flex items-center justify-center font-heading font-black text-base transition-all cursor-text ${
                     isCurrent
-                      ? 'border-[#18181b] bg-loyo-mustard/25 shadow-[1.5px_1.5px_0px_#18181b] ring-2 ring-[#18181b]'
-                      : 'border-[#18181b] bg-white shadow-[1.5px_1.5px_0px_#18181b]'
+                      ? 'border-loyo-ink bg-loyo-mustard/25 shadow-[1.5px_1.5px_0px_#18181b] ring-2 ring-loyo-ink'
+                      : 'border-loyo-ink bg-white shadow-[1.5px_1.5px_0px_#18181b]'
                   }`}
                 >
                   {char ? (
-                    <span className="text-[#18181b]">{char}</span>
+                    <span className="text-loyo-ink">{char}</span>
                   ) : isCurrent ? (
-                    <span className="text-[#18181b] animate-ping font-mono font-bold text-sm">
+                    <span className="text-loyo-ink animate-ping font-mono font-bold text-sm">
                       _
                     </span>
                   ) : (
@@ -1364,7 +1365,7 @@ export const MiniFallingCubesInGap: React.FC = () => {
               disabled={inputInitials.length !== 3}
               className={`h-6 px-3 rounded-lg font-heading font-bold text-2.5 uppercase tracking-wider border-2 transition-all ${
                 inputInitials.length === 3
-                  ? 'bg-loyo-blue hover:bg-[#03086b] text-white border-[#18181b] shadow-[2px_2px_0px_#18181b] cursor-pointer active:translate-y-0.5'
+                  ? 'bg-loyo-blue hover:bg-[#03086b] text-white border-loyo-ink shadow-brutal-2 cursor-pointer active:translate-y-0.5'
                   : 'bg-zinc-200 text-zinc-400 border-zinc-400 cursor-not-allowed shadow-none'
               }`}
             >
@@ -1373,7 +1374,7 @@ export const MiniFallingCubesInGap: React.FC = () => {
 
             <button
               onClick={returnToDemo}
-              className="h-6 px-2 font-mono font-bold text-2.5 text-[#555] hover:text-[#18181b] underline cursor-pointer"
+              className="h-6 px-2 font-mono font-bold text-2.5 text-loyo-muted hover:text-loyo-ink underline cursor-pointer"
             >
               Zrušit
             </button>
@@ -1407,11 +1408,11 @@ export const MiniFallingCubesInGap: React.FC = () => {
                       key={idx}
                       className={`flex items-center text-2.25 sm:text-2.5 font-mono px-1 py-0.5 rounded border ${
                         isCurrentPlayer
-                          ? 'bg-loyo-mustard/25 border-[#18181b] font-bold shadow-[1px_1px_0px_#18181b]'
+                          ? 'bg-loyo-mustard/25 border-loyo-ink font-bold shadow-brutal-1'
                           : 'bg-[#f4f4f5] border-zinc-200'
                       }`}
                     >
-                      <span className="font-bold text-[#18181b] w-3.5 shrink-0">{idx + 1}.</span>
+                      <span className="font-bold text-loyo-ink w-3.5 shrink-0">{idx + 1}.</span>
                       <span
                         className={`font-black tracking-wider ${
                           isPresent ? 'text-loyo-blue' : 'text-zinc-400'
@@ -1421,7 +1422,7 @@ export const MiniFallingCubesInGap: React.FC = () => {
                       </span>
                       <strong
                         className={`ml-1.5 font-heading font-black truncate ${
-                          isPresent ? 'text-[#18181b]' : 'text-zinc-400'
+                          isPresent ? 'text-loyo-ink' : 'text-zinc-400'
                         }`}
                       >
                         {isPresent ? `${item.score}b` : '-'}
@@ -1445,11 +1446,11 @@ export const MiniFallingCubesInGap: React.FC = () => {
                       key={idx}
                       className={`flex items-center text-2.25 sm:text-2.5 font-mono px-1 py-0.5 rounded border ${
                         isCurrentPlayer
-                          ? 'bg-loyo-mustard/25 border-[#18181b] font-bold shadow-[1px_1px_0px_#18181b]'
+                          ? 'bg-loyo-mustard/25 border-loyo-ink font-bold shadow-brutal-1'
                           : 'bg-[#f4f4f5] border-zinc-200'
                       }`}
                     >
-                      <span className="font-bold text-[#18181b] w-3.5 shrink-0">{idx + 1}.</span>
+                      <span className="font-bold text-loyo-ink w-3.5 shrink-0">{idx + 1}.</span>
                       <span
                         className={`font-black tracking-wider ${
                           isPresent ? 'text-loyo-blue' : 'text-zinc-400'
@@ -1459,7 +1460,7 @@ export const MiniFallingCubesInGap: React.FC = () => {
                       </span>
                       <strong
                         className={`ml-1.5 font-heading font-black truncate ${
-                          isPresent ? 'text-[#18181b]' : 'text-zinc-400'
+                          isPresent ? 'text-loyo-ink' : 'text-zinc-400'
                         }`}
                       >
                         {isPresent ? `${item.score}b` : '-'}
@@ -1474,7 +1475,7 @@ export const MiniFallingCubesInGap: React.FC = () => {
           <div className="flex items-center gap-2 pt-0.5">
             <button
               onClick={returnToDemo}
-              className="h-6 px-3 bg-loyo-blue hover:bg-[#03086b] text-white border-2 border-[#18181b] shadow-[2px_2px_0px_#18181b] rounded-lg font-heading font-bold text-2.5 uppercase tracking-wider cursor-pointer active:translate-y-0.5 transition-all"
+              className="h-6 px-3 bg-loyo-blue hover:bg-[#03086b] text-white border-2 border-loyo-ink shadow-brutal-2 rounded-lg font-heading font-bold text-2.5 uppercase tracking-wider cursor-pointer active:translate-y-0.5 transition-all"
             >
               OK (ZPĚT DO UKÁZKY)
             </button>
@@ -1518,7 +1519,7 @@ export const MiniFallingCubesInGap: React.FC = () => {
           return (
             <div
               key={cube.id}
-              className={`absolute rounded-0.875 border-2 border-[#18181b] transition-all duration-75 ${
+              className={`absolute rounded-0.875 border-2 border-loyo-ink transition-all duration-75 ${
                 cube.isRedAlert ? 'animate-pulse' : ''
               }`}
               style={{
@@ -1546,7 +1547,7 @@ export const MiniFallingCubesInGap: React.FC = () => {
           <>
             {fallingPiece.isBomb ? (
               <div
-                className="absolute rounded-full border-2 border-[#18181b] z-30 pointer-events-none shadow-[2px_2px_0px_#18181b] animate-pulse"
+                className="absolute rounded-full border-2 border-loyo-ink z-30 pointer-events-none shadow-brutal-2 animate-pulse"
                 style={{
                   width: `${CUBE_SIZE}px`,
                   height: `${CUBE_SIZE}px`,
@@ -1567,7 +1568,7 @@ export const MiniFallingCubesInGap: React.FC = () => {
                 return (
                   <div
                     key={`fp-${idx}`}
-                    className="absolute rounded-0.875 border-2 border-[#18181b] shadow-[2px_2px_0px_#18181b] z-30 pointer-events-none"
+                    className="absolute rounded-0.875 border-2 border-loyo-ink shadow-brutal-2 z-30 pointer-events-none"
                     style={{
                       width: `${CUBE_SIZE}px`,
                       height: `${CUBE_SIZE}px`,

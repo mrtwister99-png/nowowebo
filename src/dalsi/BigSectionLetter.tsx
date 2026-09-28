@@ -23,14 +23,14 @@ export const BigSectionLetter: React.FC<BigSectionLetterProps> = ({
         >
           {letter}
         </span>
-        <span className="font-heading font-black text-4xl sm:text-6xl lg:text-7xl text-[#18181b] tracking-tight uppercase leading-none">
+        <span className="font-heading font-black text-4xl sm:text-6xl lg:text-7xl text-loyo-ink tracking-tight uppercase leading-none">
           {wordRemainder}
         </span>
       </div>
 
       {/* Clean subtitle in smaller font right below */}
       {subtitle && (
-        <p className="mt-1.5 font-mono text-xs sm:text-sm text-[#555] font-medium tracking-wide">
+        <p className="mt-1.5 font-mono text-xs sm:text-sm text-loyo-muted font-medium tracking-wide">
           {subtitle}
         </p>
       )}

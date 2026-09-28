@@ -10,4 +10,10 @@ npm install
 npm run dev
 ```
 
+### Design tokeny a komponenty
+
+- Barvy, stíny a fonty jsou v `src/styles/tokens.css` (třídy `bg-loyo-blue`, `text-loyo-ink`, `shadow-brutal-3` ...).
+- Stejné barvy pro JavaScript (canvas, SVG) jsou v `src/lib/colors.ts`. Při změně barvy upravit oba soubory.
+- Základní komponenty jsou v `src/components/ui/` (`Button`, `Card`, `Badge`, `Section`).
+
 © 2025 LoYo Developer and Design

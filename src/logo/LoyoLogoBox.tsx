@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { BRAND } from '../lib/colors';
 
 interface LoyoLogoBoxProps {
   activeSection: string;
@@ -133,7 +134,7 @@ export const LoyoLogoBox: React.FC<LoyoLogoBoxProps> = ({
 
   return (
     <div
-      className={`relative w-14 h-14 sm:w-16 sm:h-16 bg-[#eeeeee] border-2 border-[#bebebe] flex items-center justify-center p-1.5 sm:p-2 shadow-xs transition-colors overflow-hidden group-hover:border-[#18181b] group-hover:bg-[#f6f6f6] shrink-0 cursor-pointer ${className}`}
+      className={`relative w-14 h-14 sm:w-16 sm:h-16 bg-[#eeeeee] border-2 border-[#bebebe] flex items-center justify-center p-1.5 sm:p-2 shadow-xs transition-colors overflow-hidden group-hover:border-loyo-ink group-hover:bg-[#f6f6f6] shrink-0 cursor-pointer ${className}`}
       title="LoYo Interactive Dynamic Logo (Automatizace / Aplikace / Weby)"
       id="loyo-logo-box"
       onMouseMove={handleMouseMove}
@@ -148,13 +149,31 @@ export const LoyoLogoBox: React.FC<LoyoLogoBoxProps> = ({
         <defs>
           {/* Neon emission filters tailored for light background */}
           <filter id="glow-blue" x="-20%" y="-20%" width="140%" height="140%">
-            <feDropShadow dx="0" dy="0" stdDeviation="3" floodColor="#040b8d" floodOpacity="0.5" />
+            <feDropShadow
+              dx="0"
+              dy="0"
+              stdDeviation="3"
+              floodColor={BRAND.blue}
+              floodOpacity="0.5"
+            />
           </filter>
           <filter id="glow-gold" x="-20%" y="-20%" width="140%" height="140%">
-            <feDropShadow dx="0" dy="0" stdDeviation="3" floodColor="#cda24d" floodOpacity="0.6" />
+            <feDropShadow
+              dx="0"
+              dy="0"
+              stdDeviation="3"
+              floodColor={BRAND.mustard}
+              floodOpacity="0.6"
+            />
           </filter>
           <filter id="glow-red" x="-20%" y="-20%" width="140%" height="140%">
-            <feDropShadow dx="0" dy="0" stdDeviation="3" floodColor="#ac0001" floodOpacity="0.5" />
+            <feDropShadow
+              dx="0"
+              dy="0"
+              stdDeviation="3"
+              floodColor={BRAND.red}
+              floodOpacity="0.5"
+            />
           </filter>
         </defs>
 
@@ -197,7 +216,7 @@ export const LoyoLogoBox: React.FC<LoyoLogoBoxProps> = ({
         {/* A. Menší trojúhelníček (svítí navíc při najetí do animací / automatizací) */}
         <g
           id="triangle-blue-small"
-          stroke="#040b8d"
+          stroke={BRAND.blue}
           strokeWidth="13"
           strokeLinecap="square"
           strokeLinejoin="miter"
@@ -221,7 +240,7 @@ export const LoyoLogoBox: React.FC<LoyoLogoBoxProps> = ({
         {/* B. Normální trojúhelníček (zvětšuje se ze 100% na 200% a zase na 100%) */}
         <g
           id="triangle-blue"
-          stroke="#040b8d"
+          stroke={BRAND.blue}
           strokeWidth="14"
           strokeLinecap="square"
           strokeLinejoin="miter"
@@ -246,7 +265,7 @@ export const LoyoLogoBox: React.FC<LoyoLogoBoxProps> = ({
         {/* A. Menší čtvereček (svítí navíc při najetí do aplikací) */}
         <g
           id="square-gold-small"
-          stroke="#CDA24D"
+          stroke={BRAND.mustard}
           strokeWidth="13"
           strokeLinecap="square"
           strokeLinejoin="miter"
@@ -271,7 +290,7 @@ export const LoyoLogoBox: React.FC<LoyoLogoBoxProps> = ({
         {/* B. Normální čtvereček (zvětšuje se ze 100% na 200% a zase na 100%) */}
         <g
           id="square-gold"
-          stroke="#CDA24D"
+          stroke={BRAND.mustard}
           strokeWidth="14"
           strokeLinecap="square"
           strokeLinejoin="miter"
@@ -295,7 +314,7 @@ export const LoyoLogoBox: React.FC<LoyoLogoBoxProps> = ({
         {/* A. Menší kolečko (svítí navíc při najetí do webů) */}
         <g
           id="circle-red-small"
-          stroke="#ac0001"
+          stroke={BRAND.red}
           strokeWidth="13"
           strokeLinecap="square"
           strokeLinejoin="miter"
@@ -313,7 +332,7 @@ export const LoyoLogoBox: React.FC<LoyoLogoBoxProps> = ({
         {/* B. Normální kolečko (zvětšuje se ze 100% na 200% a zase na 100%) */}
         <g
           id="circle-red"
-          stroke="#ac0001"
+          stroke={BRAND.red}
           strokeWidth="14"
           strokeLinecap="square"
           strokeLinejoin="miter"

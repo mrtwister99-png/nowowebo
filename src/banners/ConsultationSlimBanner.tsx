@@ -1,6 +1,8 @@
 import React from 'react';
 import { ArrowRight, Coffee } from 'lucide-react';
 import { ServiceId } from '../types';
+import { Section } from '../components/ui/Section';
+import { Badge } from '../components/ui/Badge';
 
 interface ConsultationSlimBannerProps {
   onOpenQuestionnaireForService: (serviceId: ServiceId) => void;
@@ -10,17 +12,14 @@ export const ConsultationSlimBanner: React.FC<ConsultationSlimBannerProps> = ({
   onOpenQuestionnaireForService,
 }) => {
   return (
-    <section
-      id="konzultace-banner"
-      className="w-full max-w-6xl mx-auto px-4 sm:px-6 pt-0 pb-10 select-none"
-    >
-      <div className="group relative bg-white border-2 border-[#18181b] rounded-3xl p-5 sm:p-6 lg:p-7 shadow-[6px_6px_0px_#18181b] hover:shadow-[8px_8px_0px_#18181b] hover:-translate-y-0.5 transition-all duration-200">
+    <Section id="konzultace-banner" className="pt-0 pb-10">
+      <div className="group relative bg-white border-2 border-loyo-ink rounded-3xl p-5 sm:p-6 lg:p-7 shadow-brutal-6 hover:shadow-brutal-8 hover:-translate-y-0.5 transition-all duration-200">
         {/* HLAVNÍ HORIZONTÁLNÍ ÚZKÝ ROZKLAD */}
         <div className="flex flex-col lg:flex-row items-stretch lg:items-center justify-between gap-5 sm:gap-6">
           {/* LEVÁ ČÁST: SVISLÝ / KOMPAKTNÍ NADPIS A IKONKA */}
-          <div className="flex items-center gap-4 sm:gap-5 shrink-0 border-b lg:border-b-0 lg:border-r-2 border-[#18181b]/15 pb-4 lg:pb-0 lg:pr-6">
+          <div className="flex items-center gap-4 sm:gap-5 shrink-0 border-b lg:border-b-0 lg:border-r-2 border-loyo-ink/15 pb-4 lg:pb-0 lg:pr-6">
             {/* Kulatá ikona konzultace */}
-            <div className="relative w-16 h-16 sm:w-18 sm:h-18 rounded-full bg-[#18181b] text-white border-2 border-[#18181b] shadow-[3px_3px_0px_#555] flex items-center justify-center shrink-0 group-hover:scale-105 transition-transform">
+            <div className="relative w-16 h-16 sm:w-18 sm:h-18 rounded-full bg-loyo-ink text-white border-2 border-loyo-ink shadow-[3px_3px_0px_#555] flex items-center justify-center shrink-0 group-hover:scale-105 transition-transform">
               <Coffee className="w-8 h-8 sm:w-9 sm:h-9 stroke-[2.2]" />
               <span className="absolute -top-1 -right-1 flex h-3 w-3">
                 <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
@@ -31,14 +30,12 @@ export const ConsultationSlimBanner: React.FC<ConsultationSlimBannerProps> = ({
             {/* Nadpis sekce */}
             <div>
               <div className="flex items-center gap-2">
-                <span className="px-2 py-0.5 bg-[#18181b] text-white font-mono text-[10px] font-black uppercase tracking-wider rounded">
-                  4. SLUŽBA
-                </span>
-                <span className="font-mono text-[11px] font-bold text-[#666] uppercase">
+                <Badge size="sm">4. SLUŽBA</Badge>
+                <span className="font-mono text-[11px] font-bold text-loyo-subtle uppercase">
                   1 na 1 & Online
                 </span>
               </div>
-              <h3 className="font-heading font-black text-xl sm:text-2xl text-[#18181b] tracking-tight mt-1">
+              <h3 className="font-heading font-black text-xl sm:text-2xl text-loyo-ink tracking-tight mt-1">
                 KONZULTACE & AUDIT
               </h3>
             </div>
@@ -52,21 +49,21 @@ export const ConsultationSlimBanner: React.FC<ConsultationSlimBannerProps> = ({
             </p>
 
             <div className="flex flex-wrap items-center gap-2">
-              <div className="px-2.5 py-1 bg-[#fafafa] border border-[#18181b]/20 rounded-lg flex items-center gap-1.5">
-                <span className="w-2 h-2 rounded-full bg-[#18181b] shrink-0" />
-                <span className="text-[11px] sm:text-xs font-mono font-medium text-[#27272a]">
+              <div className="px-2.5 py-1 bg-loyo-paper border border-loyo-ink/20 rounded-lg flex items-center gap-1.5">
+                <span className="w-2 h-2 rounded-full bg-loyo-ink shrink-0" />
+                <span className="text-[11px] sm:text-xs font-mono font-medium text-loyo-ink-soft">
                   Osobně nebo videohovor
                 </span>
               </div>
-              <div className="px-2.5 py-1 bg-[#fafafa] border border-[#18181b]/20 rounded-lg flex items-center gap-1.5">
-                <span className="w-2 h-2 rounded-full bg-[#18181b] shrink-0" />
-                <span className="text-[11px] sm:text-xs font-mono font-medium text-[#27272a]">
+              <div className="px-2.5 py-1 bg-loyo-paper border border-loyo-ink/20 rounded-lg flex items-center gap-1.5">
+                <span className="w-2 h-2 rounded-full bg-loyo-ink shrink-0" />
+                <span className="text-[11px] sm:text-xs font-mono font-medium text-loyo-ink-soft">
                   Předání know-how a zaškolení
                 </span>
               </div>
-              <div className="px-2.5 py-1 bg-[#fafafa] border border-[#18181b]/20 rounded-lg flex items-center gap-1.5">
-                <span className="w-2 h-2 rounded-full bg-[#18181b] shrink-0" />
-                <span className="text-[11px] sm:text-xs font-mono font-medium text-[#27272a]">
+              <div className="px-2.5 py-1 bg-loyo-paper border border-loyo-ink/20 rounded-lg flex items-center gap-1.5">
+                <span className="w-2 h-2 rounded-full bg-loyo-ink shrink-0" />
+                <span className="text-[11px] sm:text-xs font-mono font-medium text-loyo-ink-soft">
                   Technický a bezpečnostní audit
                 </span>
               </div>
@@ -78,7 +75,7 @@ export const ConsultationSlimBanner: React.FC<ConsultationSlimBannerProps> = ({
             <button
               onClick={() => onOpenQuestionnaireForService('consultation')}
               id="btn-more-info-consultation"
-              className="w-full sm:w-auto py-2.5 px-6 bg-[#18181b] hover:bg-[#2c2c31] text-white border-2 border-[#18181b] rounded-xl shadow-[3px_3px_0px_#000] hover:shadow-[4px_4px_0px_#000] hover:-translate-y-0.5 active:translate-x-0.5 active:translate-y-0.5 active:shadow-[1px_1px_0px_#000] font-heading font-bold text-xs sm:text-sm tracking-wider uppercase flex items-center justify-center gap-2 cursor-pointer transition-all"
+              className="w-full sm:w-auto py-2.5 px-6 bg-loyo-ink hover:bg-[#2c2c31] text-white border-2 border-loyo-ink rounded-xl shadow-[3px_3px_0px_#000] hover:shadow-[4px_4px_0px_#000] hover:-translate-y-0.5 active:translate-x-0.5 active:translate-y-0.5 active:shadow-[1px_1px_0px_#000] font-heading font-bold text-xs sm:text-sm tracking-wider uppercase flex items-center justify-center gap-2 cursor-pointer transition-all"
             >
               <span>VÍCE INFO</span>
               <ArrowRight className="w-4 h-4 stroke-[2.5] group-hover:translate-x-1 transition-transform" />
@@ -86,6 +83,6 @@ export const ConsultationSlimBanner: React.FC<ConsultationSlimBannerProps> = ({
           </div>
         </div>
       </div>
-    </section>
+    </Section>
   );
 };

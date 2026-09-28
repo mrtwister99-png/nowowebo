@@ -55,7 +55,7 @@ export const Footer: React.FC = () => {
       {/* PLOVOUCÍ SPODNÍ LIŠTA / ZADEČEK (PERMANENTNĚ VIDITELNÝ JAKO LINKA, PŘI DOJETÍ DOLŮ VYJEDE) */}
       <footer
         id="bottom-bar"
-        className="fixed bottom-0 left-0 right-0 z-40 select-none bg-[#18181b] text-white border-t-2 border-[#27272a] shadow-[0_-10px_25px_rgba(0,0,0,0.45)] transition-all duration-300 ease-out"
+        className="fixed bottom-0 left-0 right-0 z-40 select-none bg-loyo-ink text-white border-t-2 border-loyo-ink-soft shadow-[0_-10px_25px_rgba(0,0,0,0.45)] transition-all duration-300 ease-out"
       >
         {/* 1. VYSUVNÝ OBSAH (ZÁVĚR MENŠÍ) - VIDITELNÝ PŘI VYJETÍ */}
         <div
@@ -84,13 +84,13 @@ export const Footer: React.FC = () => {
                 </p>
 
                 <div className="flex flex-wrap gap-2 pt-1">
-                  <span className="px-2.5 py-1 rounded-md bg-[#27272a] text-[11px] font-mono text-[#d4d4d8]">
+                  <span className="px-2.5 py-1 rounded-md bg-loyo-ink-soft text-[11px] font-mono text-[#d4d4d8]">
                     #AutonomníAI
                   </span>
-                  <span className="px-2.5 py-1 rounded-md bg-[#27272a] text-[11px] font-mono text-[#d4d4d8]">
+                  <span className="px-2.5 py-1 rounded-md bg-loyo-ink-soft text-[11px] font-mono text-[#d4d4d8]">
                     #ReactAplikace
                   </span>
-                  <span className="px-2.5 py-1 rounded-md bg-[#27272a] text-[11px] font-mono text-[#d4d4d8]">
+                  <span className="px-2.5 py-1 rounded-md bg-loyo-ink-soft text-[11px] font-mono text-[#d4d4d8]">
                     #VlastníZdrojáky
                   </span>
                 </div>
@@ -122,7 +122,7 @@ export const Footer: React.FC = () => {
                   </span>
                   <button
                     onClick={scrollToTop}
-                    className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-[#27272a] hover:bg-white hover:text-[#18181b] text-white text-xs font-mono font-bold uppercase transition-colors cursor-pointer"
+                    className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-loyo-ink-soft hover:bg-white hover:text-loyo-ink text-white text-xs font-mono font-bold uppercase transition-colors cursor-pointer"
                   >
                     <span>Zpět nahoru</span>
                     <ArrowUp className="w-3.5 h-3.5" />
@@ -180,7 +180,7 @@ export const Footer: React.FC = () => {
           <div className="flex items-center gap-2 pl-2 shrink-0">
             <button
               onClick={handleToggle}
-              className="px-2.5 py-1 rounded-md bg-[#27272a] hover:bg-[#323238] text-[#a1a1aa] hover:text-white font-mono text-[11px] font-bold flex items-center gap-1 transition-colors cursor-pointer"
+              className="px-2.5 py-1 rounded-md bg-loyo-ink-soft hover:bg-[#323238] text-[#a1a1aa] hover:text-white font-mono text-[11px] font-bold flex items-center gap-1 transition-colors cursor-pointer"
               title={isExpanded ? 'Zavřít závěr' : 'Rozbalit závěr'}
             >
               <span className="hidden sm:inline">{isExpanded ? 'Zavřít' : 'Závěr'}</span>

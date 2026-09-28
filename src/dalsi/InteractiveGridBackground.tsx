@@ -1,7 +1,8 @@
 import React, { useEffect, useRef, useState, useMemo } from 'react';
+import { BRAND } from '../lib/colors';
 
 // Brand colors matching LoYo visual system
-const BRAND_COLORS = ['#040b8d', '#CDA24D', '#ac0001', '#bef264'];
+const BRAND_COLORS = [BRAND.blue, BRAND.mustard, BRAND.red, '#bef264'];
 const BRAND_COLOR_NAMES = ['blue', 'gold', 'red', 'lime'] as const;
 const CELL_SIZE = 72; // Exact pixel width and height of each square tile
 
@@ -566,24 +567,24 @@ export const InteractiveGridBackground: React.FC = () => {
 
         /* Brand color flashes (Blue, Gold, Red) */
         .loyo-3d-tile[data-flash="blue"] {
-          background-color: #040b8d !important;
-          border-color: #040b8d !important;
+          background-color: var(--color-loyo-blue) !important;
+          border-color: var(--color-loyo-blue) !important;
           box-shadow: 0 14px 28px -4px rgba(4, 11, 141, 0.42),
                       0 4px 10px -1px rgba(4, 11, 141, 0.25),
                       inset 0 1.5px 0 rgba(255, 255, 255, 0.75) !important;
         }
 
         .loyo-3d-tile[data-flash="gold"] {
-          background-color: #CDA24D !important;
-          border-color: #CDA24D !important;
+          background-color: var(--color-loyo-mustard) !important;
+          border-color: var(--color-loyo-mustard) !important;
           box-shadow: 0 14px 28px -4px rgba(205, 162, 77, 0.45),
                       0 4px 10px -1px rgba(205, 162, 77, 0.25),
                       inset 0 1.5px 0 rgba(255, 255, 255, 0.85) !important;
         }
 
         .loyo-3d-tile[data-flash="red"] {
-          background-color: #ac0001 !important;
-          border-color: #ac0001 !important;
+          background-color: var(--color-loyo-red) !important;
+          border-color: var(--color-loyo-red) !important;
           box-shadow: 0 14px 28px -4px rgba(172, 0, 1, 0.42),
                       0 4px 10px -1px rgba(172, 0, 1, 0.25),
                       inset 0 1.5px 0 rgba(255, 255, 255, 0.75) !important;
@@ -591,7 +592,7 @@ export const InteractiveGridBackground: React.FC = () => {
 
         .loyo-3d-tile[data-flash="lime"] {
           background-color: #bef264 !important;
-          border-color: #18181b !important;
+          border-color: var(--color-loyo-ink) !important;
           box-shadow: 0 14px 28px -4px rgba(190, 242, 100, 0.55),
                       0 4px 10px -1px rgba(190, 242, 100, 0.28),
                       inset 0 1.5px 0 rgba(255, 255, 255, 0.85) !important;
@@ -611,7 +612,7 @@ export const InteractiveGridBackground: React.FC = () => {
         /* Exactly every 10th trailing cube left behind turns vivid electric lime #d9ff00 */
         .loyo-3d-tile[data-trail-lime="true"] {
           background-color: #d9ff00 !important;
-          border-color: #18181b !important;
+          border-color: var(--color-loyo-ink) !important;
           transform: translateZ(28px) scale(1.03) !important;
           box-shadow: 0 16px 32px -4px rgba(217, 255, 0, 0.75),
                       0 6px 14px -1px rgba(217, 255, 0, 0.5),

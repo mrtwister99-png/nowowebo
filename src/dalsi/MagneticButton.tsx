@@ -1,4 +1,5 @@
 import React, { useRef, useState, useCallback } from 'react';
+import { BRAND } from '../lib/colors';
 
 interface MagneticButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
   children: React.ReactNode;
@@ -13,7 +14,7 @@ export const MagneticButton: React.FC<MagneticButtonProps> = ({
   className = '',
   magneticStrength = 0.28,
   showCornerSquares = true,
-  squareColor = '#18181b',
+  squareColor = BRAND.ink,
   onMouseMove,
   onMouseLeave,
   onClick,
