@@ -336,7 +336,6 @@ export const Navbar: React.FC<NavbarProps> = ({
                 <div className="p-2 grid grid-cols-1 sm:grid-cols-2 gap-2">
                   <button
                     onClick={() => {
-                      if (currentPage !== 'home') onBackToHome();
                       onScrollToSection('uvod');
                       setMenuOpen(false);
                     }}
@@ -347,7 +346,6 @@ export const Navbar: React.FC<NavbarProps> = ({
                   </button>
                   <button
                     onClick={() => {
-                      if (currentPage !== 'home') onBackToHome();
                       onScrollToSection('automatizace');
                       setMenuOpen(false);
                     }}
@@ -361,7 +359,6 @@ export const Navbar: React.FC<NavbarProps> = ({
                   </button>
                   <button
                     onClick={() => {
-                      if (currentPage !== 'home') onBackToHome();
                       onScrollToSection('fullstack');
                       setMenuOpen(false);
                     }}
@@ -375,7 +372,6 @@ export const Navbar: React.FC<NavbarProps> = ({
                   </button>
                   <button
                     onClick={() => {
-                      if (currentPage !== 'home') onBackToHome();
                       onScrollToSection('weby');
                       setMenuOpen(false);
                     }}
@@ -389,7 +385,6 @@ export const Navbar: React.FC<NavbarProps> = ({
                   </button>
                   <button
                     onClick={() => {
-                      if (currentPage !== 'home') onBackToHome();
                       onScrollToSection('konzultace');
                       setMenuOpen(false);
                     }}
@@ -403,7 +398,6 @@ export const Navbar: React.FC<NavbarProps> = ({
                   </button>
                   <button
                     onClick={() => {
-                      if (currentPage !== 'home') onBackToHome();
                       onScrollToSection('zprava');
                       setMenuOpen(false);
                     }}
@@ -414,7 +408,6 @@ export const Navbar: React.FC<NavbarProps> = ({
                   </button>
                   <button
                     onClick={() => {
-                      if (currentPage !== 'home') onBackToHome();
                       onScrollToSection('kontakty');
                       setMenuOpen(false);
                     }}

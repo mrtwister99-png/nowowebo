@@ -10,6 +10,12 @@ npm install
 npm run dev
 ```
 
+### Adresy (routing)
+
+- `/` hlavní stránka, `/automatizace`, `/aplikace`, `/weby`, `/konzultace` stránky služeb (react-router).
+- Adresy služeb jsou na jednom místě v `src/data/routes.ts`.
+- Hosting musí neznámé adresy přesměrovat na `index.html` (SPA fallback), jinak přímý odkaz vrátí 404.
+
 ### Design tokeny a komponenty
 
 - Barvy, stíny a fonty jsou v `src/styles/tokens.css` (třídy `bg-loyo-blue`, `text-loyo-ink`, `shadow-brutal-3` ...).
