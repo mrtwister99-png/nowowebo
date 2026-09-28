@@ -1,9 +1,10 @@
 import React from 'react';
-import { LoyoHeaderCard } from '../head/LoyoHeaderCard';
-import { ThreeServiceBanners, ConsultationSlimBanner } from '../banners';
-import { PoProjektu } from '../dalsi/PoProjektu';
-import { Footer } from '../bottom/Footer';
-import { CursorParticleMode, ServiceId } from '../types';
+import { LoyoHeaderCard } from '../../layout/LoyoHeaderCard';
+import { ThreeServiceBanners } from './ThreeServiceBanners';
+import { ConsultationSlimBanner } from './ConsultationSlimBanner';
+import { PoProjektu } from './PoProjektu';
+import { Footer } from '../../layout/Footer';
+import { CursorParticleMode, ServiceId } from '../../types';
 
 interface HomeBodyProps {
   activeSection: string;

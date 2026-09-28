@@ -1,6 +1,6 @@
 import React, { useEffect, useRef } from 'react';
-import { CursorParticleMode } from '../types';
-import { BRAND } from '../lib/colors';
+import { CursorParticleMode } from '../../types';
+import { BRAND } from '../../lib/colors';
 
 interface BubbleParticle {
   x: number;

@@ -1,6 +1,6 @@
 import React, { Suspense, lazy, useState, useEffect } from 'react';
 import { Menu, X, Sparkles, ArrowRight } from 'lucide-react';
-import { LoyoLogoBox } from '../logo/LoyoLogoBox';
+import { LoyoLogoBox } from '../components/brand/LoyoLogoBox';
 import { CursorParticleMode, ServiceId } from '../types';
 import { BRAND } from '../lib/colors';
 

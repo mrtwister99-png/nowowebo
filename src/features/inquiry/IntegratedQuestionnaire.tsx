@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Check, Send, CheckCircle2, Copy, Clock } from 'lucide-react';
-import { ServiceId, QuestionnaireData, InquiredSubmission } from '../types';
-import { QUESTIONNAIRE_CONFIGS } from '../data/servicesData';
+import { ServiceId, QuestionnaireData, InquiredSubmission } from '../../types';
+import { QUESTIONNAIRE_CONFIGS } from '../../data/servicesData';
 
 interface IntegratedQuestionnaireProps {
   serviceId: ServiceId;

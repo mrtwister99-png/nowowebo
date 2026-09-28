@@ -10,6 +10,23 @@ npm install
 npm run dev
 ```
 
+### Struktura projektu
+
+```
+src/
+  App.tsx, main.tsx, types.ts
+  layout/            Navbar, hlavička (LoyoHeaderCard), patička (Footer)
+  components/ui/     základní komponenty (Button, Card, Badge, Section, MagneticButton)
+  components/brand/  logo
+  features/home/     hlavní stránka (HomeBody, banery služeb, Po projektu)
+  features/services/ stránky služeb (šablona + obsah v servicePages.ts)
+  features/inquiry/  dotazníky a formuláře
+  features/minigame/ minihra v hlavičce (načítá se líně)
+  features/effects/  animované pozadí a kurzor
+  data/              adresy služeb (routes.ts) a data služeb
+  lib/, styles/      pomocné funkce, barvy a design tokeny
+```
+
 ### Adresy (routing)
 
 - `/` hlavní stránka, `/automatizace`, `/aplikace`, `/weby`, `/konzultace` stránky služeb (react-router).

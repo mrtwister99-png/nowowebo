@@ -1,8 +1,8 @@
 import React from 'react';
 import { ArrowRight, Coffee } from 'lucide-react';
-import { ServiceId } from '../types';
-import { Section } from '../components/ui/Section';
-import { Badge } from '../components/ui/Badge';
+import { ServiceId } from '../../types';
+import { Section } from '../../components/ui/Section';
+import { Badge } from '../../components/ui/Badge';
 
 interface ConsultationSlimBannerProps {
   onOpenQuestionnaireForService: (serviceId: ServiceId) => void;

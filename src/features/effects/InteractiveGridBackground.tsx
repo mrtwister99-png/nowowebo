@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState, useMemo } from 'react';
-import { BRAND } from '../lib/colors';
+import { BRAND } from '../../lib/colors';
 
 // Brand colors matching LoYo visual system
 const BRAND_COLORS = [BRAND.blue, BRAND.mustard, BRAND.red, '#bef264'];

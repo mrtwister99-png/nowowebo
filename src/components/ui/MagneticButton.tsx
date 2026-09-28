@@ -1,5 +1,5 @@
 import React, { useRef, useState, useCallback } from 'react';
-import { BRAND } from '../lib/colors';
+import { BRAND } from '../../lib/colors';
 
 interface MagneticButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
   children: React.ReactNode;

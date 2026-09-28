@@ -12,8 +12,8 @@ import {
   Copy,
   MessageSquare,
 } from 'lucide-react';
-import { ServiceId, QuestionnaireData, InquiredSubmission } from '../types';
-import { QUESTIONNAIRE_CONFIGS } from '../data/servicesData';
+import { ServiceId, QuestionnaireData, InquiredSubmission } from '../../types';
+import { QUESTIONNAIRE_CONFIGS } from '../../data/servicesData';
 
 interface QuestionnaireModalProps {
   isOpen: boolean;

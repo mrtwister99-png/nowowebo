@@ -1,8 +1,8 @@
 import React from 'react';
 import { ArrowRight, Smartphone, Globe } from 'lucide-react';
-import { ServiceId } from '../types';
-import { BRAND } from '../lib/colors';
-import { Section } from '../components/ui/Section';
+import { ServiceId } from '../../types';
+import { BRAND } from '../../lib/colors';
+import { Section } from '../../components/ui/Section';
 
 interface ThreeServiceBannersProps {
   onOpenQuestionnaireForService: (serviceId: ServiceId) => void;

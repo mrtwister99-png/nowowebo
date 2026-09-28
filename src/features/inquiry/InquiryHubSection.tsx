@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
-import { ServiceId, QuestionnaireData, InquiredSubmission } from '../types';
-import { QUESTIONNAIRE_CONFIGS } from '../data/servicesData';
+import { ServiceId, QuestionnaireData, InquiredSubmission } from '../../types';
+import { QUESTIONNAIRE_CONFIGS } from '../../data/servicesData';
 import { Code2, Cpu, Sparkles, Send, CheckCircle2, Shield, Check, Copy } from 'lucide-react';
 
 interface InquiryHubSectionProps {

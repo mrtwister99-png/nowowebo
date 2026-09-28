@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { Menu, X, ChevronDown, ArrowLeft } from 'lucide-react';
 import { ServiceId, CursorParticleMode } from '../types';
-import { LoyoLogoBox } from '../logo/LoyoLogoBox';
-import { MagneticButton } from '../dalsi/MagneticButton';
+import { LoyoLogoBox } from '../components/brand/LoyoLogoBox';
+import { MagneticButton } from '../components/ui/MagneticButton';
 import { BRAND } from '../lib/colors';
 
 interface NavbarProps {

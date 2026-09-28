@@ -7,9 +7,9 @@ import {
   HeartHandshake,
   ArrowRight,
 } from 'lucide-react';
-import { ServiceId } from '../types';
-import { Section } from '../components/ui/Section';
-import { Badge } from '../components/ui/Badge';
+import { ServiceId } from '../../types';
+import { Section } from '../../components/ui/Section';
+import { Badge } from '../../components/ui/Badge';
 
 interface PoProjektuProps {
   onOpenQuestionnaire?: (serviceId?: ServiceId) => void;
