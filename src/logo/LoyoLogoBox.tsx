@@ -9,7 +9,7 @@ interface LoyoLogoBoxProps {
 export const LoyoLogoBox: React.FC<LoyoLogoBoxProps> = ({
   activeSection,
   currentPage = 'home',
-  className = ''
+  className = '',
 }) => {
   // Startup neon bootup state:
   // 0: Initial uncolored state
@@ -57,13 +57,25 @@ export const LoyoLogoBox: React.FC<LoyoLogoBoxProps> = ({
   // - Outside these (uvod, etc.) -> all three lit at 100%
   const [hoveredShape, setHoveredShape] = useState<'triangle' | 'square' | 'circle' | null>(null);
 
-  const isAutomation = activeSection === 'automatizace' || currentPage === 'automation' || hoveredShape === 'triangle';
-  const isFullstack = activeSection === 'fullstack' || currentPage === 'fullstack' || hoveredShape === 'square';
-  const isWebs = activeSection === 'weby' || currentPage === 'web-branding' || currentPage === 'webs' || hoveredShape === 'circle';
+  const isAutomation =
+    activeSection === 'automatizace' || currentPage === 'automation' || hoveredShape === 'triangle';
+  const isFullstack =
+    activeSection === 'fullstack' || currentPage === 'fullstack' || hoveredShape === 'square';
+  const isWebs =
+    activeSection === 'weby' ||
+    currentPage === 'web-branding' ||
+    currentPage === 'webs' ||
+    hoveredShape === 'circle';
 
-  const isSpecificSection = (activeSection === 'automatizace' || activeSection === 'fullstack' || activeSection === 'weby' ||
-    currentPage === 'automation' || currentPage === 'fullstack' || currentPage === 'web-branding' || currentPage === 'webs' ||
-    hoveredShape !== null);
+  const isSpecificSection =
+    activeSection === 'automatizace' ||
+    activeSection === 'fullstack' ||
+    activeSection === 'weby' ||
+    currentPage === 'automation' ||
+    currentPage === 'fullstack' ||
+    currentPage === 'web-branding' ||
+    currentPage === 'webs' ||
+    hoveredShape !== null;
 
   let triangleActive = true;
   let squareActive = true;
@@ -192,7 +204,7 @@ export const LoyoLogoBox: React.FC<LoyoLogoBoxProps> = ({
           filter="url(#glow-blue)"
           style={{
             opacity: isTrianglePulsing ? 1 : 0,
-            transition: 'opacity 0.35s ease-in-out'
+            transition: 'opacity 0.35s ease-in-out',
           }}
         >
           {/* Top horizontal stroke with gap before top-right corner from trjuhelnicekmensi.png */}
@@ -216,9 +228,11 @@ export const LoyoLogoBox: React.FC<LoyoLogoBoxProps> = ({
           filter="url(#glow-blue)"
           style={{
             transformOrigin: '166px 212px',
-            animation: isTrianglePulsing ? 'loyo-scale-triangle-200 2.2s ease-in-out infinite' : 'none',
+            animation: isTrianglePulsing
+              ? 'loyo-scale-triangle-200 2.2s ease-in-out infinite'
+              : 'none',
             opacity: triangleOpacity,
-            transition: bootPhase === 1 ? 'none' : 'opacity 0.4s ease-in-out'
+            transition: bootPhase === 1 ? 'none' : 'opacity 0.4s ease-in-out',
           }}
         >
           <line x1="18" y1="68" x2="46" y2="68" />
@@ -239,7 +253,7 @@ export const LoyoLogoBox: React.FC<LoyoLogoBoxProps> = ({
           filter="url(#glow-gold)"
           style={{
             opacity: isSquarePulsing ? 1 : 0,
-            transition: 'opacity 0.35s ease-in-out'
+            transition: 'opacity 0.35s ease-in-out',
           }}
         >
           {/* Top horizontal stroke with gap from ctverecekmensi.png */}
@@ -266,7 +280,7 @@ export const LoyoLogoBox: React.FC<LoyoLogoBoxProps> = ({
             transformOrigin: '264px 349px',
             animation: isSquarePulsing ? 'loyo-scale-square-200 2.2s ease-in-out infinite' : 'none',
             opacity: squareOpacity,
-            transition: bootPhase === 1 ? 'none' : 'opacity 0.4s ease-in-out'
+            transition: bootPhase === 1 ? 'none' : 'opacity 0.4s ease-in-out',
           }}
         >
           <line x1="122" y1="216" x2="406" y2="216" />
@@ -288,7 +302,7 @@ export const LoyoLogoBox: React.FC<LoyoLogoBoxProps> = ({
           filter="url(#glow-red)"
           style={{
             opacity: isCirclePulsing ? 1 : 0,
-            transition: 'opacity 0.35s ease-in-out'
+            transition: 'opacity 0.35s ease-in-out',
           }}
         >
           {/* Nested circle with gap from koleckomensi.png */}
@@ -308,7 +322,7 @@ export const LoyoLogoBox: React.FC<LoyoLogoBoxProps> = ({
             transformOrigin: '340px 150px',
             animation: isCirclePulsing ? 'loyo-scale-circle-200 2.2s ease-in-out infinite' : 'none',
             opacity: circleOpacity,
-            transition: bootPhase === 1 ? 'none' : 'opacity 0.4s ease-in-out'
+            transition: bootPhase === 1 ? 'none' : 'opacity 0.4s ease-in-out',
           }}
         >
           <path d="M 473.2 103.1 A 146 146 0 1 1 373.8 12.0" />

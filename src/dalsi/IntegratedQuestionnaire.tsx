@@ -8,7 +8,8 @@ interface IntegratedQuestionnaireProps {
 }
 
 export const IntegratedQuestionnaire: React.FC<IntegratedQuestionnaireProps> = ({ serviceId }) => {
-  const config = (QUESTIONNAIRE_CONFIGS as any)[serviceId] || (QUESTIONNAIRE_CONFIGS as any).automation;
+  const config =
+    (QUESTIONNAIRE_CONFIGS as any)[serviceId] || (QUESTIONNAIRE_CONFIGS as any).automation;
   const [copied, setCopied] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submittedData, setSubmittedData] = useState<InquiredSubmission | null>(null);
@@ -30,33 +31,33 @@ export const IntegratedQuestionnaire: React.FC<IntegratedQuestionnaireProps> = (
     email: '',
     phone: '',
     company: '',
-    notes: ''
+    notes: '',
   });
 
   const toggleFeature = (feat: string) => {
-    setFormData(prev => ({
+    setFormData((prev) => ({
       ...prev,
       selectedFeatures: prev.selectedFeatures.includes(feat)
-        ? prev.selectedFeatures.filter(f => f !== feat)
-        : [...prev.selectedFeatures, feat]
+        ? prev.selectedFeatures.filter((f) => f !== feat)
+        : [...prev.selectedFeatures, feat],
     }));
   };
 
   const toggleSecurityOption = (sec: string) => {
-    setFormData(prev => ({
+    setFormData((prev) => ({
       ...prev,
       securityOptions: prev.securityOptions.includes(sec)
-        ? prev.securityOptions.filter(s => s !== sec)
-        : [...prev.securityOptions, sec]
+        ? prev.securityOptions.filter((s) => s !== sec)
+        : [...prev.securityOptions, sec],
     }));
   };
 
   const toggleConsultationTopic = (top: string) => {
-    setFormData(prev => ({
+    setFormData((prev) => ({
       ...prev,
       consultationTopics: (prev.consultationTopics ?? []).includes(top)
-        ? (prev.consultationTopics ?? []).filter(t => t !== top)
-        : [...(prev.consultationTopics ?? []), top]
+        ? (prev.consultationTopics ?? []).filter((t) => t !== top)
+        : [...(prev.consultationTopics ?? []), top],
     }));
   };
 
@@ -70,8 +71,14 @@ export const IntegratedQuestionnaire: React.FC<IntegratedQuestionnaireProps> = (
       const submission: InquiredSubmission = {
         ...formData,
         id: `INQ-${Date.now().toString().slice(-6)}`,
-        createdAt: new Date().toLocaleDateString('cs-CZ', { day: '2-digit', month: '2-digit', year: 'numeric', hour: '2-digit', minute: '2-digit' }),
-        status: 'new'
+        createdAt: new Date().toLocaleDateString('cs-CZ', {
+          day: '2-digit',
+          month: '2-digit',
+          year: 'numeric',
+          hour: '2-digit',
+          minute: '2-digit',
+        }),
+        status: 'new',
       };
       setSubmittedData(submission);
     }, 900);
@@ -95,7 +102,10 @@ Poznámky: ${submittedData.notes || 'Bez poznámek'}`;
   };
 
   return (
-    <div id="dotaznik-sekce" className="bg-loyo-bar border-2 border-[#18181b] p-6 sm:p-8 lg:p-10 shadow-sm scroll-mt-24">
+    <div
+      id="dotaznik-sekce"
+      className="bg-loyo-bar border-2 border-[#18181b] p-6 sm:p-8 lg:p-10 shadow-sm scroll-mt-24"
+    >
       {/* Header of Questionnaire */}
       <div className="border-b border-[#c2c2c2] pb-6 mb-6">
         <div className="flex items-center gap-2 mb-2">
@@ -108,7 +118,8 @@ Poznámky: ${submittedData.notes || 'Bez poznámek'}`;
           {config.title}
         </h3>
         <p className="mt-1.5 text-xs sm:text-sm text-[#555] max-w-2xl leading-relaxed">
-          {config.description} Vyplnění vám zabere 2 minuty a umožní mi připravit konkrétní návrh realizace.
+          {config.description} Vyplnění vám zabere 2 minuty a umožní mi připravit konkrétní návrh
+          realizace.
         </p>
       </div>
 
@@ -122,16 +133,24 @@ Poznámky: ${submittedData.notes || 'Bez poznámek'}`;
             Poptávkový dotazník byl úspěšně zaznamenán!
           </h4>
           <p className="text-sm text-[#444] max-w-lg mx-auto">
-            Děkuji vám, <strong>{submittedData.name}</strong>. Vaše zadání pod referenčním číslem <strong>#{submittedData.id}</strong> bylo odesláno. Ozvu se vám na <strong>{submittedData.email}</strong> do 24 hodin.
+            Děkuji vám, <strong>{submittedData.name}</strong>. Vaše zadání pod referenčním číslem{' '}
+            <strong>#{submittedData.id}</strong> bylo odesláno. Ozvu se vám na{' '}
+            <strong>{submittedData.email}</strong> do 24 hodin.
           </p>
 
           <div className="p-4 bg-loyo-bg border border-[#c2c2c2] max-w-md mx-auto text-left font-mono text-xs space-y-1">
             <div className="text-[#666] uppercase text-2.5 pb-1 border-b border-[#ddd]">
               Souhrn zadání:
             </div>
-            <div><strong className="text-[#18181b]">Rozsah:</strong> {submittedData.projectScope}</div>
-            <div><strong className="text-[#18181b]">Rozpočet:</strong> {submittedData.budgetRange}</div>
-            <div><strong className="text-[#18181b]">Termín:</strong> {submittedData.timeline}</div>
+            <div>
+              <strong className="text-[#18181b]">Rozsah:</strong> {submittedData.projectScope}
+            </div>
+            <div>
+              <strong className="text-[#18181b]">Rozpočet:</strong> {submittedData.budgetRange}
+            </div>
+            <div>
+              <strong className="text-[#18181b]">Termín:</strong> {submittedData.timeline}
+            </div>
           </div>
 
           <div className="flex flex-wrap items-center justify-center gap-3 pt-2">
@@ -156,7 +175,6 @@ Poznámky: ${submittedData.notes || 'Bez poznámek'}`;
       ) : (
         /* The Detailed Form */
         <form onSubmit={handleSubmit} className="space-y-6">
-          
           {/* STEP 1: Main Scope Selection */}
           <div className="space-y-2">
             <label className="block text-xs font-mono font-bold uppercase text-[#18181b]">
@@ -169,7 +187,7 @@ Poznámky: ${submittedData.notes || 'Bez poznámek'}`;
                   <button
                     key={opt}
                     type="button"
-                    onClick={() => setFormData(prev => ({ ...prev, projectScope: opt }))}
+                    onClick={() => setFormData((prev) => ({ ...prev, projectScope: opt }))}
                     className={`p-3 text-left border transition-all cursor-pointer flex items-start justify-between gap-2 ${
                       isSelected
                         ? 'bg-[#18181b] text-white border-[#18181b] shadow-xs'
@@ -177,9 +195,11 @@ Poznámky: ${submittedData.notes || 'Bez poznámek'}`;
                     }`}
                   >
                     <span className="text-xs font-bold leading-snug">{opt}</span>
-                    <span className={`w-4 h-4 rounded-xs flex items-center justify-center shrink-0 mt-0.5 border ${
-                      isSelected ? 'bg-white text-[#18181b] border-white' : 'border-[#999]'
-                    }`}>
+                    <span
+                      className={`w-4 h-4 rounded-xs flex items-center justify-center shrink-0 mt-0.5 border ${
+                        isSelected ? 'bg-white text-[#18181b] border-white' : 'border-[#999]'
+                      }`}
+                    >
                       {isSelected && <Check className="w-3 h-3 stroke-3" />}
                     </span>
                   </button>
@@ -201,7 +221,7 @@ Poznámky: ${submittedData.notes || 'Bez poznámek'}`;
                   'E-mailové magické jednorázové linky (bez hesel)',
                   'Gamifikované / grafické ověření (minihra na míru)',
                   'Standardní šifrované přihlašování s dvoufázovým 2FA',
-                  'Automatické zálohování a auditní bezpečnostní logy'
+                  'Automatické zálohování a auditní bezpečnostní logy',
                 ].map((sec: string) => {
                   const isChecked = formData.securityOptions.includes(sec);
                   return (
@@ -216,9 +236,11 @@ Poznámky: ${submittedData.notes || 'Bez poznámek'}`;
                       }`}
                     >
                       <span>{sec}</span>
-                      <span className={`w-3.5 h-3.5 border rounded-xs shrink-0 flex items-center justify-center ${
-                        isChecked ? 'bg-white text-loyo-blue border-white' : 'border-[#999]'
-                      }`}>
+                      <span
+                        className={`w-3.5 h-3.5 border rounded-xs shrink-0 flex items-center justify-center ${
+                          isChecked ? 'bg-white text-loyo-blue border-white' : 'border-[#999]'
+                        }`}
+                      >
                         {isChecked && <Check className="w-2.5 h-2.5 stroke-3" />}
                       </span>
                     </button>
@@ -248,9 +270,11 @@ Poznámky: ${submittedData.notes || 'Bez poznámek'}`;
                       }`}
                     >
                       <span>{feat}</span>
-                      <span className={`w-3.5 h-3.5 border rounded-xs shrink-0 flex items-center justify-center ${
-                        isChecked ? 'bg-white text-[#8a6b28] border-white' : 'border-[#999]'
-                      }`}>
+                      <span
+                        className={`w-3.5 h-3.5 border rounded-xs shrink-0 flex items-center justify-center ${
+                          isChecked ? 'bg-white text-[#8a6b28] border-white' : 'border-[#999]'
+                        }`}
+                      >
                         {isChecked && <Check className="w-2.5 h-2.5 stroke-3" />}
                       </span>
                     </button>
@@ -272,7 +296,7 @@ Poznámky: ${submittedData.notes || 'Bez poznámek'}`;
                   'Plynulé 60 FPS mikrointerakce a kinetická typografie',
                   'Tvorba nebo vektorový redraw loga',
                   'Ultra-rychlý náběh (Google PageSpeed 95+)',
-                  'Napojení na kontaktní formuláře a analytiku'
+                  'Napojení na kontaktní formuláře a analytiku',
                 ].map((feat) => {
                   const isChecked = formData.selectedFeatures.includes(feat);
                   return (
@@ -287,9 +311,11 @@ Poznámky: ${submittedData.notes || 'Bez poznámek'}`;
                       }`}
                     >
                       <span>{feat}</span>
-                      <span className={`w-3.5 h-3.5 border rounded-xs shrink-0 flex items-center justify-center ${
-                        isChecked ? 'bg-white text-loyo-red border-white' : 'border-[#999]'
-                      }`}>
+                      <span
+                        className={`w-3.5 h-3.5 border rounded-xs shrink-0 flex items-center justify-center ${
+                          isChecked ? 'bg-white text-loyo-red border-white' : 'border-[#999]'
+                        }`}
+                      >
                         {isChecked && <Check className="w-2.5 h-2.5 stroke-3" />}
                       </span>
                     </button>
@@ -308,16 +334,20 @@ Poznámky: ${submittedData.notes || 'Bez poznámek'}`;
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
                   {[
                     'Osobně na kávě (Praha / dle domluvy v ČR)',
-                    'Online videohovor (Google Meet / Zoom)'
+                    'Online videohovor (Google Meet / Zoom)',
                   ].map((fmt: string) => {
                     const isSelected = formData.consultationFormat === fmt;
                     return (
                       <button
                         key={fmt}
                         type="button"
-                        onClick={() => setFormData(prev => ({ ...prev, consultationFormat: fmt }))}
+                        onClick={() =>
+                          setFormData((prev) => ({ ...prev, consultationFormat: fmt }))
+                        }
                         className={`p-3 text-left border text-xs font-bold transition-colors cursor-pointer flex items-center justify-between ${
-                          isSelected ? 'bg-[#18181b] text-white border-[#18181b]' : 'bg-loyo-bg text-[#333] border-[#c2c2c2]'
+                          isSelected
+                            ? 'bg-[#18181b] text-white border-[#18181b]'
+                            : 'bg-loyo-bg text-[#333] border-[#c2c2c2]'
                         }`}
                       >
                         <span>{fmt}</span>
@@ -339,7 +369,7 @@ Poznámky: ${submittedData.notes || 'Bez poznámek'}`;
                     'Ochrana rozpočtu & sestavení efektivního MVP plánu',
                     'Výběr správných technologií & zapojení moderní AI',
                     'Technická oponentura stávajícího dodavatele / softwaru',
-                    'Předání know-how a zaškolení do systému'
+                    'Předání know-how a zaškolení do systému',
                   ].map((top: string) => {
                     const isChecked = (formData.consultationTopics ?? []).includes(top);
                     return (
@@ -348,7 +378,9 @@ Poznámky: ${submittedData.notes || 'Bez poznámek'}`;
                         type="button"
                         onClick={() => toggleConsultationTopic(top)}
                         className={`p-2.5 text-left border text-xs font-medium transition-colors flex items-center justify-between gap-2 cursor-pointer ${
-                          isChecked ? 'bg-[#18181b] text-white border-[#18181b]' : 'bg-loyo-bg text-[#444] border-[#c5c5c5]'
+                          isChecked
+                            ? 'bg-[#18181b] text-white border-[#18181b]'
+                            : 'bg-loyo-bg text-[#444] border-[#c5c5c5]'
                         }`}
                       >
                         <span>{top}</span>
@@ -364,33 +396,43 @@ Poznámky: ${submittedData.notes || 'Bez poznámek'}`;
           {/* STEP 3: Budget & Timeline */}
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 pt-2">
             <div>
-              <label htmlFor="int-budget" className="block text-xs font-mono font-bold uppercase text-[#18181b] mb-1">
+              <label
+                htmlFor="int-budget"
+                className="block text-xs font-mono font-bold uppercase text-[#18181b] mb-1"
+              >
                 3. Orientační rozpočet
               </label>
               <select
                 id="int-budget"
                 value={formData.budgetRange}
-                onChange={(e) => setFormData(prev => ({ ...prev, budgetRange: e.target.value }))}
+                onChange={(e) => setFormData((prev) => ({ ...prev, budgetRange: e.target.value }))}
                 className="w-full px-3 py-2.5 bg-loyo-bg border border-[#c2c2c2] text-xs font-sans text-[#18181b]"
               >
                 {(config as any).budgets.map((b: string) => (
-                  <option key={b} value={b}>{b}</option>
+                  <option key={b} value={b}>
+                    {b}
+                  </option>
                 ))}
               </select>
             </div>
 
             <div>
-              <label htmlFor="int-timeline" className="block text-xs font-mono font-bold uppercase text-[#18181b] mb-1">
+              <label
+                htmlFor="int-timeline"
+                className="block text-xs font-mono font-bold uppercase text-[#18181b] mb-1"
+              >
                 4. Požadovaný termín realizace
               </label>
               <select
                 id="int-timeline"
                 value={formData.timeline}
-                onChange={(e) => setFormData(prev => ({ ...prev, timeline: e.target.value }))}
+                onChange={(e) => setFormData((prev) => ({ ...prev, timeline: e.target.value }))}
                 className="w-full px-3 py-2.5 bg-loyo-bg border border-[#c2c2c2] text-xs font-sans text-[#18181b]"
               >
                 {(config as any).timelines.map((t: string) => (
-                  <option key={t} value={t}>{t}</option>
+                  <option key={t} value={t}>
+                    {t}
+                  </option>
                 ))}
               </select>
             </div>
@@ -404,7 +446,10 @@ Poznámky: ${submittedData.notes || 'Bez poznámek'}`;
 
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
               <div>
-                <label htmlFor="int-name" className="block text-2.75 font-mono font-bold uppercase text-[#444] mb-1">
+                <label
+                  htmlFor="int-name"
+                  className="block text-2.75 font-mono font-bold uppercase text-[#444] mb-1"
+                >
                   Jméno a Příjmení *
                 </label>
                 <input
@@ -412,14 +457,17 @@ Poznámky: ${submittedData.notes || 'Bez poznámek'}`;
                   type="text"
                   required
                   value={formData.name}
-                  onChange={(e) => setFormData(prev => ({ ...prev, name: e.target.value }))}
+                  onChange={(e) => setFormData((prev) => ({ ...prev, name: e.target.value }))}
                   placeholder="Jan Novák"
                   className="w-full px-3 py-2 bg-loyo-bg border border-[#c2c2c2] text-xs"
                 />
               </div>
 
               <div>
-                <label htmlFor="int-email" className="block text-2.75 font-mono font-bold uppercase text-[#444] mb-1">
+                <label
+                  htmlFor="int-email"
+                  className="block text-2.75 font-mono font-bold uppercase text-[#444] mb-1"
+                >
                   E-mail *
                 </label>
                 <input
@@ -427,35 +475,41 @@ Poznámky: ${submittedData.notes || 'Bez poznámek'}`;
                   type="email"
                   required
                   value={formData.email}
-                  onChange={(e) => setFormData(prev => ({ ...prev, email: e.target.value }))}
+                  onChange={(e) => setFormData((prev) => ({ ...prev, email: e.target.value }))}
                   placeholder="jan@firma.cz"
                   className="w-full px-3 py-2 bg-loyo-bg border border-[#c2c2c2] text-xs"
                 />
               </div>
 
               <div>
-                <label htmlFor="int-phone" className="block text-2.75 font-mono font-bold uppercase text-[#444] mb-1">
+                <label
+                  htmlFor="int-phone"
+                  className="block text-2.75 font-mono font-bold uppercase text-[#444] mb-1"
+                >
                   Telefon (volitelně)
                 </label>
                 <input
                   id="int-phone"
                   type="tel"
                   value={formData.phone}
-                  onChange={(e) => setFormData(prev => ({ ...prev, phone: e.target.value }))}
+                  onChange={(e) => setFormData((prev) => ({ ...prev, phone: e.target.value }))}
                   placeholder="+420 777 123 456"
                   className="w-full px-3 py-2 bg-loyo-bg border border-[#c2c2c2] text-xs"
                 />
               </div>
 
               <div>
-                <label htmlFor="int-company" className="block text-2.75 font-mono font-bold uppercase text-[#444] mb-1">
+                <label
+                  htmlFor="int-company"
+                  className="block text-2.75 font-mono font-bold uppercase text-[#444] mb-1"
+                >
                   Název firmy / Projektu (volitelně)
                 </label>
                 <input
                   id="int-company"
                   type="text"
                   value={formData.company}
-                  onChange={(e) => setFormData(prev => ({ ...prev, company: e.target.value }))}
+                  onChange={(e) => setFormData((prev) => ({ ...prev, company: e.target.value }))}
                   placeholder="MojeFirma s.r.o."
                   className="w-full px-3 py-2 bg-loyo-bg border border-[#c2c2c2] text-xs"
                 />
@@ -463,14 +517,17 @@ Poznámky: ${submittedData.notes || 'Bez poznámek'}`;
             </div>
 
             <div>
-              <label htmlFor="int-notes" className="block text-2.75 font-mono font-bold uppercase text-[#444] mb-1">
+              <label
+                htmlFor="int-notes"
+                className="block text-2.75 font-mono font-bold uppercase text-[#444] mb-1"
+              >
                 Doplňující poznámka nebo specifické požadavky
               </label>
               <textarea
                 id="int-notes"
                 rows={3}
                 value={formData.notes}
-                onChange={(e) => setFormData(prev => ({ ...prev, notes: e.target.value }))}
+                onChange={(e) => setFormData((prev) => ({ ...prev, notes: e.target.value }))}
                 placeholder="Popište podrobněji váš současný stav, jaké systémy využíváte nebo na co se chcete zaměřit..."
                 className="w-full px-3 py-2 bg-loyo-bg border border-[#c2c2c2] text-xs resize-none"
               />
@@ -499,10 +556,8 @@ Poznámky: ${submittedData.notes || 'Bez poznámek'}`;
               )}
             </button>
           </div>
-
         </form>
       )}
-
     </div>
   );
 };

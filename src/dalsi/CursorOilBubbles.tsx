@@ -53,7 +53,7 @@ export const CursorOilBubbles: React.FC<CursorOilBubblesProps> = ({ mode = 'none
     const brandColors = [
       { color: '#040b8d', glowRgb: '4, 11, 141' },
       { color: '#CDA24D', glowRgb: '205, 162, 77' },
-      { color: '#ac0001', glowRgb: '172, 0, 1' }
+      { color: '#ac0001', glowRgb: '172, 0, 1' },
     ];
 
     // Spawn rich bubble trail on mouse move (flying in from left and right towards behind the cursor)
@@ -89,9 +89,10 @@ export const CursorOilBubbles: React.FC<CursorOilBubblesProps> = ({ mode = 'none
           const inwardVx = -side * (0.8 + Math.random() * 1.8) + (Math.random() - 0.5) * 0.8;
           const upwardVy = -0.4 - Math.random() * 1.6 + (Math.random() - 0.5) * 0.6;
 
-          const targetRadius = Math.random() < 0.25
-            ? Math.random() * 7 + 10    // Large bubbles (10-17px)
-            : Math.random() * 5 + 3.5;  // Medium/small bubbles (3.5-8.5px)
+          const targetRadius =
+            Math.random() < 0.25
+              ? Math.random() * 7 + 10 // Large bubbles (10-17px)
+              : Math.random() * 5 + 3.5; // Medium/small bubbles (3.5-8.5px)
 
           bubbles.push({
             x: startX,
@@ -106,7 +107,7 @@ export const CursorOilBubbles: React.FC<CursorOilBubblesProps> = ({ mode = 'none
             life: 0,
             maxLife: 45 + Math.floor(Math.random() * 35),
             wobble: Math.random() * Math.PI * 2,
-            wobbleSpeed: 0.08 + Math.random() * 0.08
+            wobbleSpeed: 0.08 + Math.random() * 0.08,
           });
         }
 
@@ -149,7 +150,7 @@ export const CursorOilBubbles: React.FC<CursorOilBubblesProps> = ({ mode = 'none
         const currentRadius = Math.max(1, b.radius + Math.sin(b.wobble) * (b.radius * 0.14));
 
         const progress = b.life / b.maxLife;
-        const fadeFactor = progress < 0.6 ? 1 : Math.max(0, 1 - ((progress - 0.6) / 0.4));
+        const fadeFactor = progress < 0.6 ? 1 : Math.max(0, 1 - (progress - 0.6) / 0.4);
         const currentAlpha = Math.max(0, fadeFactor * 0.94);
 
         ctx.save();
@@ -161,7 +162,7 @@ export const CursorOilBubbles: React.FC<CursorOilBubblesProps> = ({ mode = 'none
           currentRadius * 0.15,
           b.x,
           b.y,
-          currentRadius
+          currentRadius,
         );
         grad.addColorStop(0, `rgba(${b.glowRgb}, ${currentAlpha * 0.95})`);
         grad.addColorStop(0.7, `rgba(${b.glowRgb}, ${currentAlpha * 0.65})`);
@@ -185,7 +186,7 @@ export const CursorOilBubbles: React.FC<CursorOilBubblesProps> = ({ mode = 'none
           b.y - currentRadius * 0.35,
           glareRadius,
           0,
-          Math.PI * 2
+          Math.PI * 2,
         );
         ctx.fillStyle = `rgba(255, 255, 255, ${currentAlpha * 0.88})`;
         ctx.fill();

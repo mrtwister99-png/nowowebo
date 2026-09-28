@@ -97,7 +97,10 @@ export const ThreeServiceBanners: React.FC<ThreeServiceBannersProps> = ({
   ];
 
   return (
-    <section id="three-service-banners" className="w-full max-w-6xl mx-auto px-4 sm:px-6 pt-4 pb-12 select-none">
+    <section
+      id="three-service-banners"
+      className="w-full max-w-6xl mx-auto px-4 sm:px-6 pt-4 pb-12 select-none"
+    >
       {/* CSS animace pro ikonky v bannerech */}
       <style>{`
         @keyframes spinWheelSlow {
@@ -132,7 +135,6 @@ export const ThreeServiceBanners: React.FC<ThreeServiceBannersProps> = ({
           >
             {/* HORNÍ ČÁST: SVISLÝ NADPIS PODÉL LEVÉ HRANY + STŘEDOVÁ IKONKA A OBSAH */}
             <div className="flex items-stretch gap-4 flex-1">
-              
               {/* NADPIS VLEVO - SVISLE ZE SHORA DOLŮ, PÍSMENKA STOJÍ VZPŘÍMENĚ (OTOČENA ZPĚT NORMÁLNĚ) */}
               <div className="flex items-center justify-center shrink-0 pr-3 sm:pr-4 border-r-2 border-[#18181b]/15 select-none">
                 <div className="flex flex-col items-center justify-center gap-1 sm:gap-1.5 font-heading font-black text-[#18181b]">
@@ -149,7 +151,6 @@ export const ThreeServiceBanners: React.FC<ThreeServiceBannersProps> = ({
 
               {/* PRAVÁ / HLAVNÍ ČÁST: IKONKA NAHOŘE NA STŘEDU + VÝHODY */}
               <div className="flex-1 flex flex-col items-center justify-between text-center pt-1">
-                
                 {/* IKONKA NAHOŘE NA STŘEDU - BAREVNÁ DLE ZADÁNÍ (AUTOMATIZACE MODRÁ, APLIKACE ZLATÁ, WEB ČERVENÁ) */}
                 <div className="flex flex-col items-center">
                   <div
@@ -180,7 +181,6 @@ export const ThreeServiceBanners: React.FC<ThreeServiceBannersProps> = ({
                     </div>
                   ))}
                 </div>
-
               </div>
             </div>
 
@@ -195,7 +195,6 @@ export const ThreeServiceBanners: React.FC<ThreeServiceBannersProps> = ({
                 <ArrowRight className="w-4 h-4 stroke-[2.5] group-hover:translate-x-1 transition-transform" />
               </button>
             </div>
-
           </div>
         ))}
       </div>

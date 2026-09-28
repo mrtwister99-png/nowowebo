@@ -11,13 +11,13 @@ export const BigSectionLetter: React.FC<BigSectionLetterProps> = ({
   letter,
   wordRemainder,
   fillColor,
-  subtitle
+  subtitle,
 }) => {
   return (
     <div className="mb-6 select-none">
       {/* Title composed of big initial letter + rest of word */}
       <div className="flex items-baseline gap-1 sm:gap-2">
-        <span 
+        <span
           className="font-heading font-black text-5xl sm:text-7xl lg:text-8xl tracking-tighter leading-none loyo-outlined-letter"
           style={{ color: fillColor }}
         >

@@ -1,7 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import { Navbar } from './head';
 import { HomeBody } from './body';
-import { DedicatedServicePage, QuestionnaireModal, CursorOilBubbles, InteractiveGridBackground } from './dalsi';
+import {
+  DedicatedServicePage,
+  QuestionnaireModal,
+  CursorOilBubbles,
+  InteractiveGridBackground,
+} from './dalsi';
 import { ServiceId, CursorParticleMode } from './types';
 
 export default function App() {
@@ -18,7 +23,7 @@ export default function App() {
   });
 
   const handleToggleCursorMode = () => {
-    setCursorMode(prev => {
+    setCursorMode((prev) => {
       const next = prev === 'bubbles' ? 'none' : 'bubbles';
       try {
         localStorage.setItem('loyo_cursor_mode', next);
@@ -72,7 +77,7 @@ export default function App() {
     if (sectionId === 'uvod') {
       window.scrollTo({
         top: 0,
-        behavior: 'smooth'
+        behavior: 'smooth',
       });
       setActiveSection('uvod');
       return;
@@ -87,7 +92,7 @@ export default function App() {
 
       window.scrollTo({
         top: Math.max(0, offsetPosition),
-        behavior: 'smooth'
+        behavior: 'smooth',
       });
       setActiveSection(sectionId);
     }
@@ -98,13 +103,13 @@ export default function App() {
     if (currentPage !== 'home') return;
 
     const sectionIds = [
-      'uvod', 
-      'automatizace', 
-      'fullstack', 
-      'weby', 
+      'uvod',
+      'automatizace',
+      'fullstack',
+      'weby',
       'konzultace',
       'zprava',
-      'kontakty'
+      'kontakty',
     ];
 
     const handleScroll = () => {
@@ -129,7 +134,6 @@ export default function App() {
 
   return (
     <div className="min-h-screen bg-loyo-bg text-[#18181b] flex flex-col font-sans selection:bg-[#18181b] selection:text-white pb-12 relative">
-      
       {/* 3D Interactive Grid Background with LoYo Brand Colors & Cursor-Lifting Squares */}
       <InteractiveGridBackground />
 
@@ -151,7 +155,9 @@ export default function App() {
       )}
 
       {/* 2. MAIN CONTENT AREA */}
-      <main className={`flex-1 flex flex-col justify-start ${currentPage !== 'home' ? 'pt-24' : 'pt-6 sm:pt-10'}`}>
+      <main
+        className={`flex-1 flex flex-col justify-start ${currentPage !== 'home' ? 'pt-24' : 'pt-6 sm:pt-10'}`}
+      >
         {currentPage === 'home' ? (
           <HomeBody
             activeSection={activeSection}
@@ -170,12 +176,17 @@ export default function App() {
           /* DEDICATED STANDALONE PAGE */
           <DedicatedServicePage
             serviceId={currentPage as ServiceId}
-            onBackToHome={() => handleBackToHome(
-              currentPage === 'automation' ? 'automatizace' :
-              currentPage === 'fullstack' ? 'fullstack' :
-              (currentPage === 'web-branding' || currentPage === 'webs') ? 'weby' :
-              'konzultace'
-            )}
+            onBackToHome={() =>
+              handleBackToHome(
+                currentPage === 'automation'
+                  ? 'automatizace'
+                  : currentPage === 'fullstack'
+                    ? 'fullstack'
+                    : currentPage === 'web-branding' || currentPage === 'webs'
+                      ? 'weby'
+                      : 'konzultace',
+              )
+            }
           />
         )}
       </main>

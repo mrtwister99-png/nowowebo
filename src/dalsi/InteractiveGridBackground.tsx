@@ -10,7 +10,7 @@ export const InteractiveGridBackground: React.FC = () => {
   const [dimensions, setDimensions] = useState<{ cols: number; rows: number; total: number }>({
     cols: 20,
     rows: 12,
-    total: 240
+    total: 240,
   });
 
   // DOM references for zero-latency 60fps CSS transform manipulation
@@ -92,7 +92,7 @@ export const InteractiveGridBackground: React.FC = () => {
         { dc: -1, dr: -1 },
         { dc: 1, dr: -1 },
         { dc: 1, dr: 1 },
-        { dc: -1, dr: 1 }
+        { dc: -1, dr: 1 },
       ];
       // Ring 2 (radius 2)
       const ring2 = [
@@ -111,7 +111,7 @@ export const InteractiveGridBackground: React.FC = () => {
         { dc: 2, dr: -2 },
         { dc: 2, dr: 2 },
         { dc: -2, dr: 2 },
-        { dc: -2, dr: -2 }
+        { dc: -2, dr: -2 },
       ];
 
       [...ring1, ...ring2].forEach(({ dc, dr }) => {
@@ -168,7 +168,7 @@ export const InteractiveGridBackground: React.FC = () => {
     // Helper: Line interpolation so fast cursor sweeps draw an unbroken row of lifted blocks
     const interpolateCells = (
       p1: { col: number; row: number } | null,
-      p2: { col: number; row: number }
+      p2: { col: number; row: number },
     ) => {
       if (!p1) return [{ col: p2.col, row: p2.row }];
       const dx = p2.col - p1.col;
@@ -180,7 +180,7 @@ export const InteractiveGridBackground: React.FC = () => {
       for (let i = 1; i <= steps; i++) {
         list.push({
           col: Math.round(p1.col + (dx * i) / steps),
-          row: Math.round(p1.row + (dy * i) / steps)
+          row: Math.round(p1.row + (dy * i) / steps),
         });
       }
       return list;
@@ -268,7 +268,7 @@ export const InteractiveGridBackground: React.FC = () => {
       path.forEach((pt, i) => {
         if (pt.col >= 0 && pt.col < cols && pt.row >= 0 && pt.row < rows) {
           const idx = pt.row * cols + pt.col;
-          const isCurrent = (idx === targetIdx);
+          const isCurrent = idx === targetIdx;
 
           let isTrailLime = false;
           if (!isCurrent && i < path.length - 1) {
@@ -350,7 +350,8 @@ export const InteractiveGridBackground: React.FC = () => {
       // 2. At 1.5s, randomly color into 1 of the 3 brand colors
       const colorTimer = setTimeout(() => {
         if (el && el.hasAttribute('data-random-lift')) {
-          const randomColor = BRAND_COLOR_NAMES[Math.floor(Math.random() * BRAND_COLOR_NAMES.length)];
+          const randomColor =
+            BRAND_COLOR_NAMES[Math.floor(Math.random() * BRAND_COLOR_NAMES.length)];
           el.setAttribute('data-flash', randomColor);
         }
       }, 1500);
@@ -437,7 +438,8 @@ export const InteractiveGridBackground: React.FC = () => {
         el.setAttribute('data-ambient-lift', 'true');
 
         if (Math.random() > 0.35) {
-          const randomColor = BRAND_COLOR_NAMES[Math.floor(Math.random() * BRAND_COLOR_NAMES.length)];
+          const randomColor =
+            BRAND_COLOR_NAMES[Math.floor(Math.random() * BRAND_COLOR_NAMES.length)];
           setTimeout(() => {
             if (el && el.hasAttribute('data-ambient-lift')) {
               el.setAttribute('data-flash', randomColor);
@@ -464,7 +466,7 @@ export const InteractiveGridBackground: React.FC = () => {
       const colorIndex = idx % 3;
       return {
         id: idx,
-        color: BRAND_COLORS[colorIndex]
+        color: BRAND_COLORS[colorIndex],
       };
     });
   }, [dimensions.total]);
@@ -660,7 +662,7 @@ export const InteractiveGridBackground: React.FC = () => {
             linear-gradient(90deg, rgba(24, 24, 27, 0.9) 1px, transparent 1px)
           `,
           backgroundSize: `${CELL_SIZE}px ${CELL_SIZE}px`,
-          backgroundPosition: '0 0'
+          backgroundPosition: '0 0',
         }}
       />
 
@@ -675,10 +677,7 @@ export const InteractiveGridBackground: React.FC = () => {
       </div>
 
       {/* 4. 3D Perspective Grid Container with 1:1 cursor alignment */}
-      <div
-        className="absolute inset-0 overflow-hidden"
-        style={{ perspective: '800px' }}
-      >
+      <div className="absolute inset-0 overflow-hidden" style={{ perspective: '800px' }}>
         <div
           className="absolute top-0 left-0"
           style={{
@@ -686,7 +685,7 @@ export const InteractiveGridBackground: React.FC = () => {
             gridTemplateColumns: `repeat(${dimensions.cols}, ${CELL_SIZE}px)`,
             gridTemplateRows: `repeat(${dimensions.rows}, ${CELL_SIZE}px)`,
             width: `${dimensions.cols * CELL_SIZE}px`,
-            height: `${dimensions.rows * CELL_SIZE}px`
+            height: `${dimensions.rows * CELL_SIZE}px`,
           }}
         >
           {cells.map((cell, idx) => (
@@ -698,7 +697,7 @@ export const InteractiveGridBackground: React.FC = () => {
               className="loyo-3d-tile relative"
               style={{
                 width: `${CELL_SIZE}px`,
-                height: `${CELL_SIZE}px`
+                height: `${CELL_SIZE}px`,
               }}
             >
               {/* Top micro-accent in LoYo brand colors (#040b8d, #CDA24D, #ac0001) */}
@@ -717,7 +716,7 @@ export const InteractiveGridBackground: React.FC = () => {
       <div
         className="pointer-events-none absolute inset-0 opacity-[0.035] mix-blend-soft-light"
         style={{
-          backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E")`
+          backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E")`,
         }}
       />
     </div>

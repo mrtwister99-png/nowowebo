@@ -1,11 +1,11 @@
 import React from 'react';
-import { 
-  KeyRound, 
-  ShieldCheck, 
-  TrendingUp, 
-  CheckCircle2, 
+import {
+  KeyRound,
+  ShieldCheck,
+  TrendingUp,
+  CheckCircle2,
   HeartHandshake,
-  ArrowRight
+  ArrowRight,
 } from 'lucide-react';
 import { ServiceId } from '../types';
 
@@ -15,11 +15,12 @@ interface PoProjektuProps {
 
 export const PoProjektu: React.FC<PoProjektuProps> = ({ onOpenQuestionnaire }) => {
   return (
-    <section id="poprojektu" className="w-full max-w-6xl mx-auto px-4 sm:px-6 pt-2 pb-16 select-none">
-      
+    <section
+      id="poprojektu"
+      className="w-full max-w-6xl mx-auto px-4 sm:px-6 pt-2 pb-16 select-none"
+    >
       {/* Hlavní karta Po Projektu s jednotným designem */}
       <div className="bg-white border-2 border-[#18181b] rounded-3xl p-6 sm:p-8 lg:p-10 shadow-[6px_6px_0px_#18181b]">
-        
         {/* Nadpis a úvod */}
         <div className="border-l-4 border-[#18181b] pl-4 sm:pl-6 mb-8 sm:mb-10">
           <div className="flex items-center gap-2 mb-2">
@@ -32,13 +33,13 @@ export const PoProjektu: React.FC<PoProjektuProps> = ({ onOpenQuestionnaire }) =
             A co po dokončení projektu?
           </h2>
           <p className="mt-2 text-xs sm:text-sm text-[#444] max-w-2xl leading-relaxed">
-            Předáním hotového díla to pro mě nekončí. Žádné licenční pasti, žádné tajené přístupy. <strong>Produkt je stoprocentně váš a vše k němu patří.</strong>
+            Předáním hotového díla to pro mě nekončí. Žádné licenční pasti, žádné tajené přístupy.{' '}
+            <strong>Produkt je stoprocentně váš a vše k němu patří.</strong>
           </p>
         </div>
 
         {/* 3 pilíře péče */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-5 sm:gap-6 mb-8">
-          
           {/* 1. KARTA: 100% Váš produkt */}
           <div className="bg-[#fafafa] border-2 border-[#18181b] rounded-2xl p-5 sm:p-6 shadow-[3px_3px_0px_#18181b] flex flex-col justify-between hover:-translate-y-0.5 transition-transform">
             <div>
@@ -49,7 +50,8 @@ export const PoProjektu: React.FC<PoProjektuProps> = ({ onOpenQuestionnaire }) =
                 Produkt je 100% váš
               </h3>
               <p className="text-xs text-[#555] leading-relaxed mb-4">
-                Předám vám kompletní zdrojový kód, administrátorské účty, přístupy k serverům, doménám i cloudovým službám. Vše se stává výhradně vaším vlastnictvím.
+                Předám vám kompletní zdrojový kód, administrátorské účty, přístupy k serverům,
+                doménám i cloudovým službám. Vše se stává výhradně vaším vlastnictvím.
               </p>
             </div>
             <div className="pt-3 border-t border-[#18181b]/15 text-xs text-[#27272a] space-y-1.5 font-mono">
@@ -74,7 +76,8 @@ export const PoProjektu: React.FC<PoProjektuProps> = ({ onOpenQuestionnaire }) =
                 Správa & Dohlížení
               </h3>
               <p className="text-xs text-[#555] leading-relaxed mb-4">
-                Pokud nechcete řešit technické starosti, zajistím pravidelnou údržbu, kontrolu verzí knihoven, dohled nad dostupností serverů a bezpečné zálohy.
+                Pokud nechcete řešit technické starosti, zajistím pravidelnou údržbu, kontrolu verzí
+                knihoven, dohled nad dostupností serverů a bezpečné zálohy.
               </p>
             </div>
             <div className="pt-3 border-t border-[#18181b]/15 text-xs text-[#27272a] space-y-1.5 font-mono">
@@ -99,7 +102,8 @@ export const PoProjektu: React.FC<PoProjektuProps> = ({ onOpenQuestionnaire }) =
                 Změny & Rozšíření
               </h3>
               <p className="text-xs text-[#555] leading-relaxed mb-4">
-                Váš byznys se vyvíjí a software poroste s vámi. Kdykoliv se můžeme domluvit na doprogramování nových modulů, automatizací či změnách designu.
+                Váš byznys se vyvíjí a software poroste s vámi. Kdykoliv se můžeme domluvit na
+                doprogramování nových modulů, automatizací či změnách designu.
               </p>
             </div>
             <div className="pt-3 border-t border-[#18181b]/15 text-xs text-[#27272a] space-y-1.5 font-mono">
@@ -113,7 +117,6 @@ export const PoProjektu: React.FC<PoProjektuProps> = ({ onOpenQuestionnaire }) =
               </div>
             </div>
           </div>
-
         </div>
 
         {/* Spodní pás důvěry s tlačítkem */}
@@ -123,7 +126,8 @@ export const PoProjektu: React.FC<PoProjektuProps> = ({ onOpenQuestionnaire }) =
               <HeartHandshake className="w-5 h-5" />
             </div>
             <p className="text-xs sm:text-sm text-[#27272a] leading-tight">
-              <strong>Férové partnerství bez háčků:</strong> Mým cílem je vytvořit fungující systém, se kterým budete maximálně spokojeni.
+              <strong>Férové partnerství bez háčků:</strong> Mým cílem je vytvořit fungující systém,
+              se kterým budete maximálně spokojeni.
             </p>
           </div>
           {onOpenQuestionnaire && (
@@ -136,7 +140,6 @@ export const PoProjektu: React.FC<PoProjektuProps> = ({ onOpenQuestionnaire }) =
             </button>
           )}
         </div>
-
       </div>
     </section>
   );

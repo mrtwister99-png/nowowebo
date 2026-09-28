@@ -1,5 +1,14 @@
 import React, { useState, useEffect } from 'react';
-import { Mail, Instagram, Facebook, ArrowUp, ChevronUp, ChevronDown, Sparkles, ExternalLink } from 'lucide-react';
+import {
+  Mail,
+  Instagram,
+  Facebook,
+  ArrowUp,
+  ChevronUp,
+  ChevronDown,
+  Sparkles,
+  ExternalLink,
+} from 'lucide-react';
 
 export const Footer: React.FC = () => {
   const [isExpanded, setIsExpanded] = useState<boolean>(false);
@@ -50,14 +59,13 @@ export const Footer: React.FC = () => {
         className="fixed bottom-0 left-0 right-0 z-40 select-none bg-[#18181b] text-white border-t-2 border-[#27272a] shadow-[0_-10px_25px_rgba(0,0,0,0.45)] transition-all duration-300 ease-out"
       >
         {/* 1. VYSUVNÝ OBSAH (ZÁVĚR MENŠÍ) - VIDITELNÝ PŘI VYJETÍ */}
-             <div
+        <div
           className={`overflow-hidden transition-all duration-300 ease-out ${
-            isExpanded? 'max-h-125 opacity-100 border-b border-[#2e2e33]' : 'max-h-0 opacity-0'
+            isExpanded ? 'max-h-125 opacity-100 border-b border-[#2e2e33]' : 'max-h-0 opacity-0'
           }`}
         >
           <div className="max-w-6xl mx-auto px-4 sm:px-6 py-8 sm:py-10">
             <div className="grid grid-cols-1 md:grid-cols-12 gap-8 items-start">
-              
               {/* LEVÁ ČÁST: ZÁVĚR & BRAND */}
               <div className="md:col-span-7 space-y-3">
                 <div className="flex items-center gap-2">
@@ -66,13 +74,14 @@ export const Footer: React.FC = () => {
                     ZÁVĚR & VLASTNICTVÍ
                   </span>
                 </div>
-                
+
                 <h3 className="font-heading font-black text-xl sm:text-2xl text-white tracking-tight">
                   LoYo – Správně fungující systémy bez kompromisů
                 </h3>
-                
+
                 <p className="text-xs sm:text-sm text-[#a1a1aa] leading-relaxed max-w-xl">
-                  Žádné zkopírované šablony ani polovičatá řešení. Vše stavím přímo na míru vašemu byznysu se 100% vlastnictvím vašeho kódu, hesel i serverů.
+                  Žádné zkopírované šablony ani polovičatá řešení. Vše stavím přímo na míru vašemu
+                  byznysu se 100% vlastnictvím vašeho kódu, hesel i serverů.
                 </p>
 
                 <div className="flex flex-wrap gap-2 pt-1">
@@ -120,19 +129,15 @@ export const Footer: React.FC = () => {
                     <ArrowUp className="w-3.5 h-3.5" />
                   </button>
                 </div>
-
               </div>
-
             </div>
           </div>
         </div>
 
         {/* 2. ZÁKLADNÍ PERMANENTNÍ LINKA (EMAIL, INSTAGRAM, FACEBOOK) */}
         <div className="max-w-6xl mx-auto px-4 sm:px-6 h-12 sm:h-14 flex items-center justify-between">
-          
           {/* STŘED / OBSAH LINKY: JENOM EMAIL, INSTAGRAM, FACEBOOK */}
           <div className="flex items-center gap-4 sm:gap-8 overflow-x-auto no-scrollbar py-1">
-            
             {/* 1. EMAIL */}
             <a
               href="mailto:loyo.gruup@gmail.com"
@@ -170,7 +175,6 @@ export const Footer: React.FC = () => {
               <Facebook className="w-4 h-4 text-[#a1a1aa] group-hover:text-[#1877f2] transition-colors" />
               <span>Facebook</span>
             </a>
-
           </div>
 
           {/* PRAVÁ STRANA: INDIKÁTOR / ROZBALOVACÍ TLAČÍTKO */}
@@ -188,9 +192,7 @@ export const Footer: React.FC = () => {
               )}
             </button>
           </div>
-
         </div>
-
       </footer>
     </>
   );

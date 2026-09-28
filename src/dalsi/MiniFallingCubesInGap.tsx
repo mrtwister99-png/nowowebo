@@ -8,9 +8,9 @@ const COLOR_BLACK = '#18181b';
 const COLOR_FALLING = '#bef264'; // Žlutozelená pro padající kostičky
 
 const CUBE_SIZE = 11; // 11px per square (~50% smaller to fit perfectly)
-const GAP = 2;        // 2px spacing
+const GAP = 2; // 2px spacing
 const STEP = CUBE_SIZE + GAP; // 13px step
-const MAX_ROWS = 6;   // Height limit (6 cubes high)
+const MAX_ROWS = 6; // Height limit (6 cubes high)
 
 // Highscore record
 interface ScoreRecord {
@@ -35,21 +35,67 @@ interface PieceShape {
 
 // Full shapes for active gameplay
 const PIECE_SHAPES: PieceShape[] = [
-  { cells: [[0, 0]] },                      // 1-block monomino
-  { cells: [[0, 0], [1, 0]] },               // 2-block horizontal domino
-  { cells: [[0, 0], [0, 1]] },               // 2-block vertical domino
-  { cells: [[0, 0], [1, 0], [0, 1]] },        // Corner tromino
-  { cells: [[0, 0], [1, 0], [2, 0]] },        // 3-block horizontal
-  { cells: [[0, 0], [1, 0], [0, 1], [1, 1]] },// 2x2 square tetromino
-  { cells: [[0, 0], [1, 0], [2, 0], [1, 1]] },// T-piece
+  { cells: [[0, 0]] }, // 1-block monomino
+  {
+    cells: [
+      [0, 0],
+      [1, 0],
+    ],
+  }, // 2-block horizontal domino
+  {
+    cells: [
+      [0, 0],
+      [0, 1],
+    ],
+  }, // 2-block vertical domino
+  {
+    cells: [
+      [0, 0],
+      [1, 0],
+      [0, 1],
+    ],
+  }, // Corner tromino
+  {
+    cells: [
+      [0, 0],
+      [1, 0],
+      [2, 0],
+    ],
+  }, // 3-block horizontal
+  {
+    cells: [
+      [0, 0],
+      [1, 0],
+      [0, 1],
+      [1, 1],
+    ],
+  }, // 2x2 square tetromino
+  {
+    cells: [
+      [0, 0],
+      [1, 0],
+      [2, 0],
+      [1, 1],
+    ],
+  }, // T-piece
 ];
 
 // DEMO ONLY: strictly simple 1-cube and 2-cubes (no long/complex shapes!)
 const DEMO_SHAPES: PieceShape[] = [
-  { cells: [[0, 0]] },               // 1-cube
-  { cells: [[0, 0], [1, 0]] },        // 2-cube horizontal
-  { cells: [[0, 0], [0, 1]] },        // 2-cube vertical
-  { cells: [[0, 0]] },               // 1-cube
+  { cells: [[0, 0]] }, // 1-cube
+  {
+    cells: [
+      [0, 0],
+      [1, 0],
+    ],
+  }, // 2-cube horizontal
+  {
+    cells: [
+      [0, 0],
+      [0, 1],
+    ],
+  }, // 2-cube vertical
+  { cells: [[0, 0]] }, // 1-cube
 ];
 
 // Floating score indicator (+X points)
@@ -225,15 +271,18 @@ export const MiniFallingCubesInGap: React.FC = () => {
   // 0-15s: 4 columns (indices 2 to 5)
   // 15-30s: 6 columns (indices 1 to 6)
   // 30-60s: 8 columns (indices 0 to 7)
-  const getActiveColBounds = useCallback((currTimeLeft: number, state: string): [number, number] => {
-    if (state === 'demo') {
-      return [1, 5]; // 5 columns in demo
-    }
-    const elapsed = 60 - currTimeLeft;
-    if (elapsed < 15) return [2, 5]; // 4 columns
-    if (elapsed < 30) return [1, 6]; // 6 columns
-    return [0, 7]; // 8 columns (all)
-  }, []);
+  const getActiveColBounds = useCallback(
+    (currTimeLeft: number, state: string): [number, number] => {
+      if (state === 'demo') {
+        return [1, 5]; // 5 columns in demo
+      }
+      const elapsed = 60 - currTimeLeft;
+      if (elapsed < 15) return [2, 5]; // 4 columns
+      if (elapsed < 30) return [1, 6]; // 6 columns
+      return [0, 7]; // 8 columns (all)
+    },
+    [],
+  );
 
   const [activeMinCol, setActiveMinCol] = useState<number>(1);
   const [activeMaxCol, setActiveMaxCol] = useState<number>(5);
@@ -260,13 +309,16 @@ export const MiniFallingCubesInGap: React.FC = () => {
   const [flashBoard, setFlashBoard] = useState<boolean>(false);
 
   // Trigger floating score popup
-  const showFloatingScore = useCallback((text: string, x: number, y: number, color: string = COLOR_GOLD) => {
-    const id = `fs-${Date.now()}-${Math.random()}`;
-    setFloatingScores((prev) => [...prev, { id, text, x, y, color }]);
-    setTimeout(() => {
-      setFloatingScores((prev) => prev.filter((f) => f.id !== id));
-    }, 1200);
-  }, []);
+  const showFloatingScore = useCallback(
+    (text: string, x: number, y: number, color: string = COLOR_GOLD) => {
+      const id = `fs-${Date.now()}-${Math.random()}`;
+      setFloatingScores((prev) => [...prev, { id, text, x, y, color }]);
+      setTimeout(() => {
+        setFloatingScores((prev) => prev.filter((f) => f.id !== id));
+      }, 1200);
+    },
+    [],
+  );
 
   // Spawn visual explosion particles in LoYo colors (Blue, Gold, Red)
   const triggerExplosion = useCallback((centerX: number, centerY: number, count: number = 20) => {
@@ -301,7 +353,7 @@ export const MiniFallingCubesInGap: React.FC = () => {
             y: p.y + p.vy,
             opacity: p.opacity - 0.05,
           }))
-          .filter((p) => p.opacity > 0)
+          .filter((p) => p.opacity > 0),
       );
     }, 24);
     return () => clearInterval(interval);
@@ -395,11 +447,33 @@ export const MiniFallingCubesInGap: React.FC = () => {
     if (gameState === 'demo') {
       // V demo režimu pestřejší tvary padajících kostiček, které chytře zaplňují mezery
       const demoPieceShapes: PieceShape[] = [
-        { cells: [[0, 0]] },                         // 1-kostička
-        { cells: [[0, 0], [1, 0]] },                  // 2-kostička vodorovně
-        { cells: [[0, 0], [0, 1]] },                  // 2-kostička svisle
-        { cells: [[0, 0], [1, 0], [0, 1]] },          // rohový tvar
-        { cells: [[0, 0], [1, 0], [2, 0]] },          // 3-kostička vodorovně
+        { cells: [[0, 0]] }, // 1-kostička
+        {
+          cells: [
+            [0, 0],
+            [1, 0],
+          ],
+        }, // 2-kostička vodorovně
+        {
+          cells: [
+            [0, 0],
+            [0, 1],
+          ],
+        }, // 2-kostička svisle
+        {
+          cells: [
+            [0, 0],
+            [1, 0],
+            [0, 1],
+          ],
+        }, // rohový tvar
+        {
+          cells: [
+            [0, 0],
+            [1, 0],
+            [2, 0],
+          ],
+        }, // 3-kostička vodorovně
       ];
       const shape = demoPieceShapes[Math.floor(Math.random() * demoPieceShapes.length)];
       const maxDx = Math.max(...shape.cells.map((c) => c[0]));
@@ -421,9 +495,7 @@ export const MiniFallingCubesInGap: React.FC = () => {
       // Zvolíme ze 2 nejnižších sloupců
       const topChoices = validCols.slice(0, Math.min(2, validCols.length));
       const chosenCol =
-        topChoices.length > 0
-          ? topChoices[Math.floor(Math.random() * topChoices.length)]
-          : 1;
+        topChoices.length > 0 ? topChoices[Math.floor(Math.random() * topChoices.length)] : 1;
 
       setFallingPiece({
         cells: shape.cells,
@@ -510,7 +582,7 @@ export const MiniFallingCubesInGap: React.FC = () => {
         setFallingPiece((prev) => (prev ? { ...prev, col: newCol } : null));
       }
     },
-    [activeMaxCol, activeMinCol, boardHeight, fallingPiece, gameState, settledCubes]
+    [activeMaxCol, activeMinCol, boardHeight, fallingPiece, gameState, settledCubes],
   );
 
   // Fast drop (Down arrow)
@@ -589,7 +661,7 @@ export const MiniFallingCubesInGap: React.FC = () => {
       cubes: SettledCube[],
       minC: number,
       maxC: number,
-      onComplete: (remainingCubes: SettledCube[]) => void
+      onComplete: (remainingCubes: SettledCube[]) => void,
     ) => {
       const activeWidth = maxC - minC + 1;
       const fullRows: number[] = [];
@@ -626,11 +698,7 @@ export const MiniFallingCubesInGap: React.FC = () => {
           // 1. VÝBUCH ŘÁDKŮ (částice a otřes)
           fullRows.forEach((r) => {
             for (let c = minC; c <= maxC; c++) {
-              triggerExplosion(
-                c * STEP + CUBE_SIZE / 2,
-                boardHeight - r * STEP - CUBE_SIZE / 2,
-                9
-              );
+              triggerExplosion(c * STEP + CUBE_SIZE / 2, boardHeight - r * STEP - CUBE_SIZE / 2, 9);
             }
           });
           setFlashBoard(true);
@@ -638,16 +706,14 @@ export const MiniFallingCubesInGap: React.FC = () => {
 
           // 2. SMAZÁNÍ PLNÝCH ŘÁDKŮ A POSUNUTÍ VYŠŠÍCH KOSTIČEK DOLŮ
           let updatedCubes = cubes.filter(
-            (b) => !(fullRows.includes(b.row) && b.col >= minC && b.col <= maxC)
+            (b) => !(fullRows.includes(b.row) && b.col >= minC && b.col <= maxC),
           );
           fullRows
             .slice()
             .sort((a, b) => b - a)
             .forEach((clearedRow) => {
               updatedCubes = updatedCubes.map((b) =>
-                b.row > clearedRow && b.col >= minC && b.col <= maxC
-                  ? { ...b, row: b.row - 1 }
-                  : b
+                b.row > clearedRow && b.col >= minC && b.col <= maxC ? { ...b, row: b.row - 1 } : b,
               );
             });
           setSettledCubes(updatedCubes);
@@ -662,7 +728,7 @@ export const MiniFallingCubesInGap: React.FC = () => {
               `+${addedScore}!`,
               ((minC + maxC) / 2) * STEP,
               boardHeight / 2,
-              COLOR_GOLD
+              COLOR_GOLD,
             );
           }
 
@@ -673,7 +739,7 @@ export const MiniFallingCubesInGap: React.FC = () => {
         }
       }, 150);
     },
-    [boardHeight, gameState, showFloatingScore, triggerExplosion]
+    [boardHeight, gameState, showFloatingScore, triggerExplosion],
   );
 
   // Physics loop (runs both for Demo and Playing)
@@ -742,7 +808,7 @@ export const MiniFallingCubesInGap: React.FC = () => {
             // Aby se pozadí v demo režimu nikdy nezaseklo ("do nekonečna"):
             // Pokud jakýkoliv sloupec dosáhne 4 nebo více, mini-výbuchem odpaříme spodek
             const maxColHeight = Math.max(
-              ...[1, 2, 3, 4, 5].map((c) => afterCubes.filter((b) => b.col === c).length)
+              ...[1, 2, 3, 4, 5].map((c) => afterCubes.filter((b) => b.col === c).length),
             );
             let finalCubes = afterCubes;
             if (maxColHeight >= 4) {
@@ -752,7 +818,7 @@ export const MiniFallingCubesInGap: React.FC = () => {
                   triggerExplosion(
                     b.col * STEP + CUBE_SIZE / 2,
                     boardHeight - b.row * STEP - CUBE_SIZE / 2,
-                    6
+                    6,
                   );
                 });
               finalCubes = afterCubes
@@ -782,7 +848,7 @@ export const MiniFallingCubesInGap: React.FC = () => {
           triggerExplosion(impactX, impactY, 32);
 
           const destroyedCubes = settledCubes.filter(
-            (b) => Math.abs(b.col - bombCol) <= 1 && Math.abs(b.row - impactRow) <= 2
+            (b) => Math.abs(b.col - bombCol) <= 1 && Math.abs(b.row - impactRow) <= 2,
           );
 
           const destroyedCount = Math.max(3, destroyedCubes.length);
@@ -792,7 +858,7 @@ export const MiniFallingCubesInGap: React.FC = () => {
           showFloatingScore(`BOMBA! +${bombPoints}`, impactX, impactY, COLOR_GOLD);
 
           const surviving = settledCubes.filter(
-            (b) => !(Math.abs(b.col - bombCol) <= 1 && Math.abs(b.row - impactRow) <= 2)
+            (b) => !(Math.abs(b.col - bombCol) <= 1 && Math.abs(b.row - impactRow) <= 2),
           );
 
           const compacted: SettledCube[] = [];
@@ -967,8 +1033,8 @@ export const MiniFallingCubesInGap: React.FC = () => {
               infoPhase === 'active'
                 ? 'opacity-100 translate-x-0 -translate-y-1 transition-all duration-300 pointer-events-auto'
                 : infoPhase === 'exiting'
-                ? 'opacity-0 -translate-x-1 -translate-y-1 transition-all duration-2500 pointer-events-none'
-                : 'opacity-0 pointer-events-none -translate-x-2 translate-y-0'
+                  ? 'opacity-0 -translate-x-1 -translate-y-1 transition-all duration-2500 pointer-events-none'
+                  : 'opacity-0 pointer-events-none -translate-x-2 translate-y-0'
             }`}
             style={{
               right: 'calc(50% + 50px)',
@@ -976,9 +1042,7 @@ export const MiniFallingCubesInGap: React.FC = () => {
             }}
           >
             {/* Ocas komiksové bubliny mířící dolů doprava ke hře */}
-            <div
-              className="absolute -bottom-1.5 right-3 w-3 h-3 bg-[#18181b] border-r-2 border-b-2 border-[#18181b] rotate-45 pointer-events-none"
-            />
+            <div className="absolute -bottom-1.5 right-3 w-3 h-3 bg-[#18181b] border-r-2 border-b-2 border-[#18181b] rotate-45 pointer-events-none" />
 
             <div
               className="font-heading font-black text-2.75 sm:text-3 text-loyo-mustard uppercase tracking-wider flex items-center gap-1.5 leading-tight whitespace-nowrap"
@@ -1002,8 +1066,8 @@ export const MiniFallingCubesInGap: React.FC = () => {
               infoPhase === 'active'
                 ? 'opacity-100 pointer-events-auto -translate-y-1 transition-all duration-300'
                 : infoPhase === 'exiting'
-                ? 'opacity-100 pointer-events-none -translate-y-1'
-                : 'opacity-0 pointer-events-none translate-y-0'
+                  ? 'opacity-100 pointer-events-none -translate-y-1'
+                  : 'opacity-0 pointer-events-none translate-y-0'
             }`}
             style={{
               left: 'calc(50% + 50px)',
@@ -1011,9 +1075,7 @@ export const MiniFallingCubesInGap: React.FC = () => {
             }}
           >
             {/* Ocas komiksové bubliny mířící dolů doleva ke hře */}
-            <div
-              className="absolute -bottom-1.5 left-3 w-3 h-3 bg-[#18181b] border-l-2 border-b-2 border-[#18181b] -rotate-45 pointer-events-none"
-            />
+            <div className="absolute -bottom-1.5 left-3 w-3 h-3 bg-[#18181b] border-l-2 border-b-2 border-[#18181b] -rotate-45 pointer-events-none" />
 
             {/* NADPIS VPRAVO: OVLÁDÁNÍ: */}
             <div className="font-heading font-black text-2.625 sm:text-2.75 text-loyo-mustard uppercase tracking-wider flex items-center gap-1.5 leading-tight mb-1 whitespace-nowrap">
@@ -1054,10 +1116,7 @@ export const MiniFallingCubesInGap: React.FC = () => {
                 clipPath: `inset(0 ${100 - loadProgress}% 0 0)`,
               }}
             >
-              <div
-                className="h-full bg-loyo-mustard"
-                style={{ width: `${loadProgress}%` }}
-              />
+              <div className="h-full bg-loyo-mustard" style={{ width: `${loadProgress}%` }} />
             </div>
           </div>
         </>
@@ -1175,9 +1234,7 @@ export const MiniFallingCubesInGap: React.FC = () => {
           </div>
 
           <div className="flex items-center justify-between pt-0.5 border-t border-zinc-100">
-            <span className="text-2.25 font-mono text-zinc-500">
-              --- = neumístěn
-            </span>
+            <span className="text-2.25 font-mono text-zinc-500">--- = neumístěn</span>
             <button
               onClick={() => setShowHighScoresModal(false)}
               className="px-2 py-0.5 bg-[#18181b] hover:bg-zinc-800 text-white rounded font-heading font-bold text-2.25 uppercase cursor-pointer transition-all"
@@ -1280,7 +1337,10 @@ export const MiniFallingCubesInGap: React.FC = () => {
             maxLength={3}
             value={inputInitials}
             onChange={(e) => {
-              const clean = e.target.value.toUpperCase().replace(/[^A-Z0-9]/g, '').slice(0, 3);
+              const clean = e.target.value
+                .toUpperCase()
+                .replace(/[^A-Z0-9]/g, '')
+                .slice(0, 3);
               setInputInitials(clean);
               setActiveSlot(clean.length);
             }}
@@ -1316,7 +1376,9 @@ export const MiniFallingCubesInGap: React.FC = () => {
                   {char ? (
                     <span className="text-[#18181b]">{char}</span>
                   ) : isCurrent ? (
-                    <span className="text-[#18181b] animate-ping font-mono font-bold text-sm">_</span>
+                    <span className="text-[#18181b] animate-ping font-mono font-bold text-sm">
+                      _
+                    </span>
                   ) : (
                     <span className="text-zinc-300 font-mono text-xs">_</span>
                   )}
@@ -1450,9 +1512,7 @@ export const MiniFallingCubesInGap: React.FC = () => {
             >
               OK (ZPĚT DO UKÁZKY)
             </button>
-            <span className="text-2.25 font-mono text-zinc-500">
-              (zpět za 10s)
-            </span>
+            <span className="text-2.25 font-mono text-zinc-500">(zpět za 10s)</span>
           </div>
         </div>
       )}
@@ -1487,9 +1547,7 @@ export const MiniFallingCubesInGap: React.FC = () => {
           const left = cube.col * STEP;
           const bottom = cube.row * STEP;
           const isFlashing =
-            flashingLines &&
-            flashingLines.rows.includes(cube.row) &&
-            flashingLines.flashOn;
+            flashingLines && flashingLines.rows.includes(cube.row) && flashingLines.flashOn;
 
           return (
             <div

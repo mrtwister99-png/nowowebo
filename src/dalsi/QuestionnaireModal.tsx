@@ -1,22 +1,22 @@
 import React, { useState, useEffect } from 'react';
-import { 
-  X, 
-  Check, 
-  ArrowRight, 
-  ArrowLeft, 
-  Send, 
-  Sparkles, 
-  Shield, 
-  Code2, 
-  Cpu, 
-  CheckCircle2, 
-  Copy, 
+import {
+  X,
+  Check,
+  ArrowRight,
+  ArrowLeft,
+  Send,
+  Sparkles,
+  Shield,
+  Code2,
+  Cpu,
+  CheckCircle2,
+  Copy,
   FileText,
   MessageSquare,
   Coffee,
   Calendar,
   Video,
-  MapPin
+  MapPin,
 } from 'lucide-react';
 import { ServiceId, QuestionnaireData, InquiredSubmission } from '../types';
 import { QUESTIONNAIRE_CONFIGS } from '../data/servicesData';
@@ -30,7 +30,7 @@ interface QuestionnaireModalProps {
 export const QuestionnaireModal: React.FC<QuestionnaireModalProps> = ({
   isOpen,
   initialServiceId = 'fullstack',
-  onClose
+  onClose,
 }) => {
   const [selectedService, setSelectedService] = useState<ServiceId>(initialServiceId);
   const [currentStep, setCurrentStep] = useState<number>(1);
@@ -60,17 +60,17 @@ export const QuestionnaireModal: React.FC<QuestionnaireModalProps> = ({
     email: '',
     phone: '',
     company: '',
-    notes: ''
+    notes: '',
   });
 
   useEffect(() => {
     if (initialServiceId) {
       setSelectedService(initialServiceId);
       const conf = QUESTIONNAIRE_CONFIGS[initialServiceId];
-      setFormData(prev => ({
+      setFormData((prev) => ({
         ...prev,
         serviceId: initialServiceId,
-        projectScope: conf?.scopeOptions[0] || ''
+        projectScope: conf?.scopeOptions[0] || '',
       }));
     }
   }, [initialServiceId]);
@@ -81,14 +81,14 @@ export const QuestionnaireModal: React.FC<QuestionnaireModalProps> = ({
     setIsTabSwitching(true);
     setSelectedService(serviceId);
     const conf = QUESTIONNAIRE_CONFIGS[serviceId];
-    setFormData(prev => ({
+    setFormData((prev) => ({
       ...prev,
       serviceId: serviceId,
       projectScope: conf?.scopeOptions[0] || '',
       selectedFeatures: [],
       securityOptions: [],
       brandingOptions: [],
-      consultationTopics: []
+      consultationTopics: [],
     }));
     setCurrentStep(1);
     setTimeout(() => {
@@ -97,10 +97,10 @@ export const QuestionnaireModal: React.FC<QuestionnaireModalProps> = ({
   };
 
   const toggleArrayItem = (field: keyof QuestionnaireData, value: string) => {
-    setFormData(prev => {
+    setFormData((prev) => {
       const arr = (prev[field] as string[]) || [];
       if (arr.includes(value)) {
-        return { ...prev, [field]: arr.filter(item => item !== value) };
+        return { ...prev, [field]: arr.filter((item) => item !== value) };
       } else {
         return { ...prev, [field]: [...arr, value] };
       }
@@ -124,9 +124,9 @@ export const QuestionnaireModal: React.FC<QuestionnaireModalProps> = ({
         month: 'long',
         year: 'numeric',
         hour: '2-digit',
-        minute: '2-digit'
+        minute: '2-digit',
       }),
-      status: 'new'
+      status: 'new',
     };
 
     // Save to localStorage
@@ -186,9 +186,7 @@ Poznámka: ${submittedData.notes || '-'}
   return (
     <div className="fixed inset-0 z-50 overflow-y-auto bg-black/60 backdrop-blur-xs flex items-center justify-center p-3 sm:p-6">
       {/* Modal Card */}
-      <div 
-        className="relative w-full max-w-4xl bg-loyo-bg border-2 border-[#c2c2c2] shadow-2xl overflow-hidden flex flex-col max-h-[92vh] text-[#18181b]"
-      >
+      <div className="relative w-full max-w-4xl bg-loyo-bg border-2 border-[#c2c2c2] shadow-2xl overflow-hidden flex flex-col max-h-[92vh] text-[#18181b]">
         {/* Header Bar */}
         <div className="flex items-center justify-between px-6 py-3.5 border-b border-[#c8c8c8] bg-loyo-bar">
           <div className="flex items-center gap-2.5">
@@ -274,16 +272,23 @@ Poznámka: ${submittedData.notes || '-'}
         {currentStep < 5 && (
           <div className="px-6 py-2.5 bg-loyo-bg border-b border-[#dcdcdc] flex items-center justify-between text-xs text-[#555]">
             <div className="flex items-center gap-2">
-              <span className="font-mono text-[#18181b] font-bold uppercase tracking-wider">KROK {currentStep} / 4:</span>
+              <span className="font-mono text-[#18181b] font-bold uppercase tracking-wider">
+                KROK {currentStep} / 4:
+              </span>
               <span className="font-medium text-[#18181b]">
                 {currentStep === 1 && 'Rozsah a charakteristika poptávky'}
-                {currentStep === 2 && (
-                  selectedService === 'automation' ? 'Zabezpečení & moduly' :
-                  selectedService === 'web-branding' ? 'Restyling, logo & NFC vizitka' :
-                  selectedService === 'consultation' ? 'Témata k prodiskutování & forma' :
-                  'Požadované funkce aplikace'
-                )}
-                {currentStep === 3 && (selectedService === 'consultation' ? 'Představa o formátu a termínu' : 'Harmonogram a orientační rozpočet')}
+                {currentStep === 2 &&
+                  (selectedService === 'automation'
+                    ? 'Zabezpečení & moduly'
+                    : selectedService === 'web-branding'
+                      ? 'Restyling, logo & NFC vizitka'
+                      : selectedService === 'consultation'
+                        ? 'Témata k prodiskutování & forma'
+                        : 'Požadované funkce aplikace')}
+                {currentStep === 3 &&
+                  (selectedService === 'consultation'
+                    ? 'Představa o formátu a termínu'
+                    : 'Harmonogram a orientační rozpočet')}
                 {currentStep === 4 && 'Kontaktní údaje a odeslání'}
               </span>
             </div>
@@ -302,7 +307,6 @@ Poznámka: ${submittedData.notes || '-'}
 
         {/* Modal Scrollable Body */}
         <div className="p-6 sm:p-8 overflow-y-auto flex-1 space-y-6">
-          
           {/* ASYNC SKELETON LOADING VIEW (SUBMISSION PHASE) */}
           {isSubmitting ? (
             <div className="py-8 sm:py-12 space-y-8 animate-in fade-in duration-200 text-center max-w-lg mx-auto">
@@ -313,15 +317,13 @@ Poznámka: ${submittedData.notes || '-'}
                 <h3 className="font-heading font-black text-xl sm:text-2xl text-[#18181b]">
                   Zpracování specifikace projektu...
                 </h3>
-                <p className="text-xs font-mono text-[#666] tracking-wide">
-                  {submitPhaseText}
-                </p>
+                <p className="text-xs font-mono text-[#666] tracking-wide">{submitPhaseText}</p>
               </div>
 
               {/* High-end subtle progress indicator */}
               <div className="space-y-1.5">
                 <div className="h-2.5 w-full bg-[#d5d5d5] overflow-hidden rounded-xs border border-[#bebebe]">
-                  <div 
+                  <div
                     className="h-full bg-linear-to-r from-loyo-blue via-loyo-mustard to-loyo-red transition-all duration-300 ease-out"
                     style={{ width: `${submitProgress}%` }}
                   />
@@ -359,291 +361,401 @@ Poznámka: ${submittedData.notes || '-'}
             </div>
           ) : (
             <>
-          {/* STEP 1: SCOPE */}
-          {currentStep === 1 && (
-            <div className="space-y-5 animate-in fade-in duration-200">
-              <div>
-                <h3 className="font-heading font-extrabold text-xl sm:text-2xl text-[#18181b] mb-1">
-                  {currentConfig.title}
-                </h3>
-                <p className="text-xs sm:text-sm text-[#555]">
-                  {currentConfig.description}
-                </p>
-              </div>
+              {/* STEP 1: SCOPE */}
+              {currentStep === 1 && (
+                <div className="space-y-5 animate-in fade-in duration-200">
+                  <div>
+                    <h3 className="font-heading font-extrabold text-xl sm:text-2xl text-[#18181b] mb-1">
+                      {currentConfig.title}
+                    </h3>
+                    <p className="text-xs sm:text-sm text-[#555]">{currentConfig.description}</p>
+                  </div>
 
-              <div className="space-y-3 pt-2">
-                <label className="text-xs font-mono uppercase tracking-wider text-[#18181b] font-bold block">
-                  Vyberte primární typ / záměr:
-                </label>
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                  {currentConfig.scopeOptions.map((scope, idx) => {
-                    const isSelected = formData.projectScope === scope;
-                    return (
-                      <button
-                        key={idx}
-                        type="button"
-                        onClick={() => setFormData({ ...formData, projectScope: scope })}
-                        className={`p-4 text-left border transition-all cursor-pointer flex items-start justify-between gap-3 ${
-                          isSelected
-                            ? 'bg-loyo-bar border-[#18181b] text-[#18181b] shadow-xs'
-                            : 'bg-loyo-bg border-[#c8c8c8] text-[#444] hover:bg-[#e4e4e4]'
-                        }`}
-                      >
-                        <span className="text-xs sm:text-sm font-semibold">{scope}</span>
-                        <div
-                          className={`w-4 h-4 flex items-center justify-center shrink-0 border ${
-                            isSelected
-                              ? 'bg-[#18181b] border-[#18181b] text-white'
-                              : 'border-[#999] text-transparent'
-                          }`}
-                        >
-                          <Check className="w-3 h-3 stroke-3" />
+                  <div className="space-y-3 pt-2">
+                    <label className="text-xs font-mono uppercase tracking-wider text-[#18181b] font-bold block">
+                      Vyberte primární typ / záměr:
+                    </label>
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                      {currentConfig.scopeOptions.map((scope, idx) => {
+                        const isSelected = formData.projectScope === scope;
+                        return (
+                          <button
+                            key={idx}
+                            type="button"
+                            onClick={() => setFormData({ ...formData, projectScope: scope })}
+                            className={`p-4 text-left border transition-all cursor-pointer flex items-start justify-between gap-3 ${
+                              isSelected
+                                ? 'bg-loyo-bar border-[#18181b] text-[#18181b] shadow-xs'
+                                : 'bg-loyo-bg border-[#c8c8c8] text-[#444] hover:bg-[#e4e4e4]'
+                            }`}
+                          >
+                            <span className="text-xs sm:text-sm font-semibold">{scope}</span>
+                            <div
+                              className={`w-4 h-4 flex items-center justify-center shrink-0 border ${
+                                isSelected
+                                  ? 'bg-[#18181b] border-[#18181b] text-white'
+                                  : 'border-[#999] text-transparent'
+                              }`}
+                            >
+                              <Check className="w-3 h-3 stroke-3" />
+                            </div>
+                          </button>
+                        );
+                      })}
+                    </div>
+                  </div>
+                </div>
+              )}
+
+              {/* STEP 2: TAILORED CAPABILITIES / SECURITY / FEATURES / CONSULTATION TOPICS */}
+              {currentStep === 2 && (
+                <div className="space-y-6 animate-in fade-in duration-200">
+                  {/* SERVICE 1: FULLSTACK FEATURES */}
+                  {selectedService === 'fullstack' && (
+                    <div className="space-y-4">
+                      <div>
+                        <h3 className="font-heading font-bold text-xl text-loyo-blue mb-1">
+                          Klíčové funkce fullstack architektury
+                        </h3>
+                        <p className="text-xs sm:text-sm text-[#555]">
+                          Označte technologie a moduly, které má aplikace obsahovat:
+                        </p>
+                      </div>
+
+                      <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5 pt-2">
+                        {QUESTIONNAIRE_CONFIGS.fullstack.featureOptions.map((feat, i) => {
+                          const active = formData.selectedFeatures.includes(feat);
+                          return (
+                            <button
+                              key={i}
+                              type="button"
+                              onClick={() => toggleArrayItem('selectedFeatures', feat)}
+                              className={`p-3 border text-left flex items-center justify-between text-xs sm:text-sm transition-all cursor-pointer ${
+                                active
+                                  ? 'bg-loyo-bar border-loyo-blue text-loyo-blue font-bold'
+                                  : 'bg-loyo-bg border-[#c8c8c8] text-[#444] hover:bg-[#e4e4e4]'
+                              }`}
+                            >
+                              <span>{feat}</span>
+                              <span
+                                className={`w-4 h-4 border flex items-center justify-center shrink-0 ${
+                                  active
+                                    ? 'bg-loyo-blue border-loyo-blue text-white'
+                                    : 'border-[#999]'
+                                }`}
+                              >
+                                {active && <Check className="w-3 h-3 stroke-3" />}
+                              </span>
+                            </button>
+                          );
+                        })}
+                      </div>
+                    </div>
+                  )}
+
+                  {/* SERVICE 2: AUTOMATION & SECURITY */}
+                  {selectedService === 'automation' && (
+                    <div className="space-y-5">
+                      <div>
+                        <h3 className="font-heading font-bold text-xl text-[#8a6b28] mb-1">
+                          Zabezpečení & automatizační moduly
+                        </h3>
+                        <p className="text-xs sm:text-sm text-[#555]">
+                          Jaký typ ochrany preferujete? Přes telefon, NFC, e-mailem, hrou... prostě
+                          čímkoliv:
+                        </p>
+                      </div>
+
+                      <div className="space-y-2">
+                        <label className="text-xs font-mono uppercase tracking-wider text-[#8a6b28] font-bold block">
+                          Možnosti přihlášení a ochrany na přání:
+                        </label>
+                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
+                          {[
+                            'Fyzická NFC karta / čip (přiložením)',
+                            'Telefonní ověření (SMS kód / Push výzva)',
+                            'Bezheslový e-mailový link (Magic Token)',
+                            'Gamifikované ověření (Puzzle / Mini-hra)',
+                            'Biometrie zařízení (FaceID / otisk prstu)',
+                            'Role-Based Access Control (více úrovní oprávnění)',
+                          ].map((sec, i) => {
+                            const active = formData.securityOptions.includes(sec);
+                            return (
+                              <button
+                                key={i}
+                                type="button"
+                                onClick={() => toggleArrayItem('securityOptions', sec)}
+                                className={`p-3 border text-left flex items-center justify-between text-xs sm:text-sm transition-all cursor-pointer ${
+                                  active
+                                    ? 'bg-loyo-bar border-loyo-mustard text-[#8a6b28] font-bold'
+                                    : 'bg-loyo-bg border-[#c8c8c8] text-[#444] hover:bg-[#e4e4e4]'
+                                }`}
+                              >
+                                <span>{sec}</span>
+                                <span
+                                  className={`w-4 h-4 border flex items-center justify-center shrink-0 ${
+                                    active
+                                      ? 'bg-loyo-mustard border-loyo-mustard text-[#18181b]'
+                                      : 'border-[#999]'
+                                  }`}
+                                >
+                                  {active && <Check className="w-3 h-3 stroke-3" />}
+                                </span>
+                              </button>
+                            );
+                          })}
                         </div>
-                      </button>
-                    );
-                  })}
-                </div>
-              </div>
-            </div>
-          )}
+                      </div>
 
-          {/* STEP 2: TAILORED CAPABILITIES / SECURITY / FEATURES / CONSULTATION TOPICS */}
-          {currentStep === 2 && (
-            <div className="space-y-6 animate-in fade-in duration-200">
-              {/* SERVICE 1: FULLSTACK FEATURES */}
-              {selectedService === 'fullstack' && (
-                <div className="space-y-4">
-                  <div>
-                    <h3 className="font-heading font-bold text-xl text-loyo-blue mb-1">
-                      Klíčové funkce fullstack architektury
-                    </h3>
-                    <p className="text-xs sm:text-sm text-[#555]">
-                      Označte technologie a moduly, které má aplikace obsahovat:
-                    </p>
-                  </div>
+                      <div className="space-y-2 pt-2">
+                        <label className="text-xs font-mono uppercase tracking-wider text-[#8a6b28] font-bold block">
+                          Oblasti procesů k automatizaci & úložiště:
+                        </label>
+                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
+                          {QUESTIONNAIRE_CONFIGS.automation.featureOptions.map((feat, i) => {
+                            const active = formData.selectedFeatures.includes(feat);
+                            return (
+                              <button
+                                key={i}
+                                type="button"
+                                onClick={() => toggleArrayItem('selectedFeatures', feat)}
+                                className={`p-3 border text-left flex items-center justify-between text-xs sm:text-sm transition-all cursor-pointer ${
+                                  active
+                                    ? 'bg-loyo-bar border-loyo-mustard text-[#8a6b28] font-bold'
+                                    : 'bg-loyo-bg border-[#c8c8c8] text-[#444] hover:bg-[#e4e4e4]'
+                                }`}
+                              >
+                                <span>{feat}</span>
+                                <span
+                                  className={`w-4 h-4 border flex items-center justify-center shrink-0 ${
+                                    active
+                                      ? 'bg-loyo-mustard border-loyo-mustard text-[#18181b]'
+                                      : 'border-[#999]'
+                                  }`}
+                                >
+                                  {active && <Check className="w-3 h-3 stroke-3" />}
+                                </span>
+                              </button>
+                            );
+                          })}
+                        </div>
+                      </div>
+                    </div>
+                  )}
 
-                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5 pt-2">
-                    {QUESTIONNAIRE_CONFIGS.fullstack.featureOptions.map((feat, i) => {
-                      const active = formData.selectedFeatures.includes(feat);
-                      return (
-                        <button
-                          key={i}
-                          type="button"
-                          onClick={() => toggleArrayItem('selectedFeatures', feat)}
-                          className={`p-3 border text-left flex items-center justify-between text-xs sm:text-sm transition-all cursor-pointer ${
-                            active
-                              ? 'bg-loyo-bar border-loyo-blue text-loyo-blue font-bold'
-                              : 'bg-loyo-bg border-[#c8c8c8] text-[#444] hover:bg-[#e4e4e4]'
-                          }`}
-                        >
-                          <span>{feat}</span>
-                          <span
-                            className={`w-4 h-4 border flex items-center justify-center shrink-0 ${
-                              active ? 'bg-loyo-blue border-loyo-blue text-white' : 'border-[#999]'
-                            }`}
-                          >
-                            {active && <Check className="w-3 h-3 stroke-3" />}
-                          </span>
-                        </button>
-                      );
-                    })}
-                  </div>
-                </div>
-              )}
+                  {/* SERVICE 3: WEBS & BRANDING */}
+                  {selectedService === 'web-branding' && (
+                    <div className="space-y-4">
+                      <div>
+                        <h3 className="font-heading font-bold text-xl text-loyo-red mb-1">
+                          Restyling, rebranding, logo & NFC vizitka
+                        </h3>
+                        <p className="text-xs sm:text-sm text-[#555]">
+                          Vyberte grafické a interaktivní požadavky na nový web či digitální
+                          identitu:
+                        </p>
+                      </div>
 
-              {/* SERVICE 2: AUTOMATION & SECURITY */}
-              {selectedService === 'automation' && (
-                <div className="space-y-5">
-                  <div>
-                    <h3 className="font-heading font-bold text-xl text-[#8a6b28] mb-1">
-                      Zabezpečení & automatizační moduly
-                    </h3>
-                    <p className="text-xs sm:text-sm text-[#555]">
-                      Jaký typ ochrany preferujete? Přes telefon, NFC, e-mailem, hrou... prostě čímkoliv:
-                    </p>
-                  </div>
-
-                  <div className="space-y-2">
-                    <label className="text-xs font-mono uppercase tracking-wider text-[#8a6b28] font-bold block">
-                      Možnosti přihlášení a ochrany na přání:
-                    </label>
-                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
-                      {[
-                        'Fyzická NFC karta / čip (přiložením)',
-                        'Telefonní ověření (SMS kód / Push výzva)',
-                        'Bezheslový e-mailový link (Magic Token)',
-                        'Gamifikované ověření (Puzzle / Mini-hra)',
-                        'Biometrie zařízení (FaceID / otisk prstu)',
-                        'Role-Based Access Control (více úrovní oprávnění)'
-                      ].map((sec, i) => {
-                        const active = formData.securityOptions.includes(sec);
-                        return (
-                          <button
-                            key={i}
-                            type="button"
-                            onClick={() => toggleArrayItem('securityOptions', sec)}
-                            className={`p-3 border text-left flex items-center justify-between text-xs sm:text-sm transition-all cursor-pointer ${
-                              active
-                                ? 'bg-loyo-bar border-loyo-mustard text-[#8a6b28] font-bold'
-                                : 'bg-loyo-bg border-[#c8c8c8] text-[#444] hover:bg-[#e4e4e4]'
-                            }`}
-                          >
-                            <span>{sec}</span>
-                            <span
-                              className={`w-4 h-4 border flex items-center justify-center shrink-0 ${
-                                active ? 'bg-loyo-mustard border-loyo-mustard text-[#18181b]' : 'border-[#999]'
+                      <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5 pt-2">
+                        {QUESTIONNAIRE_CONFIGS['web-branding'].brandingOptions.map((feat, i) => {
+                          const active = formData.brandingOptions.includes(feat);
+                          return (
+                            <button
+                              key={i}
+                              type="button"
+                              onClick={() => toggleArrayItem('brandingOptions', feat)}
+                              className={`p-3 border text-left flex items-center justify-between text-xs sm:text-sm transition-all cursor-pointer ${
+                                active
+                                  ? 'bg-loyo-bar border-loyo-red text-loyo-red font-bold'
+                                  : 'bg-loyo-bg border-[#c8c8c8] text-[#444] hover:bg-[#e4e4e4]'
                               }`}
                             >
-                              {active && <Check className="w-3 h-3 stroke-3" />}
-                            </span>
-                          </button>
-                        );
-                      })}
+                              <span>{feat}</span>
+                              <span
+                                className={`w-4 h-4 border flex items-center justify-center shrink-0 ${
+                                  active
+                                    ? 'bg-loyo-red border-loyo-red text-white'
+                                    : 'border-[#999]'
+                                }`}
+                              >
+                                {active && <Check className="w-3 h-3 stroke-3" />}
+                              </span>
+                            </button>
+                          );
+                        })}
+                      </div>
                     </div>
-                  </div>
+                  )}
 
-                  <div className="space-y-2 pt-2">
-                    <label className="text-xs font-mono uppercase tracking-wider text-[#8a6b28] font-bold block">
-                      Oblasti procesů k automatizaci & úložiště:
-                    </label>
-                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
-                      {QUESTIONNAIRE_CONFIGS.automation.featureOptions.map((feat, i) => {
-                        const active = formData.selectedFeatures.includes(feat);
-                        return (
-                          <button
-                            key={i}
-                            type="button"
-                            onClick={() => toggleArrayItem('selectedFeatures', feat)}
-                            className={`p-3 border text-left flex items-center justify-between text-xs sm:text-sm transition-all cursor-pointer ${
-                              active
-                                ? 'bg-loyo-bar border-loyo-mustard text-[#8a6b28] font-bold'
-                                : 'bg-loyo-bg border-[#c8c8c8] text-[#444] hover:bg-[#e4e4e4]'
-                            }`}
-                          >
-                            <span>{feat}</span>
-                            <span
-                              className={`w-4 h-4 border flex items-center justify-center shrink-0 ${
-                                active ? 'bg-loyo-mustard border-loyo-mustard text-[#18181b]' : 'border-[#999]'
-                              }`}
-                            >
-                              {active && <Check className="w-3 h-3 stroke-3" />}
-                            </span>
-                          </button>
-                        );
-                      })}
+                  {/* SERVICE 4: CONSULTATION TOPICS & FORMAT */}
+                  {selectedService === 'consultation' && (
+                    <div className="space-y-5">
+                      <div>
+                        <h3 className="font-heading font-bold text-xl text-[#18181b] mb-1">
+                          Témata k prodiskutování & Forma konzultace
+                        </h3>
+                        <p className="text-xs sm:text-sm text-[#555]">
+                          Vyberte, co bychom měli na konzultaci společně rozebrat:
+                        </p>
+                      </div>
+
+                      <div className="space-y-2">
+                        <label className="text-xs font-mono uppercase tracking-wider text-[#18181b] font-bold block">
+                          Témata k rozboru:
+                        </label>
+                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
+                          {(QUESTIONNAIRE_CONFIGS.consultation.consultationTopics || []).map(
+                            (topic, i) => {
+                              const active = (formData.consultationTopics || []).includes(topic);
+                              return (
+                                <button
+                                  key={i}
+                                  type="button"
+                                  onClick={() => toggleArrayItem('consultationTopics', topic)}
+                                  className={`p-3 border text-left flex items-center justify-between text-xs sm:text-sm transition-all cursor-pointer ${
+                                    active
+                                      ? 'bg-loyo-bar border-[#18181b] text-[#18181b] font-bold'
+                                      : 'bg-loyo-bg border-[#c8c8c8] text-[#444] hover:bg-[#e4e4e4]'
+                                  }`}
+                                >
+                                  <span>{topic}</span>
+                                  <span
+                                    className={`w-4 h-4 border flex items-center justify-center shrink-0 ${
+                                      active
+                                        ? 'bg-[#18181b] border-[#18181b] text-white'
+                                        : 'border-[#999]'
+                                    }`}
+                                  >
+                                    {active && <Check className="w-3 h-3 stroke-3" />}
+                                  </span>
+                                </button>
+                              );
+                            },
+                          )}
+                        </div>
+                      </div>
+
+                      <div className="space-y-2 pt-2">
+                        <label className="text-xs font-mono uppercase tracking-wider text-[#18181b] font-bold block">
+                          Preferovaná forma setkání:
+                        </label>
+                        <div className="grid grid-cols-1 sm:grid-cols-3 gap-2.5">
+                          {[
+                            'Osobně na kávě (Praha / dle domluvy)',
+                            'Osobně u vás ve firmě',
+                            'Online videohovor (Google Meet)',
+                          ].map((format, i) => {
+                            const isSelected = formData.consultationFormat === format;
+                            return (
+                              <button
+                                key={i}
+                                type="button"
+                                onClick={() =>
+                                  setFormData({ ...formData, consultationFormat: format })
+                                }
+                                className={`p-3 border text-left text-xs sm:text-sm transition-all cursor-pointer ${
+                                  isSelected
+                                    ? 'bg-loyo-bar border-[#18181b] text-[#18181b] font-bold'
+                                    : 'bg-loyo-bg border-[#c8c8c8] text-[#444] hover:bg-[#e4e4e4]'
+                                }`}
+                              >
+                                {format}
+                              </button>
+                            );
+                          })}
+                        </div>
+                      </div>
                     </div>
-                  </div>
+                  )}
                 </div>
               )}
 
-              {/* SERVICE 3: WEBS & BRANDING */}
-              {selectedService === 'web-branding' && (
-                <div className="space-y-4">
+              {/* STEP 3: TIMELINE & BUDGET */}
+              {currentStep === 3 && (
+                <div className="space-y-6 animate-in fade-in duration-200">
                   <div>
-                    <h3 className="font-heading font-bold text-xl text-loyo-red mb-1">
-                      Restyling, rebranding, logo & NFC vizitka
+                    <h3 className="font-heading font-extrabold text-xl text-[#18181b] mb-1">
+                      {selectedService === 'consultation'
+                        ? 'Termín a formát konzultace'
+                        : 'Časový rámec & orientační rozpočet'}
                     </h3>
                     <p className="text-xs sm:text-sm text-[#555]">
-                      Vyberte grafické a interaktivní požadavky na nový web či digitální identitu:
+                      {selectedService === 'consultation'
+                        ? 'Kdy by vám konzultace nejlépe vyhovovala a jaký rozsah zvažujete?'
+                        : 'Správná řešení potřebují svůj čas pro preciznost – vyberte vaše představy:'}
                     </p>
                   </div>
 
-                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5 pt-2">
-                    {QUESTIONNAIRE_CONFIGS['web-branding'].brandingOptions.map((feat, i) => {
-                      const active = formData.brandingOptions.includes(feat);
-                      return (
-                        <button
-                          key={i}
-                          type="button"
-                          onClick={() => toggleArrayItem('brandingOptions', feat)}
-                          className={`p-3 border text-left flex items-center justify-between text-xs sm:text-sm transition-all cursor-pointer ${
-                            active
-                              ? 'bg-loyo-bar border-loyo-red text-loyo-red font-bold'
-                              : 'bg-loyo-bg border-[#c8c8c8] text-[#444] hover:bg-[#e4e4e4]'
-                          }`}
-                        >
-                          <span>{feat}</span>
-                          <span
-                            className={`w-4 h-4 border flex items-center justify-center shrink-0 ${
-                              active ? 'bg-loyo-red border-loyo-red text-white' : 'border-[#999]'
-                            }`}
-                          >
-                            {active && <Check className="w-3 h-3 stroke-3" />}
-                          </span>
-                        </button>
-                      );
-                    })}
-                  </div>
-                </div>
-              )}
-
-              {/* SERVICE 4: CONSULTATION TOPICS & FORMAT */}
-              {selectedService === 'consultation' && (
-                <div className="space-y-5">
-                  <div>
-                    <h3 className="font-heading font-bold text-xl text-[#18181b] mb-1">
-                      Témata k prodiskutování & Forma konzultace
-                    </h3>
-                    <p className="text-xs sm:text-sm text-[#555]">
-                      Vyberte, co bychom měli na konzultaci společně rozebrat:
-                    </p>
-                  </div>
-
+                  {/* Timeline options */}
                   <div className="space-y-2">
                     <label className="text-xs font-mono uppercase tracking-wider text-[#18181b] font-bold block">
-                      Témata k rozboru:
+                      {selectedService === 'consultation'
+                        ? 'Časová preference termínu:'
+                        : 'Požadovaný termín dodání:'}
                     </label>
-                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
-                      {(QUESTIONNAIRE_CONFIGS.consultation.consultationTopics || []).map((topic, i) => {
-                        const active = (formData.consultationTopics || []).includes(topic);
+                    <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
+                      {(
+                        currentConfig.timelines || [
+                          'Flexibilní (důraz na maximální preciznost)',
+                          'Do 1 až 2 měsíců',
+                          'Expresní termín (do 3-4 týdnů)',
+                        ]
+                      ).map((time, idx) => {
+                        const isSelected = formData.timeline === time;
                         return (
                           <button
-                            key={i}
+                            key={idx}
                             type="button"
-                            onClick={() => toggleArrayItem('consultationTopics', topic)}
-                            className={`p-3 border text-left flex items-center justify-between text-xs sm:text-sm transition-all cursor-pointer ${
-                              active
-                                ? 'bg-loyo-bar border-[#18181b] text-[#18181b] font-bold'
-                                : 'bg-loyo-bg border-[#c8c8c8] text-[#444] hover:bg-[#e4e4e4]'
-                            }`}
-                          >
-                            <span>{topic}</span>
-                            <span
-                              className={`w-4 h-4 border flex items-center justify-center shrink-0 ${
-                                active ? 'bg-[#18181b] border-[#18181b] text-white' : 'border-[#999]'
-                              }`}
-                            >
-                              {active && <Check className="w-3 h-3 stroke-3" />}
-                            </span>
-                          </button>
-                        );
-                      })}
-                    </div>
-                  </div>
-
-                  <div className="space-y-2 pt-2">
-                    <label className="text-xs font-mono uppercase tracking-wider text-[#18181b] font-bold block">
-                      Preferovaná forma setkání:
-                    </label>
-                    <div className="grid grid-cols-1 sm:grid-cols-3 gap-2.5">
-                      {[
-                        'Osobně na kávě (Praha / dle domluvy)',
-                        'Osobně u vás ve firmě',
-                        'Online videohovor (Google Meet)'
-                      ].map((format, i) => {
-                        const isSelected = formData.consultationFormat === format;
-                        return (
-                          <button
-                            key={i}
-                            type="button"
-                            onClick={() => setFormData({ ...formData, consultationFormat: format })}
-                            className={`p-3 border text-left text-xs sm:text-sm transition-all cursor-pointer ${
+                            onClick={() => setFormData({ ...formData, timeline: time })}
+                            className={`p-3.5 text-left border transition-all cursor-pointer ${
                               isSelected
                                 ? 'bg-loyo-bar border-[#18181b] text-[#18181b] font-bold'
                                 : 'bg-loyo-bg border-[#c8c8c8] text-[#444] hover:bg-[#e4e4e4]'
                             }`}
                           >
-                            {format}
+                            <span className="text-xs sm:text-sm">{time}</span>
+                          </button>
+                        );
+                      })}
+                    </div>
+                  </div>
+
+                  {/* Budget range options */}
+                  <div className="space-y-2 pt-2">
+                    <div className="flex flex-wrap items-center justify-between gap-1">
+                      <label className="text-xs font-mono uppercase tracking-wider text-[#18181b] font-bold block">
+                        {selectedService === 'consultation'
+                          ? 'Zvažovaný rozsah / formát:'
+                          : 'Orientační finanční rámec:'}
+                      </label>
+                      {selectedService === 'consultation' && (
+                        <span className="text-2.75 font-mono text-[#18181b] bg-loyo-bar px-2 py-0.5 border border-[#c8c8c8] font-bold">
+                          Cena cca 800 Kč / hod dle složitosti
+                        </span>
+                      )}
+                    </div>
+                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">
+                      {(
+                        currentConfig.budgets || [
+                          '20 000 – 40 000 Kč (Dílčí modul / web)',
+                          '40 000 – 80 000 Kč (Kompletní systém)',
+                          '80 000 – 150 000 Kč (Rozsáhlý ekosystém)',
+                          'Individuální kalkulace na míru',
+                        ]
+                      ).map((budget, idx) => {
+                        const isSelected = formData.budgetRange === budget;
+                        return (
+                          <button
+                            key={idx}
+                            type="button"
+                            onClick={() => setFormData({ ...formData, budgetRange: budget })}
+                            className={`p-3.5 text-left border transition-all cursor-pointer ${
+                              isSelected
+                                ? 'bg-loyo-bar border-[#18181b] text-[#18181b] font-bold'
+                                : 'bg-loyo-bg border-[#c8c8c8] text-[#444] hover:bg-[#e4e4e4]'
+                            }`}
+                          >
+                            <span className="text-xs sm:text-sm">{budget}</span>
                           </button>
                         );
                       })}
@@ -651,255 +763,179 @@ Poznámka: ${submittedData.notes || '-'}
                   </div>
                 </div>
               )}
-            </div>
-          )}
 
-          {/* STEP 3: TIMELINE & BUDGET */}
-          {currentStep === 3 && (
-            <div className="space-y-6 animate-in fade-in duration-200">
-              <div>
-                <h3 className="font-heading font-extrabold text-xl text-[#18181b] mb-1">
-                  {selectedService === 'consultation' ? 'Termín a formát konzultace' : 'Časový rámec & orientační rozpočet'}
-                </h3>
-                <p className="text-xs sm:text-sm text-[#555]">
-                  {selectedService === 'consultation' 
-                    ? 'Kdy by vám konzultace nejlépe vyhovovala a jaký rozsah zvažujete?' 
-                    : 'Správná řešení potřebují svůj čas pro preciznost – vyberte vaše představy:'}
-                </p>
-              </div>
+              {/* STEP 4: CONTACT & SUMMARY */}
+              {currentStep === 4 && (
+                <form onSubmit={handleSubmit} className="space-y-6 animate-in fade-in duration-200">
+                  <div>
+                    <h3 className="font-heading font-extrabold text-xl text-[#18181b] mb-1">
+                      Kontaktní údaje a odeslání specifikace
+                    </h3>
+                    <p className="text-xs sm:text-sm text-[#555]">
+                      Kam vám mohu zaslat úvodní rozbor a návrh termínu?
+                    </p>
+                  </div>
 
-              {/* Timeline options */}
-              <div className="space-y-2">
-                <label className="text-xs font-mono uppercase tracking-wider text-[#18181b] font-bold block">
-                  {selectedService === 'consultation' ? 'Časová preference termínu:' : 'Požadovaný termín dodání:'}
-                </label>
-                <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
-                  {(currentConfig.timelines || [
-                    'Flexibilní (důraz na maximální preciznost)',
-                    'Do 1 až 2 měsíců',
-                    'Expresní termín (do 3-4 týdnů)'
-                  ]).map((time, idx) => {
-                    const isSelected = formData.timeline === time;
-                    return (
-                      <button
-                        key={idx}
-                        type="button"
-                        onClick={() => setFormData({ ...formData, timeline: time })}
-                        className={`p-3.5 text-left border transition-all cursor-pointer ${
-                          isSelected
-                            ? 'bg-loyo-bar border-[#18181b] text-[#18181b] font-bold'
-                            : 'bg-loyo-bg border-[#c8c8c8] text-[#444] hover:bg-[#e4e4e4]'
-                        }`}
-                      >
-                        <span className="text-xs sm:text-sm">{time}</span>
-                      </button>
-                    );
-                  })}
-                </div>
-              </div>
+                  {/* Summary of choices */}
+                  <div className="p-4 bg-loyo-bar border border-[#c2c2c2] text-xs space-y-1 text-[#333]">
+                    <div>
+                      <strong>Vybraná oblast:</strong>{' '}
+                      <span className="font-bold text-[#18181b]">
+                        {selectedService === 'fullstack' &&
+                          '01. Vývoj aplikace (Fullstack - Modrá)'}
+                        {selectedService === 'automation' &&
+                          '02. Automatizace procesů & ekosystém (Hořčicová)'}
+                        {selectedService === 'web-branding' &&
+                          '03. Tvorba webů, restyling & logo (Červená)'}
+                        {selectedService === 'consultation' &&
+                          '04. Odborná osobní konzultace (Strategie)'}
+                      </span>
+                    </div>
+                    {formData.projectScope && (
+                      <div>
+                        <strong>Typ projektu / záměr:</strong> {formData.projectScope}
+                      </div>
+                    )}
+                    {formData.consultationFormat && selectedService === 'consultation' && (
+                      <div>
+                        <strong>Forma setkání:</strong> {formData.consultationFormat}
+                      </div>
+                    )}
+                    {formData.securityOptions.length > 0 && (
+                      <div>
+                        <strong>Zabezpečení:</strong> {formData.securityOptions.join(', ')}
+                      </div>
+                    )}
+                  </div>
 
-              {/* Budget range options */}
-              <div className="space-y-2 pt-2">
-                <div className="flex flex-wrap items-center justify-between gap-1">
-                  <label className="text-xs font-mono uppercase tracking-wider text-[#18181b] font-bold block">
-                    {selectedService === 'consultation' ? 'Zvažovaný rozsah / formát:' : 'Orientační finanční rámec:'}
-                  </label>
-                  {selectedService === 'consultation' && (
-                    <span className="text-2.75 font-mono text-[#18181b] bg-loyo-bar px-2 py-0.5 border border-[#c8c8c8] font-bold">
-                      Cena cca 800 Kč / hod dle složitosti
+                  {/* Input fields */}
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 text-xs">
+                    <div>
+                      <label className="block text-[#18181b] font-semibold mb-1">
+                        Jméno a příjmení *
+                      </label>
+                      <input
+                        type="text"
+                        required
+                        value={formData.name}
+                        onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+                        placeholder="např. Jan Novák"
+                        className="w-full px-3.5 py-2.5 bg-loyo-bg border border-[#c8c8c8] text-[#18181b] focus:outline-none focus:border-[#18181b]"
+                      />
+                    </div>
+
+                    <div>
+                      <label className="block text-[#18181b] font-semibold mb-1">
+                        E-mailová adresa *
+                      </label>
+                      <input
+                        type="email"
+                        required
+                        value={formData.email}
+                        onChange={(e) => setFormData({ ...formData, email: e.target.value })}
+                        placeholder="jan@firma.cz"
+                        className="w-full px-3.5 py-2.5 bg-loyo-bg border border-[#c8c8c8] text-[#18181b] focus:outline-none focus:border-[#18181b]"
+                      />
+                    </div>
+
+                    <div>
+                      <label className="block text-[#18181b] font-semibold mb-1">
+                        Telefonní číslo (volitelné)
+                      </label>
+                      <input
+                        type="tel"
+                        value={formData.phone}
+                        onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
+                        placeholder="+420 777 000 000"
+                        className="w-full px-3.5 py-2.5 bg-loyo-bg border border-[#c8c8c8] text-[#18181b] focus:outline-none focus:border-[#18181b]"
+                      />
+                    </div>
+
+                    <div>
+                      <label className="block text-[#18181b] font-semibold mb-1">
+                        Společnost / Projekt
+                      </label>
+                      <input
+                        type="text"
+                        value={formData.company}
+                        onChange={(e) => setFormData({ ...formData, company: e.target.value })}
+                        placeholder="např. Novák & Partneři s.r.o."
+                        className="w-full px-3.5 py-2.5 bg-loyo-bg border border-[#c8c8c8] text-[#18181b] focus:outline-none focus:border-[#18181b]"
+                      />
+                    </div>
+                  </div>
+
+                  <div>
+                    <label className="block text-[#18181b] font-semibold mb-1 text-xs">
+                      Doplňující poznámka, odkaz na stávající web nebo specifické přání
+                    </label>
+                    <textarea
+                      rows={3}
+                      value={formData.notes}
+                      onChange={(e) => setFormData({ ...formData, notes: e.target.value })}
+                      placeholder="Popište cokoliv dalšího, co je pro vás podstatné..."
+                      className="w-full px-3.5 py-2.5 bg-loyo-bg border border-[#c8c8c8] text-xs text-[#18181b] focus:outline-none focus:border-[#18181b]"
+                    />
+                  </div>
+
+                  <div className="pt-2">
+                    <button
+                      type="submit"
+                      className="w-full py-3.5 bg-[#18181b] hover:bg-loyo-blue text-white font-bold text-xs uppercase tracking-widest flex items-center justify-center gap-2 cursor-pointer shadow-xs transition-colors"
+                    >
+                      <Send className="w-4 h-4" />
+                      <span>Nezávazně odeslat specifikaci projektu</span>
+                    </button>
+                  </div>
+                </form>
+              )}
+
+              {/* STEP 5: SUCCESS */}
+              {currentStep === 5 && submittedData && (
+                <div className="text-center py-8 space-y-6 animate-in zoom-in-95 duration-200">
+                  <div className="w-16 h-16 mx-auto bg-[#18181b] text-white flex items-center justify-center">
+                    <CheckCircle2 className="w-8 h-8 text-loyo-mustard" />
+                  </div>
+
+                  <div className="space-y-2">
+                    <span className="font-mono text-xs font-bold uppercase tracking-wider text-loyo-blue">
+                      Kód poptávky: #{submittedData.id}
                     </span>
-                  )}
-                </div>
-                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">
-                  {(currentConfig.budgets || [
-                    '20 000 – 40 000 Kč (Dílčí modul / web)',
-                    '40 000 – 80 000 Kč (Kompletní systém)',
-                    '80 000 – 150 000 Kč (Rozsáhlý ekosystém)',
-                    'Individuální kalkulace na míru'
-                  ]).map((budget, idx) => {
-                    const isSelected = formData.budgetRange === budget;
-                    return (
-                      <button
-                        key={idx}
-                        type="button"
-                        onClick={() => setFormData({ ...formData, budgetRange: budget })}
-                        className={`p-3.5 text-left border transition-all cursor-pointer ${
-                          isSelected
-                            ? 'bg-loyo-bar border-[#18181b] text-[#18181b] font-bold'
-                            : 'bg-loyo-bg border-[#c8c8c8] text-[#444] hover:bg-[#e4e4e4]'
-                        }`}
-                      >
-                        <span className="text-xs sm:text-sm">{budget}</span>
-                      </button>
-                    );
-                  })}
-                </div>
-              </div>
-            </div>
-          )}
-
-          {/* STEP 4: CONTACT & SUMMARY */}
-          {currentStep === 4 && (
-            <form onSubmit={handleSubmit} className="space-y-6 animate-in fade-in duration-200">
-              <div>
-                <h3 className="font-heading font-extrabold text-xl text-[#18181b] mb-1">
-                  Kontaktní údaje a odeslání specifikace
-                </h3>
-                <p className="text-xs sm:text-sm text-[#555]">
-                  Kam vám mohu zaslat úvodní rozbor a návrh termínu?
-                </p>
-              </div>
-
-              {/* Summary of choices */}
-              <div className="p-4 bg-loyo-bar border border-[#c2c2c2] text-xs space-y-1 text-[#333]">
-                <div>
-                  <strong>Vybraná oblast:</strong>{' '}
-                  <span className="font-bold text-[#18181b]">
-                    {selectedService === 'fullstack' && '01. Vývoj aplikace (Fullstack - Modrá)'}
-                    {selectedService === 'automation' && '02. Automatizace procesů & ekosystém (Hořčicová)'}
-                    {selectedService === 'web-branding' && '03. Tvorba webů, restyling & logo (Červená)'}
-                    {selectedService === 'consultation' && '04. Odborná osobní konzultace (Strategie)'}
-                  </span>
-                </div>
-                {formData.projectScope && (
-                  <div>
-                    <strong>Typ projektu / záměr:</strong> {formData.projectScope}
+                    <h3 className="font-heading font-extrabold text-2xl text-[#18181b]">
+                      Poptávka byla úspěšně odeslána!
+                    </h3>
+                    <p className="text-xs sm:text-sm text-[#555] max-w-lg mx-auto leading-relaxed">
+                      Děkuji za vyplnění specifikace,{' '}
+                      <span className="text-[#18181b] font-semibold">{submittedData.name}</span>.
+                      Vaše zadání podrobně zanalyzuji a do 24 hodin se vám ozvu na{' '}
+                      <span className="font-mono text-loyo-blue font-bold">
+                        {submittedData.email}
+                      </span>{' '}
+                      s úvodním rozborem a návrhem termínu.
+                    </p>
                   </div>
-                )}
-                {formData.consultationFormat && selectedService === 'consultation' && (
-                  <div>
-                    <strong>Forma setkání:</strong> {formData.consultationFormat}
+
+                  <div className="flex flex-wrap items-center justify-center gap-3 pt-4">
+                    <button
+                      type="button"
+                      onClick={copySummaryText}
+                      className="px-4 py-2.5 bg-loyo-bar hover:bg-[#d0d0d0] border border-[#c2c2c2] text-[#18181b] text-xs font-bold uppercase tracking-wider flex items-center gap-2 cursor-pointer"
+                    >
+                      <Copy className="w-3.5 h-3.5" />
+                      <span>{copied ? 'Zkopírováno!' : 'Zkopírovat shrnutí'}</span>
+                    </button>
+
+                    <button
+                      type="button"
+                      onClick={onClose}
+                      className="px-5 py-2.5 bg-[#18181b] hover:bg-loyo-blue text-white text-xs font-bold uppercase tracking-wider cursor-pointer"
+                    >
+                      Zavřít dotazník
+                    </button>
                   </div>
-                )}
-                {formData.securityOptions.length > 0 && (
-                  <div>
-                    <strong>Zabezpečení:</strong> {formData.securityOptions.join(', ')}
-                  </div>
-                )}
-              </div>
-
-              {/* Input fields */}
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 text-xs">
-                <div>
-                  <label className="block text-[#18181b] font-semibold mb-1">
-                    Jméno a příjmení *
-                  </label>
-                  <input
-                    type="text"
-                    required
-                    value={formData.name}
-                    onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-                    placeholder="např. Jan Novák"
-                    className="w-full px-3.5 py-2.5 bg-loyo-bg border border-[#c8c8c8] text-[#18181b] focus:outline-none focus:border-[#18181b]"
-                  />
                 </div>
-
-                <div>
-                  <label className="block text-[#18181b] font-semibold mb-1">
-                    E-mailová adresa *
-                  </label>
-                  <input
-                    type="email"
-                    required
-                    value={formData.email}
-                    onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-                    placeholder="jan@firma.cz"
-                    className="w-full px-3.5 py-2.5 bg-loyo-bg border border-[#c8c8c8] text-[#18181b] focus:outline-none focus:border-[#18181b]"
-                  />
-                </div>
-
-                <div>
-                  <label className="block text-[#18181b] font-semibold mb-1">
-                    Telefonní číslo (volitelné)
-                  </label>
-                  <input
-                    type="tel"
-                    value={formData.phone}
-                    onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
-                    placeholder="+420 777 000 000"
-                    className="w-full px-3.5 py-2.5 bg-loyo-bg border border-[#c8c8c8] text-[#18181b] focus:outline-none focus:border-[#18181b]"
-                  />
-                </div>
-
-                <div>
-                  <label className="block text-[#18181b] font-semibold mb-1">
-                    Společnost / Projekt
-                  </label>
-                  <input
-                    type="text"
-                    value={formData.company}
-                    onChange={(e) => setFormData({ ...formData, company: e.target.value })}
-                    placeholder="např. Novák & Partneři s.r.o."
-                    className="w-full px-3.5 py-2.5 bg-loyo-bg border border-[#c8c8c8] text-[#18181b] focus:outline-none focus:border-[#18181b]"
-                  />
-                </div>
-              </div>
-
-              <div>
-                <label className="block text-[#18181b] font-semibold mb-1 text-xs">
-                  Doplňující poznámka, odkaz na stávající web nebo specifické přání
-                </label>
-                <textarea
-                  rows={3}
-                  value={formData.notes}
-                  onChange={(e) => setFormData({ ...formData, notes: e.target.value })}
-                  placeholder="Popište cokoliv dalšího, co je pro vás podstatné..."
-                  className="w-full px-3.5 py-2.5 bg-loyo-bg border border-[#c8c8c8] text-xs text-[#18181b] focus:outline-none focus:border-[#18181b]"
-                />
-              </div>
-
-              <div className="pt-2">
-                <button
-                  type="submit"
-                  className="w-full py-3.5 bg-[#18181b] hover:bg-loyo-blue text-white font-bold text-xs uppercase tracking-widest flex items-center justify-center gap-2 cursor-pointer shadow-xs transition-colors"
-                >
-                  <Send className="w-4 h-4" />
-                  <span>Nezávazně odeslat specifikaci projektu</span>
-                </button>
-              </div>
-            </form>
-          )}
-
-          {/* STEP 5: SUCCESS */}
-          {currentStep === 5 && submittedData && (
-            <div className="text-center py-8 space-y-6 animate-in zoom-in-95 duration-200">
-              <div className="w-16 h-16 mx-auto bg-[#18181b] text-white flex items-center justify-center">
-                <CheckCircle2 className="w-8 h-8 text-loyo-mustard" />
-              </div>
-
-              <div className="space-y-2">
-                <span className="font-mono text-xs font-bold uppercase tracking-wider text-loyo-blue">
-                  Kód poptávky: #{submittedData.id}
-                </span>
-                <h3 className="font-heading font-extrabold text-2xl text-[#18181b]">
-                  Poptávka byla úspěšně odeslána!
-                </h3>
-                <p className="text-xs sm:text-sm text-[#555] max-w-lg mx-auto leading-relaxed">
-                  Děkuji za vyplnění specifikace, <span className="text-[#18181b] font-semibold">{submittedData.name}</span>. Vaše zadání podrobně zanalyzuji a do 24 hodin se vám ozvu na <span className="font-mono text-loyo-blue font-bold">{submittedData.email}</span> s úvodním rozborem a návrhem termínu.
-                </p>
-              </div>
-
-              <div className="flex flex-wrap items-center justify-center gap-3 pt-4">
-                <button
-                  type="button"
-                  onClick={copySummaryText}
-                  className="px-4 py-2.5 bg-loyo-bar hover:bg-[#d0d0d0] border border-[#c2c2c2] text-[#18181b] text-xs font-bold uppercase tracking-wider flex items-center gap-2 cursor-pointer"
-                >
-                  <Copy className="w-3.5 h-3.5" />
-                  <span>{copied ? 'Zkopírováno!' : 'Zkopírovat shrnutí'}</span>
-                </button>
-
-                <button
-                  type="button"
-                  onClick={onClose}
-                  className="px-5 py-2.5 bg-[#18181b] hover:bg-loyo-blue text-white text-xs font-bold uppercase tracking-wider cursor-pointer"
-                >
-                  Zavřít dotazník
-                </button>
-              </div>
-            </div>
-          )}
-          </>
+              )}
+            </>
           )}
         </div>
 

@@ -1,24 +1,24 @@
 import React, { useState, useEffect } from 'react';
-import { 
-  ArrowLeft, 
-  Workflow, 
-  Code2, 
-  Palette, 
-  Coffee, 
-  Zap, 
-  ShieldCheck, 
-  Check, 
-  Clock, 
-  Layers, 
-  Database, 
-  KeyRound, 
-  Smartphone, 
-  Mail, 
-  Wifi, 
+import {
+  ArrowLeft,
+  Workflow,
+  Code2,
+  Palette,
+  Coffee,
+  Zap,
+  ShieldCheck,
+  Check,
+  Clock,
+  Layers,
+  Database,
+  KeyRound,
+  Smartphone,
+  Mail,
+  Wifi,
   Gamepad2,
   Gauge,
   Sparkles,
-  ChevronDown
+  ChevronDown,
 } from 'lucide-react';
 import { ServiceId } from '../types';
 import { BigSectionLetter } from './BigSectionLetter';
@@ -31,7 +31,7 @@ interface DedicatedServicePageProps {
 
 export const DedicatedServicePage: React.FC<DedicatedServicePageProps> = ({
   serviceId,
-  onBackToHome
+  onBackToHome,
 }) => {
   // Always scroll to top when page opens
   useEffect(() => {
@@ -66,7 +66,6 @@ export const DedicatedServicePage: React.FC<DedicatedServicePageProps> = ({
   return (
     <div className="min-h-screen bg-transparent text-[#18181b] pt-20 pb-28">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        
         {/* Top Breadcrumb Bar */}
         <div className="flex items-center justify-between gap-4 py-4 mb-6 border-b border-[#c8c8c8]">
           <button
@@ -105,7 +104,6 @@ export const DedicatedServicePage: React.FC<DedicatedServicePageProps> = ({
 
             {/* In-depth feature grid */}
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-              
               {/* Card 1: Rozsah */}
               <div className="bg-loyo-bar border-2 border-[#18181b] p-6 shadow-xs">
                 <div className="flex items-center gap-2 text-xs font-mono font-bold uppercase text-loyo-blue mb-2">
@@ -116,7 +114,9 @@ export const DedicatedServicePage: React.FC<DedicatedServicePageProps> = ({
                   Od 1 procesu po celou firmu
                 </h3>
                 <p className="text-xs text-[#444] mt-2.5 leading-relaxed">
-                  Začněte klidně jednoduchou synchronizací objednávek nebo skladových zásob. Kdykoliv později lze architekturu rozšířit na kompletní automatizovaný ekosystém bez nutnosti přepisovat kód.
+                  Začněte klidně jednoduchou synchronizací objednávek nebo skladových zásob.
+                  Kdykoliv později lze architekturu rozšířit na kompletní automatizovaný ekosystém
+                  bez nutnosti přepisovat kód.
                 </p>
                 <div className="mt-4 pt-3 border-t border-[#c2c2c2] text-[11px] font-mono text-[#555]">
                   ✓ REST API • Webhooks • Integromat/Make • Custom Node skripty
@@ -133,7 +133,8 @@ export const DedicatedServicePage: React.FC<DedicatedServicePageProps> = ({
                   Automatické zpracování dat
                 </h3>
                 <p className="text-xs text-[#444] mt-2.5 leading-relaxed">
-                  Zapojte moderní jazykové modely pro automatické třídění e-mailů, vytěžování faktur, generování souhrnů schůzek a asistenci vašim operátorům v reálném čase.
+                  Zapojte moderní jazykové modely pro automatické třídění e-mailů, vytěžování
+                  faktur, generování souhrnů schůzek a asistenci vašim operátorům v reálném čase.
                 </p>
                 <div className="mt-4 pt-3 border-t border-[#c2c2c2] text-[11px] font-mono text-[#555]">
                   ✓ Vytěžování PDF • Chytrá kategorizace • 0 chyb v datech
@@ -150,13 +151,13 @@ export const DedicatedServicePage: React.FC<DedicatedServicePageProps> = ({
                   100% Nezávislost & vlastnictví
                 </h3>
                 <p className="text-xs text-[#444] mt-2.5 leading-relaxed">
-                  Automatizační skripty a integrační můstky běží na vaší infrastruktuře. Žádné závislosti na drahých předplatných a nečekaných výpadcích cizích platforem.
+                  Automatizační skripty a integrační můstky běží na vaší infrastruktuře. Žádné
+                  závislosti na drahých předplatných a nečekaných výpadcích cizích platforem.
                 </p>
                 <div className="mt-4 pt-3 border-t border-[#c2c2c2] text-[11px] font-mono text-[#555]">
                   ✓ Kompletní dokumentace • Monitoring • Zaškolení týmu
                 </div>
               </div>
-
             </div>
 
             {/* Interactive Time & Cost Savings Calculator */}
@@ -169,7 +170,8 @@ export const DedicatedServicePage: React.FC<DedicatedServicePageProps> = ({
                   Kolik hodin a peněz ušetříte správnou automatizací?
                 </h3>
                 <p className="text-xs sm:text-sm text-[#444] mt-1 leading-relaxed">
-                  Posuňte táhla níže a zjistěte, kolik času a firemních nákladů ušetříte eliminací manuální rutiny.
+                  Posuňte táhla níže a zjistěte, kolik času a firemních nákladů ušetříte eliminací
+                  manuální rutiny.
                 </p>
               </div>
 
@@ -179,7 +181,9 @@ export const DedicatedServicePage: React.FC<DedicatedServicePageProps> = ({
                   <div>
                     <div className="flex justify-between text-xs font-mono font-bold text-[#18181b] mb-1">
                       <span>UŠETŘENÉ HODINY TÝDNĚ PRO CELÝ TÝM:</span>
-                      <span className="text-loyo-blue text-sm">{hoursSavedPerWeek} hodin / týdně</span>
+                      <span className="text-loyo-blue text-sm">
+                        {hoursSavedPerWeek} hodin / týdně
+                      </span>
                     </div>
                     <input
                       type="range"
@@ -240,7 +244,8 @@ export const DedicatedServicePage: React.FC<DedicatedServicePageProps> = ({
                   </div>
 
                   <p className="text-[11px] text-[#555] italic">
-                    Investice do automatizace se ve většině případů zaplatí již během prvních 2 až 3 měsíců.
+                    Investice do automatizace se ve většině případů zaplatí již během prvních 2 až 3
+                    měsíců.
                   </p>
                 </div>
               </div>
@@ -256,7 +261,8 @@ export const DedicatedServicePage: React.FC<DedicatedServicePageProps> = ({
                   Zakázkové metody autentizace a přihlašování
                 </h3>
                 <p className="text-xs sm:text-sm text-[#444] mt-1 max-w-3xl leading-relaxed">
-                  Vyzkoušejte si níže funkční prototypy jednotlivých metod přihlášení, které vám mohu do systému zakomponovat.
+                  Vyzkoušejte si níže funkční prototypy jednotlivých metod přihlášení, které vám
+                  mohu do systému zakomponovat.
                 </p>
               </div>
 
@@ -266,7 +272,9 @@ export const DedicatedServicePage: React.FC<DedicatedServicePageProps> = ({
                   type="button"
                   onClick={() => setSecurityTab('phone')}
                   className={`px-3.5 py-2 font-mono text-xs font-bold uppercase transition-colors cursor-pointer flex items-center gap-1.5 ${
-                    securityTab === 'phone' ? 'bg-loyo-blue text-white' : 'bg-loyo-bg text-[#444] hover:bg-[#e0e0e0]'
+                    securityTab === 'phone'
+                      ? 'bg-loyo-blue text-white'
+                      : 'bg-loyo-bg text-[#444] hover:bg-[#e0e0e0]'
                   }`}
                 >
                   <Smartphone className="w-3.5 h-3.5" />
@@ -277,7 +285,9 @@ export const DedicatedServicePage: React.FC<DedicatedServicePageProps> = ({
                   type="button"
                   onClick={() => setSecurityTab('email')}
                   className={`px-3.5 py-2 font-mono text-xs font-bold uppercase transition-colors cursor-pointer flex items-center gap-1.5 ${
-                    securityTab === 'email' ? 'bg-loyo-blue text-white' : 'bg-loyo-bg text-[#444] hover:bg-[#e0e0e0]'
+                    securityTab === 'email'
+                      ? 'bg-loyo-blue text-white'
+                      : 'bg-loyo-bg text-[#444] hover:bg-[#e0e0e0]'
                   }`}
                 >
                   <Mail className="w-3.5 h-3.5" />
@@ -288,7 +298,9 @@ export const DedicatedServicePage: React.FC<DedicatedServicePageProps> = ({
                   type="button"
                   onClick={() => setSecurityTab('nfc')}
                   className={`px-3.5 py-2 font-mono text-xs font-bold uppercase transition-colors cursor-pointer flex items-center gap-1.5 ${
-                    securityTab === 'nfc' ? 'bg-loyo-blue text-white' : 'bg-loyo-bg text-[#444] hover:bg-[#e0e0e0]'
+                    securityTab === 'nfc'
+                      ? 'bg-loyo-blue text-white'
+                      : 'bg-loyo-bg text-[#444] hover:bg-[#e0e0e0]'
                   }`}
                 >
                   <Wifi className="w-3.5 h-3.5" />
@@ -299,7 +311,9 @@ export const DedicatedServicePage: React.FC<DedicatedServicePageProps> = ({
                   type="button"
                   onClick={() => setSecurityTab('game')}
                   className={`px-3.5 py-2 font-mono text-xs font-bold uppercase transition-colors cursor-pointer flex items-center gap-1.5 ${
-                    securityTab === 'game' ? 'bg-loyo-blue text-white' : 'bg-loyo-bg text-[#444] hover:bg-[#e0e0e0]'
+                    securityTab === 'game'
+                      ? 'bg-loyo-blue text-white'
+                      : 'bg-loyo-bg text-[#444] hover:bg-[#e0e0e0]'
                   }`}
                 >
                   <Gamepad2 className="w-3.5 h-3.5" />
@@ -349,7 +363,8 @@ export const DedicatedServicePage: React.FC<DedicatedServicePageProps> = ({
                       Jednorázový magický link bez hesla
                     </span>
                     <p className="text-xs text-[#555]">
-                      Uživatel nemusí pamatovat žádné heslo. Kliknutím níže simulujete doručení a autorizaci linku:
+                      Uživatel nemusí pamatovat žádné heslo. Kliknutím níže simulujete doručení a
+                      autorizaci linku:
                     </p>
                     <button
                       type="button"
@@ -410,7 +425,9 @@ export const DedicatedServicePage: React.FC<DedicatedServicePageProps> = ({
                             setGameVerified(shape === 'ČTVEREC');
                           }}
                           className={`px-3 py-2 border text-xs font-mono font-bold cursor-pointer ${
-                            gameCode === shape ? 'bg-loyo-blue text-white border-loyo-blue' : 'bg-white text-[#333] border-[#c2c2c2]'
+                            gameCode === shape
+                              ? 'bg-loyo-blue text-white border-loyo-blue'
+                              : 'bg-white text-[#333] border-[#c2c2c2]'
                           }`}
                         >
                           {shape}
@@ -457,7 +474,8 @@ export const DedicatedServicePage: React.FC<DedicatedServicePageProps> = ({
                   100% Nezávislost & vlastnictví
                 </h3>
                 <p className="text-xs text-[#444] mt-2.5 leading-relaxed">
-                  Žádný vendor lock-in. Všechny zdrojové kódy, repozitáře, databázové struktury i přístupy jsou vaším výhradním majetkem od prvního commitu.
+                  Žádný vendor lock-in. Všechny zdrojové kódy, repozitáře, databázové struktury i
+                  přístupy jsou vaším výhradním majetkem od prvního commitu.
                 </p>
                 <div className="mt-4 pt-3 border-t border-[#c2c2c2] text-[11px] font-mono text-[#555]">
                   ✓ TypeScript • React / Node.js • Nezávislost na platformách
@@ -473,7 +491,8 @@ export const DedicatedServicePage: React.FC<DedicatedServicePageProps> = ({
                   Architektura na míru
                 </h3>
                 <p className="text-xs text-[#444] mt-2.5 leading-relaxed">
-                  Promyšlený relační databázový model, bleskové API, cachování dotazů a bezpečnostní vrstvy, které s přehledem obslouží tisíce aktivních uživatelů.
+                  Promyšlený relační databázový model, bleskové API, cachování dotazů a bezpečnostní
+                  vrstvy, které s přehledem obslouží tisíce aktivních uživatelů.
                 </p>
                 <div className="mt-4 pt-3 border-t border-[#c2c2c2] text-[11px] font-mono text-[#555]">
                   ✓ SQL / PostgreSQL • JWT ověření • Real-time WebSockets
@@ -489,7 +508,8 @@ export const DedicatedServicePage: React.FC<DedicatedServicePageProps> = ({
                   Plynulé ovládání bez čekání
                 </h3>
                 <p className="text-xs text-[#444] mt-2.5 leading-relaxed">
-                  Uživatelské rozhraní stavěné na míru vašim zaměstnancům nebo klientům. Žádné zbytečné klikání navíc – vše je logické, rychlé a responzivní na každém zařízení.
+                  Uživatelské rozhraní stavěné na míru vašim zaměstnancům nebo klientům. Žádné
+                  zbytečné klikání navíc – vše je logické, rychlé a responzivní na každém zařízení.
                 </p>
                 <div className="mt-4 pt-3 border-t border-[#c2c2c2] text-[11px] font-mono text-[#555]">
                   ✓ Responzivní design • Okamžitá odezva • Role a oprávnění
@@ -513,19 +533,25 @@ export const DedicatedServicePage: React.FC<DedicatedServicePageProps> = ({
                   <thead>
                     <tr className="border-b-2 border-[#18181b] bg-loyo-bg">
                       <th className="p-3 uppercase text-[#666]">Vlastnost</th>
-                      <th className="p-3 uppercase text-[#8a6b28] font-black">LoYo Vývoj na míru</th>
+                      <th className="p-3 uppercase text-[#8a6b28] font-black">
+                        LoYo Vývoj na míru
+                      </th>
                       <th className="p-3 uppercase text-[#666]">Krabicové SaaS / No-Code</th>
                     </tr>
                   </thead>
                   <tbody className="divide-y divide-[#c2c2c2]">
                     <tr>
                       <td className="p-3 font-bold text-[#18181b]">Vlastnictví kódu</td>
-                      <td className="p-3 font-bold text-[#8a6b28]">100 % vaše výhradní vlastnictví</td>
+                      <td className="p-3 font-bold text-[#8a6b28]">
+                        100 % vaše výhradní vlastnictví
+                      </td>
                       <td className="p-3 text-[#777]">Pronájem, nemůžete kód exportovat</td>
                     </tr>
                     <tr>
                       <td className="p-3 font-bold text-[#18181b]">Měsíční licenční poplatky</td>
-                      <td className="p-3 font-bold text-emerald-700">0 Kč (pouze vaše levný hosting)</td>
+                      <td className="p-3 font-bold text-emerald-700">
+                        0 Kč (pouze vaše levný hosting)
+                      </td>
                       <td className="p-3 text-[#777]">Desítky tisíc ročně za uživatelské účty</td>
                     </tr>
                     <tr>
@@ -572,7 +598,8 @@ export const DedicatedServicePage: React.FC<DedicatedServicePageProps> = ({
                   Oživení zastaralého webu
                 </h3>
                 <p className="text-xs text-[#444] mt-2.5 leading-relaxed">
-                  Vezmeme váš stávající obsah a přetavíme ho do suverénní moderní podoby. Odstraníme balast, zrychlíme načítání a vytvoříme vizuál hodný roku 2026.
+                  Vezmeme váš stávající obsah a přetavíme ho do suverénní moderní podoby. Odstraníme
+                  balast, zrychlíme načítání a vytvoříme vizuál hodný roku 2026.
                 </p>
                 <div className="mt-4 pt-3 border-t border-[#c2c2c2] text-[11px] font-mono text-[#555]">
                   ✓ Zachování SEO pozic • Čistý kód • Moderní typografie
@@ -588,7 +615,8 @@ export const DedicatedServicePage: React.FC<DedicatedServicePageProps> = ({
                   Návrh přímo podle vaší vize
                 </h3>
                 <p className="text-xs text-[#444] mt-2.5 leading-relaxed">
-                  Žádné prefabrikované šablony z WordPressu, které mají stovky dalších webů. Vytvořím unikátní vizuální jazyk navržený od prvního pixelu přímo pro váš obor.
+                  Žádné prefabrikované šablony z WordPressu, které mají stovky dalších webů.
+                  Vytvořím unikátní vizuální jazyk navržený od prvního pixelu přímo pro váš obor.
                 </p>
                 <div className="mt-4 pt-3 border-t border-[#c2c2c2] text-[11px] font-mono text-[#555]">
                   ✓ Unikátní rozvržení • Vektorová loga • Přehledná hierarchie
@@ -604,7 +632,8 @@ export const DedicatedServicePage: React.FC<DedicatedServicePageProps> = ({
                   Plynulých 60 snímků za sekundu
                 </h3>
                 <p className="text-xs text-[#444] mt-2.5 leading-relaxed">
-                  Kinetické titulky, plynulé přechody sekcí a elegantní mikrointerakce při najetí myší. Web okamžitě upoutá a zanechá dojem špičkové řemeslné práce.
+                  Kinetické titulky, plynulé přechody sekcí a elegantní mikrointerakce při najetí
+                  myší. Web okamžitě upoutá a zanechá dojem špičkové řemeslné práce.
                 </p>
                 <div className="mt-4 pt-3 border-t border-[#c2c2c2] text-[11px] font-mono text-[#555]">
                   ✓ Náběh pod 0.8s • Skóre 95+ v PageSpeed • Mobilní optimalizace
@@ -641,7 +670,9 @@ export const DedicatedServicePage: React.FC<DedicatedServicePageProps> = ({
                   1 na 1 u kávy nebo videohovoru
                 </h3>
                 <p className="text-xs text-[#444] mt-2.5 leading-relaxed">
-                  Přímý kontakt bez projektových manažerů či obchodníků. Sejdeme se v příjemné kavárně nebo se spojíme přes Google Meet. Věcná diskuze zaměřená na konkrétní výsledky.
+                  Přímý kontakt bez projektových manažerů či obchodníků. Sejdeme se v příjemné
+                  kavárně nebo se spojíme přes Google Meet. Věcná diskuze zaměřená na konkrétní
+                  výsledky.
                 </p>
                 <div className="mt-4 pt-3 border-t border-[#c2c2c2] text-[11px] font-mono text-[#555]">
                   ✓ Praha & celá ČR • Flexibilní termíny • Férové jednání
@@ -657,7 +688,9 @@ export const DedicatedServicePage: React.FC<DedicatedServicePageProps> = ({
                   MVP plán před kódováním
                 </h3>
                 <p className="text-xs text-[#444] mt-2.5 leading-relaxed">
-                  Než začnete utrácet statisíce za nákladný vývoj, ověříme technickou proveditelnost. Navrhnu nejkratší a nejlevnější cestu k funkčnímu prvnímu prototypu.
+                  Než začnete utrácet statisíce za nákladný vývoj, ověříme technickou
+                  proveditelnost. Navrhnu nejkratší a nejlevnější cestu k funkčnímu prvnímu
+                  prototypu.
                 </p>
                 <div className="mt-4 pt-3 border-t border-[#c2c2c2] text-[11px] font-mono text-[#555]">
                   ✓ Eliminace slepých uliček • Sazba ~800 Kč/hod • Úspora peněz
@@ -673,7 +706,9 @@ export const DedicatedServicePage: React.FC<DedicatedServicePageProps> = ({
                   Plná podpora & zaškolení
                 </h3>
                 <p className="text-xs text-[#444] mt-2.5 leading-relaxed">
-                  Nezůstanete v nevědomosti. Vysvětlím vám, jak váš systém funguje, jak do něj bezpečně zapojit AI nástroje a jak jej udržovat bez nutnosti platit drahé externí agentury.
+                  Nezůstanete v nevědomosti. Vysvětlím vám, jak váš systém funguje, jak do něj
+                  bezpečně zapojit AI nástroje a jak jej udržovat bez nutnosti platit drahé externí
+                  agentury.
                 </p>
                 <div className="mt-4 pt-3 border-t border-[#c2c2c2] text-[11px] font-mono text-[#555]">
                   ✓ Architektonické schéma • Záznam hovoru • Písemný souhrn
@@ -705,7 +740,6 @@ export const DedicatedServicePage: React.FC<DedicatedServicePageProps> = ({
             Nahoru ↑
           </button>
         </div>
-
       </div>
     </div>
   );

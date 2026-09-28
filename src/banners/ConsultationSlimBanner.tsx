@@ -10,12 +10,13 @@ export const ConsultationSlimBanner: React.FC<ConsultationSlimBannerProps> = ({
   onOpenQuestionnaireForService,
 }) => {
   return (
-    <section id="konzultace-banner" className="w-full max-w-6xl mx-auto px-4 sm:px-6 pt-0 pb-10 select-none">
+    <section
+      id="konzultace-banner"
+      className="w-full max-w-6xl mx-auto px-4 sm:px-6 pt-0 pb-10 select-none"
+    >
       <div className="group relative bg-white border-2 border-[#18181b] rounded-3xl p-5 sm:p-6 lg:p-7 shadow-[6px_6px_0px_#18181b] hover:shadow-[8px_8px_0px_#18181b] hover:-translate-y-0.5 transition-all duration-200">
-        
         {/* HLAVNÍ HORIZONTÁLNÍ ÚZKÝ ROZKLAD */}
         <div className="flex flex-col lg:flex-row items-stretch lg:items-center justify-between gap-5 sm:gap-6">
-          
           {/* LEVÁ ČÁST: SVISLÝ / KOMPAKTNÍ NADPIS A IKONKA */}
           <div className="flex items-center gap-4 sm:gap-5 shrink-0 border-b lg:border-b-0 lg:border-r-2 border-[#18181b]/15 pb-4 lg:pb-0 lg:pr-6">
             {/* Kulatá ikona konzultace */}
@@ -46,7 +47,8 @@ export const ConsultationSlimBanner: React.FC<ConsultationSlimBannerProps> = ({
           {/* STŘEDNÍ ČÁST: POPIS + 3 HORIZONTÁLNÍ PRVKY */}
           <div className="flex-1 flex flex-col justify-center space-y-2.5">
             <p className="text-xs sm:text-sm font-heading font-medium text-[#3f3f46] leading-snug">
-              Nezávislé technologické posouzení vašeho nápadu u dobré kávy nebo přes videohovor. Bez omáčky a žargonu.
+              Nezávislé technologické posouzení vašeho nápadu u dobré kávy nebo přes videohovor. Bez
+              omáčky a žargonu.
             </p>
 
             <div className="flex flex-wrap items-center gap-2">
@@ -82,9 +84,7 @@ export const ConsultationSlimBanner: React.FC<ConsultationSlimBannerProps> = ({
               <ArrowRight className="w-4 h-4 stroke-[2.5] group-hover:translate-x-1 transition-transform" />
             </button>
           </div>
-
         </div>
-
       </div>
     </section>
   );

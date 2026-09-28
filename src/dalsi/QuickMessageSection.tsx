@@ -6,7 +6,7 @@ export const QuickMessageSection: React.FC = () => {
   const [formData, setFormData] = useState({
     name: '',
     contact: '',
-    message: ''
+    message: '',
   });
 
   const handleSubmit = (e: React.FormEvent) => {
@@ -16,9 +16,11 @@ export const QuickMessageSection: React.FC = () => {
   };
 
   return (
-    <section id="zprava" className="py-14 sm:py-16 bg-transparent text-[#18181b] border-b border-[#d0d0d0]/60">
+    <section
+      id="zprava"
+      className="py-14 sm:py-16 bg-transparent text-[#18181b] border-b border-[#d0d0d0]/60"
+    >
       <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
-        
         {/* Section Tag & Heading */}
         <div className="text-center mb-8">
           <div className="inline-flex items-center gap-2 px-3 py-1 bg-loyo-bar border border-[#c2c2c2] text-[#18181b] text-xs font-mono font-bold uppercase tracking-wider mb-2">
@@ -32,9 +34,9 @@ export const QuickMessageSection: React.FC = () => {
           </p>
         </div>
 
-               {/* Minimalist Direct Message Box */}
+        {/* Minimalist Direct Message Box */}
         <div className="bg-loyo-bar border-2 border-[#18181b] p-6 sm:p-8 shadow-sm">
-          {submitted? (
+          {submitted ? (
             <div className="py-8 text-center space-y-4">
               <div className="w-14 h-14 bg-emerald-600 text-white rounded-full flex items-center justify-center mx-auto shadow-md">
                 <CheckCircle2 className="w-8 h-8" />
@@ -43,7 +45,8 @@ export const QuickMessageSection: React.FC = () => {
                 Zpráva byla úspěšně odeslána!
               </h3>
               <p className="text-sm text-[#444] max-w-md mx-auto">
-                Děkuji vám, <strong>{formData.name}</strong>. Podívám se na vaše zadání a odpovím vám na <strong>{formData.contact}</strong> nejpozději do 24 hodin.
+                Děkuji vám, <strong>{formData.name}</strong>. Podívám se na vaše zadání a odpovím
+                vám na <strong>{formData.contact}</strong> nejpozději do 24 hodin.
               </p>
               <div className="pt-3">
                 <button
@@ -63,7 +66,10 @@ export const QuickMessageSection: React.FC = () => {
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 {/* Jméno */}
                 <div className="space-y-1">
-                  <label htmlFor="quick-name" className="block text-xs font-mono font-bold uppercase text-[#333]">
+                  <label
+                    htmlFor="quick-name"
+                    className="block text-xs font-mono font-bold uppercase text-[#333]"
+                  >
                     Vaše jméno / Firma *
                   </label>
                   <input
@@ -71,7 +77,7 @@ export const QuickMessageSection: React.FC = () => {
                     type="text"
                     required
                     value={formData.name}
-                    onChange={(e) => setFormData(prev => ({...prev, name: e.target.value }))}
+                    onChange={(e) => setFormData((prev) => ({ ...prev, name: e.target.value }))}
                     placeholder="např. Jan Novák"
                     className="w-full px-3 py-2 bg-loyo-bg border border-[#c2c2c2] focus:border-[#18181b] focus:outline-hidden text-sm font-sans"
                   />
@@ -79,7 +85,10 @@ export const QuickMessageSection: React.FC = () => {
 
                 {/* E-mail nebo Telefon */}
                 <div className="space-y-1">
-                  <label htmlFor="quick-contact" className="block text-xs font-mono font-bold uppercase text-[#333]">
+                  <label
+                    htmlFor="quick-contact"
+                    className="block text-xs font-mono font-bold uppercase text-[#333]"
+                  >
                     Váš e-mail nebo telefon *
                   </label>
                   <input
@@ -87,7 +96,7 @@ export const QuickMessageSection: React.FC = () => {
                     type="text"
                     required
                     value={formData.contact}
-                    onChange={(e) => setFormData(prev => ({...prev, contact: e.target.value }))}
+                    onChange={(e) => setFormData((prev) => ({ ...prev, contact: e.target.value }))}
                     placeholder="email@domena.cz nebo +420..."
                     className="w-full px-3 py-2 bg-loyo-bg border border-[#c2c2c2] focus:border-[#18181b] focus:outline-hidden text-sm font-sans"
                   />
@@ -96,7 +105,10 @@ export const QuickMessageSection: React.FC = () => {
 
               {/* Zpráva */}
               <div className="space-y-1">
-                <label htmlFor="quick-message" className="block text-xs font-mono font-bold uppercase text-[#333]">
+                <label
+                  htmlFor="quick-message"
+                  className="block text-xs font-mono font-bold uppercase text-[#333]"
+                >
                   O čem je váš projekt? *
                 </label>
                 <textarea
@@ -104,7 +116,7 @@ export const QuickMessageSection: React.FC = () => {
                   required
                   rows={4}
                   value={formData.message}
-                  onChange={(e) => setFormData(prev => ({...prev, message: e.target.value }))}
+                  onChange={(e) => setFormData((prev) => ({ ...prev, message: e.target.value }))}
                   placeholder="Stručně popište, co potřebujete vytvořit, automatizovat, vylepšit nebo zkonzultovat..."
                   className="w-full px-3 py-2 bg-loyo-bg border border-[#c2c2c2] focus:border-[#18181b] focus:outline-hidden text-sm font-sans resize-none"
                 />
@@ -112,7 +124,10 @@ export const QuickMessageSection: React.FC = () => {
 
               {/* Zpráva */}
               <div className="space-y-1">
-                <label htmlFor="quick-message" className="block text-xs font-mono font-bold uppercase text-[#333]">
+                <label
+                  htmlFor="quick-message"
+                  className="block text-xs font-mono font-bold uppercase text-[#333]"
+                >
                   O čem je váš projekt? *
                 </label>
                 <textarea
@@ -120,7 +135,7 @@ export const QuickMessageSection: React.FC = () => {
                   required
                   rows={4}
                   value={formData.message}
-                        onChange={(e) => setFormData(prev => ({...prev, message: e.target.value }))}
+                  onChange={(e) => setFormData((prev) => ({ ...prev, message: e.target.value }))}
                   placeholder="Stručně popište, co potřebujete vytvořit, automatizovat, vylepšit nebo zkonzultovat..."
                   className="w-full px-3 py-2 bg-loyo-bg border border-[#c2c2c2] focus:border-[#18181b] focus:outline-hidden text-sm font-sans resize-none"
                 />
@@ -143,7 +158,6 @@ export const QuickMessageSection: React.FC = () => {
             </form>
           )}
         </div>
-
       </div>
     </section>
   );

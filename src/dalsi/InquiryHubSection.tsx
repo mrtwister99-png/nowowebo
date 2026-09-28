@@ -23,7 +23,7 @@ export const InquiryHubSection: React.FC<InquiryHubSectionProps> = () => {
     email: '',
     phone: '',
     company: '',
-    notes: ''
+    notes: '',
   });
 
   const [submitted, setSubmitted] = useState<InquiredSubmission | null>(null);
@@ -31,7 +31,7 @@ export const InquiryHubSection: React.FC<InquiryHubSectionProps> = () => {
 
   const handleServiceTabChange = (sId: ServiceId) => {
     setSelectedService(sId);
-    setFormData(prev => ({
+    setFormData((prev) => ({
       ...prev,
       serviceId: sId,
       projectScope: QUESTIONNAIRE_CONFIGS[sId].scopeOptions[0],
@@ -39,43 +39,43 @@ export const InquiryHubSection: React.FC<InquiryHubSectionProps> = () => {
       securityOptions: [],
       brandingOptions: [],
       budgetRange: QUESTIONNAIRE_CONFIGS[sId].budgets[1] || '',
-      timeline: QUESTIONNAIRE_CONFIGS[sId].timelines[1] || ''
+      timeline: QUESTIONNAIRE_CONFIGS[sId].timelines[1] || '',
     }));
     setSubmitted(null);
   };
 
   const toggleFeature = (feat: string) => {
-    setFormData(prev => {
+    setFormData((prev) => {
       const exists = prev.selectedFeatures.includes(feat);
       return {
         ...prev,
         selectedFeatures: exists
-          ? prev.selectedFeatures.filter(f => f !== feat)
-          : [...prev.selectedFeatures, feat]
+          ? prev.selectedFeatures.filter((f) => f !== feat)
+          : [...prev.selectedFeatures, feat],
       };
     });
   };
 
   const toggleSecurity = (sec: string) => {
-    setFormData(prev => {
+    setFormData((prev) => {
       const exists = prev.securityOptions.includes(sec);
       return {
         ...prev,
         securityOptions: exists
-          ? prev.securityOptions.filter(s => s !== sec)
-          : [...prev.securityOptions, sec]
+          ? prev.securityOptions.filter((s) => s !== sec)
+          : [...prev.securityOptions, sec],
       };
     });
   };
 
   const toggleBranding = (b: string) => {
-    setFormData(prev => {
+    setFormData((prev) => {
       const exists = prev.brandingOptions.includes(b);
       return {
         ...prev,
         brandingOptions: exists
-          ? prev.brandingOptions.filter(item => item !== b)
-          : [...prev.brandingOptions, b]
+          ? prev.brandingOptions.filter((item) => item !== b)
+          : [...prev.brandingOptions, b],
       };
     });
   };
@@ -95,9 +95,9 @@ export const InquiryHubSection: React.FC<InquiryHubSectionProps> = () => {
         month: 'long',
         year: 'numeric',
         hour: '2-digit',
-        minute: '2-digit'
+        minute: '2-digit',
       }),
-      status: 'new'
+      status: 'new',
     };
 
     try {
@@ -143,7 +143,8 @@ Zpráva: ${submitted.notes || '-'}
             Vyplňte dotazník přímo zde.
           </h2>
           <p className="text-base sm:text-lg text-[#D9EAF5] opacity-80 border-l-2 border-[#CE9B01] pl-6 leading-relaxed">
-            Vyberte si oblast, zvolte požadované parametry a získejte promyšlenou nabídku bez zdlouhavého telefonování.
+            Vyberte si oblast, zvolte požadované parametry a získejte promyšlenou nabídku bez
+            zdlouhavého telefonování.
           </p>
         </div>
 
@@ -225,10 +226,12 @@ Zpráva: ${submitted.notes || '-'}
                 <div>
                   <label className="text-xs font-mono uppercase tracking-widest text-[#CE9B01] font-bold flex items-center gap-1.5 mb-3">
                     <Shield className="w-4 h-4" />
-                    <span>2. Preferovaný způsob zabezpečení & přihlášení (telefon, NFC, email, hra...):</span>
+                    <span>
+                      2. Preferovaný způsob zabezpečení & přihlášení (telefon, NFC, email, hra...):
+                    </span>
                   </label>
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
-                      {QUESTIONNAIRE_CONFIGS.automation.securityOptions.map((sec, i) => {
+                    {QUESTIONNAIRE_CONFIGS.automation.securityOptions.map((sec, i) => {
                       const active = formData.securityOptions.includes(sec);
                       return (
                         <button
@@ -237,14 +240,16 @@ Zpráva: ${submitted.notes || '-'}
                           onClick={() => toggleSecurity(sec)}
                           className={`p-3 rounded-sm border text-left flex items-center justify-between text-xs transition-all cursor-pointer ${
                             active
-                             ? 'bg-[#000182] border-[#CE9B01] text-[#FFFFFF]'
+                              ? 'bg-[#000182] border-[#CE9B01] text-[#FFFFFF]'
                               : 'bg-[#050058]/60 border-white/10 text-[#D9EAF5]/80 hover:border-white/30'
                           }`}
                         >
                           <span>{sec}</span>
                           <span
                             className={`w-3.5 h-3.5 rounded-sm border flex items-center justify-center shrink-0 ${
-                              active? 'bg-[#CE9B01] border-[#CE9B01] text-[#050058]' : 'border-white/20'
+                              active
+                                ? 'bg-[#CE9B01] border-[#CE9B01] text-[#050058]'
+                                : 'border-white/20'
                             }`}
                           >
                             {active && <Check className="w-2.5 h-2.5 stroke-3" />}
@@ -259,10 +264,12 @@ Zpráva: ${submitted.notes || '-'}
               {/* Features / Capabilities Checklist */}
               <div>
                 <label className="text-xs font-mono uppercase tracking-widest text-[#CE9B01] font-bold block mb-3">
-                  {selectedService === 'automation' ? '3. Procesy k automatizaci:' : '2. Požadované funkce a součásti:'}
+                  {selectedService === 'automation'
+                    ? '3. Procesy k automatizaci:'
+                    : '2. Požadované funkce a součásti:'}
                 </label>
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
-                                   {selectedService === 'fullstack' &&
+                  {selectedService === 'fullstack' &&
                     QUESTIONNAIRE_CONFIGS.fullstack.featureOptions.map((feat, i) => {
                       const active = formData.selectedFeatures.includes(feat);
                       return (
@@ -272,14 +279,16 @@ Zpráva: ${submitted.notes || '-'}
                           onClick={() => toggleFeature(feat)}
                           className={`p-3 rounded-sm border text-left flex items-center justify-between text-xs transition-all cursor-pointer ${
                             active
-                             ? 'bg-[#000182] border-[#CE9B01] text-[#FFFFFF]'
+                              ? 'bg-[#000182] border-[#CE9B01] text-[#FFFFFF]'
                               : 'bg-[#050058]/60 border-white/10 text-[#D9EAF5]/80 hover:border-white/30'
                           }`}
                         >
                           <span>{feat}</span>
                           <span
                             className={`w-3.5 h-3.5 rounded-sm border flex items-center justify-center shrink-0 ${
-                              active? 'bg-[#CE9B01] border-[#CE9B01] text-[#050058]' : 'border-white/20'
+                              active
+                                ? 'bg-[#CE9B01] border-[#CE9B01] text-[#050058]'
+                                : 'border-white/20'
                             }`}
                           >
                             {active && <Check className="w-2.5 h-2.5 stroke-3" />}
@@ -288,7 +297,7 @@ Zpráva: ${submitted.notes || '-'}
                       );
                     })}
 
-                                   {selectedService === 'automation' &&
+                  {selectedService === 'automation' &&
                     QUESTIONNAIRE_CONFIGS.automation.featureOptions.map((feat, i) => {
                       const active = formData.selectedFeatures.includes(feat);
                       return (
@@ -298,14 +307,16 @@ Zpráva: ${submitted.notes || '-'}
                           onClick={() => toggleFeature(feat)}
                           className={`p-3 rounded-sm border text-left flex items-center justify-between text-xs transition-all cursor-pointer ${
                             active
-                             ? 'bg-[#000182] border-[#CE9B01] text-[#FFFFFF]'
+                              ? 'bg-[#000182] border-[#CE9B01] text-[#FFFFFF]'
                               : 'bg-[#050058]/60 border-white/10 text-[#D9EAF5]/80 hover:border-white/30'
                           }`}
                         >
                           <span>{feat}</span>
                           <span
                             className={`w-3.5 h-3.5 rounded-sm border flex items-center justify-center shrink-0 ${
-                              active? 'bg-[#CE9B01] border-[#CE9B01] text-[#050058]' : 'border-white/20'
+                              active
+                                ? 'bg-[#CE9B01] border-[#CE9B01] text-[#050058]'
+                                : 'border-white/20'
                             }`}
                           >
                             {active && <Check className="w-2.5 h-2.5 stroke-3" />}
@@ -314,7 +325,7 @@ Zpráva: ${submitted.notes || '-'}
                       );
                     })}
 
-                                    {selectedService === 'web-branding' &&
+                  {selectedService === 'web-branding' &&
                     QUESTIONNAIRE_CONFIGS['web-branding'].brandingOptions.map((brand, i) => {
                       const active = formData.brandingOptions.includes(brand);
                       return (
@@ -324,14 +335,16 @@ Zpráva: ${submitted.notes || '-'}
                           onClick={() => toggleBranding(brand)}
                           className={`p-3 rounded-sm border text-left flex items-center justify-between text-xs transition-all cursor-pointer ${
                             active
-                             ? 'bg-[#000182] border-[#CE9B01] text-[#FFFFFF]'
+                              ? 'bg-[#000182] border-[#CE9B01] text-[#FFFFFF]'
                               : 'bg-[#050058]/60 border-white/10 text-[#D9EAF5]/80 hover:border-white/30'
                           }`}
                         >
                           <span>{brand}</span>
                           <span
                             className={`w-3.5 h-3.5 rounded-sm border flex items-center justify-center shrink-0 ${
-                              active? 'bg-[#CE9B01] border-[#CE9B01] text-[#050058]' : 'border-white/20'
+                              active
+                                ? 'bg-[#CE9B01] border-[#CE9B01] text-[#050058]'
+                                : 'border-white/20'
                             }`}
                           >
                             {active && <Check className="w-2.5 h-2.5 stroke-3" />}
@@ -442,7 +455,8 @@ Zpráva: ${submitted.notes || '-'}
                   Děkuji za odeslání poptávky!
                 </h3>
                 <p className="text-xs sm:text-sm text-[#D9EAF5]/80 max-w-md mx-auto">
-                  Informace jsem přijal a začínám s přípravou návrhu. Ozvu se vám do 24 hodin na <span className="text-[#CE9B01]">{submitted.email}</span>.
+                  Informace jsem přijal a začínám s přípravou návrhu. Ozvu se vám do 24 hodin na{' '}
+                  <span className="text-[#CE9B01]">{submitted.email}</span>.
                 </p>
               </div>
 

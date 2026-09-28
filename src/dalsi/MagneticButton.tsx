@@ -23,26 +23,32 @@ export const MagneticButton: React.FC<MagneticButtonProps> = ({
   const [position, setPosition] = useState<{ x: number; y: number }>({ x: 0, y: 0 });
   const [isHovered, setIsHovered] = useState<boolean>(false);
 
-  const handleMouseMove = useCallback((e: React.MouseEvent<HTMLButtonElement>) => {
-    if (!buttonRef.current) return;
-    const rect = buttonRef.current.getBoundingClientRect();
-    const centerX = rect.left + rect.width / 2;
-    const centerY = rect.top + rect.height / 2;
+  const handleMouseMove = useCallback(
+    (e: React.MouseEvent<HTMLButtonElement>) => {
+      if (!buttonRef.current) return;
+      const rect = buttonRef.current.getBoundingClientRect();
+      const centerX = rect.left + rect.width / 2;
+      const centerY = rect.top + rect.height / 2;
 
-    const deltaX = (e.clientX - centerX) * magneticStrength;
-    const deltaY = (e.clientY - centerY) * magneticStrength;
+      const deltaX = (e.clientX - centerX) * magneticStrength;
+      const deltaY = (e.clientY - centerY) * magneticStrength;
 
-    setPosition({ x: deltaX, y: deltaY });
-    setIsHovered(true);
+      setPosition({ x: deltaX, y: deltaY });
+      setIsHovered(true);
 
-    if (onMouseMove) onMouseMove(e);
-  }, [magneticStrength, onMouseMove]);
+      if (onMouseMove) onMouseMove(e);
+    },
+    [magneticStrength, onMouseMove],
+  );
 
-  const handleMouseLeave = useCallback((e: React.MouseEvent<HTMLButtonElement>) => {
-    setPosition({ x: 0, y: 0 });
-    setIsHovered(false);
-    if (onMouseLeave) onMouseLeave(e);
-  }, [onMouseLeave]);
+  const handleMouseLeave = useCallback(
+    (e: React.MouseEvent<HTMLButtonElement>) => {
+      setPosition({ x: 0, y: 0 });
+      setIsHovered(false);
+      if (onMouseLeave) onMouseLeave(e);
+    },
+    [onMouseLeave],
+  );
 
   return (
     <button
@@ -53,7 +59,9 @@ export const MagneticButton: React.FC<MagneticButtonProps> = ({
       data-magnetic="true"
       style={{
         transform: `translate3d(${position.x}px, ${position.y}px, 0)`,
-        transition: isHovered ? 'transform 0.12s ease-out' : 'transform 0.45s cubic-bezier(0.25, 1, 0.5, 1)',
+        transition: isHovered
+          ? 'transform 0.12s ease-out'
+          : 'transform 0.45s cubic-bezier(0.25, 1, 0.5, 1)',
       }}
       className={`relative group ${className}`}
       {...rest}
@@ -67,7 +75,7 @@ export const MagneticButton: React.FC<MagneticButtonProps> = ({
             style={{
               backgroundColor: squareColor,
               opacity: isHovered ? 1 : 0.4,
-              transform: isHovered ? 'scale(1.25)' : 'scale(1)'
+              transform: isHovered ? 'scale(1.25)' : 'scale(1)',
             }}
           />
           {/* Top-Right square */}
@@ -76,7 +84,7 @@ export const MagneticButton: React.FC<MagneticButtonProps> = ({
             style={{
               backgroundColor: squareColor,
               opacity: isHovered ? 1 : 0.4,
-              transform: isHovered ? 'scale(1.25)' : 'scale(1)'
+              transform: isHovered ? 'scale(1.25)' : 'scale(1)',
             }}
           />
           {/* Bottom-Left square */}
@@ -85,7 +93,7 @@ export const MagneticButton: React.FC<MagneticButtonProps> = ({
             style={{
               backgroundColor: squareColor,
               opacity: isHovered ? 1 : 0.4,
-              transform: isHovered ? 'scale(1.25)' : 'scale(1)'
+              transform: isHovered ? 'scale(1.25)' : 'scale(1)',
             }}
           />
           {/* Bottom-Right square */}
@@ -94,7 +102,7 @@ export const MagneticButton: React.FC<MagneticButtonProps> = ({
             style={{
               backgroundColor: squareColor,
               opacity: isHovered ? 1 : 0.4,
-              transform: isHovered ? 'scale(1.25)' : 'scale(1)'
+              transform: isHovered ? 'scale(1.25)' : 'scale(1)',
             }}
           />
         </>

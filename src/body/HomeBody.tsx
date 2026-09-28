@@ -40,19 +40,13 @@ export const HomeBody: React.FC<HomeBodyProps> = ({
       />
 
       {/* 2. TŘI BANYERY: AUTOMATIZACE (MODRÁ), APLIKACE (ZLATÁ), WEB (ČERVENÁ) */}
-      <ThreeServiceBanners
-        onOpenQuestionnaireForService={onOpenQuestionnaireForService}
-      />
+      <ThreeServiceBanners onOpenQuestionnaireForService={onOpenQuestionnaireForService} />
 
       {/* 3. KONZULTACE: PŘES CELOU ŠÍŘKU, ÚZKÝ / TENKÝ PÁS, VPRAVO DOLE VÍCE INFO */}
-      <ConsultationSlimBanner
-        onOpenQuestionnaireForService={onOpenQuestionnaireForService}
-      />
+      <ConsultationSlimBanner onOpenQuestionnaireForService={onOpenQuestionnaireForService} />
 
       {/* 4. PO PROJEKTU: 100% VLASTNICTVÍ KÓDU, SPRÁVA & DOHLÍŽENÍ, ÚPRAVY & ROZŠÍŘENÍ */}
-      <PoProjektu
-        onOpenQuestionnaire={onOpenQuestionnaire}
-      />
+      <PoProjektu onOpenQuestionnaire={onOpenQuestionnaire} />
 
       {/* 5. ZADEČEK / BOTTOM: VIDITELNÝ JAKO LINKA (POUZE EMAIL, INSTAGRAM, FACEBOOK), PŘI DOJETÍ DOLŮ VYJEDE ZÁVĚR */}
       <Footer />
