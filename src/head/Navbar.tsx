@@ -98,7 +98,7 @@ export const Navbar: React.FC<NavbarProps> = ({
                 <span className="font-heading font-black text-sm sm:text-base tracking-tight text-loyo-ink block leading-none">
                   LoYo
                 </span>
-                <span className="font-mono text-2.25 sm:text-2.5 uppercase tracking-widest text-loyo-muted block leading-none mt-1 font-bold">
+                <span className="font-mono text-[9px] sm:text-[10px] uppercase tracking-widest text-loyo-muted block leading-none mt-1 font-bold">
                   PREMIUM DEV
                 </span>
               </div>
@@ -192,7 +192,7 @@ export const Navbar: React.FC<NavbarProps> = ({
                       fillOpacity={cursorMode === 'bubbles' ? '0.95' : '0.6'}
                     />
                   </svg>
-                  <span className="hidden md:inline font-mono text-2.5 uppercase font-semibold tracking-wider">
+                  <span className="hidden md:inline font-mono text-[10px] uppercase font-semibold tracking-wider">
                     {cursorMode === 'bubbles' ? 'Bublinky ON' : 'Bublinky'}
                   </span>
                 </div>
@@ -396,10 +396,10 @@ export const Navbar: React.FC<NavbarProps> = ({
                     className="w-full text-left px-3 py-2.5 bg-white hover:bg-neutral-50 border border-loyo-line hover:border-loyo-ink flex items-center justify-between cursor-pointer font-semibold text-loyo-ink transition-colors rounded-xl"
                   >
                     <span className="flex items-center gap-2">
-                      <span className="w-2 h-2 bg-loyo-ink rounded-0.5" />
+                      <span className="w-2 h-2 bg-loyo-ink rounded-[2px]" />
                       04. Konzultace
                     </span>
-                    <span className="text-2.5 font-mono">1-on-1</span>
+                    <span className="text-[10px] font-mono">1-on-1</span>
                   </button>
                   <button
                     onClick={() => {
@@ -410,7 +410,7 @@ export const Navbar: React.FC<NavbarProps> = ({
                     className="w-full text-left px-3 py-2.5 bg-white hover:bg-neutral-50 border border-loyo-line hover:border-loyo-ink flex items-center justify-between cursor-pointer font-medium transition-colors rounded-xl"
                   >
                     <span>05. Rychlá zpráva</span>
-                    <span className="text-2.5 font-mono text-loyo-faint">Zpráva</span>
+                    <span className="text-[10px] font-mono text-loyo-faint">Zpráva</span>
                   </button>
                   <button
                     onClick={() => {
@@ -421,7 +421,7 @@ export const Navbar: React.FC<NavbarProps> = ({
                     className="w-full sm:col-span-2 text-left px-3 py-2.5 bg-white hover:bg-neutral-50 border border-loyo-line hover:border-loyo-ink flex items-center justify-between cursor-pointer font-medium transition-colors rounded-xl"
                   >
                     <span>06. Kontakty</span>
-                    <span className="text-2.5 font-mono text-loyo-faint">Info</span>
+                    <span className="text-[10px] font-mono text-loyo-faint">Info</span>
                   </button>
                 </div>
               </div>

@@ -109,7 +109,7 @@ Poznámky: ${submittedData.notes || 'Bez poznámek'}`;
       {/* Header of Questionnaire */}
       <div className="border-b border-loyo-line pb-6 mb-6">
         <div className="flex items-center gap-2 mb-2">
-          <span className="px-2.5 py-0.5 bg-loyo-bg text-loyo-ink text-2.5 font-mono font-bold uppercase tracking-wider border border-[#c5c5c5]">
+          <span className="px-2.5 py-0.5 bg-loyo-bg text-loyo-ink text-[10px] font-mono font-bold uppercase tracking-wider border border-[#c5c5c5]">
             INTEGROVANÝ DOTAZNÍK NA MÍRU
           </span>
           <span className="w-2 h-2 bg-emerald-600 rounded-full animate-pulse" />
@@ -139,7 +139,7 @@ Poznámky: ${submittedData.notes || 'Bez poznámek'}`;
           </p>
 
           <div className="p-4 bg-loyo-bg border border-loyo-line max-w-md mx-auto text-left font-mono text-xs space-y-1">
-            <div className="text-loyo-subtle uppercase text-2.5 pb-1 border-b border-[#ddd]">
+            <div className="text-loyo-subtle uppercase text-[10px] pb-1 border-b border-[#ddd]">
               Souhrn zadání:
             </div>
             <div>
@@ -456,7 +456,7 @@ Poznámky: ${submittedData.notes || 'Bez poznámek'}`;
               <div>
                 <label
                   htmlFor="int-name"
-                  className="block text-2.75 font-mono font-bold uppercase text-loyo-body mb-1"
+                  className="block text-[11px] font-mono font-bold uppercase text-loyo-body mb-1"
                 >
                   Jméno a Příjmení *
                 </label>
@@ -474,7 +474,7 @@ Poznámky: ${submittedData.notes || 'Bez poznámek'}`;
               <div>
                 <label
                   htmlFor="int-email"
-                  className="block text-2.75 font-mono font-bold uppercase text-loyo-body mb-1"
+                  className="block text-[11px] font-mono font-bold uppercase text-loyo-body mb-1"
                 >
                   E-mail *
                 </label>
@@ -492,7 +492,7 @@ Poznámky: ${submittedData.notes || 'Bez poznámek'}`;
               <div>
                 <label
                   htmlFor="int-phone"
-                  className="block text-2.75 font-mono font-bold uppercase text-loyo-body mb-1"
+                  className="block text-[11px] font-mono font-bold uppercase text-loyo-body mb-1"
                 >
                   Telefon (volitelně)
                 </label>
@@ -509,7 +509,7 @@ Poznámky: ${submittedData.notes || 'Bez poznámek'}`;
               <div>
                 <label
                   htmlFor="int-company"
-                  className="block text-2.75 font-mono font-bold uppercase text-loyo-body mb-1"
+                  className="block text-[11px] font-mono font-bold uppercase text-loyo-body mb-1"
                 >
                   Název firmy / Projektu (volitelně)
                 </label>
@@ -527,7 +527,7 @@ Poznámky: ${submittedData.notes || 'Bez poznámek'}`;
             <div>
               <label
                 htmlFor="int-notes"
-                className="block text-2.75 font-mono font-bold uppercase text-loyo-body mb-1"
+                className="block text-[11px] font-mono font-bold uppercase text-loyo-body mb-1"
               >
                 Doplňující poznámka nebo specifické požadavky
               </label>

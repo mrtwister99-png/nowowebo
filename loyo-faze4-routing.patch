@@ -1,0 +1,461 @@
+diff --git a/README.md b/README.md
+index 3d7fa48..2cce9c0 100644
+--- a/README.md
++++ b/README.md
+@@ -10,6 +10,12 @@ npm install
+ npm run dev
+ ```
+ 
++### Adresy (routing)
++
++- `/` hlavní stránka, `/automatizace`, `/aplikace`, `/weby`, `/konzultace` stránky služeb (react-router).
++- Adresy služeb jsou na jednom místě v `src/data/routes.ts`.
++- Hosting musí neznámé adresy přesměrovat na `index.html` (SPA fallback), jinak přímý odkaz vrátí 404.
++
+ ### Design tokeny a komponenty
+ 
+ - Barvy, stíny a fonty jsou v `src/styles/tokens.css` (třídy `bg-loyo-blue`, `text-loyo-ink`, `shadow-brutal-3` ...).
+diff --git a/public/sitemap.xml b/public/sitemap.xml
+index a050fcf..06cc41f 100644
+--- a/public/sitemap.xml
++++ b/public/sitemap.xml
+@@ -6,4 +6,28 @@
+     <changefreq>weekly</changefreq>
+     <priority>1.0</priority>
+   </url>
++  <url>
++    <loc>https://www.totujestenebylo.cz/automatizace</loc>
++    <lastmod>2026-09-28</lastmod>
++    <changefreq>monthly</changefreq>
++    <priority>0.8</priority>
++  </url>
++  <url>
++    <loc>https://www.totujestenebylo.cz/aplikace</loc>
++    <lastmod>2026-09-28</lastmod>
++    <changefreq>monthly</changefreq>
++    <priority>0.8</priority>
++  </url>
++  <url>
++    <loc>https://www.totujestenebylo.cz/weby</loc>
++    <lastmod>2026-09-28</lastmod>
++    <changefreq>monthly</changefreq>
++    <priority>0.8</priority>
++  </url>
++  <url>
++    <loc>https://www.totujestenebylo.cz/konzultace</loc>
++    <lastmod>2026-09-28</lastmod>
++    <changefreq>monthly</changefreq>
++    <priority>0.8</priority>
++  </url>
+ </urlset>
+diff --git a/src/App.tsx b/src/App.tsx
+index df79ca7..e6d63be 100644
+--- a/src/App.tsx
++++ b/src/App.tsx
+@@ -1,4 +1,5 @@
+ import React, { useState, useEffect } from 'react';
++import { Navigate, Route, Routes, useLocation, useNavigate, useNavigationType } from 'react-router';
+ import { Navbar } from './head';
+ import { HomeBody } from './body';
+ import {
+@@ -8,9 +9,55 @@ import {
+   InteractiveGridBackground,
+ } from './dalsi';
+ import { ServiceId, CursorParticleMode } from './types';
++import { SERVICE_IDS, SERVICE_ROUTES, SITE_NAME, SITE_URL, serviceIdFromPath } from './data/routes';
++import { SERVICES_DATA } from './data/servicesData';
++
++// Sekce hlavní stránky, které sleduje scroll-spy (zvýrazňuje aktivní položku v logu)
++const SPY_SECTION_IDS = [
++  'uvod',
++  'automatizace',
++  'fullstack',
++  'weby',
++  'konzultace',
++  'zprava',
++  'kontakty',
++];
++
++// Výchozí titulek stránky je z index.html
++const DEFAULT_TITLE = document.title;
++
++/** Plynule posune stránku na prvek s daným id (s odsazením o výšku fixní hlavičky). */
++function scrollToElement(id: string): boolean {
++  const el = document.getElementById(id);
++  if (!el) return false;
++  const header = document.querySelector('header');
++  const navOffset = header ? header.offsetHeight : 72;
++  const top = el.getBoundingClientRect().top + window.pageYOffset - navOffset;
++  window.scrollTo({ top: Math.max(0, top), behavior: 'smooth' });
++  return true;
++}
++
++/**
++ * Posune na sekci; když prvek na stránce není (nebo jde o 'uvod'), posune nahoru.
++ * Vrací id sekce pro scroll-spy, pokud jde o jednu ze sledovaných sekcí.
++ */
++function scrollToSection(sectionId: string): string | null {
++  if (sectionId === 'uvod' || !scrollToElement(sectionId)) {
++    window.scrollTo({ top: 0, behavior: 'smooth' });
++    return 'uvod';
++  }
++  return SPY_SECTION_IDS.includes(sectionId) ? sectionId : null;
++}
+ 
+ export default function App() {
+-  const [currentPage, setCurrentPage] = useState<string>('home');
++  const location = useLocation();
++  const navigate = useNavigate();
++  const navigationType = useNavigationType();
++
++  // Aktuální stránka se odvozuje z adresy: id služby, nebo null = hlavní stránka
++  const routeServiceId = serviceIdFromPath(location.pathname);
++  const currentPage: string = routeServiceId ?? 'home';
++
+   const [activeSection, setActiveSection] = useState<string>('uvod');
+   const [modalOpen, setModalOpen] = useState<boolean>(false);
+   const [selectedServiceForModal, setSelectedServiceForModal] = useState<ServiceId>('automation');
+@@ -36,91 +83,74 @@ export default function App() {
+     });
+   };
+ 
+-  // Navigate to dedicated page
++  // Přechod na stránku služby (page = id služby) nebo na hlavní stránku
+   const handleNavigateToPage = (page: string) => {
+-    setCurrentPage(page);
+-    window.scrollTo({ top: 0, behavior: 'instant' });
++    const id = SERVICE_IDS.find((serviceId) => serviceId === page);
++    navigate(id ? SERVICE_ROUTES[id].path : '/');
+   };
+ 
+-  // Back to home page
+-  const handleBackToHome = (targetSectionId?: string) => {
+-    setCurrentPage('home');
+-    if (targetSectionId && targetSectionId !== 'uvod') {
+-      setTimeout(() => {
+-        handleScrollToSection(targetSectionId);
+-      }, 50);
+-    } else {
+-      window.scrollTo({ top: 0, behavior: 'smooth' });
+-      setActiveSection('uvod');
+-    }
++  // Zpět na hlavní stránku, volitelně s posunem na prvek s daným id
++  const handleBackToHome = (targetElementId?: string) => {
++    navigate('/', { state: targetElementId ? { scrollTo: targetElementId } : null });
+   };
+ 
+-  // Open modal if triggered
++  // Otevře dotazník, nebo (při zadané službě) rovnou stránku služby
+   const handleOpenQuestionnaire = (serviceId?: ServiceId) => {
+     if (serviceId) {
+-      // If user chose a service from navbar dropdown, navigate directly to that dedicated page!
+       handleNavigateToPage(serviceId);
+     } else {
+       setModalOpen(true);
+     }
+   };
+ 
+-  // Smooth scroll to a section on home page
++  // Plynulý posun na sekci hlavní stránky (mimo hlavní stránku se nejdřív přejde domů)
+   const handleScrollToSection = (sectionId: string) => {
+-    if (currentPage !== 'home') {
+-      setCurrentPage('home');
+-      setTimeout(() => {
+-        performScroll(sectionId);
+-      }, 50);
+-    } else {
+-      performScroll(sectionId);
++    if (routeServiceId) {
++      handleBackToHome(sectionId);
++      return;
+     }
++    const active = scrollToSection(sectionId);
++    if (active) setActiveSection(active);
+   };
+ 
+-  const performScroll = (sectionId: string) => {
+-    if (sectionId === 'uvod') {
+-      window.scrollTo({
+-        top: 0,
+-        behavior: 'smooth',
+-      });
+-      setActiveSection('uvod');
+-      return;
++  // Po každé změně adresy: posun na požadovaný prvek, jinak nahoru
++  // (při kroku zpět/vpřed v prohlížeči necháme posun na prohlížeči)
++  useEffect(() => {
++    const state = location.state as { scrollTo?: string } | null;
++    if (state?.scrollTo) {
++      const targetId = state.scrollTo;
++      // krátká pauza, aby se hlavní stránka stihla vykreslit
++      const timer = setTimeout(() => {
++        const active = scrollToSection(targetId);
++        if (active) setActiveSection(active);
++      }, 50);
++      return () => clearTimeout(timer);
+     }
++    if (String(navigationType) !== 'POP') {
++      window.scrollTo({ top: 0, behavior: 'instant' });
++    }
++    if (!routeServiceId) setActiveSection('uvod');
++  }, [location.key, location.state, navigationType, routeServiceId]);
+ 
+-    const el = document.getElementById(sectionId);
+-    if (el) {
+-      const header = document.querySelector('header');
+-      const navOffset = header ? header.offsetHeight : 72;
+-      const elementPosition = el.getBoundingClientRect().top;
+-      const offsetPosition = elementPosition + window.pageYOffset - navOffset;
+-
+-      window.scrollTo({
+-        top: Math.max(0, offsetPosition),
+-        behavior: 'smooth',
+-      });
+-      setActiveSection(sectionId);
++  // Titulek a canonical odkaz podle stránky (každá služba má vlastní adresu)
++  useEffect(() => {
++    const service = SERVICES_DATA.find((item) => item.id === routeServiceId);
++    document.title = service ? `${service.title} | ${SITE_NAME}` : DEFAULT_TITLE;
++    const canonical = document.querySelector<HTMLLinkElement>('link[rel="canonical"]');
++    if (canonical) {
++      canonical.href = `${SITE_URL}${routeServiceId ? SERVICE_ROUTES[routeServiceId].path : '/'}`;
+     }
+-  };
++  }, [routeServiceId]);
+ 
+-  // Active section spy for home page
++  // Sledování aktivní sekce při scrollování hlavní stránky
+   useEffect(() => {
+-    if (currentPage !== 'home') return;
+-
+-    const sectionIds = [
+-      'uvod',
+-      'automatizace',
+-      'fullstack',
+-      'weby',
+-      'konzultace',
+-      'zprava',
+-      'kontakty',
+-    ];
++    if (routeServiceId) return;
+ 
+     const handleScroll = () => {
+       const scrollPosition = window.scrollY + 140;
+ 
+-      for (let i = sectionIds.length - 1; i >= 0; i--) {
+-        const id = sectionIds[i];
++      for (let i = SPY_SECTION_IDS.length - 1; i >= 0; i--) {
++        const id = SPY_SECTION_IDS[i];
+         const element = document.getElementById(id);
+         if (element) {
+           const top = element.offsetTop;
+@@ -134,7 +164,7 @@ export default function App() {
+ 
+     window.addEventListener('scroll', handleScroll, { passive: true });
+     return () => window.removeEventListener('scroll', handleScroll);
+-  }, [currentPage]);
++  }, [routeServiceId]);
+ 
+   return (
+     <div className="min-h-screen bg-loyo-bg text-loyo-ink flex flex-col font-sans selection:bg-loyo-ink selection:text-white pb-12 relative">
+@@ -144,8 +174,8 @@ export default function App() {
+       {/* Interactive cursor particles (Oil bubbles or 3 nested squares) */}
+       <CursorOilBubbles mode={cursorMode} />
+ 
+-      {/* When on subpage, render top Navbar for easy return */}
+-      {currentPage !== 'home' && (
++      {/* Na stránce služby se zobrazí horní Navbar pro snadný návrat */}
++      {routeServiceId && (
+         <Navbar
+           activeSection={activeSection}
+           currentPage={currentPage}
+@@ -160,39 +190,43 @@ export default function App() {
+ 
+       {/* 2. MAIN CONTENT AREA */}
+       <main
+-        className={`flex-1 flex flex-col justify-start ${currentPage !== 'home' ? 'pt-24' : 'pt-6 sm:pt-10'}`}
++        className={`flex-1 flex flex-col justify-start ${routeServiceId ? 'pt-24' : 'pt-6 sm:pt-10'}`}
+       >
+-        {currentPage === 'home' ? (
+-          <HomeBody
+-            activeSection={activeSection}
+-            currentPage={currentPage}
+-            cursorMode={cursorMode}
+-            onToggleCursorMode={handleToggleCursorMode}
+-            onOpenQuestionnaire={handleOpenQuestionnaire}
+-            onNavigateToPage={handleNavigateToPage}
+-            onScrollToTop={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
+-            onOpenQuestionnaireForService={(serviceId) => {
+-              setSelectedServiceForModal(serviceId);
+-              setModalOpen(true);
+-            }}
+-          />
+-        ) : (
+-          /* DEDICATED STANDALONE PAGE */
+-          <DedicatedServicePage
+-            serviceId={currentPage as ServiceId}
+-            onBackToHome={() =>
+-              handleBackToHome(
+-                currentPage === 'automation'
+-                  ? 'automatizace'
+-                  : currentPage === 'fullstack'
+-                    ? 'fullstack'
+-                    : currentPage === 'web-branding' || currentPage === 'webs'
+-                      ? 'weby'
+-                      : 'konzultace',
+-              )
++        <Routes>
++          <Route
++            path="/"
++            element={
++              <HomeBody
++                activeSection={activeSection}
++                currentPage={currentPage}
++                cursorMode={cursorMode}
++                onToggleCursorMode={handleToggleCursorMode}
++                onOpenQuestionnaire={handleOpenQuestionnaire}
++                onNavigateToPage={handleNavigateToPage}
++                onScrollToTop={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
++                onOpenQuestionnaireForService={(serviceId) => {
++                  setSelectedServiceForModal(serviceId);
++                  setModalOpen(true);
++                }}
++              />
+             }
+           />
+-        )}
++          {SERVICE_IDS.map((id) => (
++            <Route
++              key={id}
++              path={SERVICE_ROUTES[id].path}
++              element={
++                <DedicatedServicePage
++                  key={id}
++                  serviceId={id}
++                  onBackToHome={() => handleBackToHome(SERVICE_ROUTES[id].homeAnchorId)}
++                />
++              }
++            />
++          ))}
++          {/* Neznámá adresa vrací na hlavní stránku */}
++          <Route path="*" element={<Navigate to="/" replace />} />
++        </Routes>
+       </main>
+ 
+       {/* 3. QUESTIONNAIRE MODAL */}
+diff --git a/src/data/routes.ts b/src/data/routes.ts
+new file mode 100644
+index 0000000..ea7db42
+--- /dev/null
++++ b/src/data/routes.ts
+@@ -0,0 +1,31 @@
++import { ServiceId } from '../types';
++
++/** Adresa webu bez lomítka na konci (pro canonical odkazy). */
++export const SITE_URL = 'https://www.totujestenebylo.cz';
++export const SITE_NAME = 'ToTuJeštěNebylo.cz';
++
++interface ServiceRoute {
++  /** Adresa stránky služby v prohlížeči */
++  path: string;
++  /** id prvku na hlavní stránce, kam vede tlačítko "Zpět na hlavní přehled" */
++  homeAnchorId: string;
++}
++
++/**
++ * Jediné místo, kde se páruje služba s adresou.
++ * Přidání nové služby = nový řádek zde + položka v ServiceId (types.ts) a servicesData.ts.
++ */
++export const SERVICE_ROUTES: Record<ServiceId, ServiceRoute> = {
++  automation: { path: '/automatizace', homeAnchorId: 'three-service-banners' },
++  fullstack: { path: '/aplikace', homeAnchorId: 'three-service-banners' },
++  'web-branding': { path: '/weby', homeAnchorId: 'three-service-banners' },
++  consultation: { path: '/konzultace', homeAnchorId: 'konzultace-banner' },
++};
++
++export const SERVICE_IDS = Object.keys(SERVICE_ROUTES) as ServiceId[];
++
++/** Z adresy (např. "/weby/") zjistí službu, nebo null pro hlavní stránku a neznámé adresy. */
++export const serviceIdFromPath = (pathname: string): ServiceId | null => {
++  const clean = pathname.replace(/\/+$/, '').toLowerCase() || '/';
++  return SERVICE_IDS.find((id) => SERVICE_ROUTES[id].path === clean) ?? null;
++};
+diff --git a/src/head/Navbar.tsx b/src/head/Navbar.tsx
+index 76856f7..22e8dc0 100644
+--- a/src/head/Navbar.tsx
++++ b/src/head/Navbar.tsx
+@@ -336,7 +336,6 @@ export const Navbar: React.FC<NavbarProps> = ({
+                 <div className="p-2 grid grid-cols-1 sm:grid-cols-2 gap-2">
+                   <button
+                     onClick={() => {
+-                      if (currentPage !== 'home') onBackToHome();
+                       onScrollToSection('uvod');
+                       setMenuOpen(false);
+                     }}
+@@ -347,7 +346,6 @@ export const Navbar: React.FC<NavbarProps> = ({
+                   </button>
+                   <button
+                     onClick={() => {
+-                      if (currentPage !== 'home') onBackToHome();
+                       onScrollToSection('automatizace');
+                       setMenuOpen(false);
+                     }}
+@@ -361,7 +359,6 @@ export const Navbar: React.FC<NavbarProps> = ({
+                   </button>
+                   <button
+                     onClick={() => {
+-                      if (currentPage !== 'home') onBackToHome();
+                       onScrollToSection('fullstack');
+                       setMenuOpen(false);
+                     }}
+@@ -375,7 +372,6 @@ export const Navbar: React.FC<NavbarProps> = ({
+                   </button>
+                   <button
+                     onClick={() => {
+-                      if (currentPage !== 'home') onBackToHome();
+                       onScrollToSection('weby');
+                       setMenuOpen(false);
+                     }}
+@@ -389,7 +385,6 @@ export const Navbar: React.FC<NavbarProps> = ({
+                   </button>
+                   <button
+                     onClick={() => {
+-                      if (currentPage !== 'home') onBackToHome();
+                       onScrollToSection('konzultace');
+                       setMenuOpen(false);
+                     }}
+@@ -403,7 +398,6 @@ export const Navbar: React.FC<NavbarProps> = ({
+                   </button>
+                   <button
+                     onClick={() => {
+-                      if (currentPage !== 'home') onBackToHome();
+                       onScrollToSection('zprava');
+                       setMenuOpen(false);
+                     }}
+@@ -414,7 +408,6 @@ export const Navbar: React.FC<NavbarProps> = ({
+                   </button>
+                   <button
+                     onClick={() => {
+-                      if (currentPage !== 'home') onBackToHome();
+                       onScrollToSection('kontakty');
+                       setMenuOpen(false);
+                     }}
+diff --git a/src/main.tsx b/src/main.tsx
+index dcf08c3..ef3ff39 100644
+--- a/src/main.tsx
++++ b/src/main.tsx
+@@ -1,10 +1,13 @@
+ import { StrictMode } from 'react';
+ import { createRoot } from 'react-dom/client';
++import { BrowserRouter } from 'react-router';
+ import App from './App.tsx';
+ import './index.css';
+ 
+ createRoot(document.getElementById('root')!).render(
+   <StrictMode>
+-    <App />
++    <BrowserRouter>
++      <App />
++    </BrowserRouter>
+   </StrictMode>,
+ );

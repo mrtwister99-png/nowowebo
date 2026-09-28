@@ -184,7 +184,7 @@ Poznámka: ${submittedData.notes || '-'}
         {/* Header Bar */}
         <div className="flex items-center justify-between px-6 py-3.5 border-b border-loyo-line-field bg-loyo-bar">
           <div className="flex items-center gap-2.5">
-            <div className="w-6 h-6 bg-loyo-ink text-white flex items-center justify-center font-mono font-bold text-2.5">
+            <div className="w-6 h-6 bg-loyo-ink text-white flex items-center justify-center font-mono font-bold text-[10px]">
               LY
             </div>
             <span className="font-heading font-extrabold text-xs uppercase tracking-wider text-loyo-ink">
@@ -208,7 +208,7 @@ Poznámka: ${submittedData.notes || '-'}
             <button
               type="button"
               onClick={() => handleServiceChange('automation')}
-              className={`py-3 px-2 sm:px-3 flex items-center justify-center gap-1.5 transition-all cursor-pointer uppercase tracking-wider text-2.75 font-bold ${
+              className={`py-3 px-2 sm:px-3 flex items-center justify-center gap-1.5 transition-all cursor-pointer uppercase tracking-wider text-[11px] font-bold ${
                 selectedService === 'automation'
                   ? 'bg-loyo-bg text-loyo-blue border-b-3 border-loyo-blue'
                   : 'text-loyo-muted hover:bg-[#d0d0d0]'
@@ -222,7 +222,7 @@ Poznámka: ${submittedData.notes || '-'}
             <button
               type="button"
               onClick={() => handleServiceChange('fullstack')}
-              className={`py-3 px-2 sm:px-3 flex items-center justify-center gap-1.5 transition-all cursor-pointer uppercase tracking-wider text-2.75 font-bold ${
+              className={`py-3 px-2 sm:px-3 flex items-center justify-center gap-1.5 transition-all cursor-pointer uppercase tracking-wider text-[11px] font-bold ${
                 selectedService === 'fullstack'
                   ? 'bg-loyo-bg text-loyo-mustard-dark border-b-3 border-loyo-mustard'
                   : 'text-loyo-muted hover:bg-[#d0d0d0]'
@@ -236,7 +236,7 @@ Poznámka: ${submittedData.notes || '-'}
             <button
               type="button"
               onClick={() => handleServiceChange('web-branding')}
-              className={`py-3 px-2 sm:px-3 flex items-center justify-center gap-1.5 transition-all cursor-pointer uppercase tracking-wider text-2.75 font-bold ${
+              className={`py-3 px-2 sm:px-3 flex items-center justify-center gap-1.5 transition-all cursor-pointer uppercase tracking-wider text-[11px] font-bold ${
                 selectedService === 'web-branding'
                   ? 'bg-loyo-bg text-loyo-red border-b-3 border-loyo-red'
                   : 'text-loyo-muted hover:bg-[#d0d0d0]'
@@ -250,7 +250,7 @@ Poznámka: ${submittedData.notes || '-'}
             <button
               type="button"
               onClick={() => handleServiceChange('consultation')}
-              className={`py-3 px-2 sm:px-3 flex items-center justify-center gap-1.5 transition-all cursor-pointer uppercase tracking-wider text-2.75 font-bold ${
+              className={`py-3 px-2 sm:px-3 flex items-center justify-center gap-1.5 transition-all cursor-pointer uppercase tracking-wider text-[11px] font-bold ${
                 selectedService === 'consultation'
                   ? 'bg-loyo-bg text-loyo-ink border-b-3 border-loyo-ink'
                   : 'text-loyo-muted hover:bg-[#d0d0d0]'
@@ -324,7 +324,7 @@ Poznámka: ${submittedData.notes || '-'}
                     style={{ width: `${submitProgress}%` }}
                   />
                 </div>
-                <div className="flex justify-between text-2.75 font-mono font-bold text-loyo-muted">
+                <div className="flex justify-between text-[11px] font-mono font-bold text-loyo-muted">
                   <span>ASYNC DISPATCHING</span>
                   <span>{submitProgress}%</span>
                 </div>
@@ -727,7 +727,7 @@ Poznámka: ${submittedData.notes || '-'}
                           : 'Orientační finanční rámec:'}
                       </label>
                       {selectedService === 'consultation' && (
-                        <span className="text-2.75 font-mono text-loyo-ink bg-loyo-bar px-2 py-0.5 border border-loyo-line-field font-bold">
+                        <span className="text-[11px] font-mono text-loyo-ink bg-loyo-bar px-2 py-0.5 border border-loyo-line-field font-bold">
                           Cena cca 800 Kč / hod dle složitosti
                         </span>
                       )}
@@ -969,7 +969,7 @@ Poznámka: ${submittedData.notes || '-'}
             <button
               type="button"
               onClick={() => setCurrentStep(3)}
-              className="flex items-center gap-1 hover:text-loyo-ink font-bold uppercase tracking-wider text-2.75"
+              className="flex items-center gap-1 hover:text-loyo-ink font-bold uppercase tracking-wider text-[11px]"
             >
               <ArrowLeft className="w-3.5 h-3.5" />
               <span>Upravit rozpočet a termín</span>

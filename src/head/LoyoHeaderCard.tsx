@@ -123,7 +123,7 @@ export const LoyoHeaderCard: React.FC<LoyoHeaderCardProps> = ({
               className="h-10 sm:h-11 px-3.5 sm:px-4.5 rounded-xl sm:rounded-2xl bg-white border-2 border-loyo-ink shadow-brutal-3 flex items-center gap-2 text-xs font-semibold text-loyo-ink select-none"
             >
               <span className="w-2 h-2 rounded-full bg-loyo-ink shrink-0 animate-pulse" />
-              <span className="font-heading tracking-wide uppercase text-2.75 sm:text-xs truncate max-w-32.5 sm:max-w-52.5">
+              <span className="font-heading tracking-wide uppercase text-[11px] sm:text-xs truncate max-w-32.5 sm:max-w-52.5">
                 {currentPage !== 'home'
                   ? `Detail: ${currentPage}`
                   : 'Úvod • LoYo Premium Developer'}
@@ -362,7 +362,7 @@ export const LoyoHeaderCard: React.FC<LoyoHeaderCardProps> = ({
               <div className="inline-flex items-center gap-2 px-3 py-1 bg-loyo-ink text-white text-xs font-mono font-bold uppercase tracking-wider rounded-xs">
                 <span>HLAVNÍ INFO</span>
               </div>
-              <span className="text-2.75 font-mono text-loyo-faint font-medium hidden sm:inline">
+              <span className="text-[11px] font-mono text-loyo-faint font-medium hidden sm:inline">
                 LoYo Visual Identity & Core Architecture
               </span>
             </div>
@@ -436,7 +436,7 @@ export const LoyoHeaderCard: React.FC<LoyoHeaderCardProps> = ({
                     <span className="font-heading font-black text-sm sm:text-base tracking-tight uppercase">
                       Navigační menu
                     </span>
-                    <span className="hidden sm:inline-flex ml-2 px-2 py-0.5 bg-loyo-bar border border-loyo-line text-2.5 font-mono font-bold uppercase">
+                    <span className="hidden sm:inline-flex ml-2 px-2 py-0.5 bg-loyo-bar border border-loyo-line text-[10px] font-mono font-bold uppercase">
                       6 sekcí
                     </span>
                   </div>
@@ -465,11 +465,11 @@ export const LoyoHeaderCard: React.FC<LoyoHeaderCardProps> = ({
                     >
                       <div className="flex items-center gap-3">
                         <span
-                          className="w-2.5 h-2.5 rounded-0.75 shrink-0"
+                          className="w-2.5 h-2.5 rounded-[3px] shrink-0"
                           style={{ backgroundColor: item.color }}
                         />
                         <div>
-                          <div className="text-2.5 font-mono font-bold text-loyo-subtle">
+                          <div className="text-[10px] font-mono font-bold text-loyo-subtle">
                             SEKCE {item.num}
                           </div>
                           <div className="font-heading font-bold text-sm text-loyo-ink group-hover:text-loyo-blue transition-colors">
