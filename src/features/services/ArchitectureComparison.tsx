@@ -19,7 +19,7 @@ const COMPARISON_ROWS: ComparisonRow[] = [
   },
   {
     feature: 'Měsíční licenční poplatky',
-    ours: '0 Kč (pouze vaše levný hosting)',
+    ours: '0 Kč (pouze váš levný hosting)',
     oursTone: 'green',
     others: 'Desítky tisíc ročně za uživatelské účty',
   },

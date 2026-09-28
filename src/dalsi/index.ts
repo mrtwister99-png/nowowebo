@@ -1,4 +1,3 @@
-export * from './MiniFallingCubesInGap';
 export * from './CursorOilBubbles';
 export * from './InteractiveGridBackground';
 export * from './QuestionnaireModal';

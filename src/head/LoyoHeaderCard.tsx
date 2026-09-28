@@ -1,9 +1,15 @@
-import React, { useState, useEffect } from 'react';
+import React, { Suspense, lazy, useState, useEffect } from 'react';
 import { Menu, X, Sparkles, ArrowRight } from 'lucide-react';
 import { LoyoLogoBox } from '../logo/LoyoLogoBox';
-import { MiniFallingCubesInGap } from '../dalsi/MiniFallingCubesInGap';
 import { CursorParticleMode, ServiceId } from '../types';
 import { BRAND } from '../lib/colors';
+
+// Minihra se stahuje samostatně (odděleně od hlavního balíčku), až když je potřeba
+const MiniFallingCubesInGap = lazy(() =>
+  import('../features/minigame/MiniFallingCubesInGap').then((m) => ({
+    default: m.MiniFallingCubesInGap,
+  })),
+);
 
 interface LoyoHeaderCardProps {
   activeSection: string;
@@ -306,7 +312,10 @@ export const LoyoHeaderCard: React.FC<LoyoHeaderCardProps> = ({
             </div>
 
             <div className="w-full flex-1 flex items-end justify-center pt-1 relative z-40 overflow-visible">
-              <MiniFallingCubesInGap />
+              {/* Záložní prvek má stejnou výšku jako hra, aby se stránka při načtení neposunula */}
+              <Suspense fallback={<div className="w-full h-27.5 sm:h-30" aria-hidden="true" />}>
+                <MiniFallingCubesInGap />
+              </Suspense>
             </div>
           </div>
 

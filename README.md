@@ -21,6 +21,11 @@ npm run dev
 - Všechny čtyři stránky služeb vykresluje jedna šablona `src/features/services/ServicePage.tsx`.
 - Texty karet, barva a speciální bloky (kalkulačka, demo zabezpečení, srovnání) se nastavují v `src/features/services/servicePages.ts`.
 
+### Minihra v hlavičce
+
+- Je v `src/features/minigame/` a načítá se líně (`React.lazy` v `LoyoHeaderCard`), takže není v hlavním balíčku.
+- Herní pravidla jsou jako čisté funkce v `engine.ts`, stav a časování v `useCubesGame.ts`, vzhled v malých komponentách.
+
 ### Design tokeny a komponenty
 
 - Barvy, stíny a fonty jsou v `src/styles/tokens.css` (třídy `bg-loyo-blue`, `text-loyo-ink`, `shadow-brutal-3` ...).
