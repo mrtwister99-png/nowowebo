@@ -40,7 +40,7 @@ export const HomeBody: React.FC<HomeBodyProps> = ({
         onScrollToTop={onScrollToTop}
       />
 
-      {/* 2. TŘI BANYERY: AUTOMATIZACE (MODRÁ), APLIKACE (ZLATÁ), WEB (ČERVENÁ) */}
+      {/* 2. TŘiI BANYERY: AUTOMATIZACE (MODRÁ), APLIKACE (ZLATÁ), WEB (ČERVENÁ) */}
       <ThreeServiceBanners onOpenQuestionnaireForService={onOpenQuestionnaireForService} />
 
       {/* 3. KONZULTACE: PŘES CELOU ŠÍŘKU, ÚZKÝ / TENKÝ PÁS, VPRAVO DOLE VÍCE INFO */}
