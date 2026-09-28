@@ -2,12 +2,8 @@ import React, { useState, useEffect } from 'react';
 import { Navigate, Route, Routes, useLocation, useNavigate, useNavigationType } from 'react-router';
 import { Navbar } from './head';
 import { HomeBody } from './body';
-import {
-  DedicatedServicePage,
-  QuestionnaireModal,
-  CursorOilBubbles,
-  InteractiveGridBackground,
-} from './dalsi';
+import { QuestionnaireModal, CursorOilBubbles, InteractiveGridBackground } from './dalsi';
+import { ServicePage } from './features/services/ServicePage';
 import { ServiceId, CursorParticleMode } from './types';
 import { SERVICE_IDS, SERVICE_ROUTES, SITE_NAME, SITE_URL, serviceIdFromPath } from './data/routes';
 import { SERVICES_DATA } from './data/servicesData';
@@ -216,7 +212,7 @@ export default function App() {
               key={id}
               path={SERVICE_ROUTES[id].path}
               element={
-                <DedicatedServicePage
+                <ServicePage
                   key={id}
                   serviceId={id}
                   onBackToHome={() => handleBackToHome(SERVICE_ROUTES[id].homeAnchorId)}

@@ -111,7 +111,7 @@ export const Navbar: React.FC<NavbarProps> = ({
                 className="w-2.5 h-2.5 shrink-0 rounded-xs"
                 style={{ backgroundColor: currentInfo.color }}
               />
-              <span className="font-heading tracking-wide uppercase text- sm:text-xs truncate">
+              <span className="font-heading tracking-wide uppercase text-[10px] sm:text-xs truncate">
                 {currentInfo.label}
               </span>
             </div>
@@ -230,7 +230,7 @@ export const Navbar: React.FC<NavbarProps> = ({
                     <span className="font-heading font-bold text-xs text-loyo-ink block">
                       Vyberte stránku s dotazníkem:
                     </span>
-                    <span className="text- text-loyo-subtle block">
+                    <span className="text-[10px] text-loyo-subtle block">
                       Přejít na detail a dotazník na míru
                     </span>
                   </div>
@@ -246,9 +246,9 @@ export const Navbar: React.FC<NavbarProps> = ({
                       <span className="font-heading font-bold text-xs text-loyo-blue">
                         01. Automatizace
                       </span>
-                      <span className="font-mono text- text-loyo-muted">MODRÁ</span>
+                      <span className="font-mono text-[10px] text-loyo-muted">MODRÁ</span>
                     </div>
-                    <p className="text- text-loyo-muted mt-0.5 leading-snug">
+                    <p className="text-[10px] text-loyo-muted mt-0.5 leading-snug">
                       Úspora hodin, propojení systémů a zakázkové zabezpečení
                     </p>
                   </button>
@@ -264,9 +264,9 @@ export const Navbar: React.FC<NavbarProps> = ({
                       <span className="font-heading font-bold text-xs text-loyo-mustard-dark">
                         02. Aplikace
                       </span>
-                      <span className="font-mono text- text-loyo-muted">ZLATÁ</span>
+                      <span className="font-mono text-[10px] text-loyo-muted">ZLATÁ</span>
                     </div>
-                    <p className="text- text-loyo-muted mt-0.5 leading-snug">
+                    <p className="text-[10px] text-loyo-muted mt-0.5 leading-snug">
                       100% nezávislý čistý kód a komplexní backend
                     </p>
                   </button>
@@ -282,9 +282,9 @@ export const Navbar: React.FC<NavbarProps> = ({
                       <span className="font-heading font-bold text-xs text-loyo-red">
                         03. Tvorba webu
                       </span>
-                      <span className="font-mono text- text-loyo-muted">ČERVENÁ</span>
+                      <span className="font-mono text-[10px] text-loyo-muted">ČERVENÁ</span>
                     </div>
-                    <p className="text- text-loyo-muted mt-0.5 leading-snug">
+                    <p className="text-[10px] text-loyo-muted mt-0.5 leading-snug">
                       Restyling, vlastní podoba a 60 FPS animace
                     </p>
                   </button>
@@ -300,9 +300,11 @@ export const Navbar: React.FC<NavbarProps> = ({
                       <span className="font-heading font-bold text-xs text-loyo-ink">
                         04. Konzultace
                       </span>
-                      <span className="font-mono text- text-loyo-ink font-bold">~800 Kč/h</span>
+                      <span className="font-mono text-[10px] text-loyo-ink font-bold">
+                        ~800 Kč/h
+                      </span>
                     </div>
-                    <p className="text- text-loyo-muted mt-0.5 leading-snug">
+                    <p className="text-[10px] text-loyo-muted mt-0.5 leading-snug">
                       1 na 1 u kávy nebo online – know-how
                     </p>
                   </button>
@@ -330,7 +332,9 @@ export const Navbar: React.FC<NavbarProps> = ({
                   <span className="font-heading font-black text-sm uppercase tracking-wide">
                     Menu • Sekce
                   </span>
-                  <span className="text- font-mono text-loyo-faint uppercase">Vyber sekci</span>
+                  <span className="text-[10px] font-mono text-loyo-faint uppercase">
+                    Vyber sekci
+                  </span>
                 </div>
 
                 <div className="p-2 grid grid-cols-1 sm:grid-cols-2 gap-2">
@@ -342,7 +346,7 @@ export const Navbar: React.FC<NavbarProps> = ({
                     className="w-full text-left px-3 py-2.5 bg-white hover:bg-neutral-50 border border-loyo-line hover:border-loyo-ink flex items-center justify-between cursor-pointer font-medium transition-colors rounded-xl"
                   >
                     <span>Úvod & Představení</span>
-                    <span className="text- font-mono text-loyo-faint">START</span>
+                    <span className="text-[10px] font-mono text-loyo-faint">START</span>
                   </button>
                   <button
                     onClick={() => {
@@ -355,7 +359,7 @@ export const Navbar: React.FC<NavbarProps> = ({
                       <span className="w-2 h-2 bg-loyo-blue rounded-xs" />
                       01. Automatizace
                     </span>
-                    <span className="text- font-mono">Modrá</span>
+                    <span className="text-[10px] font-mono">Modrá</span>
                   </button>
                   <button
                     onClick={() => {
@@ -368,7 +372,7 @@ export const Navbar: React.FC<NavbarProps> = ({
                       <span className="w-2 h-2 bg-loyo-mustard rounded-xs" />
                       02. Aplikace
                     </span>
-                    <span className="text- font-mono">Zlatá</span>
+                    <span className="text-[10px] font-mono">Zlatá</span>
                   </button>
                   <button
                     onClick={() => {
@@ -381,7 +385,7 @@ export const Navbar: React.FC<NavbarProps> = ({
                       <span className="w-2 h-2 bg-loyo-red rounded-xs" />
                       03. Tvorba
                     </span>
-                    <span className="text- font-mono">Červená</span>
+                    <span className="text-[10px] font-mono">Červená</span>
                   </button>
                   <button
                     onClick={() => {

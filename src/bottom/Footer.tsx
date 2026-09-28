@@ -49,8 +49,9 @@ export const Footer: React.FC = () => {
 
   return (
     <>
-      {/* Odsazení pod obsahem, aby plovoucí linka nezakrývala spodek stránky */}
-      <div className="h-16 sm:h-20 w-full pointer-events-none" />
+      {/* Odsazení pod obsahem, aby plovoucí linka nezakrývala spodek stránky.
+          id="kontakty" je cíl položky menu "Kontakty": posune na konec stránky, kde patička vyjede */}
+      <div id="kontakty" className="h-16 sm:h-20 w-full pointer-events-none" />
 
       {/* PLOVOUCÍ SPODNÍ LIŠTA / ZADEČEK (PERMANENTNĚ VIDITELNÝ JAKO LINKA, PŘI DOJETÍ DOLŮ VYJEDE) */}
       <footer

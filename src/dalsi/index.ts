@@ -1,7 +1,6 @@
 export * from './MiniFallingCubesInGap';
 export * from './CursorOilBubbles';
 export * from './InteractiveGridBackground';
-export * from './DedicatedServicePage';
 export * from './QuestionnaireModal';
 export * from './IntegratedQuestionnaire';
 export * from './QuickMessageSection';
