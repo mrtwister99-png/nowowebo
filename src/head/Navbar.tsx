@@ -20,7 +20,6 @@ export const Navbar: React.FC<NavbarProps> = ({
   currentPage = 'home',
   cursorMode = 'bubbles',
   onToggleCursorMode,
-  onOpenQuestionnaire,
   onScrollToSection,
   onNavigateToPage,
   onBackToHome,

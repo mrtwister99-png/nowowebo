@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Send, CheckCircle2, Clock, Mail, Phone, MessageSquare } from 'lucide-react';
+import { Send, CheckCircle2, Clock } from 'lucide-react';
 
 export const QuickMessageSection: React.FC = () => {
   const [submitted, setSubmitted] = useState(false);

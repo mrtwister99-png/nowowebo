@@ -6,17 +6,11 @@ import {
   ArrowLeft,
   Send,
   Sparkles,
-  Shield,
   Code2,
   Cpu,
   CheckCircle2,
   Copy,
-  FileText,
   MessageSquare,
-  Coffee,
-  Calendar,
-  Video,
-  MapPin,
 } from 'lucide-react';
 import { ServiceId, QuestionnaireData, InquiredSubmission } from '../types';
 import { QUESTIONNAIRE_CONFIGS } from '../data/servicesData';

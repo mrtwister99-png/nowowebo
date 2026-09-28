@@ -6,7 +6,6 @@ import {
   ArrowUp,
   ChevronUp,
   ChevronDown,
-  Sparkles,
   ExternalLink,
 } from 'lucide-react';
 

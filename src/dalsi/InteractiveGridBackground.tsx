@@ -51,6 +51,7 @@ export const InteractiveGridBackground: React.FC = () => {
     const cols = dimensions.cols;
     const rows = dimensions.rows;
     if (cols === 0 || rows === 0) return;
+    const timers = activeTimers.current; // kopie pro cleanup (ref se jinak mohl změnit)
 
     // Helper to stop all current bubbling neighbors smoothly
     const clearBubblingState = () => {
@@ -315,8 +316,8 @@ export const InteractiveGridBackground: React.FC = () => {
       window.removeEventListener('touchmove', onTouchMove);
 
       clearBubblingState();
-      activeTimers.current.forEach((t) => clearTimeout(t));
-      activeTimers.current.clear();
+      timers.forEach((t) => clearTimeout(t));
+      timers.clear();
     };
   }, [dimensions]);
 

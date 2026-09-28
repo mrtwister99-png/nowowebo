@@ -1,5 +1,5 @@
 import React from 'react';
-import { ArrowRight, Coffee, Sparkles, CheckCircle2, MessageSquare } from 'lucide-react';
+import { ArrowRight, Coffee } from 'lucide-react';
 import { ServiceId } from '../types';
 
 interface ConsultationSlimBannerProps {

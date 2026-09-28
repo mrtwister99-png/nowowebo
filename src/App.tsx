@@ -18,7 +18,9 @@ export default function App() {
     try {
       const saved = localStorage.getItem('loyo_cursor_mode');
       if (saved === 'bubbles') return 'bubbles';
-    } catch (_) {}
+    } catch {
+      // localStorage nedostupný (např. soukromý režim) - použije se výchozí hodnota
+    }
     return 'none';
   });
 
@@ -27,7 +29,9 @@ export default function App() {
       const next = prev === 'bubbles' ? 'none' : 'bubbles';
       try {
         localStorage.setItem('loyo_cursor_mode', next);
-      } catch (_) {}
+      } catch {
+        // uložení se nepovedlo - přepnutí funguje dál, jen se nezapamatuje
+      }
       return next;
     });
   };

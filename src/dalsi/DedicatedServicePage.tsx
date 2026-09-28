@@ -8,10 +8,8 @@ import {
   Zap,
   ShieldCheck,
   Check,
-  Clock,
   Layers,
   Database,
-  KeyRound,
   Smartphone,
   Mail,
   Wifi,
@@ -42,7 +40,6 @@ export const DedicatedServicePage: React.FC<DedicatedServicePageProps> = ({
   const [securityTab, setSecurityTab] = useState<'phone' | 'email' | 'nfc' | 'game'>('phone');
   const [phoneCode, setPhoneCode] = useState('');
   const [phoneVerified, setPhoneVerified] = useState(false);
-  const [emailCode, setEmailCode] = useState('');
   const [emailVerified, setEmailVerified] = useState(false);
   const [nfcAuthorized, setNfcAuthorized] = useState(false);
   const [gameCode, setGameCode] = useState('');

@@ -80,24 +80,6 @@ const PIECE_SHAPES: PieceShape[] = [
   }, // T-piece
 ];
 
-// DEMO ONLY: strictly simple 1-cube and 2-cubes (no long/complex shapes!)
-const DEMO_SHAPES: PieceShape[] = [
-  { cells: [[0, 0]] }, // 1-cube
-  {
-    cells: [
-      [0, 0],
-      [1, 0],
-    ],
-  }, // 2-cube horizontal
-  {
-    cells: [
-      [0, 0],
-      [0, 1],
-    ],
-  }, // 2-cube vertical
-  { cells: [[0, 0]] }, // 1-cube
-];
-
 // Floating score indicator (+X points)
 interface FloatingScore {
   id: string;
@@ -124,21 +106,6 @@ const getDemoScene1Cubes = (): SettledCube[] => [
   { id: 'd1-1', col: 1, row: 0, color: COLOR_BLACK },
   { id: 'd1-2', col: 2, row: 0, color: COLOR_BLACK },
   { id: 'd1-4', col: 4, row: 0, color: COLOR_BLACK },
-];
-
-// Preset Scene 2: "v půlce" (approx half full, 2-3 rows high in 5 columns: 1..5)
-const getDemoScene2Cubes = (): SettledCube[] => [
-  { id: 'd2-1-0', col: 1, row: 0, color: COLOR_BLACK },
-  { id: 'd2-1-1', col: 1, row: 1, color: COLOR_BLACK },
-  { id: 'd2-2-0', col: 2, row: 0, color: COLOR_BLACK },
-  { id: 'd2-2-1', col: 2, row: 1, color: COLOR_BLACK },
-  { id: 'd2-2-2', col: 2, row: 2, color: COLOR_BLACK },
-  { id: 'd2-3-0', col: 3, row: 0, color: COLOR_BLACK },
-  { id: 'd2-4-0', col: 4, row: 0, color: COLOR_BLACK },
-  { id: 'd2-4-1', col: 4, row: 1, color: COLOR_BLACK },
-  { id: 'd2-4-2', col: 4, row: 2, color: COLOR_BLACK },
-  { id: 'd2-5-0', col: 5, row: 0, color: COLOR_BLACK },
-  { id: 'd2-5-1', col: 5, row: 1, color: COLOR_BLACK },
 ];
 
 export const MiniFallingCubesInGap: React.FC = () => {
@@ -785,7 +752,7 @@ export const MiniFallingCubesInGap: React.FC = () => {
         if (gameState === 'demo') {
           // Demo landing: kostička dopadne a zčerná (COLOR_BLACK)
           const newSettled: SettledCube[] = [...settledCubes];
-          for (const [dx, dy] of fallingPiece.cells) {
+          for (const [dx] of fallingPiece.cells) {
             const col = fallingPiece.col + dx;
             const currentStack = newSettled.filter((b) => b.col === col);
             const row = currentStack.length;
@@ -810,7 +777,6 @@ export const MiniFallingCubesInGap: React.FC = () => {
             const maxColHeight = Math.max(
               ...[1, 2, 3, 4, 5].map((c) => afterCubes.filter((b) => b.col === c).length),
             );
-            let finalCubes = afterCubes;
             if (maxColHeight >= 4) {
               afterCubes
                 .filter((b) => b.row === 0 && b.col >= 1 && b.col <= 5)
@@ -821,7 +787,7 @@ export const MiniFallingCubesInGap: React.FC = () => {
                     6,
                   );
                 });
-              finalCubes = afterCubes
+              const finalCubes = afterCubes
                 .filter((b) => !(b.row === 0 && b.col >= 1 && b.col <= 5))
                 .map((b) => (b.col >= 1 && b.col <= 5 ? { ...b, row: b.row - 1 } : b));
               setSettledCubes(finalCubes);
@@ -879,7 +845,7 @@ export const MiniFallingCubesInGap: React.FC = () => {
           let isGameOver = false;
           const newSettled: SettledCube[] = [...settledCubes];
 
-          for (const [dx, dy] of fallingPiece.cells) {
+          for (const [dx] of fallingPiece.cells) {
             const col = fallingPiece.col + dx;
             const currentStack = newSettled.filter((b) => b.col === col);
             const row = currentStack.length;

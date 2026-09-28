@@ -1,5 +1,5 @@
 import React from 'react';
-import { ArrowRight, Bot, Cpu, Smartphone, Layers, Globe, Code2, Sparkles } from 'lucide-react';
+import { ArrowRight, Smartphone, Globe } from 'lucide-react';
 import { ServiceId } from '../types';
 
 interface ThreeServiceBannersProps {
