@@ -67,7 +67,7 @@ export const PoProjektu: React.FC<PoProjektuProps> = ({ onOpenQuestionnaire }) =
           {/* 2. KARTA: Správa & Dohlížení */}
           <div className="bg-[#fafafa] border-2 border-[#18181b] rounded-2xl p-5 sm:p-6 shadow-[3px_3px_0px_#18181b] flex flex-col justify-between hover:-translate-y-0.5 transition-transform">
             <div>
-              <div className="w-11 h-11 rounded-xl bg-[#040b8d] text-white flex items-center justify-center mb-4 shadow-[2px_2px_0px_#18181b]">
+              <div className="w-11 h-11 rounded-xl bg-loyo-blue text-white flex items-center justify-center mb-4 shadow-[2px_2px_0px_#18181b]">
                 <ShieldCheck className="w-5 h-5 stroke-[2.2]" />
               </div>
               <h3 className="font-heading font-black text-base sm:text-lg text-[#18181b] mb-2 uppercase">
@@ -92,7 +92,7 @@ export const PoProjektu: React.FC<PoProjektuProps> = ({ onOpenQuestionnaire }) =
           {/* 3. KARTA: Úpravy & Rozšíření */}
           <div className="bg-[#fafafa] border-2 border-[#18181b] rounded-2xl p-5 sm:p-6 shadow-[3px_3px_0px_#18181b] flex flex-col justify-between hover:-translate-y-0.5 transition-transform">
             <div>
-              <div className="w-11 h-11 rounded-xl bg-[#CDA24D] text-[#18181b] flex items-center justify-center mb-4 shadow-[2px_2px_0px_#18181b]">
+              <div className="w-11 h-11 rounded-xl bg-loyo-mustard text-[#18181b] flex items-center justify-center mb-4 shadow-[2px_2px_0px_#18181b]">
                 <TrendingUp className="w-5 h-5 stroke-[2.2]" />
               </div>
               <h3 className="font-heading font-black text-base sm:text-lg text-[#18181b] mb-2 uppercase">

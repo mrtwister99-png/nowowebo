@@ -103,17 +103,17 @@ export const LoyoAnimatedTitle: React.FC = () => {
         +
       </span>
 
-      {/* Top Status & Architecture Badge - continuous pulse - CENTERED */}
+         {/* Top Status & Architecture Badge - continuous pulse - CENTERED */}
       <div className="flex items-center justify-center gap-2 mb-2.5 mx-auto">
         <div className="relative flex items-center justify-center w-2.5 h-2.5">
-          <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-[#040b8d] opacity-60" />
-          <span className="relative inline-flex rounded-full h-2 w-2 bg-[#040b8d]" />
+          <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-loyo-blue opacity-60" />
+          <span className="relative inline-flex rounded-full h-2 w-2 bg-loyo-blue" />
         </div>
         <div className="flex flex-wrap items-center justify-center gap-2">
-          <span className="font-mono text-[10px] sm:text-[11px] font-extrabold uppercase tracking-widest text-[#444] bg-[#dbdbdb] px-2 py-0.5 border border-[#c2c2c2]">
+          <span className="font-mono text- sm:text- font-extrabold uppercase tracking-widest text-[#444] bg-loyo-bar px-2 py-0.5 border border-[#c2c2c2]">
             KÓD & SYSTÉMY NA MÍRU
           </span>
-          <span className="hidden xs:inline-flex items-center gap-1 font-mono text-[10px] text-[#040b8d] font-bold">
+          <span className="hidden xs:inline-flex items-center gap-1 font-mono text- text-loyo-blue font-bold">
             <Terminal className="w-3 h-3 inline" /> ENGINE: ONLINE
           </span>
         </div>
@@ -126,8 +126,8 @@ export const LoyoAnimatedTitle: React.FC = () => {
           aria-hidden="true"
           className="absolute inset-y-0 left-1/2 -translate-x-1/2 w-screen overflow-hidden pointer-events-none z-20"
         >
-          <div 
-            className="animate-loyo-sheen-page absolute inset-y-0 w-48 sm:w-72 md:w-96 bg-gradient-to-r from-transparent via-white/85 to-transparent pointer-events-none shadow-[0_0_35px_rgba(255,255,255,0.8)]"
+                  <div
+            className="animate-loyo-sheen-page absolute inset-y-0 w-48 sm:w-72 md:w-96 bg-linear-to-r from-transparent via-white/85 to-transparent pointer-events-none shadow-[0_0_35px_rgba(255,255,255,0.8)]"
           />
         </div>
 
@@ -146,10 +146,10 @@ export const LoyoAnimatedTitle: React.FC = () => {
             </span>
           </span>
 
-          {/* WORD 2: PREMIUM with Continuous Glow + Periodic Upward-Right Pop Jump */}
-          <span 
-            className={`relative inline-flex items-baseline text-[#040b8d] animate-loyo-glow font-black group cursor-default transition-transform duration-200 ease-out ${
-              isPremiumJumping ? 'translate-x-2.5 -translate-y-2.5 scale-[1.07]' : 'translate-x-0 translate-y-0 scale-100'
+                 {/* WORD 2: PREMIUM with Continuous Glow + Periodic Upward-Right Pop Jump */}
+          <span
+            className={`relative inline-flex items-baseline text-loyo-blue animate-loyo-glow font-black group cursor-default transition-transform duration-200 ease-out ${
+              isPremiumJumping? 'translate-x-2.5 -translate-y-2.5 scale-[1.07]' : 'translate-x-0 translate-y-0 scale-100'
             }`}
           >
             <span className="relative z-10 tracking-tight">
@@ -158,11 +158,11 @@ export const LoyoAnimatedTitle: React.FC = () => {
           </span>
 
           {/* WORD 3: DEVELOPER with gentle breathing float + periodic random red "lup" flash */}
-          <span 
+          <span
             className={`inline-block animate-loyo-float tracking-wide font-black transition-all duration-100 ${
               isRedFlashing
-                ? 'text-[#ac0001] scale-[1.04] drop-shadow-[0_0_20px_rgba(172,0,1,0.95)] drop-shadow-[0_0_6px_rgba(255,255,255,0.75)]'
-                : 'text-[#18181b] hover:text-[#ac0001]'
+               ? 'text-loyo-red scale-[1.04] drop-shadow-[0_0_20px_rgba(172,0,1,0.95)]'
+                : 'text-[#18181b] hover:text-loyo-red'
             }`}
           >
             DEVELOPER
@@ -173,30 +173,30 @@ export const LoyoAnimatedTitle: React.FC = () => {
       {/* Continuous Scanning 3-Color Laser Bar across the entire page width */}
       <div className="relative mt-3 pt-1 w-screen left-1/2 -translate-x-1/2 overflow-hidden">
         {/* Underline track spanning entire page */}
-        <div className="h-[3px] w-full bg-[#c8c8c8] relative overflow-hidden">
-          {/* Fixed Tri-Color Gradient Foundation */}
-          <div className="absolute inset-0 bg-gradient-to-r from-[#040b8d] via-[#CDA24D] to-[#ac0001]" />
+               <div className="h-0.75 w-full bg-[#c8c8c8] relative overflow-hidden">
+                 {/* Fixed Tri-Color Gradient Foundation */}
+          <div className="absolute inset-0 bg-linear-to-r from-loyo-blue via-loyo-mustard to-loyo-red" />
 
           {/* Active Continuous Laser Scanner moving perpetually across entire page width */}
-          <div 
+          <div
             aria-hidden="true"
-            className="animate-loyo-scanner-page absolute top-0 bottom-0 w-32 sm:w-56 bg-gradient-to-r from-transparent via-white to-transparent shadow-[0_0_16px_#ffffff] z-10"
+            className="animate-loyo-scanner-page absolute top-0 bottom-0 w-32 sm:w-56 bg-linear-to-r from-transparent via-white to-transparent shadow-[0_0_16px_#ffffff] z-10"
           />
         </div>
       </div>
 
-      {/* Pillar badges below the line - clearly legible and centered */}
-      <div className="max-w-2xl mx-auto flex flex-wrap items-center justify-center gap-x-4 sm:gap-x-6 gap-y-1.5 text-[10px] sm:text-[11px] font-mono font-bold text-[#555] pt-3">
-        <span className="flex items-center gap-1.5 text-[#040b8d]">
-          <span className="w-2 h-2 bg-[#040b8d] rounded-xs inline-block shadow-xs" />
+        {/* Pillar badges below the line - clearly legible and centered */}
+      <div className="max-w-2xl mx-auto flex flex-wrap items-center justify-center gap-x-4 sm:gap-x-6 gap-y-1.5 text- sm:text- font-mono font-bold text-[#555] pt-3">
+        <span className="flex items-center gap-1.5 text-loyo-blue">
+          <span className="w-2 h-2 bg-loyo-blue rounded-xs inline-block shadow-xs" />
           01. AUTOMATIZACE
         </span>
         <span className="flex items-center gap-1.5 text-[#856520]">
-          <span className="w-2 h-2 bg-[#CDA24D] rounded-xs inline-block shadow-xs" />
+          <span className="w-2 h-2 bg-loyo-mustard rounded-xs inline-block shadow-xs" />
           02. FULLSTACK
         </span>
-        <span className="flex items-center gap-1.5 text-[#ac0001]">
-          <span className="w-2 h-2 bg-[#ac0001] rounded-xs inline-block shadow-xs" />
+        <span className="flex items-center gap-1.5 text-loyo-red">
+          <span className="w-2 h-2 bg-loyo-red rounded-xs inline-block shadow-xs" />
           03. WEBY & LOGO
         </span>
         <span className="flex items-center gap-1.5 text-[#18181b]">

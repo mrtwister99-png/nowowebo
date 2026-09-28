@@ -84,13 +84,7 @@
   }
 }
 
-:root {
-  --color-loyo-bg: #ededed;
-  --color-loyo-bar: #dbdbdb;
-  --color-loyo-blue: #040b8d;
-  --color-loyo-red: #ac0001;
-  --color-loyo-mustard: #CDA24D;
-}
+
 
 /* Universal cross-platform baseline (iOS, Android, Windows, Mac, Linux) */
 html {

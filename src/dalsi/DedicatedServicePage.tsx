@@ -72,7 +72,7 @@ export const DedicatedServicePage: React.FC<DedicatedServicePageProps> = ({
           <button
             type="button"
             onClick={onBackToHome}
-            className="inline-flex items-center gap-2 px-3.5 py-2 bg-[#dbdbdb] hover:bg-[#18181b] hover:text-white border border-[#c2c2c2] font-mono text-xs font-bold uppercase tracking-wider transition-colors cursor-pointer"
+            className="inline-flex items-center gap-2 px-3.5 py-2 bg-loyo-bar hover:bg-[#18181b] hover:text-white border border-[#c2c2c2] font-mono text-xs font-bold uppercase tracking-wider transition-colors cursor-pointer"
           >
             <ArrowLeft className="w-3.5 h-3.5" />
             <span>← Zpět na hlavní přehled</span>
@@ -82,7 +82,7 @@ export const DedicatedServicePage: React.FC<DedicatedServicePageProps> = ({
             <button
               type="button"
               onClick={scrollToQuestionnaire}
-              className="px-3.5 py-2 bg-[#18181b] text-white hover:bg-[#040b8d] font-mono text-xs font-bold uppercase tracking-wider transition-colors cursor-pointer flex items-center gap-1.5"
+              className="px-3.5 py-2 bg-[#18181b] text-white hover:bg-loyo-blue font-mono text-xs font-bold uppercase tracking-wider transition-colors cursor-pointer flex items-center gap-1.5"
             >
               <span>Přeskočit na dotazník</span>
               <ChevronDown className="w-3.5 h-3.5" />
@@ -98,19 +98,17 @@ export const DedicatedServicePage: React.FC<DedicatedServicePageProps> = ({
             {/* Header */}
             <BigSectionLetter
               letter="A"
+              wordRemainder="UTOMATIZACE"
               fillColor="#040b8d"
-              number="01"
-              title="AUTOMATIZACE"
-              subtitle="Chytrá propojení systémů, úspora desítek hodin a zakázkové zabezpečení"
-              tagText="MODRÁ SPECIALIZACE"
+              subtitle="Chytrá propojení systémů, úspora desítek hodin a zakázkové zabezpečení • MODRÁ SPECIALIZACE"
             />
 
             {/* In-depth feature grid */}
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
               
               {/* Card 1: Rozsah */}
-              <div className="bg-[#dbdbdb] border-2 border-[#18181b] p-6 shadow-xs">
-                <div className="flex items-center gap-2 text-xs font-mono font-bold uppercase text-[#040b8d] mb-2">
+              <div className="bg-loyo-bar border-2 border-[#18181b] p-6 shadow-xs">
+                <div className="flex items-center gap-2 text-xs font-mono font-bold uppercase text-loyo-blue mb-2">
                   <Workflow className="w-4 h-4" />
                   <span>Rozsah implementace</span>
                 </div>
@@ -126,8 +124,8 @@ export const DedicatedServicePage: React.FC<DedicatedServicePageProps> = ({
               </div>
 
               {/* Card 2: AI Zapojení */}
-              <div className="bg-[#dbdbdb] border-2 border-[#18181b] p-6 shadow-xs">
-                <div className="flex items-center gap-2 text-xs font-mono font-bold uppercase text-[#040b8d] mb-2">
+              <div className="bg-loyo-bar border-2 border-[#18181b] p-6 shadow-xs">
+                <div className="flex items-center gap-2 text-xs font-mono font-bold uppercase text-loyo-blue mb-2">
                   <Zap className="w-4 h-4" />
                   <span>Inteligentní AI pipeline</span>
                 </div>
@@ -143,8 +141,8 @@ export const DedicatedServicePage: React.FC<DedicatedServicePageProps> = ({
               </div>
 
               {/* Card 3: Nezávislost */}
-              <div className="bg-[#dbdbdb] border-2 border-[#18181b] p-6 shadow-xs">
-                <div className="flex items-center gap-2 text-xs font-mono font-bold uppercase text-[#040b8d] mb-2">
+              <div className="bg-loyo-bar border-2 border-[#18181b] p-6 shadow-xs">
+                <div className="flex items-center gap-2 text-xs font-mono font-bold uppercase text-loyo-blue mb-2">
                   <ShieldCheck className="w-4 h-4" />
                   <span>Garance spolehlivosti</span>
                 </div>
@@ -162,9 +160,9 @@ export const DedicatedServicePage: React.FC<DedicatedServicePageProps> = ({
             </div>
 
             {/* Interactive Time & Cost Savings Calculator */}
-            <div className="bg-[#dbdbdb] border-2 border-[#18181b] p-6 sm:p-8 shadow-xs">
+            <div className="bg-loyo-bar border-2 border-[#18181b] p-6 sm:p-8 shadow-xs">
               <div className="max-w-3xl">
-                <div className="inline-flex items-center gap-2 px-3 py-1 bg-[#ededed] border border-[#c2c2c2] text-xs font-mono font-bold uppercase text-[#040b8d] mb-2">
+                <div className="inline-flex items-center gap-2 px-3 py-1 bg-loyo-bg border border-[#c2c2c2] text-xs font-mono font-bold uppercase text-loyo-blue mb-2">
                   <span>KALKULAČKA FINANČNÍ NÁVRATNOSTI</span>
                 </div>
                 <h3 className="font-heading font-black text-2xl sm:text-3xl text-[#18181b]">
@@ -181,7 +179,7 @@ export const DedicatedServicePage: React.FC<DedicatedServicePageProps> = ({
                   <div>
                     <div className="flex justify-between text-xs font-mono font-bold text-[#18181b] mb-1">
                       <span>UŠETŘENÉ HODINY TÝDNĚ PRO CELÝ TÝM:</span>
-                      <span className="text-[#040b8d] text-sm">{hoursSavedPerWeek} hodin / týdně</span>
+                      <span className="text-loyo-blue text-sm">{hoursSavedPerWeek} hodin / týdně</span>
                     </div>
                     <input
                       type="range"
@@ -190,7 +188,7 @@ export const DedicatedServicePage: React.FC<DedicatedServicePageProps> = ({
                       step={5}
                       value={hoursSavedPerWeek}
                       onChange={(e) => setHoursSavedPerWeek(Number(e.target.value))}
-                      className="w-full accent-[#040b8d] cursor-pointer"
+                      className="w-full accent-loyo-blue cursor-pointer"
                     />
                     <div className="flex justify-between text-[10px] font-mono text-[#666] mt-0.5">
                       <span>5 hod (dílčí proces)</span>
@@ -202,7 +200,7 @@ export const DedicatedServicePage: React.FC<DedicatedServicePageProps> = ({
                   <div>
                     <div className="flex justify-between text-xs font-mono font-bold text-[#18181b] mb-1">
                       <span>PRŮMĚRNÁ HODINOVÁ MZDA / NÁKLAD PRACOVNÍKA:</span>
-                      <span className="text-[#040b8d] text-sm">{hourlyCost} Kč / hod</span>
+                      <span className="text-loyo-blue text-sm">{hourlyCost} Kč / hod</span>
                     </div>
                     <input
                       type="range"
@@ -211,7 +209,7 @@ export const DedicatedServicePage: React.FC<DedicatedServicePageProps> = ({
                       step={50}
                       value={hourlyCost}
                       onChange={(e) => setHourlyCost(Number(e.target.value))}
-                      className="w-full accent-[#040b8d] cursor-pointer"
+                      className="w-full accent-loyo-blue cursor-pointer"
                     />
                     <div className="flex justify-between text-[10px] font-mono text-[#666] mt-0.5">
                       <span>250 Kč/h</span>
@@ -222,12 +220,12 @@ export const DedicatedServicePage: React.FC<DedicatedServicePageProps> = ({
                 </div>
 
                 {/* Result Column */}
-                <div className="lg:col-span-5 bg-[#ededed] border border-[#c2c2c2] p-5 space-y-4 text-center">
+                <div className="lg:col-span-5 bg-loyo-bg border border-[#c2c2c2] p-5 space-y-4 text-center">
                   <div>
                     <span className="font-mono text-[10px] uppercase text-[#666] block">
                       ROČNÍ ÚSPORA ČASU:
                     </span>
-                    <span className="font-heading font-black text-3xl sm:text-4xl text-[#040b8d] block mt-0.5">
+                    <span className="font-heading font-black text-3xl sm:text-4xl text-loyo-blue block mt-0.5">
                       {annualHoursSaved.toLocaleString('cs-CZ')} hodin
                     </span>
                   </div>
@@ -249,9 +247,9 @@ export const DedicatedServicePage: React.FC<DedicatedServicePageProps> = ({
             </div>
 
             {/* Interactive Security & Custom Auth Demo */}
-            <div className="bg-[#dbdbdb] border-2 border-[#18181b] p-6 sm:p-8 shadow-xs">
+            <div className="bg-loyo-bar border-2 border-[#18181b] p-6 sm:p-8 shadow-xs">
               <div className="mb-6">
-                <div className="inline-flex items-center gap-2 px-3 py-1 bg-[#ededed] border border-[#c2c2c2] text-xs font-mono font-bold uppercase text-[#040b8d] mb-2">
+                <div className="inline-flex items-center gap-2 px-3 py-1 bg-loyo-bg border border-[#c2c2c2] text-xs font-mono font-bold uppercase text-loyo-blue mb-2">
                   <span>INTERAKTIVNÍ DEMO ZABEZPEČENÍ</span>
                 </div>
                 <h3 className="font-heading font-black text-2xl sm:text-3xl text-[#18181b]">
@@ -268,7 +266,7 @@ export const DedicatedServicePage: React.FC<DedicatedServicePageProps> = ({
                   type="button"
                   onClick={() => setSecurityTab('phone')}
                   className={`px-3.5 py-2 font-mono text-xs font-bold uppercase transition-colors cursor-pointer flex items-center gap-1.5 ${
-                    securityTab === 'phone' ? 'bg-[#040b8d] text-white' : 'bg-[#ededed] text-[#444] hover:bg-[#e0e0e0]'
+                    securityTab === 'phone' ? 'bg-loyo-blue text-white' : 'bg-loyo-bg text-[#444] hover:bg-[#e0e0e0]'
                   }`}
                 >
                   <Smartphone className="w-3.5 h-3.5" />
@@ -279,7 +277,7 @@ export const DedicatedServicePage: React.FC<DedicatedServicePageProps> = ({
                   type="button"
                   onClick={() => setSecurityTab('email')}
                   className={`px-3.5 py-2 font-mono text-xs font-bold uppercase transition-colors cursor-pointer flex items-center gap-1.5 ${
-                    securityTab === 'email' ? 'bg-[#040b8d] text-white' : 'bg-[#ededed] text-[#444] hover:bg-[#e0e0e0]'
+                    securityTab === 'email' ? 'bg-loyo-blue text-white' : 'bg-loyo-bg text-[#444] hover:bg-[#e0e0e0]'
                   }`}
                 >
                   <Mail className="w-3.5 h-3.5" />
@@ -290,7 +288,7 @@ export const DedicatedServicePage: React.FC<DedicatedServicePageProps> = ({
                   type="button"
                   onClick={() => setSecurityTab('nfc')}
                   className={`px-3.5 py-2 font-mono text-xs font-bold uppercase transition-colors cursor-pointer flex items-center gap-1.5 ${
-                    securityTab === 'nfc' ? 'bg-[#040b8d] text-white' : 'bg-[#ededed] text-[#444] hover:bg-[#e0e0e0]'
+                    securityTab === 'nfc' ? 'bg-loyo-blue text-white' : 'bg-loyo-bg text-[#444] hover:bg-[#e0e0e0]'
                   }`}
                 >
                   <Wifi className="w-3.5 h-3.5" />
@@ -301,7 +299,7 @@ export const DedicatedServicePage: React.FC<DedicatedServicePageProps> = ({
                   type="button"
                   onClick={() => setSecurityTab('game')}
                   className={`px-3.5 py-2 font-mono text-xs font-bold uppercase transition-colors cursor-pointer flex items-center gap-1.5 ${
-                    securityTab === 'game' ? 'bg-[#040b8d] text-white' : 'bg-[#ededed] text-[#444] hover:bg-[#e0e0e0]'
+                    securityTab === 'game' ? 'bg-loyo-blue text-white' : 'bg-loyo-bg text-[#444] hover:bg-[#e0e0e0]'
                   }`}
                 >
                   <Gamepad2 className="w-3.5 h-3.5" />
@@ -310,10 +308,10 @@ export const DedicatedServicePage: React.FC<DedicatedServicePageProps> = ({
               </div>
 
               {/* Tab Contents */}
-              <div className="bg-[#ededed] border border-[#c2c2c2] p-6 max-w-xl">
+              <div className="bg-loyo-bg border border-[#c2c2c2] p-6 max-w-xl">
                 {securityTab === 'phone' && (
                   <div className="space-y-4">
-                    <span className="font-mono text-xs font-bold uppercase text-[#040b8d] block">
+                    <span className="font-mono text-xs font-bold uppercase text-loyo-blue block">
                       Ověření SMS kódem nebo mobilním tokenem
                     </span>
                     <p className="text-xs text-[#555]">
@@ -331,7 +329,7 @@ export const DedicatedServicePage: React.FC<DedicatedServicePageProps> = ({
                       <button
                         type="button"
                         onClick={() => setPhoneVerified(phoneCode === '8492')}
-                        className="px-4 py-2 bg-[#040b8d] text-white font-mono text-xs font-bold uppercase cursor-pointer"
+                        className="px-4 py-2 bg-loyo-blue text-white font-mono text-xs font-bold uppercase cursor-pointer"
                       >
                         Ověřit kód
                       </button>
@@ -347,7 +345,7 @@ export const DedicatedServicePage: React.FC<DedicatedServicePageProps> = ({
 
                 {securityTab === 'email' && (
                   <div className="space-y-4">
-                    <span className="font-mono text-xs font-bold uppercase text-[#040b8d] block">
+                    <span className="font-mono text-xs font-bold uppercase text-loyo-blue block">
                       Jednorázový magický link bez hesla
                     </span>
                     <p className="text-xs text-[#555]">
@@ -356,7 +354,7 @@ export const DedicatedServicePage: React.FC<DedicatedServicePageProps> = ({
                     <button
                       type="button"
                       onClick={() => setEmailVerified(true)}
-                      className="px-4 py-2 bg-[#040b8d] text-white font-mono text-xs font-bold uppercase cursor-pointer"
+                      className="px-4 py-2 bg-loyo-blue text-white font-mono text-xs font-bold uppercase cursor-pointer"
                     >
                       Ověřit jednorázový token linku
                     </button>
@@ -371,7 +369,7 @@ export const DedicatedServicePage: React.FC<DedicatedServicePageProps> = ({
 
                 {securityTab === 'nfc' && (
                   <div className="space-y-4">
-                    <span className="font-mono text-xs font-bold uppercase text-[#040b8d] block">
+                    <span className="font-mono text-xs font-bold uppercase text-loyo-blue block">
                       Autorizace fyzickou NFC kartou nebo přívěskem
                     </span>
                     <p className="text-xs text-[#555]">
@@ -380,7 +378,7 @@ export const DedicatedServicePage: React.FC<DedicatedServicePageProps> = ({
                     <button
                       type="button"
                       onClick={() => setNfcAuthorized(true)}
-                      className="px-4 py-2 bg-[#040b8d] text-white font-mono text-xs font-bold uppercase cursor-pointer flex items-center gap-2"
+                      className="px-4 py-2 bg-loyo-blue text-white font-mono text-xs font-bold uppercase cursor-pointer flex items-center gap-2"
                     >
                       <Wifi className="w-3.5 h-3.5" />
                       <span>Simulovat přiložení NFC čipu #4891-B</span>
@@ -396,7 +394,7 @@ export const DedicatedServicePage: React.FC<DedicatedServicePageProps> = ({
 
                 {securityTab === 'game' && (
                   <div className="space-y-4">
-                    <span className="font-mono text-xs font-bold uppercase text-[#040b8d] block">
+                    <span className="font-mono text-xs font-bold uppercase text-loyo-blue block">
                       Grafická / gamifikovaná autentizace
                     </span>
                     <p className="text-xs text-[#555]">
@@ -412,7 +410,7 @@ export const DedicatedServicePage: React.FC<DedicatedServicePageProps> = ({
                             setGameVerified(shape === 'ČTVEREC');
                           }}
                           className={`px-3 py-2 border text-xs font-mono font-bold cursor-pointer ${
-                            gameCode === shape ? 'bg-[#040b8d] text-white border-[#040b8d]' : 'bg-white text-[#333] border-[#c2c2c2]'
+                            gameCode === shape ? 'bg-loyo-blue text-white border-loyo-blue' : 'bg-white text-[#333] border-[#c2c2c2]'
                           }`}
                         >
                           {shape}
@@ -443,16 +441,14 @@ export const DedicatedServicePage: React.FC<DedicatedServicePageProps> = ({
             {/* Header */}
             <BigSectionLetter
               letter="A"
+              wordRemainder="PLIKACE"
               fillColor="#CDA24D"
-              number="02"
-              title="APLIKACE"
-              subtitle="Zakázkový full-stack vývoj, 100% nezávislý čistý kód a komplexní backend"
-              tagText="ZLATÁ SPECIALIZACE"
+              subtitle="Zakázkový full-stack vývoj, 100% nezávislý čistý kód a komplexní backend • ZLATÁ SPECIALIZACE"
             />
 
             {/* Feature Cards Grid */}
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-              <div className="bg-[#dbdbdb] border-2 border-[#18181b] p-6 shadow-xs">
+              <div className="bg-loyo-bar border-2 border-[#18181b] p-6 shadow-xs">
                 <div className="flex items-center gap-2 text-xs font-mono font-bold uppercase text-[#8a6b28] mb-2">
                   <Code2 className="w-4 h-4" />
                   <span>Čistý kód</span>
@@ -468,7 +464,7 @@ export const DedicatedServicePage: React.FC<DedicatedServicePageProps> = ({
                 </div>
               </div>
 
-              <div className="bg-[#dbdbdb] border-2 border-[#18181b] p-6 shadow-xs">
+              <div className="bg-loyo-bar border-2 border-[#18181b] p-6 shadow-xs">
                 <div className="flex items-center gap-2 text-xs font-mono font-bold uppercase text-[#8a6b28] mb-2">
                   <Database className="w-4 h-4" />
                   <span>Komplexní backend</span>
@@ -484,7 +480,7 @@ export const DedicatedServicePage: React.FC<DedicatedServicePageProps> = ({
                 </div>
               </div>
 
-              <div className="bg-[#dbdbdb] border-2 border-[#18181b] p-6 shadow-xs">
+              <div className="bg-loyo-bar border-2 border-[#18181b] p-6 shadow-xs">
                 <div className="flex items-center gap-2 text-xs font-mono font-bold uppercase text-[#8a6b28] mb-2">
                   <Layers className="w-4 h-4" />
                   <span>Intuitivní rozhraní</span>
@@ -502,7 +498,7 @@ export const DedicatedServicePage: React.FC<DedicatedServicePageProps> = ({
             </div>
 
             {/* Architecture Comparison Table */}
-            <div className="bg-[#dbdbdb] border-2 border-[#18181b] p-6 sm:p-8 shadow-xs">
+            <div className="bg-loyo-bar border-2 border-[#18181b] p-6 sm:p-8 shadow-xs">
               <div className="max-w-2xl mb-6">
                 <span className="text-xs font-mono font-bold uppercase text-[#8a6b28] block mb-1">
                   SROVNÁNÍ PŘÍSTUPŮ
@@ -515,7 +511,7 @@ export const DedicatedServicePage: React.FC<DedicatedServicePageProps> = ({
               <div className="overflow-x-auto">
                 <table className="w-full text-left text-xs font-mono border-collapse">
                   <thead>
-                    <tr className="border-b-2 border-[#18181b] bg-[#ededed]">
+                    <tr className="border-b-2 border-[#18181b] bg-loyo-bg">
                       <th className="p-3 uppercase text-[#666]">Vlastnost</th>
                       <th className="p-3 uppercase text-[#8a6b28] font-black">LoYo Vývoj na míru</th>
                       <th className="p-3 uppercase text-[#666]">Krabicové SaaS / No-Code</th>
@@ -560,17 +556,15 @@ export const DedicatedServicePage: React.FC<DedicatedServicePageProps> = ({
             {/* Header */}
             <BigSectionLetter
               letter="T"
+              wordRemainder="VORBA"
               fillColor="#ac0001"
-              number="03"
-              title="TVORBA"
-              subtitle="Restyling stávajících webů, unikátní design od čistého listu a 60 FPS animace"
-              tagText="ČERVENÁ SPECIALIZACE"
+              subtitle="Restyling stávajících webů, unikátní design od čistého listu a 60 FPS animace • ČERVENÁ SPECIALIZACE"
             />
 
             {/* Feature Cards Grid */}
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-              <div className="bg-[#dbdbdb] border-2 border-[#18181b] p-6 shadow-xs">
-                <div className="flex items-center gap-2 text-xs font-mono font-bold uppercase text-[#ac0001] mb-2">
+              <div className="bg-loyo-bar border-2 border-[#18181b] p-6 shadow-xs">
+                <div className="flex items-center gap-2 text-xs font-mono font-bold uppercase text-loyo-red mb-2">
                   <Palette className="w-4 h-4" />
                   <span>Hloubkový restyling</span>
                 </div>
@@ -585,8 +579,8 @@ export const DedicatedServicePage: React.FC<DedicatedServicePageProps> = ({
                 </div>
               </div>
 
-              <div className="bg-[#dbdbdb] border-2 border-[#18181b] p-6 shadow-xs">
-                <div className="flex items-center gap-2 text-xs font-mono font-bold uppercase text-[#ac0001] mb-2">
+              <div className="bg-loyo-bar border-2 border-[#18181b] p-6 shadow-xs">
+                <div className="flex items-center gap-2 text-xs font-mono font-bold uppercase text-loyo-red mb-2">
                   <Sparkles className="w-4 h-4" />
                   <span>Vlastní podoba stránky</span>
                 </div>
@@ -601,8 +595,8 @@ export const DedicatedServicePage: React.FC<DedicatedServicePageProps> = ({
                 </div>
               </div>
 
-              <div className="bg-[#dbdbdb] border-2 border-[#18181b] p-6 shadow-xs">
-                <div className="flex items-center gap-2 text-xs font-mono font-bold uppercase text-[#ac0001] mb-2">
+              <div className="bg-loyo-bar border-2 border-[#18181b] p-6 shadow-xs">
+                <div className="flex items-center gap-2 text-xs font-mono font-bold uppercase text-loyo-red mb-2">
                   <Gauge className="w-4 h-4" />
                   <span>Dynamické animace</span>
                 </div>
@@ -631,16 +625,14 @@ export const DedicatedServicePage: React.FC<DedicatedServicePageProps> = ({
             {/* Header */}
             <BigSectionLetter
               letter="K"
+              wordRemainder="ONZULTACE"
               fillColor="#18181b"
-              number="04"
-              title="KONZULTACE"
-              subtitle="Osobní odborné poradenství 1 na 1, technická oponentura a ochrana rozpočtu"
-              tagText="OSOBNÍ KONZULTACE"
+              subtitle="Osobní odborné poradenství 1 na 1, technická oponentura a ochrana rozpočtu • OSOBNÍ KONZULTACE"
             />
 
             {/* Feature Cards Grid */}
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-              <div className="bg-[#dbdbdb] border-2 border-[#18181b] p-6 shadow-xs">
+              <div className="bg-loyo-bar border-2 border-[#18181b] p-6 shadow-xs">
                 <div className="flex items-center gap-2 text-xs font-mono font-bold uppercase text-[#18181b] mb-2">
                   <Coffee className="w-4 h-4" />
                   <span>Osobně i online</span>
@@ -656,7 +648,7 @@ export const DedicatedServicePage: React.FC<DedicatedServicePageProps> = ({
                 </div>
               </div>
 
-              <div className="bg-[#dbdbdb] border-2 border-[#18181b] p-6 shadow-xs">
+              <div className="bg-loyo-bar border-2 border-[#18181b] p-6 shadow-xs">
                 <div className="flex items-center gap-2 text-xs font-mono font-bold uppercase text-[#18181b] mb-2">
                   <ShieldCheck className="w-4 h-4" />
                   <span>Záchrana rozpočtu</span>
@@ -672,7 +664,7 @@ export const DedicatedServicePage: React.FC<DedicatedServicePageProps> = ({
                 </div>
               </div>
 
-              <div className="bg-[#dbdbdb] border-2 border-[#18181b] p-6 shadow-xs">
+              <div className="bg-loyo-bar border-2 border-[#18181b] p-6 shadow-xs">
                 <div className="flex items-center gap-2 text-xs font-mono font-bold uppercase text-[#18181b] mb-2">
                   <Zap className="w-4 h-4" />
                   <span>Předání know-how</span>
@@ -699,7 +691,7 @@ export const DedicatedServicePage: React.FC<DedicatedServicePageProps> = ({
           <button
             type="button"
             onClick={onBackToHome}
-            className="inline-flex items-center gap-2 px-5 py-2.5 bg-[#18181b] text-white hover:bg-[#040b8d] font-mono text-xs font-bold uppercase tracking-wider transition-colors cursor-pointer"
+            className="inline-flex items-center gap-2 px-5 py-2.5 bg-[#18181b] text-white hover:bg-loyo-blue font-mono text-xs font-bold uppercase tracking-wider transition-colors cursor-pointer"
           >
             <ArrowLeft className="w-4 h-4" />
             <span>← Zpět na hlavní přehled</span>

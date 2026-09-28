@@ -228,7 +228,7 @@ Zpráva: ${submitted.notes || '-'}
                     <span>2. Preferovaný způsob zabezpečení & přihlášení (telefon, NFC, email, hra...):</span>
                   </label>
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
-                    {QUESTIONNAIRE_CONFIGS.automation.securityOptions.map((sec, i) => {
+                      {QUESTIONNAIRE_CONFIGS.automation.securityOptions.map((sec, i) => {
                       const active = formData.securityOptions.includes(sec);
                       return (
                         <button
@@ -237,17 +237,17 @@ Zpráva: ${submitted.notes || '-'}
                           onClick={() => toggleSecurity(sec)}
                           className={`p-3 rounded-sm border text-left flex items-center justify-between text-xs transition-all cursor-pointer ${
                             active
-                              ? 'bg-[#000182] border-[#CE9B01] text-[#FFFFFF]'
+                             ? 'bg-[#000182] border-[#CE9B01] text-[#FFFFFF]'
                               : 'bg-[#050058]/60 border-white/10 text-[#D9EAF5]/80 hover:border-white/30'
                           }`}
                         >
                           <span>{sec}</span>
                           <span
                             className={`w-3.5 h-3.5 rounded-sm border flex items-center justify-center shrink-0 ${
-                              active ? 'bg-[#CE9B01] border-[#CE9B01] text-[#050058]' : 'border-white/20'
+                              active? 'bg-[#CE9B01] border-[#CE9B01] text-[#050058]' : 'border-white/20'
                             }`}
                           >
-                            {active && <Check className="w-2.5 h-2.5 stroke-[3]" />}
+                            {active && <Check className="w-2.5 h-2.5 stroke-3" />}
                           </span>
                         </button>
                       );
@@ -262,7 +262,7 @@ Zpráva: ${submitted.notes || '-'}
                   {selectedService === 'automation' ? '3. Procesy k automatizaci:' : '2. Požadované funkce a součásti:'}
                 </label>
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
-                  {selectedService === 'fullstack' &&
+                                   {selectedService === 'fullstack' &&
                     QUESTIONNAIRE_CONFIGS.fullstack.featureOptions.map((feat, i) => {
                       const active = formData.selectedFeatures.includes(feat);
                       return (
@@ -272,23 +272,23 @@ Zpráva: ${submitted.notes || '-'}
                           onClick={() => toggleFeature(feat)}
                           className={`p-3 rounded-sm border text-left flex items-center justify-between text-xs transition-all cursor-pointer ${
                             active
-                              ? 'bg-[#000182] border-[#CE9B01] text-[#FFFFFF]'
+                             ? 'bg-[#000182] border-[#CE9B01] text-[#FFFFFF]'
                               : 'bg-[#050058]/60 border-white/10 text-[#D9EAF5]/80 hover:border-white/30'
                           }`}
                         >
                           <span>{feat}</span>
                           <span
                             className={`w-3.5 h-3.5 rounded-sm border flex items-center justify-center shrink-0 ${
-                              active ? 'bg-[#CE9B01] border-[#CE9B01] text-[#050058]' : 'border-white/20'
+                              active? 'bg-[#CE9B01] border-[#CE9B01] text-[#050058]' : 'border-white/20'
                             }`}
                           >
-                            {active && <Check className="w-2.5 h-2.5 stroke-[3]" />}
+                            {active && <Check className="w-2.5 h-2.5 stroke-3" />}
                           </span>
                         </button>
                       );
                     })}
 
-                  {selectedService === 'automation' &&
+                                   {selectedService === 'automation' &&
                     QUESTIONNAIRE_CONFIGS.automation.featureOptions.map((feat, i) => {
                       const active = formData.selectedFeatures.includes(feat);
                       return (
@@ -298,23 +298,23 @@ Zpráva: ${submitted.notes || '-'}
                           onClick={() => toggleFeature(feat)}
                           className={`p-3 rounded-sm border text-left flex items-center justify-between text-xs transition-all cursor-pointer ${
                             active
-                              ? 'bg-[#000182] border-[#CE9B01] text-[#FFFFFF]'
+                             ? 'bg-[#000182] border-[#CE9B01] text-[#FFFFFF]'
                               : 'bg-[#050058]/60 border-white/10 text-[#D9EAF5]/80 hover:border-white/30'
                           }`}
                         >
                           <span>{feat}</span>
                           <span
                             className={`w-3.5 h-3.5 rounded-sm border flex items-center justify-center shrink-0 ${
-                              active ? 'bg-[#CE9B01] border-[#CE9B01] text-[#050058]' : 'border-white/20'
+                              active? 'bg-[#CE9B01] border-[#CE9B01] text-[#050058]' : 'border-white/20'
                             }`}
                           >
-                            {active && <Check className="w-2.5 h-2.5 stroke-[3]" />}
+                            {active && <Check className="w-2.5 h-2.5 stroke-3" />}
                           </span>
                         </button>
                       );
                     })}
 
-                  {selectedService === 'web-branding' &&
+                                    {selectedService === 'web-branding' &&
                     QUESTIONNAIRE_CONFIGS['web-branding'].brandingOptions.map((brand, i) => {
                       const active = formData.brandingOptions.includes(brand);
                       return (
@@ -324,17 +324,17 @@ Zpráva: ${submitted.notes || '-'}
                           onClick={() => toggleBranding(brand)}
                           className={`p-3 rounded-sm border text-left flex items-center justify-between text-xs transition-all cursor-pointer ${
                             active
-                              ? 'bg-[#000182] border-[#CE9B01] text-[#FFFFFF]'
+                             ? 'bg-[#000182] border-[#CE9B01] text-[#FFFFFF]'
                               : 'bg-[#050058]/60 border-white/10 text-[#D9EAF5]/80 hover:border-white/30'
                           }`}
                         >
                           <span>{brand}</span>
                           <span
                             className={`w-3.5 h-3.5 rounded-sm border flex items-center justify-center shrink-0 ${
-                              active ? 'bg-[#CE9B01] border-[#CE9B01] text-[#050058]' : 'border-white/20'
+                              active? 'bg-[#CE9B01] border-[#CE9B01] text-[#050058]' : 'border-white/20'
                             }`}
                           >
-                            {active && <Check className="w-2.5 h-2.5 stroke-[3]" />}
+                            {active && <Check className="w-2.5 h-2.5 stroke-3" />}
                           </span>
                         </button>
                       );

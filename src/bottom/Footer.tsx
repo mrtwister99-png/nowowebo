@@ -50,9 +50,9 @@ export const Footer: React.FC = () => {
         className="fixed bottom-0 left-0 right-0 z-40 select-none bg-[#18181b] text-white border-t-2 border-[#27272a] shadow-[0_-10px_25px_rgba(0,0,0,0.45)] transition-all duration-300 ease-out"
       >
         {/* 1. VYSUVNÝ OBSAH (ZÁVĚR MENŠÍ) - VIDITELNÝ PŘI VYJETÍ */}
-        <div
+             <div
           className={`overflow-hidden transition-all duration-300 ease-out ${
-            isExpanded ? 'max-h-[500px] opacity-100 border-b border-[#2e2e33]' : 'max-h-0 opacity-0'
+            isExpanded? 'max-h-125 opacity-100 border-b border-[#2e2e33]' : 'max-h-0 opacity-0'
           }`}
         >
           <div className="max-w-6xl mx-auto px-4 sm:px-6 py-8 sm:py-10">

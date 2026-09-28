@@ -8,7 +8,7 @@ interface IntegratedQuestionnaireProps {
 }
 
 export const IntegratedQuestionnaire: React.FC<IntegratedQuestionnaireProps> = ({ serviceId }) => {
-  const config = QUESTIONNAIRE_CONFIGS[serviceId] || QUESTIONNAIRE_CONFIGS.automation;
+  const config = (QUESTIONNAIRE_CONFIGS as any)[serviceId] || (QUESTIONNAIRE_CONFIGS as any).automation;
   const [copied, setCopied] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submittedData, setSubmittedData] = useState<InquiredSubmission | null>(null);
@@ -24,8 +24,8 @@ export const IntegratedQuestionnaire: React.FC<IntegratedQuestionnaireProps> = (
     consultationTopics: [],
     consultationFormat: 'Osobně na kávě (Praha / dle domluvy)',
     animationLevel: 'Vyvážené elegantní mikrointerakce a plynulé přechody',
-    budgetRange: config.budgets[1] || config.budgets[0],
-    timeline: config.timelines[1] || config.timelines[0],
+    budgetRange: (config as any).budgets[1] || (config as any).budgets[0],
+    timeline: (config as any).timelines[1] || (config as any).timelines[0],
     name: '',
     email: '',
     phone: '',
@@ -54,9 +54,9 @@ export const IntegratedQuestionnaire: React.FC<IntegratedQuestionnaireProps> = (
   const toggleConsultationTopic = (top: string) => {
     setFormData(prev => ({
       ...prev,
-      consultationTopics: prev.consultationTopics.includes(top)
-        ? prev.consultationTopics.filter(t => t !== top)
-        : [...prev.consultationTopics, top]
+      consultationTopics: (prev.consultationTopics ?? []).includes(top)
+        ? (prev.consultationTopics ?? []).filter(t => t !== top)
+        : [...(prev.consultationTopics ?? []), top]
     }));
   };
 
@@ -95,11 +95,11 @@ Poznámky: ${submittedData.notes || 'Bez poznámek'}`;
   };
 
   return (
-    <div id="dotaznik-sekce" className="bg-[#dbdbdb] border-2 border-[#18181b] p-6 sm:p-8 lg:p-10 shadow-sm scroll-mt-24">
+    <div id="dotaznik-sekce" className="bg-loyo-bar border-2 border-[#18181b] p-6 sm:p-8 lg:p-10 shadow-sm scroll-mt-24">
       {/* Header of Questionnaire */}
       <div className="border-b border-[#c2c2c2] pb-6 mb-6">
         <div className="flex items-center gap-2 mb-2">
-          <span className="px-2.5 py-0.5 bg-[#ededed] text-[#18181b] text-[10px] font-mono font-bold uppercase tracking-wider border border-[#c5c5c5]">
+          <span className="px-2.5 py-0.5 bg-loyo-bg text-[#18181b] text-2.5 font-mono font-bold uppercase tracking-wider border border-[#c5c5c5]">
             INTEGROVANÝ DOTAZNÍK NA MÍRU
           </span>
           <span className="w-2 h-2 bg-emerald-600 rounded-full animate-pulse" />
@@ -125,8 +125,8 @@ Poznámky: ${submittedData.notes || 'Bez poznámek'}`;
             Děkuji vám, <strong>{submittedData.name}</strong>. Vaše zadání pod referenčním číslem <strong>#{submittedData.id}</strong> bylo odesláno. Ozvu se vám na <strong>{submittedData.email}</strong> do 24 hodin.
           </p>
 
-          <div className="p-4 bg-[#ededed] border border-[#c2c2c2] max-w-md mx-auto text-left font-mono text-xs space-y-1">
-            <div className="text-[#666] uppercase text-[10px] pb-1 border-b border-[#ddd]">
+          <div className="p-4 bg-loyo-bg border border-[#c2c2c2] max-w-md mx-auto text-left font-mono text-xs space-y-1">
+            <div className="text-[#666] uppercase text-2.5 pb-1 border-b border-[#ddd]">
               Souhrn zadání:
             </div>
             <div><strong className="text-[#18181b]">Rozsah:</strong> {submittedData.projectScope}</div>
@@ -138,7 +138,7 @@ Poznámky: ${submittedData.notes || 'Bez poznámek'}`;
             <button
               type="button"
               onClick={handleCopySummary}
-              className="px-4 py-2.5 bg-[#ededed] hover:bg-[#e0e0e0] border border-[#18181b] font-mono text-xs font-bold uppercase tracking-wider flex items-center gap-2 cursor-pointer transition-colors"
+              className="px-4 py-2.5 bg-loyo-bg hover:bg-[#e0e0e0] border border-[#18181b] font-mono text-xs font-bold uppercase tracking-wider flex items-center gap-2 cursor-pointer transition-colors"
             >
               <Copy className="w-3.5 h-3.5" />
               <span>{copied ? 'Souhrn zkopírován!' : 'Zkopírovat souhrn poptávky'}</span>
@@ -147,7 +147,7 @@ Poznámky: ${submittedData.notes || 'Bez poznámek'}`;
             <button
               type="button"
               onClick={() => setSubmittedData(null)}
-              className="px-4 py-2.5 bg-[#18181b] text-white hover:bg-[#040b8d] font-mono text-xs font-bold uppercase tracking-wider cursor-pointer transition-colors"
+              className="px-4 py-2.5 bg-[#18181b] text-white hover:bg-loyo-blue font-mono text-xs font-bold uppercase tracking-wider cursor-pointer transition-colors"
             >
               Upravit nebo odeslat nový
             </button>
@@ -163,7 +163,7 @@ Poznámky: ${submittedData.notes || 'Bez poznámek'}`;
               1. Zvolte zaměření a rozsah projektu *
             </label>
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
-              {config.scopeOptions.map((opt) => {
+              {(config as any).scopeOptions.map((opt: string) => {
                 const isSelected = formData.projectScope === opt;
                 return (
                   <button
@@ -173,14 +173,14 @@ Poznámky: ${submittedData.notes || 'Bez poznámek'}`;
                     className={`p-3 text-left border transition-all cursor-pointer flex items-start justify-between gap-2 ${
                       isSelected
                         ? 'bg-[#18181b] text-white border-[#18181b] shadow-xs'
-                        : 'bg-[#ededed] text-[#333] border-[#c2c2c2] hover:border-[#18181b]'
+                        : 'bg-loyo-bg text-[#333] border-[#c2c2c2] hover:border-[#18181b]'
                     }`}
                   >
                     <span className="text-xs font-bold leading-snug">{opt}</span>
                     <span className={`w-4 h-4 rounded-xs flex items-center justify-center shrink-0 mt-0.5 border ${
                       isSelected ? 'bg-white text-[#18181b] border-white' : 'border-[#999]'
                     }`}>
-                      {isSelected && <Check className="w-3 h-3 stroke-[3]" />}
+                      {isSelected && <Check className="w-3 h-3 stroke-3" />}
                     </span>
                   </button>
                 );
@@ -202,7 +202,7 @@ Poznámky: ${submittedData.notes || 'Bez poznámek'}`;
                   'Gamifikované / grafické ověření (minihra na míru)',
                   'Standardní šifrované přihlašování s dvoufázovým 2FA',
                   'Automatické zálohování a auditní bezpečnostní logy'
-                ].map((sec) => {
+                ].map((sec: string) => {
                   const isChecked = formData.securityOptions.includes(sec);
                   return (
                     <button
@@ -211,15 +211,15 @@ Poznámky: ${submittedData.notes || 'Bez poznámek'}`;
                       onClick={() => toggleSecurityOption(sec)}
                       className={`p-2.5 text-left border text-xs font-medium transition-colors flex items-center justify-between gap-2 cursor-pointer ${
                         isChecked
-                          ? 'bg-[#040b8d] text-white border-[#040b8d]'
-                          : 'bg-[#ededed] text-[#444] border-[#c5c5c5] hover:border-[#888]'
+                          ? 'bg-loyo-blue text-white border-loyo-blue'
+                          : 'bg-loyo-bg text-[#444] border-[#c5c5c5] hover:border-[#888]'
                       }`}
                     >
                       <span>{sec}</span>
                       <span className={`w-3.5 h-3.5 border rounded-xs shrink-0 flex items-center justify-center ${
-                        isChecked ? 'bg-white text-[#040b8d] border-white' : 'border-[#999]'
+                        isChecked ? 'bg-white text-loyo-blue border-white' : 'border-[#999]'
                       }`}>
-                        {isChecked && <Check className="w-2.5 h-2.5 stroke-[3]" />}
+                        {isChecked && <Check className="w-2.5 h-2.5 stroke-3" />}
                       </span>
                     </button>
                   );
@@ -228,13 +228,13 @@ Poznámky: ${submittedData.notes || 'Bez poznámek'}`;
             </div>
           )}
 
-          {serviceId === 'fullstack' && config.featureOptions && (
+          {serviceId === 'fullstack' && (config as any).featureOptions && (
             <div className="space-y-2 pt-2">
               <label className="block text-xs font-mono font-bold uppercase text-[#18181b]">
                 2. Vyberte klíčové funkce systému
               </label>
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
-                {config.featureOptions.map((feat) => {
+                {(config as any).featureOptions.map((feat: string) => {
                   const isChecked = formData.selectedFeatures.includes(feat);
                   return (
                     <button
@@ -244,14 +244,14 @@ Poznámky: ${submittedData.notes || 'Bez poznámek'}`;
                       className={`p-2.5 text-left border text-xs font-medium transition-colors flex items-center justify-between gap-2 cursor-pointer ${
                         isChecked
                           ? 'bg-[#8a6b28] text-white border-[#8a6b28]'
-                          : 'bg-[#ededed] text-[#444] border-[#c5c5c5] hover:border-[#888]'
+                          : 'bg-loyo-bg text-[#444] border-[#c5c5c5] hover:border-[#888]'
                       }`}
                     >
                       <span>{feat}</span>
                       <span className={`w-3.5 h-3.5 border rounded-xs shrink-0 flex items-center justify-center ${
                         isChecked ? 'bg-white text-[#8a6b28] border-white' : 'border-[#999]'
                       }`}>
-                        {isChecked && <Check className="w-2.5 h-2.5 stroke-[3]" />}
+                        {isChecked && <Check className="w-2.5 h-2.5 stroke-3" />}
                       </span>
                     </button>
                   );
@@ -282,15 +282,15 @@ Poznámky: ${submittedData.notes || 'Bez poznámek'}`;
                       onClick={() => toggleFeature(feat)}
                       className={`p-2.5 text-left border text-xs font-medium transition-colors flex items-center justify-between gap-2 cursor-pointer ${
                         isChecked
-                          ? 'bg-[#ac0001] text-white border-[#ac0001]'
-                          : 'bg-[#ededed] text-[#444] border-[#c5c5c5] hover:border-[#888]'
+                          ? 'bg-loyo-red text-white border-loyo-red'
+                          : 'bg-loyo-bg text-[#444] border-[#c5c5c5] hover:border-[#888]'
                       }`}
                     >
                       <span>{feat}</span>
                       <span className={`w-3.5 h-3.5 border rounded-xs shrink-0 flex items-center justify-center ${
-                        isChecked ? 'bg-white text-[#ac0001] border-white' : 'border-[#999]'
+                        isChecked ? 'bg-white text-loyo-red border-white' : 'border-[#999]'
                       }`}>
-                        {isChecked && <Check className="w-2.5 h-2.5 stroke-[3]" />}
+                        {isChecked && <Check className="w-2.5 h-2.5 stroke-3" />}
                       </span>
                     </button>
                   );
@@ -309,7 +309,7 @@ Poznámky: ${submittedData.notes || 'Bez poznámek'}`;
                   {[
                     'Osobně na kávě (Praha / dle domluvy v ČR)',
                     'Online videohovor (Google Meet / Zoom)'
-                  ].map((fmt) => {
+                  ].map((fmt: string) => {
                     const isSelected = formData.consultationFormat === fmt;
                     return (
                       <button
@@ -317,7 +317,7 @@ Poznámky: ${submittedData.notes || 'Bez poznámek'}`;
                         type="button"
                         onClick={() => setFormData(prev => ({ ...prev, consultationFormat: fmt }))}
                         className={`p-3 text-left border text-xs font-bold transition-colors cursor-pointer flex items-center justify-between ${
-                          isSelected ? 'bg-[#18181b] text-white border-[#18181b]' : 'bg-[#ededed] text-[#333] border-[#c2c2c2]'
+                          isSelected ? 'bg-[#18181b] text-white border-[#18181b]' : 'bg-loyo-bg text-[#333] border-[#c2c2c2]'
                         }`}
                       >
                         <span>{fmt}</span>
@@ -340,15 +340,15 @@ Poznámky: ${submittedData.notes || 'Bez poznámek'}`;
                     'Výběr správných technologií & zapojení moderní AI',
                     'Technická oponentura stávajícího dodavatele / softwaru',
                     'Předání know-how a zaškolení do systému'
-                  ].map((top) => {
-                    const isChecked = formData.consultationTopics.includes(top);
+                  ].map((top: string) => {
+                    const isChecked = (formData.consultationTopics ?? []).includes(top);
                     return (
                       <button
                         key={top}
                         type="button"
                         onClick={() => toggleConsultationTopic(top)}
                         className={`p-2.5 text-left border text-xs font-medium transition-colors flex items-center justify-between gap-2 cursor-pointer ${
-                          isChecked ? 'bg-[#18181b] text-white border-[#18181b]' : 'bg-[#ededed] text-[#444] border-[#c5c5c5]'
+                          isChecked ? 'bg-[#18181b] text-white border-[#18181b]' : 'bg-loyo-bg text-[#444] border-[#c5c5c5]'
                         }`}
                       >
                         <span>{top}</span>
@@ -371,9 +371,9 @@ Poznámky: ${submittedData.notes || 'Bez poznámek'}`;
                 id="int-budget"
                 value={formData.budgetRange}
                 onChange={(e) => setFormData(prev => ({ ...prev, budgetRange: e.target.value }))}
-                className="w-full px-3 py-2.5 bg-[#ededed] border border-[#c2c2c2] text-xs font-sans text-[#18181b]"
+                className="w-full px-3 py-2.5 bg-loyo-bg border border-[#c2c2c2] text-xs font-sans text-[#18181b]"
               >
-                {config.budgets.map(b => (
+                {(config as any).budgets.map((b: string) => (
                   <option key={b} value={b}>{b}</option>
                 ))}
               </select>
@@ -387,9 +387,9 @@ Poznámky: ${submittedData.notes || 'Bez poznámek'}`;
                 id="int-timeline"
                 value={formData.timeline}
                 onChange={(e) => setFormData(prev => ({ ...prev, timeline: e.target.value }))}
-                className="w-full px-3 py-2.5 bg-[#ededed] border border-[#c2c2c2] text-xs font-sans text-[#18181b]"
+                className="w-full px-3 py-2.5 bg-loyo-bg border border-[#c2c2c2] text-xs font-sans text-[#18181b]"
               >
-                {config.timelines.map(t => (
+                {(config as any).timelines.map((t: string) => (
                   <option key={t} value={t}>{t}</option>
                 ))}
               </select>
@@ -404,7 +404,7 @@ Poznámky: ${submittedData.notes || 'Bez poznámek'}`;
 
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
               <div>
-                <label htmlFor="int-name" className="block text-[11px] font-mono font-bold uppercase text-[#444] mb-1">
+                <label htmlFor="int-name" className="block text-2.75 font-mono font-bold uppercase text-[#444] mb-1">
                   Jméno a Příjmení *
                 </label>
                 <input
@@ -414,12 +414,12 @@ Poznámky: ${submittedData.notes || 'Bez poznámek'}`;
                   value={formData.name}
                   onChange={(e) => setFormData(prev => ({ ...prev, name: e.target.value }))}
                   placeholder="Jan Novák"
-                  className="w-full px-3 py-2 bg-[#ededed] border border-[#c2c2c2] text-xs"
+                  className="w-full px-3 py-2 bg-loyo-bg border border-[#c2c2c2] text-xs"
                 />
               </div>
 
               <div>
-                <label htmlFor="int-email" className="block text-[11px] font-mono font-bold uppercase text-[#444] mb-1">
+                <label htmlFor="int-email" className="block text-2.75 font-mono font-bold uppercase text-[#444] mb-1">
                   E-mail *
                 </label>
                 <input
@@ -429,12 +429,12 @@ Poznámky: ${submittedData.notes || 'Bez poznámek'}`;
                   value={formData.email}
                   onChange={(e) => setFormData(prev => ({ ...prev, email: e.target.value }))}
                   placeholder="jan@firma.cz"
-                  className="w-full px-3 py-2 bg-[#ededed] border border-[#c2c2c2] text-xs"
+                  className="w-full px-3 py-2 bg-loyo-bg border border-[#c2c2c2] text-xs"
                 />
               </div>
 
               <div>
-                <label htmlFor="int-phone" className="block text-[11px] font-mono font-bold uppercase text-[#444] mb-1">
+                <label htmlFor="int-phone" className="block text-2.75 font-mono font-bold uppercase text-[#444] mb-1">
                   Telefon (volitelně)
                 </label>
                 <input
@@ -443,12 +443,12 @@ Poznámky: ${submittedData.notes || 'Bez poznámek'}`;
                   value={formData.phone}
                   onChange={(e) => setFormData(prev => ({ ...prev, phone: e.target.value }))}
                   placeholder="+420 777 123 456"
-                  className="w-full px-3 py-2 bg-[#ededed] border border-[#c2c2c2] text-xs"
+                  className="w-full px-3 py-2 bg-loyo-bg border border-[#c2c2c2] text-xs"
                 />
               </div>
 
               <div>
-                <label htmlFor="int-company" className="block text-[11px] font-mono font-bold uppercase text-[#444] mb-1">
+                <label htmlFor="int-company" className="block text-2.75 font-mono font-bold uppercase text-[#444] mb-1">
                   Název firmy / Projektu (volitelně)
                 </label>
                 <input
@@ -457,13 +457,13 @@ Poznámky: ${submittedData.notes || 'Bez poznámek'}`;
                   value={formData.company}
                   onChange={(e) => setFormData(prev => ({ ...prev, company: e.target.value }))}
                   placeholder="MojeFirma s.r.o."
-                  className="w-full px-3 py-2 bg-[#ededed] border border-[#c2c2c2] text-xs"
+                  className="w-full px-3 py-2 bg-loyo-bg border border-[#c2c2c2] text-xs"
                 />
               </div>
             </div>
 
             <div>
-              <label htmlFor="int-notes" className="block text-[11px] font-mono font-bold uppercase text-[#444] mb-1">
+              <label htmlFor="int-notes" className="block text-2.75 font-mono font-bold uppercase text-[#444] mb-1">
                 Doplňující poznámka nebo specifické požadavky
               </label>
               <textarea
@@ -472,7 +472,7 @@ Poznámky: ${submittedData.notes || 'Bez poznámek'}`;
                 value={formData.notes}
                 onChange={(e) => setFormData(prev => ({ ...prev, notes: e.target.value }))}
                 placeholder="Popište podrobněji váš současný stav, jaké systémy využíváte nebo na co se chcete zaměřit..."
-                className="w-full px-3 py-2 bg-[#ededed] border border-[#c2c2c2] text-xs resize-none"
+                className="w-full px-3 py-2 bg-loyo-bg border border-[#c2c2c2] text-xs resize-none"
               />
             </div>
           </div>
@@ -480,14 +480,14 @@ Poznámky: ${submittedData.notes || 'Bez poznámek'}`;
           {/* Submit Action */}
           <div className="pt-2 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
             <div className="flex items-center gap-2 text-xs font-mono text-[#666]">
-              <Clock className="w-3.5 h-3.5 text-[#040b8d]" />
+              <Clock className="w-3.5 h-3.5 text-loyo-blue" />
               <span>Osobní vyhodnocení zadání a odpověď do 24 hodin</span>
             </div>
 
             <button
               type="submit"
               disabled={isSubmitting}
-              className="px-8 py-3.5 bg-[#18181b] hover:bg-[#040b8d] text-white font-mono text-xs sm:text-sm font-bold uppercase tracking-wider flex items-center justify-center gap-2.5 transition-colors cursor-pointer shadow-md disabled:opacity-50"
+              className="px-8 py-3.5 bg-[#18181b] hover:bg-loyo-blue text-white font-mono text-xs sm:text-sm font-bold uppercase tracking-wider flex items-center justify-center gap-2.5 transition-colors cursor-pointer shadow-md disabled:opacity-50"
             >
               {isSubmitting ? (
                 <span>Odesílám dotazník...</span>

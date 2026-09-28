@@ -128,7 +128,7 @@ export default function App() {
   }, [currentPage]);
 
   return (
-    <div className="min-h-screen bg-[#ededed] text-[#18181b] flex flex-col font-sans selection:bg-[#18181b] selection:text-white pb-12 relative">
+    <div className="min-h-screen bg-loyo-bg text-[#18181b] flex flex-col font-sans selection:bg-[#18181b] selection:text-white pb-12 relative">
       
       {/* 3D Interactive Grid Background with LoYo Brand Colors & Cursor-Lifting Squares */}
       <InteractiveGridBackground />

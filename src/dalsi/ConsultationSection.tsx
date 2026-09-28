@@ -55,7 +55,7 @@ export const ConsultationSection: React.FC<ConsultationSectionProps> = ({
   };
 
   return (
-    <section id="konzultace" className="py-14 sm:py-16 bg-[#ededed] text-[#18181b] border-b border-[#d0d0d0]">
+    <section id="konzultace" className="py-14 sm:py-16 bg-loyo-bg text-[#18181b] border-b border-[#d0d0d0]">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         
         {/* Section Header: 04. PILÍŘ • GRAFITOVÁ / ČERNÁ S TRIKOLÓROU */}
@@ -64,13 +64,13 @@ export const ConsultationSection: React.FC<ConsultationSectionProps> = ({
             <span className="px-2.5 py-0.5 bg-[#18181b] text-white text-[11px] font-mono font-bold uppercase tracking-wider">
               04. PILÍŘ • OSOBNÍ KONZULTACE
             </span>
-            <span className="px-2 py-0.5 bg-[#dbdbdb] border border-[#c2c2c2] text-[#18181b] text-[11px] font-mono font-bold">
+            <span className="px-2 py-0.5 bg-loyo-bar border border-[#c2c2c2] text-[#18181b] text-[11px] font-mono font-bold">
               ORIENTAČNĚ OKOLO 800 KČ / HOD
             </span>
             <div className="inline-flex items-center gap-1.5 ml-2">
-              <span className="w-2 h-2 bg-[#040b8d]" />
-              <span className="w-2 h-2 bg-[#CDA24D]" />
-              <span className="w-2 h-2 bg-[#ac0001]" />
+              <span className="w-2 h-2 bg-loyo-blue" />
+              <span className="w-2 h-2 bg-loyo-mustard" />
+              <span className="w-2 h-2 bg-loyo-red" />
             </div>
           </div>
           <h2 className="font-heading font-black text-2xl sm:text-4xl lg:text-5xl text-[#18181b] tracking-tight">
@@ -82,7 +82,7 @@ export const ConsultationSection: React.FC<ConsultationSectionProps> = ({
         </div>
 
         {/* Hlavní karta se 3 jasnými body */}
-        <div className="bg-[#dbdbdb] border-2 border-[#18181b] p-6 sm:p-8 shadow-xs">
+        <div className="bg-loyo-bar border-2 border-[#18181b] p-6 sm:p-8 shadow-xs">
           
           <div className="mb-6">
             <span className="font-mono text-xs uppercase tracking-widest text-[#18181b] font-bold block mb-1">
@@ -96,7 +96,7 @@ export const ConsultationSection: React.FC<ConsultationSectionProps> = ({
           {/* 3 JASNÉ BODY */}
           <div className="grid grid-cols-1 md:grid-cols-3 gap-5 mb-6">
             {/* Bod 1 */}
-            <div className="bg-[#ededed] p-5 border border-[#c2c2c2] flex flex-col justify-between">
+            <div className="bg-loyo-bg p-5 border border-[#c2c2c2] flex flex-col justify-between">
               <div>
                 <div className="w-8 h-8 bg-[#18181b] text-white flex items-center justify-center font-bold text-xs mb-3">
                   01
@@ -108,13 +108,13 @@ export const ConsultationSection: React.FC<ConsultationSectionProps> = ({
                   Žádný odosobněný korporát ani obchodní nátlak. Potkáme se u kávy nebo na videohovoru a věcně probereme váš záměr s férovou hodinovou sazbou.
                 </p>
               </div>
-              <div className="mt-4 pt-2.5 border-t border-[#dbdbdb] text-[11px] font-mono text-[#18181b] font-bold">
+              <div className="mt-4 pt-2.5 border-t border-loyo-bar text-[11px] font-mono text-[#18181b] font-bold">
                 Osobní 1-on-1 debata
               </div>
             </div>
 
             {/* Bod 2 */}
-            <div className="bg-[#ededed] p-5 border border-[#c2c2c2] flex flex-col justify-between">
+            <div className="bg-loyo-bg p-5 border border-[#c2c2c2] flex flex-col justify-between">
               <div>
                 <div className="w-8 h-8 bg-[#18181b] text-white flex items-center justify-center font-bold text-xs mb-3">
                   02
@@ -126,13 +126,13 @@ export const ConsultationSection: React.FC<ConsultationSectionProps> = ({
                   Zpřesnění myšlenky, posouzení technické proveditelnosti a stanovení štíhlého postupu, abyste neutráceli statisíce za zbytečné funkce.
                 </p>
               </div>
-              <div className="mt-4 pt-2.5 border-t border-[#dbdbdb] text-[11px] font-mono text-[#18181b] font-bold">
+              <div className="mt-4 pt-2.5 border-t border-loyo-bar text-[11px] font-mono text-[#18181b] font-bold">
                 Úspora nákladů a času
               </div>
             </div>
 
             {/* Bod 3 */}
-            <div className="bg-[#ededed] p-5 border border-[#c2c2c2] flex flex-col justify-between">
+            <div className="bg-loyo-bg p-5 border border-[#c2c2c2] flex flex-col justify-between">
               <div>
                 <div className="w-8 h-8 bg-[#18181b] text-white flex items-center justify-center font-bold text-xs mb-3">
                   03
@@ -144,7 +144,7 @@ export const ConsultationSection: React.FC<ConsultationSectionProps> = ({
                   100% vlastnictví vašeho produktu i kódů, důkladné zaškolení a možnost dlouhodobého dohledu. Individuální přístup ke každému klientovi.
                 </p>
               </div>
-              <div className="mt-4 pt-2.5 border-t border-[#dbdbdb] text-[11px] font-mono text-[#18181b] font-bold">
+              <div className="mt-4 pt-2.5 border-t border-loyo-bar text-[11px] font-mono text-[#18181b] font-bold">
                 100% jistota & žádné zámky
               </div>
             </div>
@@ -160,7 +160,7 @@ export const ConsultationSection: React.FC<ConsultationSectionProps> = ({
             <div className="flex items-center gap-3">
               <button
                 onClick={() => onOpenQuestionnaire('consultation')}
-                className="px-4 py-2 bg-[#ededed] hover:bg-[#e0e0e0] border border-[#18181b] text-[#18181b] font-bold text-xs uppercase tracking-wider flex items-center gap-1.5 cursor-pointer transition-colors shadow-xs"
+                className="px-4 py-2 bg-loyo-bg hover:bg-[#e0e0e0] border border-[#18181b] text-[#18181b] font-bold text-xs uppercase tracking-wider flex items-center gap-1.5 cursor-pointer transition-colors shadow-xs"
                 id="btn-consultation-dotaznik-preview"
               >
                 <FileText className="w-3.5 h-3.5" />
@@ -170,7 +170,7 @@ export const ConsultationSection: React.FC<ConsultationSectionProps> = ({
               <button
                 onClick={handleToggle}
                 disabled={isExpanding}
-                className="px-5 py-2.5 bg-[#18181b] hover:bg-[#040b8d] text-white font-bold text-xs uppercase tracking-wider flex items-center gap-2 cursor-pointer shadow-xs transition-colors disabled:opacity-80"
+                className="px-5 py-2.5 bg-[#18181b] hover:bg-loyo-blue text-white font-bold text-xs uppercase tracking-wider flex items-center gap-2 cursor-pointer shadow-xs transition-colors disabled:opacity-80"
                 id="btn-consultation-toggle-details"
               >
                 {isExpanding ? (
@@ -192,7 +192,7 @@ export const ConsultationSection: React.FC<ConsultationSectionProps> = ({
 
         {/* SKELETON LOADING VIEW WHEN EXPANDING */}
         {isExpanding && (
-          <div className="mt-8 bg-[#ededed] border-2 border-[#18181b] p-6 sm:p-8 space-y-6 animate-pulse">
+          <div className="mt-8 bg-loyo-bg border-2 border-[#18181b] p-6 sm:p-8 space-y-6 animate-pulse">
             <div className="flex items-center justify-between pb-4 border-b border-[#c8c8c8]">
               <div className="flex items-center gap-2">
                 <div className="w-3.5 h-3.5 border-2 border-[#18181b] border-t-transparent rounded-full animate-spin" />
@@ -204,24 +204,24 @@ export const ConsultationSection: React.FC<ConsultationSectionProps> = ({
             </div>
             
             <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-              <div className="h-28 bg-[#dbdbdb] p-4 space-y-2 border border-[#ccc]">
+              <div className="h-28 bg-loyo-bar p-4 space-y-2 border border-[#ccc]">
                 <div className="h-3 w-1/3 bg-[#c2c2c2] rounded-xs" />
                 <div className="h-5 w-3/4 bg-[#b5b5b5] rounded-xs" />
                 <div className="h-3 w-1/2 bg-[#c8c8c8] rounded-xs" />
               </div>
-              <div className="h-28 bg-[#dbdbdb] p-4 space-y-2 border border-[#ccc]">
+              <div className="h-28 bg-loyo-bar p-4 space-y-2 border border-[#ccc]">
                 <div className="h-3 w-1/3 bg-[#c2c2c2] rounded-xs" />
                 <div className="h-5 w-3/4 bg-[#b5b5b5] rounded-xs" />
                 <div className="h-3 w-1/2 bg-[#c8c8c8] rounded-xs" />
               </div>
-              <div className="h-28 bg-[#dbdbdb] p-4 space-y-2 border border-[#ccc]">
+              <div className="h-28 bg-loyo-bar p-4 space-y-2 border border-[#ccc]">
                 <div className="h-3 w-1/3 bg-[#c2c2c2] rounded-xs" />
                 <div className="h-5 w-3/4 bg-[#b5b5b5] rounded-xs" />
                 <div className="h-3 w-1/2 bg-[#c8c8c8] rounded-xs" />
               </div>
             </div>
 
-            <div className="h-36 bg-[#dbdbdb] p-5 space-y-3 border border-[#ccc]">
+            <div className="h-36 bg-loyo-bar p-5 space-y-3 border border-[#ccc]">
               <div className="h-4 w-44 bg-[#b8b8b8] rounded-xs" />
               <div className="h-3 w-full bg-[#cecece] rounded-xs" />
               <div className="h-3 w-4/5 bg-[#cecece] rounded-xs" />
@@ -231,7 +231,7 @@ export const ConsultationSection: React.FC<ConsultationSectionProps> = ({
 
         {/* ROZBALENÉ DETAILY (Když uživatel klikne na "Zjistit více") */}
         {isExpanded && (
-          <div className="mt-8 bg-[#ededed] border-2 border-[#18181b] p-6 sm:p-8 space-y-8 animate-in fade-in duration-200">
+          <div className="mt-8 bg-loyo-bg border-2 border-[#18181b] p-6 sm:p-8 space-y-8 animate-in fade-in duration-200">
             
             {/* 1. PŘÍKLADY KONZULTACÍ */}
             <div>
@@ -246,7 +246,7 @@ export const ConsultationSection: React.FC<ConsultationSectionProps> = ({
               </h4>
 
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-                <div className="bg-[#dbdbdb] p-4 border border-[#c2c2c2] flex flex-col justify-between">
+                <div className="bg-loyo-bar p-4 border border-[#c2c2c2] flex flex-col justify-between">
                   <div>
                     <div className="w-8 h-8 bg-[#18181b] text-white flex items-center justify-center font-bold text-xs mb-2.5">
                       <Lightbulb className="w-4 h-4" />
@@ -260,7 +260,7 @@ export const ConsultationSection: React.FC<ConsultationSectionProps> = ({
                   </div>
                 </div>
 
-                <div className="bg-[#dbdbdb] p-4 border border-[#c2c2c2] flex flex-col justify-between">
+                <div className="bg-loyo-bar p-4 border border-[#c2c2c2] flex flex-col justify-between">
                   <div>
                     <div className="w-8 h-8 bg-[#18181b] text-white flex items-center justify-center font-bold text-xs mb-2.5">
                       <Compass className="w-4 h-4" />
@@ -274,7 +274,7 @@ export const ConsultationSection: React.FC<ConsultationSectionProps> = ({
                   </div>
                 </div>
 
-                <div className="bg-[#dbdbdb] p-4 border border-[#c2c2c2] flex flex-col justify-between">
+                <div className="bg-loyo-bar p-4 border border-[#c2c2c2] flex flex-col justify-between">
                   <div>
                     <div className="w-8 h-8 bg-[#18181b] text-white flex items-center justify-center font-bold text-xs mb-2.5">
                       <Users className="w-4 h-4" />
@@ -288,7 +288,7 @@ export const ConsultationSection: React.FC<ConsultationSectionProps> = ({
                   </div>
                 </div>
 
-                <div className="bg-[#dbdbdb] p-4 border border-[#c2c2c2] flex flex-col justify-between">
+                <div className="bg-loyo-bar p-4 border border-[#c2c2c2] flex flex-col justify-between">
                   <div>
                     <div className="w-8 h-8 bg-[#18181b] text-white flex items-center justify-center font-bold text-xs mb-2.5">
                       <ShieldCheck className="w-4 h-4" />
@@ -305,12 +305,12 @@ export const ConsultationSection: React.FC<ConsultationSectionProps> = ({
             </div>
 
             {/* 2. CO PO SKONČENÍ PROJEKTU? */}
-            <div className="bg-[#dbdbdb] border-2 border-[#18181b] p-6">
+            <div className="bg-loyo-bar border-2 border-[#18181b] p-6">
               <div className="flex items-center gap-2 mb-2">
                 <span className="font-mono text-xs uppercase tracking-widest text-[#18181b] font-bold">
                   100% Jistota & Partnerství:
                 </span>
-                <span className="px-2 py-0.5 bg-[#ededed] text-[#18181b] font-mono text-[10px] font-bold border border-[#c2c2c2]">
+                <span className="px-2 py-0.5 bg-loyo-bg text-[#18181b] font-mono text-[10px] font-bold border border-[#c2c2c2]">
                   BEZPEČÍ PRO VÁŠ BYZNYS
                 </span>
               </div>
@@ -322,9 +322,9 @@ export const ConsultationSection: React.FC<ConsultationSectionProps> = ({
               </p>
 
               <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                <div className="bg-[#ededed] p-4 border border-[#c2c2c2]">
+                <div className="bg-loyo-bg p-4 border border-[#c2c2c2]">
                   <div className="flex items-center gap-2 text-[#18181b] font-heading font-bold text-sm mb-2">
-                    <Lock className="w-4 h-4 text-[#040b8d]" />
+                    <Lock className="w-4 h-4 text-loyo-blue" />
                     <span>100% váš produkt & kód</span>
                   </div>
                   <p className="text-xs text-[#555] leading-relaxed">
@@ -332,9 +332,9 @@ export const ConsultationSection: React.FC<ConsultationSectionProps> = ({
                   </p>
                 </div>
 
-                <div className="bg-[#ededed] p-4 border border-[#c2c2c2]">
+                <div className="bg-loyo-bg p-4 border border-[#c2c2c2]">
                   <div className="flex items-center gap-2 text-[#18181b] font-heading font-bold text-sm mb-2">
-                    <BookOpen className="w-4 h-4 text-[#CDA24D]" />
+                    <BookOpen className="w-4 h-4 text-loyo-mustard" />
                     <span>Kompletní zaškolení</span>
                   </div>
                   <p className="text-xs text-[#555] leading-relaxed">
@@ -342,9 +342,9 @@ export const ConsultationSection: React.FC<ConsultationSectionProps> = ({
                   </p>
                 </div>
 
-                <div className="bg-[#ededed] p-4 border border-[#c2c2c2]">
+                <div className="bg-loyo-bg p-4 border border-[#c2c2c2]">
                   <div className="flex items-center gap-2 text-[#18181b] font-heading font-bold text-sm mb-2">
-                    <Headphones className="w-4 h-4 text-[#ac0001]" />
+                    <Headphones className="w-4 h-4 text-loyo-red" />
                     <span>Dlouhodobý dohled & správa</span>
                   </div>
                   <p className="text-xs text-[#555] leading-relaxed">
@@ -355,7 +355,7 @@ export const ConsultationSection: React.FC<ConsultationSectionProps> = ({
             </div>
 
             {/* 3. FILOZOFIE INDIVIDUÁLNÍHO PŘÍSTUPU KE KAŽDÉMU */}
-            <div className="bg-[#ededed] border-l-4 border-[#18181b] p-6 border-y border-r border-[#c8c8c8]">
+            <div className="bg-loyo-bg border border-[#c8c8c8] border-l-4 border-l-[#18181b] p-6">
               <div className="flex items-center gap-2 mb-2">
                 <HeartHandshake className="w-5 h-5 text-[#18181b]" />
                 <span className="font-mono text-xs uppercase tracking-widest text-[#18181b] font-bold">
@@ -387,14 +387,14 @@ export const ConsultationSection: React.FC<ConsultationSectionProps> = ({
               <div className="flex items-center gap-3">
                 <button
                   onClick={() => onOpenQuestionnaire('consultation')}
-                  className="px-5 py-2.5 bg-[#18181b] hover:bg-[#040b8d] text-white font-bold text-xs uppercase tracking-wider flex items-center gap-2 cursor-pointer shadow-xs transition-colors"
+                  className="px-5 py-2.5 bg-[#18181b] hover:bg-loyo-blue text-white font-bold text-xs uppercase tracking-wider flex items-center gap-2 cursor-pointer shadow-xs transition-colors"
                 >
                   <FileText className="w-4 h-4" />
                   <span>Dotazník pro konzultaci</span>
                 </button>
                 <button
                   onClick={handleToggle}
-                  className="px-4 py-2 bg-[#dbdbdb] hover:bg-[#d0d0d0] text-[#18181b] font-bold text-xs uppercase tracking-wider flex items-center gap-1.5 cursor-pointer transition-colors"
+                  className="px-4 py-2 bg-loyo-bar hover:bg-[#d0d0d0] text-[#18181b] font-bold text-xs uppercase tracking-wider flex items-center gap-1.5 cursor-pointer transition-colors"
                 >
                   <ChevronUp className="w-4 h-4" />
                   <span>Sbalit</span>

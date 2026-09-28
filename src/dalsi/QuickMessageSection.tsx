@@ -21,7 +21,7 @@ export const QuickMessageSection: React.FC = () => {
         
         {/* Section Tag & Heading */}
         <div className="text-center mb-8">
-          <div className="inline-flex items-center gap-2 px-3 py-1 bg-[#dbdbdb] border border-[#c2c2c2] text-[#18181b] text-xs font-mono font-bold uppercase tracking-wider mb-2">
+          <div className="inline-flex items-center gap-2 px-3 py-1 bg-loyo-bar border border-[#c2c2c2] text-[#18181b] text-xs font-mono font-bold uppercase tracking-wider mb-2">
             <span>05 • PŘÍMÉ SPOJENÍ</span>
           </div>
           <h2 className="font-heading font-black text-3xl sm:text-4xl lg:text-5xl text-[#18181b] tracking-tight">
@@ -32,9 +32,9 @@ export const QuickMessageSection: React.FC = () => {
           </p>
         </div>
 
-        {/* Minimalist Direct Message Box */}
-        <div className="bg-[#dbdbdb] border-2 border-[#18181b] p-6 sm:p-8 shadow-sm">
-          {submitted ? (
+               {/* Minimalist Direct Message Box */}
+        <div className="bg-loyo-bar border-2 border-[#18181b] p-6 sm:p-8 shadow-sm">
+          {submitted? (
             <div className="py-8 text-center space-y-4">
               <div className="w-14 h-14 bg-emerald-600 text-white rounded-full flex items-center justify-center mx-auto shadow-md">
                 <CheckCircle2 className="w-8 h-8" />
@@ -52,7 +52,7 @@ export const QuickMessageSection: React.FC = () => {
                     setSubmitted(false);
                     setFormData({ name: '', contact: '', message: '' });
                   }}
-                  className="px-4 py-2 bg-[#18181b] text-white font-mono text-xs font-bold uppercase tracking-wider hover:bg-[#040b8d] transition-colors cursor-pointer"
+                  className="px-4 py-2 bg-[#18181b] text-white font-mono text-xs font-bold uppercase tracking-wider hover:bg-loyo-blue transition-colors cursor-pointer"
                 >
                   Odeslat další zprávu
                 </button>
@@ -71,9 +71,9 @@ export const QuickMessageSection: React.FC = () => {
                     type="text"
                     required
                     value={formData.name}
-                    onChange={(e) => setFormData(prev => ({ ...prev, name: e.target.value }))}
+                    onChange={(e) => setFormData(prev => ({...prev, name: e.target.value }))}
                     placeholder="např. Jan Novák"
-                    className="w-full px-3 py-2 bg-[#ededed] border border-[#c2c2c2] focus:border-[#18181b] focus:outline-hidden text-sm font-sans"
+                    className="w-full px-3 py-2 bg-loyo-bg border border-[#c2c2c2] focus:border-[#18181b] focus:outline-hidden text-sm font-sans"
                   />
                 </div>
 
@@ -87,9 +87,9 @@ export const QuickMessageSection: React.FC = () => {
                     type="text"
                     required
                     value={formData.contact}
-                    onChange={(e) => setFormData(prev => ({ ...prev, contact: e.target.value }))}
+                    onChange={(e) => setFormData(prev => ({...prev, contact: e.target.value }))}
                     placeholder="email@domena.cz nebo +420..."
-                    className="w-full px-3 py-2 bg-[#ededed] border border-[#c2c2c2] focus:border-[#18181b] focus:outline-hidden text-sm font-sans"
+                    className="w-full px-3 py-2 bg-loyo-bg border border-[#c2c2c2] focus:border-[#18181b] focus:outline-hidden text-sm font-sans"
                   />
                 </div>
               </div>
@@ -104,22 +104,37 @@ export const QuickMessageSection: React.FC = () => {
                   required
                   rows={4}
                   value={formData.message}
-                  onChange={(e) => setFormData(prev => ({ ...prev, message: e.target.value }))}
+                  onChange={(e) => setFormData(prev => ({...prev, message: e.target.value }))}
                   placeholder="Stručně popište, co potřebujete vytvořit, automatizovat, vylepšit nebo zkonzultovat..."
-                  className="w-full px-3 py-2 bg-[#ededed] border border-[#c2c2c2] focus:border-[#18181b] focus:outline-hidden text-sm font-sans resize-none"
+                  className="w-full px-3 py-2 bg-loyo-bg border border-[#c2c2c2] focus:border-[#18181b] focus:outline-hidden text-sm font-sans resize-none"
                 />
               </div>
 
+              {/* Zpráva */}
+              <div className="space-y-1">
+                <label htmlFor="quick-message" className="block text-xs font-mono font-bold uppercase text-[#333]">
+                  O čem je váš projekt? *
+                </label>
+                <textarea
+                  id="quick-message"
+                  required
+                  rows={4}
+                  value={formData.message}
+                        onChange={(e) => setFormData(prev => ({...prev, message: e.target.value }))}
+                  placeholder="Stručně popište, co potřebujete vytvořit, automatizovat, vylepšit nebo zkonzultovat..."
+                  className="w-full px-3 py-2 bg-loyo-bg border border-[#c2c2c2] focus:border-[#18181b] focus:outline-hidden text-sm font-sans resize-none"
+                />
+              </div>
               {/* Footer info & Submit */}
-              <div className="pt-2 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+              <div className="pt  -2 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
                 <div className="flex items-center gap-2 text-xs font-mono text-[#666]">
-                  <Clock className="w-3.5 h-3.5 text-[#040b8d]" />
+                  <Clock className="w-3.5 h-3.5 text-loyo-blue" />
                   <span>Garantovaná odpověď do 24 hodin</span>
                 </div>
 
                 <button
                   type="submit"
-                  className="px-6 py-3 bg-[#18181b] hover:bg-[#040b8d] text-white font-mono text-xs font-bold uppercase tracking-wider flex items-center justify-center gap-2 transition-colors cursor-pointer shadow-xs"
+                  className="px-6 py-3 bg-[#18181b] hover:bg-loyo-blue text-white font-mono text-xs font-bold uppercase tracking-wider flex items-center justify-center gap-2 transition-colors cursor-pointer shadow-xs"
                 >
                   <span>Odeslat zprávu</span>
                   <Send className="w-3.5 h-3.5" />

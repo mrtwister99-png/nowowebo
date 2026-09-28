@@ -472,7 +472,7 @@ export const InteractiveGridBackground: React.FC = () => {
   return (
     <div
       aria-hidden="true"
-      className="fixed inset-0 pointer-events-none z-0 overflow-hidden bg-[#ededed] select-none"
+      className="fixed inset-0 pointer-events-none z-0 overflow-hidden bg-loyo-bg select-none"
     >
       {/* Scoped CSS for hardware-accelerated 3D tile lift, bubbling wave, and brand color flashes */}
       <style>{`
@@ -665,13 +665,13 @@ export const InteractiveGridBackground: React.FC = () => {
       />
 
       {/* 3. Ambient Colorful Orbs (LoYo Signature Colors: Blue, Gold, Red) */}
-      <div className="pointer-events-none absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-[680px] h-[680px] max-w-[90vw] max-h-[90vw]">
+      <div className="pointer-events-none absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-170 h-170 max-w-[90vw] max-h-[90vw]">
         {/* Modrá (#040b8d) */}
-        <div className="absolute left-[18%] top-[15%] w-[230px] h-[230px] bg-[#040b8d]/[0.10] rounded-full blur-[75px]" />
+        <div className="absolute left-[18%] top-[15%] w-57.5 h-57.5 bg-loyo-blue/10 rounded-full blur-[75px]" />
         {/* Zlatá (#CDA24D) */}
-        <div className="absolute right-[16%] top-[45%] w-[200px] h-[200px] bg-[#CDA24D]/[0.12] rounded-full blur-[65px]" />
+        <div className="absolute right-[16%] top-[45%] w-50 h-50 bg-loyo-mustard/12 rounded-full blur-[65px]" />
         {/* Červená (#ac0001) */}
-        <div className="absolute left-[26%] bottom-[10%] w-[210px] h-[210px] bg-[#ac0001]/[0.08] rounded-full blur-[70px]" />
+        <div className="absolute left-[26%] bottom-[10%] w-52.5 h-52.5 bg-loyo-red/8 rounded-full blur-[70px]" />
       </div>
 
       {/* 4. 3D Perspective Grid Container with 1:1 cursor alignment */}
@@ -703,11 +703,11 @@ export const InteractiveGridBackground: React.FC = () => {
             >
               {/* Top micro-accent in LoYo brand colors (#040b8d, #CDA24D, #ac0001) */}
               <div
-                className="loyo-tile-accent absolute top-0 left-0 right-0 h-[2.5px]"
+                className="loyo-tile-accent absolute top-0 left-0 right-0 h-0.625"
                 style={{ backgroundColor: cell.color }}
               />
               {/* Bevel highlight */}
-              <div className="loyo-tile-bevel absolute inset-0 bg-gradient-to-b from-white/75 to-transparent pointer-events-none" />
+              <div className="loyo-tile-bevel absolute inset-0 bg-linear-to-b from-white/75 to-transparent pointer-events-none" />
             </div>
           ))}
         </div>

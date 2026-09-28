@@ -45,7 +45,7 @@ export const SecurityPlayground: React.FC<SecurityPlaygroundProps> = ({ onOpenQu
   return (
     <section id="security-demo" className="py-20 lg:py-28 bg-[#050058] relative overflow-hidden border-t border-b border-white/10">
       {/* Background radial highlight */}
-      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[700px] h-[500px] bg-[#000182]/30 blur-[140px] pointer-events-none rounded-full"></div>
+      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-175 h-125 bg-[#000182]/30 blur- pointer-events-none rounded-full"></div>
 
       <div className="relative max-w-7xl mx-auto px-6 sm:px-12 z-10">
         <div className="max-w-3xl mb-12">
