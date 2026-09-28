@@ -1,11 +1,61 @@
 import React, { useState, useEffect } from 'react';
-import { Navbar } from './head';
-import { HomeBody } from './body';
-import { DedicatedServicePage, QuestionnaireModal, CursorOilBubbles, InteractiveGridBackground } from './dalsi';
+import { Navigate, Route, Routes, useLocation, useNavigate, useNavigationType } from 'react-router';
+import { Navbar } from './layout/Navbar';
+import { HomeBody } from './features/home/HomeBody';
+import { QuestionnaireModal } from './features/inquiry/QuestionnaireModal';
+import { CursorOilBubbles } from './features/effects/CursorOilBubbles';
+import { InteractiveGridBackground } from './features/effects/InteractiveGridBackground';
+import { ServicePage } from './features/services/ServicePage';
 import { ServiceId, CursorParticleMode } from './types';
+import { SERVICE_IDS, SERVICE_ROUTES, SITE_NAME, SITE_URL, serviceIdFromPath } from './data/routes';
+import { SERVICES_DATA } from './data/servicesData';
+
+// Sekce hlavní stránky, které sleduje scroll-spy (zvýrazňuje aktivní položku v logu)
+const SPY_SECTION_IDS = [
+  'uvod',
+  'automatizace',
+  'fullstack',
+  'weby',
+  'konzultace',
+  'zprava',
+  'kontakty',
+];
+
+// Výchozí titulek stránky je z index.html
+const DEFAULT_TITLE = document.title;
+
+/** Plynule posune stránku na prvek s daným id (s odsazením o výšku fixní hlavičky). */
+function scrollToElement(id: string): boolean {
+  const el = document.getElementById(id);
+  if (!el) return false;
+  const header = document.querySelector('header');
+  const navOffset = header ? header.offsetHeight : 72;
+  const top = el.getBoundingClientRect().top + window.pageYOffset - navOffset;
+  window.scrollTo({ top: Math.max(0, top), behavior: 'smooth' });
+  return true;
+}
+
+/**
+ * Posune na sekci; když prvek na stránce není (nebo jde o 'uvod'), posune nahoru.
+ * Vrací id sekce pro scroll-spy, pokud jde o jednu ze sledovaných sekcí.
+ */
+function scrollToSection(sectionId: string): string | null {
+  if (sectionId === 'uvod' || !scrollToElement(sectionId)) {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+    return 'uvod';
+  }
+  return SPY_SECTION_IDS.includes(sectionId) ? sectionId : null;
+}
 
 export default function App() {
-  const [currentPage, setCurrentPage] = useState<string>('home');
+  const location = useLocation();
+  const navigate = useNavigate();
+  const navigationType = useNavigationType();
+
+  // Aktuální stránka se odvozuje z adresy: id služby, nebo null = hlavní stránka
+  const routeServiceId = serviceIdFromPath(location.pathname);
+  const currentPage: string = routeServiceId ?? 'home';
+
   const [activeSection, setActiveSection] = useState<string>('uvod');
   const [modalOpen, setModalOpen] = useState<boolean>(false);
   const [selectedServiceForModal, setSelectedServiceForModal] = useState<ServiceId>('automation');
@@ -13,105 +63,92 @@ export default function App() {
     try {
       const saved = localStorage.getItem('loyo_cursor_mode');
       if (saved === 'bubbles') return 'bubbles';
-    } catch (_) {}
+    } catch {
+      // localStorage nedostupný (např. soukromý režim) - použije se výchozí hodnota
+    }
     return 'none';
   });
 
   const handleToggleCursorMode = () => {
-    setCursorMode(prev => {
+    setCursorMode((prev) => {
       const next = prev === 'bubbles' ? 'none' : 'bubbles';
       try {
         localStorage.setItem('loyo_cursor_mode', next);
-      } catch (_) {}
+      } catch {
+        // uložení se nepovedlo - přepnutí funguje dál, jen se nezapamatuje
+      }
       return next;
     });
   };
 
-  // Navigate to dedicated page
+  // Přechod na stránku služby (page = id služby) nebo na hlavní stránku
   const handleNavigateToPage = (page: string) => {
-    setCurrentPage(page);
-    window.scrollTo({ top: 0, behavior: 'instant' });
+    const id = SERVICE_IDS.find((serviceId) => serviceId === page);
+    navigate(id ? SERVICE_ROUTES[id].path : '/');
   };
 
-  // Back to home page
-  const handleBackToHome = (targetSectionId?: string) => {
-    setCurrentPage('home');
-    if (targetSectionId && targetSectionId !== 'uvod') {
-      setTimeout(() => {
-        handleScrollToSection(targetSectionId);
-      }, 50);
-    } else {
-      window.scrollTo({ top: 0, behavior: 'smooth' });
-      setActiveSection('uvod');
-    }
+  // Zpět na hlavní stránku, volitelně s posunem na prvek s daným id
+  const handleBackToHome = (targetElementId?: string) => {
+    navigate('/', { state: targetElementId ? { scrollTo: targetElementId } : null });
   };
 
-  // Open modal if triggered
+  // Otevře dotazník, nebo (při zadané službě) rovnou stránku služby
   const handleOpenQuestionnaire = (serviceId?: ServiceId) => {
     if (serviceId) {
-      // If user chose a service from navbar dropdown, navigate directly to that dedicated page!
       handleNavigateToPage(serviceId);
     } else {
       setModalOpen(true);
     }
   };
 
-  // Smooth scroll to a section on home page
+  // Plynulý posun na sekci hlavní stránky (mimo hlavní stránku se nejdřív přejde domů)
   const handleScrollToSection = (sectionId: string) => {
-    if (currentPage !== 'home') {
-      setCurrentPage('home');
-      setTimeout(() => {
-        performScroll(sectionId);
-      }, 50);
-    } else {
-      performScroll(sectionId);
-    }
-  };
-
-  const performScroll = (sectionId: string) => {
-    if (sectionId === 'uvod') {
-      window.scrollTo({
-        top: 0,
-        behavior: 'smooth'
-      });
-      setActiveSection('uvod');
+    if (routeServiceId) {
+      handleBackToHome(sectionId);
       return;
     }
-
-    const el = document.getElementById(sectionId);
-    if (el) {
-      const header = document.querySelector('header');
-      const navOffset = header ? header.offsetHeight : 72;
-      const elementPosition = el.getBoundingClientRect().top;
-      const offsetPosition = elementPosition + window.pageYOffset - navOffset;
-
-      window.scrollTo({
-        top: Math.max(0, offsetPosition),
-        behavior: 'smooth'
-      });
-      setActiveSection(sectionId);
-    }
+    const active = scrollToSection(sectionId);
+    if (active) setActiveSection(active);
   };
 
-  // Active section spy for home page
+  // Po každé změně adresy: posun na požadovaný prvek, jinak nahoru
+  // (při kroku zpět/vpřed v prohlížeči necháme posun na prohlížeči)
   useEffect(() => {
-    if (currentPage !== 'home') return;
+    const state = location.state as { scrollTo?: string } | null;
+    if (state?.scrollTo) {
+      const targetId = state.scrollTo;
+      // krátká pauza, aby se hlavní stránka stihla vykreslit
+      const timer = setTimeout(() => {
+        const active = scrollToSection(targetId);
+        if (active) setActiveSection(active);
+      }, 50);
+      return () => clearTimeout(timer);
+    }
+    if (String(navigationType) !== 'POP') {
+      window.scrollTo({ top: 0, behavior: 'instant' });
+    }
+    if (!routeServiceId) setActiveSection('uvod');
+  }, [location.key, location.state, navigationType, routeServiceId]);
 
-    const sectionIds = [
-      'uvod', 
-      'automatizace', 
-      'fullstack', 
-      'weby', 
-      'konzultace',
-      'zprava',
-      'kontakty'
-    ];
+  // Titulek a canonical odkaz podle stránky (každá služba má vlastní adresu)
+  useEffect(() => {
+    const service = SERVICES_DATA.find((item) => item.id === routeServiceId);
+    document.title = service ? `${service.title} | ${SITE_NAME}` : DEFAULT_TITLE;
+    const canonical = document.querySelector<HTMLLinkElement>('link[rel="canonical"]');
+    if (canonical) {
+      canonical.href = `${SITE_URL}${routeServiceId ? SERVICE_ROUTES[routeServiceId].path : '/'}`;
+    }
+  }, [routeServiceId]);
+
+  // Sledování aktivní sekce při scrollování hlavní stránky
+  useEffect(() => {
+    if (routeServiceId) return;
 
     const handleScroll = () => {
       const scrollPosition = window.scrollY + 140;
 
-      for (let i = sectionIds.length - 1; i >= 0; i--) {
-        const id = sectionIds[i];
+      for (let i = SPY_SECTION_IDS.length - 1; i >= 0; i--) {
+        const id = SPY_SECTION_IDS[i];
         const element = document.getElementById(id);
         if (element) {
           const top = element.offsetTop;
@@ -125,19 +162,18 @@ export default function App() {
 
     window.addEventListener('scroll', handleScroll, { passive: true });
     return () => window.removeEventListener('scroll', handleScroll);
-  }, [currentPage]);
+  }, [routeServiceId]);
 
   return (
-    <div className="min-h-screen bg-loyo-bg text-[#18181b] flex flex-col font-sans selection:bg-[#18181b] selection:text-white pb-12 relative">
-      
+    <div className="min-h-screen bg-loyo-bg text-loyo-ink flex flex-col font-sans selection:bg-loyo-ink selection:text-white pb-12 relative">
       {/* 3D Interactive Grid Background with LoYo Brand Colors & Cursor-Lifting Squares */}
       <InteractiveGridBackground />
 
       {/* Interactive cursor particles (Oil bubbles or 3 nested squares) */}
       <CursorOilBubbles mode={cursorMode} />
 
-      {/* When on subpage, render top Navbar for easy return */}
-      {currentPage !== 'home' && (
+      {/* Na stránce služby se zobrazí horní Navbar pro snadný návrat */}
+      {routeServiceId && (
         <Navbar
           activeSection={activeSection}
           currentPage={currentPage}
@@ -151,33 +187,44 @@ export default function App() {
       )}
 
       {/* 2. MAIN CONTENT AREA */}
-      <main className={`flex-1 flex flex-col justify-start ${currentPage !== 'home' ? 'pt-24' : 'pt-6 sm:pt-10'}`}>
-        {currentPage === 'home' ? (
-          <HomeBody
-            activeSection={activeSection}
-            currentPage={currentPage}
-            cursorMode={cursorMode}
-            onToggleCursorMode={handleToggleCursorMode}
-            onOpenQuestionnaire={handleOpenQuestionnaire}
-            onNavigateToPage={handleNavigateToPage}
-            onScrollToTop={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
-            onOpenQuestionnaireForService={(serviceId) => {
-              setSelectedServiceForModal(serviceId);
-              setModalOpen(true);
-            }}
+      <main
+        className={`flex-1 flex flex-col justify-start ${routeServiceId ? 'pt-24' : 'pt-6 sm:pt-10'}`}
+      >
+        <Routes>
+          <Route
+            path="/"
+            element={
+              <HomeBody
+                activeSection={activeSection}
+                currentPage={currentPage}
+                cursorMode={cursorMode}
+                onToggleCursorMode={handleToggleCursorMode}
+                onOpenQuestionnaire={handleOpenQuestionnaire}
+                onNavigateToPage={handleNavigateToPage}
+                onScrollToTop={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
+                onOpenQuestionnaireForService={(serviceId) => {
+                  setSelectedServiceForModal(serviceId);
+                  setModalOpen(true);
+                }}
+              />
+            }
           />
-        ) : (
-          /* DEDICATED STANDALONE PAGE */
-          <DedicatedServicePage
-            serviceId={currentPage as ServiceId}
-            onBackToHome={() => handleBackToHome(
-              currentPage === 'automation' ? 'automatizace' :
-              currentPage === 'fullstack' ? 'fullstack' :
-              (currentPage === 'web-branding' || currentPage === 'webs') ? 'weby' :
-              'konzultace'
-            )}
-          />
-        )}
+          {SERVICE_IDS.map((id) => (
+            <Route
+              key={id}
+              path={SERVICE_ROUTES[id].path}
+              element={
+                <ServicePage
+                  key={id}
+                  serviceId={id}
+                  onBackToHome={() => handleBackToHome(SERVICE_ROUTES[id].homeAnchorId)}
+                />
+              }
+            />
+          ))}
+          {/* Neznámá adresa vrací na hlavní stránku */}
+          <Route path="*" element={<Navigate to="/" replace />} />
+        </Routes>
       </main>
 
       {/* 3. QUESTIONNAIRE MODAL */}

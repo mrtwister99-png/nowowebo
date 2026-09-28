@@ -1,0 +1,78 @@
+﻿
+> loyo-portfolio-v2@0.0.0 lint
+> eslint .
+
+
+C:\Users\loyo-\Documents\portfolio_v2\src\App.tsx
+  21:14  error  '_' is defined but never used  @typescript-eslint/no-unused-vars
+  21:17  error  Empty block statement          no-empty
+  30:16  error  '_' is defined but never used  @typescript-eslint/no-unused-vars
+  30:19  error  Empty block statement          no-empty
+
+C:\Users\loyo-\Documents\portfolio_v2\src\banners\ConsultationSlimBanner.tsx
+  2:30  error  'Sparkles' is defined but never used       @typescript-eslint/no-unused-vars
+  2:40  error  'CheckCircle2' is defined but never used   @typescript-eslint/no-unused-vars
+  2:54  error  'MessageSquare' is defined but never used  @typescript-eslint/no-unused-vars
+
+C:\Users\loyo-\Documents\portfolio_v2\src\banners\ThreeServiceBanners.tsx
+  2:22  error  'Bot' is defined but never used       @typescript-eslint/no-unused-vars
+  2:27  error  'Cpu' is defined but never used       @typescript-eslint/no-unused-vars
+  2:44  error  'Layers' is defined but never used    @typescript-eslint/no-unused-vars
+  2:59  error  'Code2' is defined but never used     @typescript-eslint/no-unused-vars
+  2:66  error  'Sparkles' is defined but never used  @typescript-eslint/no-unused-vars
+
+C:\Users\loyo-\Documents\portfolio_v2\src\bottom\Footer.tsx
+  9:3  error  'Sparkles' is defined but never used  @typescript-eslint/no-unused-vars
+
+C:\Users\loyo-\Documents\portfolio_v2\src\dalsi\DedicatedServicePage.tsx
+  11:3   error  'Clock' is defined but never used                  @typescript-eslint/no-unused-vars
+  14:3   error  'KeyRound' is defined but never used               @typescript-eslint/no-unused-vars
+  45:10  error  'emailCode' is assigned a value but never used     @typescript-eslint/no-unused-vars
+  45:21  error  'setEmailCode' is assigned a value but never used  @typescript-eslint/no-unused-vars
+
+C:\Users\loyo-\Documents\portfolio_v2\src\dalsi\IntegratedQuestionnaire.tsx
+    2:43  error  'Sparkles' is defined but never used      @typescript-eslint/no-unused-vars
+    2:60  error  'Shield' is defined but never used        @typescript-eslint/no-unused-vars
+    2:68  error  'FileText' is defined but never used      @typescript-eslint/no-unused-vars
+   12:31  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+   12:76  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+   28:29  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+   28:59  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+   29:26  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+   29:58  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  184:27  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  253:52  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  259:29  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  411:29  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  432:29  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+C:\Users\loyo-\Documents\portfolio_v2\src\dalsi\InteractiveGridBackground.tsx
+  319:20  warning  The ref value 'activeTimers.current' will likely have changed by the time this effect cleanup function runs. If this ref points to a node rendered by React, copy 'activeTimers.current' to a variable inside the effect, and use that variable in the cleanup function  react-hooks/exhaustive-deps
+
+C:\Users\loyo-\Documents\portfolio_v2\src\dalsi\MiniFallingCubesInGap.tsx
+   84:7   error    'DEMO_SHAPES' is assigned a value but never used                                                                   @typescript-eslint/no-unused-vars
+  130:7   error    'getDemoScene2Cubes' is assigned a value but never used                                                            @typescript-eslint/no-unused-vars
+  261:6   warning  React Hook useEffect has a missing dependency: 'infoPhase'. Either include it or remove the dependency array       react-hooks/exhaustive-deps
+  655:6   warning  React Hook useEffect has a missing dependency: 'submitInitials'. Either include it or remove the dependency array  react-hooks/exhaustive-deps
+  788:27  error    'dy' is assigned a value but never used                                                                            @typescript-eslint/no-unused-vars
+  813:17  error    The value assigned to 'finalCubes' is not used in subsequent statements                                            no-useless-assignment
+  882:27  error    'dy' is assigned a value but never used                                                                            @typescript-eslint/no-unused-vars
+
+C:\Users\loyo-\Documents\portfolio_v2\src\dalsi\QuestionnaireModal.tsx
+   9:3  error  'Shield' is defined but never used    @typescript-eslint/no-unused-vars
+  14:3  error  'FileText' is defined but never used  @typescript-eslint/no-unused-vars
+  16:3  error  'Coffee' is defined but never used    @typescript-eslint/no-unused-vars
+  17:3  error  'Calendar' is defined but never used  @typescript-eslint/no-unused-vars
+  18:3  error  'Video' is defined but never used     @typescript-eslint/no-unused-vars
+  19:3  error  'MapPin' is defined but never used    @typescript-eslint/no-unused-vars
+
+C:\Users\loyo-\Documents\portfolio_v2\src\dalsi\QuickMessageSection.tsx
+  2:37  error  'Mail' is defined but never used           @typescript-eslint/no-unused-vars
+  2:43  error  'Phone' is defined but never used          @typescript-eslint/no-unused-vars
+  2:50  error  'MessageSquare' is defined but never used  @typescript-eslint/no-unused-vars
+
+C:\Users\loyo-\Documents\portfolio_v2\src\head\Navbar.tsx
+  23:3  error  'onOpenQuestionnaire' is defined but never used  @typescript-eslint/no-unused-vars
+
+Ôťľ 49 problems (46 errors, 3 warnings)
+
