@@ -331,14 +331,12 @@ export const LoyoHeaderCard: React.FC<LoyoHeaderCardProps> = ({
             </div>
           </div>
 
-                    <div className="flex-1 w-full flex flex-col min-w-0 sm:-ml-0.5 mt-3 sm:mt-0 justify-between">
+                    <div className="flex-1 w-full flex flex-col min-w-0 sm:-ml-0.5 mt-3 sm:mt-0 justify-start relative z-30">
             
             <div
               id="card-premium-developer"
               className="bg-white border-2 border-[#18181b] sm:border-l-0 rounded-2xl sm:rounded-l-none sm:rounded-r-3xl p-4 sm:p-5 md:p-6 shadow-[6px_6px_0px_#18181b] relative z-20"
             >
-              <div className="hidden sm:block absolute -left-0.75 top-0.5 bottom-0.5 w-1.5 bg-white z-30 pointer-events-none" />
-
               <div className="inline-flex items-center gap-2 mb-1.5">
                 <span className="font-mono text-xs sm:text-sm font-bold uppercase tracking-[0.35em] text-[#555]">PREMIUM</span>
                 <span className="h-0.5 w-10 sm:w-16 bg-[#18181b]" />

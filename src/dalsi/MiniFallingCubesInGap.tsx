@@ -1482,33 +1482,6 @@ export const MiniFallingCubesInGap: React.FC = () => {
           }}
         />
 
-        {/* Grid Guidelines */}
-        {Array.from({ length: TOTAL_COLS }).map((_, c) => {
-          const isActiveCol = c >= activeMinCol && c <= activeMaxCol;
-          return (
-            <div
-              key={`guide-${c}`}
-              className={`absolute top-0 bottom-0 border-r pointer-events-none transition-opacity ${
-                isActiveCol
-                  ? 'border-dashed border-[#18181b]/20 opacity-70'
-                  : 'border-dotted border-[#18181b]/10 opacity-25'
-              }`}
-              style={{
-                left: `${c * STEP + CUBE_SIZE}px`,
-                width: `${GAP}px`,
-              }}
-            />
-          );
-        })}
-
-        {/* Ceil warning line */}
-        <div
-          className="absolute left-0 right-0 h-0.375 border-t border-dashed border-loyo-red/40 pointer-events-none"
-          style={{
-            bottom: `${MAX_ROWS * STEP}px`,
-          }}
-        />
-
         {/* SETTLED CUBES (černé po dopadu, při propojení řádku poblikávají barvou COLOR_FALLING) */}
         {settledCubes.map((cube) => {
           const left = cube.col * STEP;
