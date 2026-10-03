@@ -299,7 +299,7 @@ export const LoyoHeaderCard: React.FC<LoyoHeaderCardProps> = ({
               </div>
             </div>
 
-            <div className="w-full flex-1 flex items-end justify-center pt-1 relative z-40 overflow-visible">
+            <div className="w-full flex-1 flex items-start justify-center pt-1 relative z-40 overflow-visible">
               {/* Záložní prvek má stejnou výšku jako hra, aby se stránka při načtení neposunula */}
               <Suspense fallback={<div className="w-full h-27.5 sm:h-30" aria-hidden="true" />}>
                 <MiniFallingCubesInGap />

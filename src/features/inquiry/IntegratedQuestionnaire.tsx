@@ -8,8 +8,10 @@ interface IntegratedQuestionnaireProps {
 }
 
 export const IntegratedQuestionnaire: React.FC<IntegratedQuestionnaireProps> = ({ serviceId }) => {
-  const config =
-    (QUESTIONNAIRE_CONFIGS as any)[serviceId] || (QUESTIONNAIRE_CONFIGS as any).automation;
+  // serviceId má typ ServiceId, takže config je otypovaný sám, bez `any`
+  const config = QUESTIONNAIRE_CONFIGS[serviceId] || QUESTIONNAIRE_CONFIGS.automation;
+  // featureOptions mají jen některé služby, 'in' zúží typ (type narrowing)
+  const featureOptions = 'featureOptions' in config ? config.featureOptions : undefined;
   const [copied, setCopied] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submittedData, setSubmittedData] = useState<InquiredSubmission | null>(null);
@@ -25,8 +27,8 @@ export const IntegratedQuestionnaire: React.FC<IntegratedQuestionnaireProps> = (
     consultationTopics: [],
     consultationFormat: 'Osobně na kávě (Praha / dle domluvy)',
     animationLevel: 'Vyvážené elegantní mikrointerakce a plynulé přechody',
-    budgetRange: (config as any).budgets[1] || (config as any).budgets[0],
-    timeline: (config as any).timelines[1] || (config as any).timelines[0],
+    budgetRange: config.budgets[1] || config.budgets[0],
+    timeline: config.timelines[1] || config.timelines[0],
     name: '',
     email: '',
     phone: '',
@@ -181,7 +183,7 @@ Poznámky: ${submittedData.notes || 'Bez poznámek'}`;
               1. Zvolte zaměření a rozsah projektu *
             </label>
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
-              {(config as any).scopeOptions.map((opt: string) => {
+              {config.scopeOptions.map((opt: string) => {
                 const isSelected = formData.projectScope === opt;
                 return (
                   <button
@@ -254,13 +256,13 @@ Poznámky: ${submittedData.notes || 'Bez poznámek'}`;
             </div>
           )}
 
-          {serviceId === 'fullstack' && (config as any).featureOptions && (
+          {serviceId === 'fullstack' && featureOptions && (
             <div className="space-y-2 pt-2">
               <label className="block text-xs font-mono font-bold uppercase text-loyo-ink">
                 2. Vyberte klíčové funkce systému
               </label>
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
-                {(config as any).featureOptions.map((feat: string) => {
+                {featureOptions.map((feat: string) => {
                   const isChecked = formData.selectedFeatures.includes(feat);
                   return (
                     <button
@@ -416,7 +418,7 @@ Poznámky: ${submittedData.notes || 'Bez poznámek'}`;
                 onChange={(e) => setFormData((prev) => ({ ...prev, budgetRange: e.target.value }))}
                 className="w-full px-3 py-2.5 bg-loyo-bg border border-loyo-line text-xs font-sans text-loyo-ink"
               >
-                {(config as any).budgets.map((b: string) => (
+                {config.budgets.map((b: string) => (
                   <option key={b} value={b}>
                     {b}
                   </option>
@@ -437,7 +439,7 @@ Poznámky: ${submittedData.notes || 'Bez poznámek'}`;
                 onChange={(e) => setFormData((prev) => ({ ...prev, timeline: e.target.value }))}
                 className="w-full px-3 py-2.5 bg-loyo-bg border border-loyo-line text-xs font-sans text-loyo-ink"
               >
-                {(config as any).timelines.map((t: string) => (
+                {config.timelines.map((t: string) => (
                   <option key={t} value={t}>
                     {t}
                   </option>

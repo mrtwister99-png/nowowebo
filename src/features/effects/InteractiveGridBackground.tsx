@@ -1,5 +1,4 @@
 import React, { useEffect, useRef, useState, useMemo } from 'react';
-import { BRAND } from '../../lib/colors';
 
 // Brand colors matching LoYo visual system – NECHÁNO PŮVODNÍ
 const BRAND_COLORS = ['#040b8d', '#CDA24D', '#ac0001', '#bef264'];
@@ -20,14 +19,14 @@ export const InteractiveGridBackground: React.FC = () => {
 
   // DOM references pro 60fps
   const tileRefs = useRef<(HTMLDivElement | null)[]>([]);
-  const activeTimers = useRef<Map<number, NodeJS.Timeout>>(new Map());
+  const activeTimers = useRef<Map<number, ReturnType<typeof setTimeout>>>(new Map());
   const currentActiveIdx = useRef<number>(-1);
   const lastCellCoord = useRef<{ col: number; row: number } | null>(null);
 
   // Idle tracking pro bublání
-  const idleTimerRef = useRef<NodeJS.Timeout | null>(null);
-  const bubblingIntervalRef = useRef<NodeJS.Timeout | null>(null);
-  const flashIntervalRef = useRef<NodeJS.Timeout | null>(null);
+  const idleTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const bubblingIntervalRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const flashIntervalRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const activeBubblingIndices = useRef<Set<number>>(new Set());
   const idleCandidateNeighbors = useRef<number[]>([]);
   const idleStepRef = useRef<number>(0);
