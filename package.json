@@ -7,6 +7,8 @@
     "dev": "vite --port=3000 --host=0.0.0.0",
     "build": "vite build",
     "preview": "vite preview",
+    "clean": "rm -rf .vite dist node_modules/.vite",
+    "clean:win": "rmdir /s /q .vite dist node_modules\\.vite 2>nul || exit 0",
     "lint": "tsc --noEmit",
     "typecheck": "tsc --noEmit"
   },
@@ -18,7 +20,6 @@
   },
   "devDependencies": {
     "@tailwindcss/vite": "^4.1.14",
-    "@types/node": "^22.14.0",
     "@types/react": "^19.3.0",
     "@types/react-dom": "^19.3.0",
     "@vitejs/plugin-react": "^5.0.4",
