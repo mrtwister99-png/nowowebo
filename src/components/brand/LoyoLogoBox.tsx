@@ -27,7 +27,7 @@ export const LoyoLogoBox: React.FC<LoyoLogoBoxProps> = ({activeSection,currentPa
 
   const rotateNext=useCallback(()=>{
     if(phase!=='idle')return;
-    if(!isNeon){ const idx=SIDE_KEYS.indexOf(face as any); const n=(idx+1)%SIDE_KEYS.length; const k=SIDE_KEYS[n] as FaceKey; const d=FACE_DEFS[k]; setRotX(d.rotX); setRotY(p=>p-90); setFace(k); }
+    if(!isNeon){ const idx=(SIDE_KEYS as readonly FaceKey[]).indexOf(face); const n=(idx+1)%SIDE_KEYS.length; const k=SIDE_KEYS[n] as FaceKey; const d=FACE_DEFS[k]; setRotX(d.rotX); setRotY(p=>p-90); setFace(k); }
     else{ const others=FACE_LIST.filter(f=>f.key!==face); const pick=others[Math.floor(Math.random()*others.length)]; setRotX(pick.rotX); setRotY(p=>{ const cur=((p%360)+360)%360; const tgt=((pick.rotY%360)+360)%360; let diff=tgt-cur; if(diff>180)diff-=360; if(diff<-180)diff+=360; return p+diff;}); setFace(pick.key); }
   },[face,isNeon,phase]);
 
@@ -37,7 +37,7 @@ export const LoyoLogoBox: React.FC<LoyoLogoBoxProps> = ({activeSection,currentPa
     if(activeSection==='automatizace'||currentPage==='automation')target='FRONT';
     else if(activeSection==='fullstack'||currentPage==='fullstack')target='RIGHT';
     else if(activeSection==='weby'||currentPage==='web-branding')target='BACK';
-    if(target&&target!==face){ const d=FACE_DEFS[target]; const ci=SIDE_KEYS.indexOf(face as any); const ti=SIDE_KEYS.indexOf(target as any); if(ci!==-1&&ti!==-1){ const steps=(ti-ci+SIDE_KEYS.length)%SIDE_KEYS.length; setRotX(d.rotX); setRotY(p=>p-90*steps);} setFace(target); }
+    if(target&&target!==face){ const d=FACE_DEFS[target]; const ci=(SIDE_KEYS as readonly FaceKey[]).indexOf(face); const ti=(SIDE_KEYS as readonly FaceKey[]).indexOf(target); if(ci!==-1&&ti!==-1){ const steps=(ti-ci+SIDE_KEYS.length)%SIDE_KEYS.length; setRotX(d.rotX); setRotY(p=>p-90*steps);} setFace(target); }
   },[activeSection,currentPage,face,phase]);
 
   const startHold=useCallback(()=>{ if(phase!=='idle')return; holding.current=true; exploded.current=false;
@@ -70,7 +70,7 @@ export const LoyoLogoBox: React.FC<LoyoLogoBoxProps> = ({activeSection,currentPa
       <div className="relative w-full h-full flex items-center justify-center" style={{perspective:`${perspective}px`}}>
         <div className="relative" style={{width:'58%',height:'58%',transformStyle:'preserve-3d',transform:`rotateX(${rotX+tiltX}deg) rotateY(${rotY+tiltY}deg) scale(${scale})`,transition: isImpl?'transform 0.6s cubic-bezier(0.68,-0.55,0.265,1.55)':'transform 0.6s cubic-bezier(0.23,1,0.32,1)'}}>
           {FACE_LIST.map(f=>{
-            const d=FACE_DEFS[f.key]; const isTB=f.key==='TOP'||f.key==='BOTTOM'; const show=isNeon||(SIDE_KEYS as readonly FaceKey[]).includes(f.key as any);
+            const d=FACE_DEFS[f.key]; const isTB=f.key==='TOP'||f.key==='BOTTOM'; const show=isNeon||(SIDE_KEYS as readonly FaceKey[]).includes(f.key);
             const bg=isNeon?'#0a0a0a':d.bg; const border=isNeon?`2px solid ${d.neonBorder}`:'3px solid black';
             const shadow=isNeon?`0 0 10px ${d.neonBorder},0 0 20px ${d.neonBorder}`:'2.5px 2.5px 0px 0px black';
             return(
