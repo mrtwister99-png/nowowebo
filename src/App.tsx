@@ -1,10 +1,11 @@
 import React, { useState, useEffect } from 'react';
-import { Navigate, Route, Routes, useLocation, useNavigate, useNavigationType } from 'react-router';
+import { Navigate, Route, Routes, useLocation, useNavigate, useNavigationType } from 'react-router-dom';
 import { Navbar } from './layout/Navbar';
 import { HomeBody } from './features/home/HomeBody';
 import { QuestionnaireModal } from './features/inquiry/QuestionnaireModal';
 import { CursorOilBubbles } from './features/effects/CursorOilBubbles';
 import { InteractiveGridBackground } from './features/effects/InteractiveGridBackground';
+import { useFaviconCubeAnimation } from './features/effects/useFaviconCubeAnimation';
 import { ServicePage } from './features/services/ServicePage';
 import { ServiceId, CursorParticleMode } from './types';
 import { SERVICE_IDS, SERVICE_ROUTES, SITE_NAME, SITE_URL, serviceIdFromPath } from './data/routes';
@@ -48,6 +49,7 @@ function scrollToSection(sectionId: string): string | null {
 }
 
 export default function App() {
+  useFaviconCubeAnimation(true, 900);
   const location = useLocation();
   const navigate = useNavigate();
   const navigationType = useNavigationType();

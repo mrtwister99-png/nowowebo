@@ -7,20 +7,19 @@
     "dev": "vite --port=3000 --host=0.0.0.0",
     "build": "vite build",
     "preview": "vite preview",
-    "lint": "tsc --noEmit"
+    "clean": "rm -rf .vite dist node_modules/.vite",
+    "clean:win": "rmdir /s /q .vite dist node_modules\\.vite 2>nul || exit 0",
+    "lint": "tsc --noEmit",
+    "typecheck": "tsc --noEmit"
   },
   "dependencies": {
-    "@google/genai": "^2.4.0",
-    "cookie": "^2.0.1",
     "lucide-react": "^0.546.0",
-    "motion": "^12.23.24",
     "react": "^19.0.1",
     "react-dom": "^19.0.1",
     "react-router-dom": "^7.18.4"
   },
   "devDependencies": {
     "@tailwindcss/vite": "^4.1.14",
-    "@types/node": "^22.14.0",
     "@types/react": "^19.3.0",
     "@types/react-dom": "^19.3.0",
     "@vitejs/plugin-react": "^5.0.4",
