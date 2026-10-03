@@ -15,7 +15,9 @@ const FACE_DEFS: Record<FaceKey, FaceDef> = {
 };
 const FACE_LIST = ALL_KEYS.map(k=>FACE_DEFS[k]);
 
-export const LoyoLogoBox: React.FC<{activeSection:string;currentPage?:string;className?:string;defaultFace?:FaceKey}> = ({activeSection,currentPage='home',className='',defaultFace='FRONT'})=>{
+interface LoyoLogoBoxProps { activeSection:string; currentPage?:string; className?:string; defaultFace?:FaceKey; perspective?:number }
+
+export const LoyoLogoBox: React.FC<LoyoLogoBoxProps> = ({activeSection,currentPage='home',className='',defaultFace='FRONT', perspective=600})=>{
   const init = FACE_DEFS[defaultFace];
   const [rotX,setRotX]=useState(init.rotX); const [rotY,setRotY]=useState(init.rotY);
   const [face,setFace]=useState<FaceKey>(init.key); const [isNeon,setIsNeon]=useState(false);
@@ -50,17 +52,25 @@ export const LoyoLogoBox: React.FC<{activeSection:string;currentPage?:string;cla
     if(!ex&&was&&phase==='idle')rotateNext();
   },[phase,rotateNext]);
 
+  useEffect(()=>{
+    return ()=>{
+      if(holdRef.current) clearTimeout(holdRef.current);
+      if(switchRef.current) clearTimeout(switchRef.current);
+      if(implodeRef.current) clearTimeout(implodeRef.current);
+    };
+  },[]);
+
   const isExpl=phase==='exploding'; const isImpl=phase==='imploding';
   const scale=isExpl?0.9:isImpl?1.12:1; const tiltX=isExpl?-12:0; const tiltY=isExpl?-13:0;
 
   return(
     <div id="loyo-logo-box" className={`relative w-20 h-20 sm:w-24 sm:h-24 flex items-center justify-center shrink-0 cursor-pointer select-none bg-transparent ${className}`}
       onMouseDown={startHold} onMouseUp={endHold} onMouseLeave={endHold} onTouchStart={startHold} onTouchEnd={endHold}
-      onKeyDown={e=>{ if(e.key==='Enter'||e.key===' '){ e.preventDefault(); rotateNext(); } }} role="button" tabIndex={0}>
-      <div className="relative w-full h-full flex items-center justify-center" style={{perspective:'420px'}}>
+      onKeyDown={e=>{ if(e.key==='Enter'||e.key===' '){ e.preventDefault(); rotateNext(); } }} role="button" tabIndex={0} aria-label="LoYo logo - přepnout stranu">
+      <div className="relative w-full h-full flex items-center justify-center" style={{perspective:`${perspective}px`}}>
         <div className="relative" style={{width:'58%',height:'58%',transformStyle:'preserve-3d',transform:`rotateX(${rotX+tiltX}deg) rotateY(${rotY+tiltY}deg) scale(${scale})`,transition: isImpl?'transform 0.6s cubic-bezier(0.68,-0.55,0.265,1.55)':'transform 0.6s cubic-bezier(0.23,1,0.32,1)'}}>
           {FACE_LIST.map(f=>{
-            const d=FACE_DEFS[f.key]; const isTB=f.key==='TOP'||f.key==='BOTTOM'; const show=isNeon||(SIDE_KEYS as any).includes(f.key);
+            const d=FACE_DEFS[f.key]; const isTB=f.key==='TOP'||f.key==='BOTTOM'; const show=isNeon||(SIDE_KEYS as readonly FaceKey[]).includes(f.key as any);
             const bg=isNeon?'#0a0a0a':d.bg; const border=isNeon?`2px solid ${d.neonBorder}`:'3px solid black';
             const shadow=isNeon?`0 0 10px ${d.neonBorder},0 0 20px ${d.neonBorder}`:'2.5px 2.5px 0px 0px black';
             return(
