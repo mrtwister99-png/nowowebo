@@ -7,20 +7,18 @@ const FACES = [
   { bg: '#2E2E2E', text: 'o', glow: '#ffffff' },
 ];
 
-export function useFaviconCubeAnimation(enabled = true, intervalMs = 800) {
-  const canvasRef = useRef<HTMLCanvasElement | null>(null);
+export function useFaviconCubeAnimation(enabled = true, intervalMs = 900) {
   const frameRef = useRef(0);
   const timerRef = useRef<number | null>(null);
 
   useEffect(() => {
     if (!enabled) return;
+    if (typeof document === 'undefined') return;
     const canvas = document.createElement('canvas');
     canvas.width = 32;
     canvas.height = 32;
-    canvasRef.current = canvas;
     const ctx = canvas.getContext('2d');
     if (!ctx) return;
-
     const link = document.querySelector<HTMLLinkElement>('link[rel*="icon"]') || (() => {
       const l = document.createElement('link');
       l.rel = 'icon';
@@ -49,21 +47,20 @@ export function useFaviconCubeAnimation(enabled = true, intervalMs = 800) {
     };
 
     const animate = () => {
-      // šetří CPU/baterku když je tab skrytý
       if (document.hidden) return;
       drawFace(frameRef.current % FACES.length);
       frameRef.current = (frameRef.current + 1) % FACES.length;
     };
 
     drawFace(0);
-    timerRef.current = window.setInterval(animate, intervalMs);
+    timerRef.current = window.setInterval(animate, intervalMs) as unknown as number;
 
     const onVisibility = () => {
       if (!document.hidden) drawFace(frameRef.current % FACES.length);
     };
     document.addEventListener('visibilitychange', onVisibility);
 
-      return () => {
+    return () => {
       if (timerRef.current) clearInterval(timerRef.current);
       document.removeEventListener('visibilitychange', onVisibility);
     };

@@ -49,6 +49,7 @@ function scrollToSection(sectionId: string): string | null {
 }
 
 export default function App() {
+  useFaviconCubeAnimation(true, 900);
   const location = useLocation();
   const navigate = useNavigate();
   const navigationType = useNavigationType();
@@ -60,8 +61,6 @@ export default function App() {
   const [activeSection, setActiveSection] = useState<string>('uvod');
   const [modalOpen, setModalOpen] = useState<boolean>(false);
   const [selectedServiceForModal, setSelectedServiceForModal] = useState<ServiceId>('automation');
-  useFaviconCubeAnimation(true, 900);
-
   const [cursorMode, setCursorMode] = useState<CursorParticleMode>(() => {
     try {
       const saved = localStorage.getItem('loyo_cursor_mode');
