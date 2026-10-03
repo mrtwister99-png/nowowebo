@@ -5,6 +5,7 @@ import { HomeBody } from './features/home/HomeBody';
 import { QuestionnaireModal } from './features/inquiry/QuestionnaireModal';
 import { CursorOilBubbles } from './features/effects/CursorOilBubbles';
 import { InteractiveGridBackground } from './features/effects/InteractiveGridBackground';
+import { useFaviconCubeAnimation } from './features/effects/useFaviconCubeAnimation';
 import { ServicePage } from './features/services/ServicePage';
 import { ServiceId, CursorParticleMode } from './types';
 import { SERVICE_IDS, SERVICE_ROUTES, SITE_NAME, SITE_URL, serviceIdFromPath } from './data/routes';
@@ -59,6 +60,8 @@ export default function App() {
   const [activeSection, setActiveSection] = useState<string>('uvod');
   const [modalOpen, setModalOpen] = useState<boolean>(false);
   const [selectedServiceForModal, setSelectedServiceForModal] = useState<ServiceId>('automation');
+  useFaviconCubeAnimation(true, 900);
+
   const [cursorMode, setCursorMode] = useState<CursorParticleMode>(() => {
     try {
       const saved = localStorage.getItem('loyo_cursor_mode');
