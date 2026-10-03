@@ -124,18 +124,6 @@ export const LoyoHeaderCard: React.FC<LoyoHeaderCardProps> = ({
 
           {/* RIGHT BUTTONS */}
           <div className="flex items-center gap-2 sm:gap-3 flex-wrap justify-end">
-            <div
-              id="header-location-pill"
-              className="h-10 sm:h-11 px-3.5 sm:px-4.5 rounded-xl sm:rounded-2xl bg-white border-2 border-loyo-ink shadow-brutal-3 flex items-center gap-2 text-xs font-semibold text-loyo-ink select-none"
-            >
-              <span className="w-2 h-2 rounded-full bg-loyo-ink shrink-0 animate-pulse" />
-              <span className="font-heading tracking-wide uppercase text-[11px] sm:text-xs truncate max-w-32.5 sm:max-w-52.5">
-                {currentPage !== 'home'
-                  ? `Detail: ${currentPage}`
-                  : 'Úvod • LoYo Premium Developer'}
-              </span>
-            </div>
-
             {onToggleCursorMode && (
               <div className="relative inline-flex items-center justify-center">
                 <div className="absolute -top-1 inset-x-0 h-0 pointer-events-none z-10">
@@ -347,16 +335,22 @@ export const LoyoHeaderCard: React.FC<LoyoHeaderCardProps> = ({
                 </div>
               </div>
 
-              <p className="text-sm sm:text-base text-loyo-ink font-medium leading-relaxed max-w-2xl mx-auto">
-                Vytvářím <strong>správně fungující, propracované prémiové systémy</strong> s
-                využitím moderní AI. Žádné zkopírované šablony ani polovičatá řešení – stavím{' '}
-                <strong>přímo na míru cokoliv... cokoliv téměř</strong>.
+              {/* Úvodní věta (claim) */}
+              <p className="font-heading font-black text-base sm:text-lg md:text-xl text-loyo-ink leading-snug max-w-2xl mx-auto">
+                Automatizuji. Vyvíjím. Přetvářím nápady v realitu.
               </p>
 
-              <p className="text-xs sm:text-sm text-loyo-muted mt-1.5 leading-relaxed max-w-xl mx-auto">
-                Ke každému projektu přistupuji striktně individuálně. Vím přesně, jak je každý řádek
-                kódu sestavený, a po dokončení je 100 % produktu, zdrojových kódů i přístupů
-                výhradně vaším majetkem.
+              {/* Hlavní odstavec */}
+              <p className="text-sm sm:text-base text-loyo-ink font-medium leading-relaxed max-w-2xl mx-auto mt-2">
+                Tvořím weby, aplikace a chytré systémy, které šetří desítky hodin práce. Kombinuji
+                sílu AI s hlubokou znalostí vývoje, díky čemuž dokážu rychle navrhnout, postavit i
+                upravit řešení přesně podle vašich potřeb. Každý projekt vzniká na míru s důrazem
+                na výkon, jednoduchost a dlouhodobou hodnotu.
+              </p>
+
+              {/* Závěrečná výzva */}
+              <p className="text-sm sm:text-base text-loyo-ink font-bold leading-relaxed max-w-2xl mx-auto mt-3">
+                Pojďme postavit něco, co vám vrátí čas zpět.
               </p>
             </div>
           </div>
