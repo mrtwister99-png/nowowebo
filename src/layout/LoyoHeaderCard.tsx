@@ -1,7 +1,6 @@
 import React, { Suspense, lazy, useState, useEffect } from 'react';
 import { Menu, X, Sparkles, ArrowRight } from 'lucide-react';
 import { LoyoLogoBox } from '../components/brand/LoyoLogoBox';
-import { ZakladniKostkaLoyo90 } from '../components/brand/ZakladniKostkaLoyo90';
 import { CursorParticleMode, ServiceId } from '../types';
 import { BRAND } from '../lib/colors';
 
@@ -114,7 +113,11 @@ export const LoyoHeaderCard: React.FC<LoyoHeaderCardProps> = ({
               title="LoYo • Zpět na začátek"
             >
               <div className="relative w-22 h-22 sm:w-24 sm:h-24 md:w-28 md:h-28 rounded-full flex items-center justify-center bg-neutral-50">
-                <ZakladniKostkaLoyo90 size={88} perspective={700} showInfo={false} className="scale-100" />
+                <LoyoLogoBox
+                  activeSection={activeSection}
+                  currentPage={currentPage}
+                  className="scale-150 sm:scale-165 md:scale-180"
+                />
               </div>
             </button>
           </div>

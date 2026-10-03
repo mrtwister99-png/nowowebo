@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Navigate, Route, Routes, useLocation, useNavigate, useNavigationType } from 'react-router-dom';
+import { Navigate, Route, Routes, useLocation, useNavigate, useNavigationType } from 'react-router';
 import { Navbar } from './layout/Navbar';
 import { HomeBody } from './features/home/HomeBody';
 import { QuestionnaireModal } from './features/inquiry/QuestionnaireModal';

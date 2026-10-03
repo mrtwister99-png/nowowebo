@@ -4,10 +4,9 @@ interface Props {
   className?: string;
   perspective?: number;
   size?: number; // base size 300
-  showInfo?: boolean;
 }
 
-export const ZakladniKostkaLoyo90: React.FC<Props> = ({ className = '', perspective = 1400, size = 300, showInfo = true }) => {
+export const ZakladniKostkaLoyo90: React.FC<Props> = ({ className = '', perspective = 1400, size = 300 }) => {
   const [rot, setRot] = useState(0);
 
   const handleLeft = useCallback(() => {
@@ -151,12 +150,10 @@ export const ZakladniKostkaLoyo90: React.FC<Props> = ({ className = '', perspect
         </div>
       </div>
 
-      {showInfo && (
-        <div className="zakl-info">
-          <div className="zakl-info-rot">rot: {rot}°</div>
-          <div className="zakl-info-help">LEVÝ = -90° | PRAVÝ = +90°</div>
-        </div>
-      )}
+      <div className="zakl-info">
+        <div className="zakl-info-rot">rot: {rot}°</div>
+        <div className="zakl-info-help">LEVÝ = -90° | PRAVÝ = +90°</div>
+      </div>
     </div>
   );
 };

@@ -5,30 +5,29 @@ import { BRAND } from '../../lib/colors';
 const BRAND_COLORS = ['#040b8d', '#CDA24D', '#ac0001', '#bef264'];
 const BRAND_COLOR_NAMES = ['blue', 'gold', 'red', 'lime'] as const;
 const CELL_SIZE = 72; // Exact pixel width and height of each square tile – NECHÁNO
-const PARALLAX = 0.35;
-const BUFFER_COLS = 2;
-const BUFFER_ROWS = 4;
+const INFINITE_HEIGHT = 8000; // <- NEKONEČNOST – 8000px jako v Nekonečné kostky (původně 6×400px)
 
 export const InteractiveGridBackground: React.FC = () => {
+  // Počet buněk – nově počítáno z INFINITE_HEIGHT, ne jen z viewportu
   const [dimensions, setDimensions] = useState<{ cols: number; rows: number; total: number }>({
     cols: 20,
-    rows: 20,
-    total: 400
+    rows: 112,
+    total: 2240
   });
 
+  // Scroll pro parallax 0.35× jako v Nekonečné kostky
   const [scrollY, setScrollY] = useState(0);
-  const [prefersReduced, setPrefersReduced] = useState(false);
 
   // DOM references pro 60fps
   const tileRefs = useRef<(HTMLDivElement | null)[]>([]);
-  const activeTimers = useRef<Map<number, ReturnType<typeof setTimeout>>>(new Map());
+  const activeTimers = useRef<Map<number, NodeJS.Timeout>>(new Map());
   const currentActiveIdx = useRef<number>(-1);
   const lastCellCoord = useRef<{ col: number; row: number } | null>(null);
 
   // Idle tracking pro bublání
-  const idleTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
-  const bubblingIntervalRef = useRef<ReturnType<typeof setTimeout> | null>(null);
-  const flashIntervalRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const idleTimerRef = useRef<NodeJS.Timeout | null>(null);
+  const bubblingIntervalRef = useRef<NodeJS.Timeout | null>(null);
+  const flashIntervalRef = useRef<NodeJS.Timeout | null>(null);
   const activeBubblingIndices = useRef<Set<number>>(new Set());
   const idleCandidateNeighbors = useRef<number[]>([]);
   const idleStepRef = useRef<number>(0);
@@ -43,22 +42,13 @@ export const InteractiveGridBackground: React.FC = () => {
     return () => window.removeEventListener('scroll', onScroll);
   }, []);
 
-  // 1b. prefers-reduced-motion – bod 3
-  useEffect(() => {
-    const m = window.matchMedia('(prefers-reduced-motion: reduce)');
-    setPrefersReduced(m.matches);
-    const onChange = (e: MediaQueryListEvent) => setPrefersReduced(e.matches);
-    m.addEventListener('change', onChange);
-    return () => m.removeEventListener('change', onChange);
-  }, []);
-
-  // 2. Calculate grid – NEKONEČNÝ viewport + buffer, rolování oběma směry přes modulo
+  // 2. Calculate grid – NEKONEČNÝ, ne jen viewport
   useEffect(() => {
     const updateSize = () => {
       const w = window.innerWidth;
-      const h = window.innerHeight;
-      const cols = Math.ceil(w / CELL_SIZE) + BUFFER_COLS * 2;
-      const rows = Math.ceil(h / CELL_SIZE) + BUFFER_ROWS * 2 + 2;
+      const cols = Math.ceil(w / CELL_SIZE);
+      // MÍSTO window.innerHeight použijeme INFINITE_HEIGHT pro nekonečný efekt
+      const rows = Math.ceil(INFINITE_HEIGHT / CELL_SIZE);
       const total = cols * rows;
       setDimensions({ cols, rows, total });
     };
@@ -68,21 +58,12 @@ export const InteractiveGridBackground: React.FC = () => {
     return () => window.removeEventListener('resize', updateSize);
   }, []);
 
-  const wrappedOffset = useMemo(() => {
-    if (prefersReduced) return 0;
-    const offset = scrollY * PARALLAX;
-    return ((offset % CELL_SIZE) + CELL_SIZE) % CELL_SIZE;
-  }, [scrollY, prefersReduced]);
-
-  const gridTop = useMemo(() => wrappedOffset - CELL_SIZE * 2, [wrappedOffset]);
-  const gridLeft = useMemo(() => -BUFFER_COLS * 0.5 * CELL_SIZE, []);
-
   // 3. Cursor tracking & idle bubbling – PŮVODNÍ LOGIKA ZACHOVÁNA
   useEffect(() => {
     const cols = dimensions.cols;
     const rows = dimensions.rows;
     if (cols === 0 || rows === 0) return;
-    const timers = activeTimers.current;
+    const timers = activeTimers.current; // kopie pro cleanup (ref se jinak mohl změnit)
 
     const clearBubblingState = () => {
       if (idleTimerRef.current) {
@@ -238,9 +219,9 @@ export const InteractiveGridBackground: React.FC = () => {
     };
 
     const handlePointerMove = (clientX: number, clientY: number) => {
-      const adjustedX = clientX - gridLeft;
-      const adjustedY = clientY - gridTop;
-      const col = Math.floor(adjustedX / CELL_SIZE);
+      const col = Math.floor(clientX / CELL_SIZE);
+      // Pro parallax: přepočítáme row podle scrollY, aby interakce seděla i když je grid posunutý o 0.35×
+      const adjustedY = clientY - scrollY * 0.35;
       const row = Math.floor(adjustedY / CELL_SIZE);
 
       if (col < 0 || col >= cols || row < 0 || row >= rows) {
@@ -264,6 +245,10 @@ export const InteractiveGridBackground: React.FC = () => {
           }
         }
         currentActiveIdx.current = targetIdx;
+      } else {
+        if (activeBubblingIndices.current.size === 0) {
+          if (idleTimerRef.current) clearTimeout(idleTimerRef.current);
+        }
       }
 
       if (activeBubblingIndices.current.size === 0) {
@@ -327,7 +312,7 @@ export const InteractiveGridBackground: React.FC = () => {
       timers.forEach((t) => clearTimeout(t));
       timers.clear();
     };
-  }, [dimensions, scrollY, prefersReduced, wrappedOffset, gridTop, gridLeft]);
+  }, [dimensions, scrollY]);
 
   // 4. Autonomous random square lift every 5s – PŮVODNÍ
   useEffect(() => {
@@ -413,7 +398,7 @@ export const InteractiveGridBackground: React.FC = () => {
     return () => clearInterval(whiteLiftInterval);
   }, [dimensions.total]);
 
-  // 6. Endless ambient
+  // 6. Endless ambient – PŮVODNÍ, teď nekonečně na 8000px
   useEffect(() => {
     const total = dimensions.total;
     if (total === 0) return;
@@ -625,6 +610,7 @@ export const InteractiveGridBackground: React.FC = () => {
 
       <div className="absolute inset-0 bg-[radial-gradient(120%_80%_at_50%_0%,rgba(255,255,255,0.7),transparent_55%),radial-gradient(100%_100%_at_100%_100%,rgba(4,11,141,0.08),transparent_50%),radial-gradient(90%_90%_at_0%_100%,rgba(172,0,1,0.07),transparent_50%)]" />
 
+      {/* Grid lines – fixed, 72px */}
       <div
         className="absolute inset-0 opacity-[0.065]"
         style={{
@@ -643,13 +629,14 @@ export const InteractiveGridBackground: React.FC = () => {
         <div className="absolute left-[26%] bottom-[10%] w-52.5 h-52.5 bg-loyo-red/8 rounded-full blur-[70px]" />
       </div>
 
+      {/* NEKONEČNÝ GRID – 8000px vysoký s parallax 0.35× */}
       <div
         className="absolute top-0 left-0 w-full"
-        style={{
+        style={{ 
           perspective: '800px',
-          height: '100%',
-          transform: prefersReduced ? 'none' : `translateY(${gridTop}px) translateX(${gridLeft}px)`,
-          willChange: prefersReduced ? 'auto' : 'transform'
+          height: `${INFINITE_HEIGHT}px`,
+          transform: `translateY(${scrollY * 0.35}px)`,
+          willChange: 'transform'
         }}
       >
         <div
@@ -687,7 +674,7 @@ export const InteractiveGridBackground: React.FC = () => {
       <div
         className="pointer-events-none absolute inset-0 opacity-[0.035] mix-blend-soft-light"
         style={{
-          backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E")`,
+          backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E")`,
         }}
       />
     </div>
