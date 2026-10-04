@@ -10,7 +10,8 @@
     "clean": "rm -rf .vite dist node_modules/.vite",
     "clean:win": "rmdir /s /q .vite dist node_modules\\.vite 2>nul || exit 0",
     "lint": "tsc --noEmit",
-    "typecheck": "tsc --noEmit"
+    "typecheck": "tsc --noEmit",
+    "check": "tsc --noEmit && vite build"
   },
   "dependencies": {
     "lucide-react": "^0.546.0",

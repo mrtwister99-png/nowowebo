@@ -4,9 +4,17 @@ interface Props {
   className?: string;
   perspective?: number;
   size?: number; // base size 300
+  scenePad?: number; // rezerva kolem kostky v px (200 = původní chování)
+  showInfo?: boolean; // ladicí štítek "rot: …°" pod kostkou
 }
 
-export const ZakladniKostkaLoyo90: React.FC<Props> = ({ className = '', perspective = 1400, size = 300 }) => {
+export const ZakladniKostkaLoyo90: React.FC<Props> = ({
+  className = '',
+  perspective = 1400,
+  size = 300,
+  scenePad = 200,
+  showInfo = true,
+}) => {
   const [rot, setRot] = useState(0);
 
   const handleLeft = useCallback(() => {
@@ -32,8 +40,8 @@ export const ZakladniKostkaLoyo90: React.FC<Props> = ({ className = '', perspect
           -webkit-user-select: none;
         }
         .zakl-scene {
-          width: ${size + 200}px;
-          height: ${size + 200}px;
+          width: ${size + scenePad}px;
+          height: ${size + scenePad}px;
           perspective: ${perspective}px;
           perspective-origin: 50% 45%;
           display: flex;
@@ -111,24 +119,12 @@ export const ZakladniKostkaLoyo90: React.FC<Props> = ({ className = '', perspect
           text-transform: uppercase;
           color: #6b6b6b;
         }
-        @media (max-width: 640px) {
-          .zakl-scene { width: 320px; height: 320px; perspective: 900px; }
-          .zakl-cube-wrapper { width: 200px; height: 200px; }
-          .zakl-cube { width: 200px; height: 200px; }
-          .zakl-face { width: 200px; height: 200px; font-size: 56px; border-width: 3px; }
-          .zakl-face-front { transform: translateZ(100px); }
-          .zakl-face-right { transform: rotateY(90deg) translateZ(100px); }
-          .zakl-face-back { transform: rotateY(180deg) translateZ(100px); }
-          .zakl-face-left { transform: rotateY(-90deg) translateZ(100px); }
-          .zakl-face-top { transform: rotateX(90deg) translateZ(100px); }
-          .zakl-face-bottom { transform: rotateX(-90deg) translateZ(100px); }
-        }
       `}</style>
 
       <div className="zakl-scene" onContextMenu={(e) => e.preventDefault()}>
         <div
           className="zakl-cube-wrapper"
-          style={{ ['--rot' as any]: `${rot}deg` }}
+          style={{ '--rot': `${rot}deg` } as React.CSSProperties}
           onClick={handleLeft}
           onContextMenu={handleRight}
           role="button"
@@ -150,10 +146,12 @@ export const ZakladniKostkaLoyo90: React.FC<Props> = ({ className = '', perspect
         </div>
       </div>
 
-      <div className="zakl-info">
-        <div className="zakl-info-rot">rot: {rot}°</div>
-        <div className="zakl-info-help">LEVÝ = -90° | PRAVÝ = +90°</div>
-      </div>
+      {showInfo && (
+        <div className="zakl-info">
+          <div className="zakl-info-rot">rot: {rot}°</div>
+          <div className="zakl-info-help">LEVÝ = -90° | PRAVÝ = +90°</div>
+        </div>
+      )}
     </div>
   );
 };

@@ -1,6 +1,6 @@
 import React, { Suspense, lazy, useState, useEffect } from 'react';
 import { Menu, X, Sparkles, ArrowRight } from 'lucide-react';
-import { LoyoLogoBox } from '../components/brand/LoyoLogoBox';
+import { ZakladniKostkaLoyo90 } from '../components/brand/ZakladniKostkaLoyo90';
 import { CursorParticleMode, ServiceId } from '../types';
 import { BRAND } from '../lib/colors';
 
@@ -108,15 +108,17 @@ export const LoyoHeaderCard: React.FC<LoyoHeaderCardProps> = ({
                 if (onScrollToTop) onScrollToTop();
                 else window.scrollTo({ top: 0, behavior: 'smooth' });
               }}
-              id="header-circle-logo-2x"
-              className="w-28 h-28 sm:w-32 sm:h-32 md:w-36 md:h-36 rounded-full bg-white border-3 border-loyo-ink shadow-[0_8px_24px_rgba(24,24,27,0.22),4px_4px_0px_#18181b] flex items-center justify-center cursor-pointer group hover:scale-105 active:scale-95 transition-all overflow-hidden relative z-30"
+              id="header-logo-cube"
+              className="w-28 h-28 sm:w-32 sm:h-32 md:w-36 md:h-36 flex items-center justify-center cursor-pointer group hover:scale-105 active:scale-95 transition-all relative z-30"
               title="LoYo • Zpět na začátek"
             >
-              <div className="relative w-22 h-22 sm:w-24 sm:h-24 md:w-28 md:h-28 rounded-full flex items-center justify-center bg-neutral-50">
-                <LoyoLogoBox
-                  activeSection={activeSection}
-                  currentPage={currentPage}
-                  className="scale-150 sm:scale-165 md:scale-180"
+              <div className="relative flex items-center justify-center drop-shadow-[4px_4px_0px_#18181b]">
+                <ZakladniKostkaLoyo90
+                  size={56}
+                  scenePad={24}
+                  perspective={500}
+                  showInfo={false}
+                  className="scale-120 sm:scale-135 md:scale-150"
                 />
               </div>
             </button>
