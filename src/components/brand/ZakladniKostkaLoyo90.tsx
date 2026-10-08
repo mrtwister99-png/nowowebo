@@ -6,6 +6,7 @@ interface Props {
   size?: number; // base size 300
   scenePad?: number; // rezerva kolem kostky v px (200 = původní chování)
   showInfo?: boolean; // ladicí štítek "rot: …°" pod kostkou
+  startRot?: number; // počáteční natočení kolem svislé osy (°), 28 = pohled jako ve vzoru
 }
 
 export const ZakladniKostkaLoyo90: React.FC<Props> = ({
@@ -14,8 +15,9 @@ export const ZakladniKostkaLoyo90: React.FC<Props> = ({
   size = 300,
   scenePad = 200,
   showInfo = true,
+  startRot = 28,
 }) => {
-  const [rot, setRot] = useState(0);
+  const [rot, setRot] = useState(startRot);
 
   const handleLeft = useCallback(() => {
     setRot((r) => r - 90);

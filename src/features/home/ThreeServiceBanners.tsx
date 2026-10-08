@@ -130,7 +130,7 @@ export const ThreeServiceBanners: React.FC<ThreeServiceBannersProps> = ({
         {banners.map((b) => (
           <div
             key={b.id}
-            className="group relative bg-white border-2 border-loyo-ink rounded-3xl p-5 sm:p-6 shadow-brutal-6 hover:shadow-brutal-8 hover:-translate-y-1 transition-all duration-200 flex flex-col justify-between min-h-[420px]"
+            className="group relative bg-white border-2 border-loyo-ink rounded-3xl p-5 sm:p-6 shadow-brutal-6 hover:shadow-brutal-8 hover:-translate-y-1 transition-all duration-200 flex flex-col justify-between min-h-105"
           >
             {/* HORNÍ ČÁST: SVISLÝ NADPIS PODÉL LEVÉ HRANY + STŘEDOVÁ IKONKA A OBSAH */}
             <div className="flex items-stretch gap-4 flex-1">
@@ -158,7 +158,7 @@ export const ThreeServiceBanners: React.FC<ThreeServiceBannersProps> = ({
                     {b.icon}
                   </div>
 
-                  <p className="text-xs sm:text-sm font-heading font-bold text-loyo-ink mt-3 max-w-[200px] leading-tight">
+                  <p className="text-xs sm:text-sm font-heading font-bold text-loyo-ink mt-3 max-w-50 leading-tight">
                     {b.subtitle}
                   </p>
                 </div>

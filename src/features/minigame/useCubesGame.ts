@@ -7,7 +7,10 @@ import {
   DEMO_MAX_COL,
   DEMO_MIN_COL,
   GAME_DURATION_SECONDS,
+  START_MAX_COL,
+  START_MIN_COL,
   STEP,
+  TRIES_KEY,
 } from './constants';
 import {
   cellCenter,
@@ -19,12 +22,11 @@ import {
   getFallSpeed,
   lineClearPoints,
   moveTarget,
+  projectLooseParts,
   resolveBomb,
-  settleDemoPiece,
-  settlePlayingPiece,
   spawnDemoPiece,
   spawnPlayPiece,
-  willLand,
+  stepFalling,
 } from './engine';
 import type { FallingPiece, FlashingLines, GameState, SettledCube } from './types';
 import { useBoardEffects } from './useBoardEffects';
@@ -51,6 +53,15 @@ export function useCubesGame() {
 
   const { highScores, addScore } = useHighScores();
 
+  // Počítadlo pokusů: každé kliknutí na HRÁT = +1 (zatím se ukládá jen v tomto prohlížeči)
+  const [tryCount, setTryCount] = useState<number>(() => {
+    try {
+      return Number(localStorage.getItem(TRIES_KEY)) || 0;
+    } catch {
+      return 0;
+    }
+  });
+
   // Zadání přezdívky na konci hry (3 znaky)
   const [inputInitials, setInputInitials] = useState<string>('');
   const [activeSlot, setActiveSlot] = useState<number>(0);
@@ -65,6 +76,14 @@ export function useCubesGame() {
 
   const [settledCubes, setSettledCubes] = useState<SettledCube[]>(() => createDemoStartCubes());
   const [fallingPiece, setFallingPiece] = useState<FallingPiece | null>(null);
+  // Části dílku, které přečnívaly a padají dál samy (stejnou rychlostí), než dopadnou
+  const [looseParts, setLooseParts] = useState<FallingPiece[]>([]);
+
+  // Aktuální hodnoty pro časovače a výběr dílku (čtou se bez nového spuštění efektů)
+  const fallingRef = useRef<FallingPiece | null>(null);
+  fallingRef.current = fallingPiece;
+  const looseRef = useRef<FallingPiece[]>([]);
+  looseRef.current = looseParts;
 
   // Speciální bomba (mezerník) s cooldownem 30 s
   const [bombCooldown, setBombCooldown] = useState<number>(0);
@@ -87,6 +106,7 @@ export function useCubesGame() {
     setActiveMaxCol(DEMO_MAX_COL);
     setSettledCubes(createDemoStartCubes());
     setFallingPiece(null);
+    setLooseParts([]);
   }, [gameState]);
 
   // Start hry: odpočet 3... 2... 1... START!
@@ -95,6 +115,17 @@ export function useCubesGame() {
     setGameState('countdown');
     setCountdown(3);
     setSettledCubes([]); // prázdné pole
+    setActiveMinCol(START_MIN_COL); // pole začíná jen 4 sloupce široké
+    setActiveMaxCol(START_MAX_COL);
+
+    // Počítadlo pokusů +1
+    const nextTryCount = tryCount + 1;
+    setTryCount(nextTryCount);
+    try {
+      localStorage.setItem(TRIES_KEY, String(nextTryCount));
+    } catch {
+      // úložiště nemusí být dostupné (soukromý režim): počítadlo pak běží jen do obnovení stránky
+    }
     setScore(0);
     setTimeLeft(GAME_DURATION_SECONDS);
     setBombCooldown(0);
@@ -102,6 +133,7 @@ export function useCubesGame() {
     setInputInitials('');
     setActiveSlot(0);
     setFallingPiece(null);
+    setLooseParts([]);
     setIsHovered(false);
     setInfoPhase('idle');
 
@@ -152,9 +184,11 @@ export function useCubesGame() {
   // Nový dílek (všechny padající kostičky jsou žlutozelené)
   const spawnPiece = useCallback(() => {
     if (gameState !== 'playing' && gameState !== 'demo') return;
+    if (fallingRef.current) return; // dílek už padá (např. spustily se dva časovače po sobě)
 
     if (gameState === 'demo') {
-      setFallingPiece(spawnDemoPiece(settledCubes));
+      // Ukázka počítá i s částmi, které ještě padají
+      setFallingPiece(spawnDemoPiece(projectLooseParts(settledCubes, looseRef.current)));
       return;
     }
 
@@ -163,6 +197,10 @@ export function useCubesGame() {
     setNextIsBomb(false);
     setFallingPiece(spawnPlayPiece(minCol, maxCol, isBomb));
   }, [gameState, nextIsBomb, settledCubes, timeLeft]);
+
+  // Časovače volají vždy nejnovější spawnPiece (ne zastaralou kopii z doby spuštění efektu)
+  const spawnPieceRef = useRef(spawnPiece);
+  spawnPieceRef.current = spawnPiece;
 
   // Speciální bomba (mezerník)
   const triggerBomb = useCallback(() => {
@@ -333,37 +371,84 @@ export function useCubesGame() {
     [flashBoardBriefly, gameState, showFloatingScore, triggerExplosion],
   );
 
-  // Fyzika pádu (běží v demu i v ostré hře)
+  // Nový dílek po chvíli, když žádný nepadá (ukázka 240 ms, hra 60 ms)
+  useEffect(() => {
+    if ((gameState !== 'playing' && gameState !== 'demo') || fallingPiece) return;
+
+    const delay = gameState === 'demo' ? 240 : 60;
+    const spawnTimer = setTimeout(() => {
+      if (!isProcessingLineClearRef.current) {
+        spawnPiece();
+      }
+    }, delay);
+    return () => clearTimeout(spawnTimer);
+  }, [fallingPiece, gameState, spawnPiece]);
+
+  // Fyzika pádu (ukázka i hra): hlavní dílek i odpadlé části padají stejnou rychlostí.
+  // Při dopadu se usadí jen sloupce, které se o něco opřely, přečnívající padají dál samy.
   useEffect(() => {
     if (gameState !== 'playing' && gameState !== 'demo') return;
-
-    if (!fallingPiece) {
-      const delay = gameState === 'demo' ? 240 : 60;
-      const spawnTimer = setTimeout(() => {
-        if (!isProcessingLineClearRef.current) {
-          spawnPiece();
-        }
-      }, delay);
-      return () => clearTimeout(spawnTimer);
-    }
+    if (!fallingPiece && looseParts.length === 0) return;
 
     let animId: number;
 
     const tick = () => {
-      if (!fallingPiece) return;
+      // Při blikání a mazání řádků se pohyb na chvíli zastaví
+      if (isProcessingLineClearRef.current) {
+        animId = requestAnimationFrame(tick);
+        return;
+      }
 
-      const nextY = fallingPiece.y + getFallSpeed(gameState, timeLeft);
+      const step = stepFalling(
+        settledCubes,
+        looseParts,
+        fallingPiece,
+        getFallSpeed(gameState, timeLeft),
+        Date.now(),
+      );
 
-      if (willLand(fallingPiece, nextY, settledCubes)) {
-        if (gameState === 'demo') {
-          // Dopad v demu: kostičky zčernají
-          const newSettled = settleDemoPiece(settledCubes, fallingPiece, Date.now());
-          setSettledCubes(newSettled);
-          setFallingPiece(null);
+      // Přetečení v ostré hře: konec hry
+      if (step.isGameOver && gameState === 'playing') {
+        triggerExplosion(BOARD_WIDTH / 2, BOARD_HEIGHT / 2, 40);
+        setEndReason('gameover');
+        setGameState('name_entry');
+        setInputInitials('');
+        setActiveSlot(0);
+        setFallingPiece(null);
+        setLooseParts([]);
+        return;
+      }
 
-          // Zkontrolujeme a odpálíme řádky
-          triggerLineClearSequence(newSettled, DEMO_MIN_COL, DEMO_MAX_COL, (afterCubes) => {
-            // Ukázka se nikdy nezasekne: při výšce 4 a víc se odpaří spodní řádek
+      setFallingPiece(step.piece);
+      setLooseParts(step.loose);
+
+      // Dopad bomby: výbuch, body a slisování zbytku dolů
+      if (step.bombCol !== null) {
+        const { impactRow, points, cubes } = resolveBomb(step.settled, step.bombCol);
+        const { x: impactX, y: impactY } = cellCenter(step.bombCol, impactRow);
+
+        triggerExplosion(impactX, impactY, 32);
+        setScore((s) => s + points);
+        showFloatingScore(`BOMBA! +${points}`, impactX, impactY, COLOR_GOLD);
+
+        setSettledCubes(cubes);
+        setTimeout(() => spawnPieceRef.current(), 120);
+        return;
+      }
+
+      // Něco se usadilo: zapsat kostičky a zkontrolovat plné řádky
+      if (step.landed) {
+        setSettledCubes(step.settled);
+        if (step.pieceLanded && gameState === 'playing' && fallingPiece) {
+          setScore((s) => s + fallingPiece.cells.length * 10);
+        }
+
+        const [minC, maxC] =
+          gameState === 'demo' ? [DEMO_MIN_COL, DEMO_MAX_COL] : [activeMinCol, activeMaxCol];
+
+        triggerLineClearSequence(step.settled, minC, maxC, (afterCubes) => {
+          if (gameState === 'demo') {
+            // Ukázka se nikdy nezasekne: při výšce DEMO_MAX_HEIGHT se odpaří spodní řádek
             const cleanup = demoOverflowCleanup(afterCubes);
             if (cleanup) {
               cleanup.explodedCubes.forEach((b) => {
@@ -372,65 +457,15 @@ export function useCubesGame() {
               });
               setSettledCubes(cleanup.cubes);
             }
-
-            // Další dílek: ukázka běží donekonečna
-            setTimeout(() => {
-              isProcessingLineClearRef.current = false;
-              spawnPiece();
-            }, 120);
-          });
-          return;
-        }
-
-        // Dopad v ostré hře
-        if (fallingPiece.isBomb) {
-          const { impactRow, points, cubes } = resolveBomb(settledCubes, fallingPiece.col);
-          const { x: impactX, y: impactY } = cellCenter(fallingPiece.col, impactRow);
-
-          triggerExplosion(impactX, impactY, 32);
-          setScore((s) => s + points);
-          showFloatingScore(`BOMBA! +${points}`, impactX, impactY, COLOR_GOLD);
-
-          setSettledCubes(cubes);
-          setFallingPiece(null);
-          setTimeout(() => {
-            isProcessingLineClearRef.current = false;
-            spawnPiece();
-          }, 120);
-        } else {
-          const { cubes: newSettled, isGameOver } = settlePlayingPiece(
-            settledCubes,
-            fallingPiece,
-            Date.now(),
-          );
-
-          if (isGameOver) {
-            triggerExplosion(BOARD_WIDTH / 2, BOARD_HEIGHT / 2, 40);
-            setEndReason('gameover');
-            setGameState('name_entry');
-            setInputInitials('');
-            setActiveSlot(0);
-            setFallingPiece(null);
-            return;
           }
 
-          setSettledCubes(newSettled);
-          setFallingPiece(null);
-
-          // Propojení řádku: bliknutí, výbuch a body
-          triggerLineClearSequence(newSettled, activeMinCol, activeMaxCol, () => {
-            setScore((s) => s + fallingPiece.cells.length * 10);
-            setTimeout(() => {
-              isProcessingLineClearRef.current = false;
-              spawnPiece();
-            }, 100);
-          });
-        }
-      } else {
-        setFallingPiece((prev) => (prev ? { ...prev, y: nextY } : null));
+          // Další dílek padá rovnou, odpadlé části dopadají mezitím
+          if (step.pieceLanded) {
+            setTimeout(() => spawnPieceRef.current(), 100);
+          }
+        });
       }
-
-      animId = requestAnimationFrame(tick);
+      // Jinak se jen posunuly: po změně stavu se efekt spustí znovu a naplánuje další snímek
     };
 
     animId = requestAnimationFrame(tick);
@@ -440,9 +475,9 @@ export function useCubesGame() {
     activeMinCol,
     fallingPiece,
     gameState,
+    looseParts,
     settledCubes,
     showFloatingScore,
-    spawnPiece,
     timeLeft,
     triggerExplosion,
     triggerLineClearSequence,
@@ -453,6 +488,7 @@ export function useCubesGame() {
     setGameState('demo');
     setSettledCubes(createDemoStartCubes());
     setFallingPiece(null);
+    setLooseParts([]);
     setShowHighScoresModal(false);
   };
 
@@ -485,7 +521,9 @@ export function useCubesGame() {
     activeMaxCol,
     settledCubes,
     fallingPiece,
+    looseParts,
     bombCooldown,
+    tryCount,
     particles,
     floatingScores,
     flashBoard,

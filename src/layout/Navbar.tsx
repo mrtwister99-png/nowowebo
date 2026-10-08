@@ -395,7 +395,7 @@ export const Navbar: React.FC<NavbarProps> = ({
                     className="w-full text-left px-3 py-2.5 bg-white hover:bg-neutral-50 border border-loyo-line hover:border-loyo-ink flex items-center justify-between cursor-pointer font-semibold text-loyo-ink transition-colors rounded-xl"
                   >
                     <span className="flex items-center gap-2">
-                      <span className="w-2 h-2 bg-loyo-ink rounded-[2px]" />
+                      <span className="w-2 h-2 bg-loyo-ink rounded-xs" />
                       04. Konzultace
                     </span>
                     <span className="text-[10px] font-mono">1-on-1</span>

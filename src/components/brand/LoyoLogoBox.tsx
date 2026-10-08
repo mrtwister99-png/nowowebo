@@ -6,21 +6,21 @@ type FaceKey = typeof ALL_KEYS[number];
 interface FaceDef { key: FaceKey; rotX:number; rotY:number; baseRot:string; bg:string; text:string; neonBorder:string; neonText:string; neonGlow:string; labelNormal:string; labelNeon:string; }
 
 const FACE_DEFS: Record<FaceKey, FaceDef> = {
-  FRONT: { key:'FRONT', rotX:24, rotY:-48, baseRot:'', bg:'#040b8d', text:'white', neonBorder:'#4a7bff', neonText:'#6b9bff', neonGlow:'#040b8d', labelNormal:'L', labelNeon:'LoYo' },
-  RIGHT: { key:'RIGHT', rotX:-22, rotY:-118, baseRot:'rotateY(90deg)', bg:'#CDA24D', text:'black', neonBorder:'#ffcc5c', neonText:'#ffde8a', neonGlow:'#CDA24D', labelNormal:'o', labelNeon:'Loyo' },
-  BACK: { key:'BACK', rotX:24, rotY:-228, baseRot:'rotateY(180deg)', bg:'#ac0001', text:'white', neonBorder:'#ff1a1a', neonText:'#ff4a4a', neonGlow:'#ac0001', labelNormal:'Y', labelNeon:'loYO' },
-  LEFT: { key:'LEFT', rotX:-22, rotY:62, baseRot:'rotateY(-90deg)', bg:'#616161', text:'white', neonBorder:'#cccccc', neonText:'#ffffff', neonGlow:'#888888', labelNormal:'o', labelNeon:'lOYO' },
+  FRONT: { key:'FRONT', rotX:-18, rotY:28, baseRot:'', bg:'#040b8d', text:'white', neonBorder:'#4a7bff', neonText:'#6b9bff', neonGlow:'#040b8d', labelNormal:'L', labelNeon:'LoYo' },
+  RIGHT: { key:'RIGHT', rotX:-18, rotY:-62, baseRot:'rotateY(90deg)', bg:'#CDA24D', text:'black', neonBorder:'#ffcc5c', neonText:'#ffde8a', neonGlow:'#CDA24D', labelNormal:'o', labelNeon:'Loyo' },
+  BACK: { key:'BACK', rotX:-18, rotY:-152, baseRot:'rotateY(180deg)', bg:'#ac0001', text:'white', neonBorder:'#ff1a1a', neonText:'#ff4a4a', neonGlow:'#ac0001', labelNormal:'Y', labelNeon:'loYO' },
+  LEFT: { key:'LEFT', rotX:-18, rotY:118, baseRot:'rotateY(-90deg)', bg:'#616161', text:'white', neonBorder:'#cccccc', neonText:'#ffffff', neonGlow:'#888888', labelNormal:'o', labelNeon:'lOYO' },
   TOP: { key:'TOP', rotX:68, rotY:-28, baseRot:'rotateX(90deg)', bg:'#f8f8f6', text:'black', neonBorder:'#fff', neonText:'#fff', neonGlow:'#f8f8f6', labelNormal:'', labelNeon:'LoYo' },
   BOTTOM: { key:'BOTTOM', rotX:-112, rotY:-28, baseRot:'rotateX(-90deg)', bg:'#111', text:'white', neonBorder:'#fff', neonText:'#fff', neonGlow:'#666', labelNormal:'', labelNeon:'Loyo' },
 };
 const FACE_LIST = ALL_KEYS.map(k=>FACE_DEFS[k]);
 
-interface LoyoLogoBoxProps { activeSection:string; currentPage?:string; className?:string; defaultFace?:FaceKey; perspective?:number }
+interface LoyoLogoBoxProps { activeSection:string; currentPage?:string; className?:string; defaultFace?:FaceKey; perspective?:number; defaultNeon?:boolean; holdEnabled?:boolean }
 
-export const LoyoLogoBox: React.FC<LoyoLogoBoxProps> = ({activeSection,currentPage='home',className='',defaultFace='FRONT', perspective=600})=>{
+export const LoyoLogoBox: React.FC<LoyoLogoBoxProps> = ({activeSection,currentPage='home',className='',defaultFace='FRONT', perspective=600, defaultNeon=false, holdEnabled=true})=>{
   const init = FACE_DEFS[defaultFace];
   const [rotX,setRotX]=useState(init.rotX); const [rotY,setRotY]=useState(init.rotY);
-  const [face,setFace]=useState<FaceKey>(init.key); const [isNeon,setIsNeon]=useState(false);
+  const [face,setFace]=useState<FaceKey>(init.key); const [isNeon,setIsNeon]=useState(defaultNeon);
   const [phase,setPhase]=useState<'idle'|'exploding'|'imploding'>('idle');
   const holdRef=useRef<number|null>(null); const switchRef=useRef<number|null>(null); const implodeRef=useRef<number|null>(null);
   const holding=useRef(false); const exploded=useRef(false);
@@ -40,13 +40,13 @@ export const LoyoLogoBox: React.FC<LoyoLogoBoxProps> = ({activeSection,currentPa
     if(target&&target!==face){ const d=FACE_DEFS[target]; const ci=(SIDE_KEYS as readonly FaceKey[]).indexOf(face); const ti=(SIDE_KEYS as readonly FaceKey[]).indexOf(target); if(ci!==-1&&ti!==-1){ const steps=(ti-ci+SIDE_KEYS.length)%SIDE_KEYS.length; setRotX(d.rotX); setRotY(p=>p-90*steps);} setFace(target); }
   },[activeSection,currentPage,face,phase]);
 
-  const startHold=useCallback(()=>{ if(phase!=='idle')return; holding.current=true; exploded.current=false;
+  const startHold=useCallback(()=>{ if(phase!=='idle')return; holding.current=true; exploded.current=false; if(!holdEnabled)return;
     holdRef.current=window.setTimeout(()=>{ exploded.current=true; setPhase('exploding');
       switchRef.current=window.setTimeout(()=>{ setIsNeon(v=>!v); setPhase('imploding');
         implodeRef.current=window.setTimeout(()=>{ setPhase('idle'); exploded.current=false; },600);
       },600);
     },600);
-  },[phase]);
+  },[phase,holdEnabled]);
   const endHold=useCallback(()=>{ const was=holding.current; const ex=exploded.current; holding.current=false;
     if(holdRef.current){ clearTimeout(holdRef.current); holdRef.current=null; }
     if(!ex&&was&&phase==='idle')rotateNext();

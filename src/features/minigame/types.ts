@@ -58,3 +58,14 @@ export interface FlashingLines {
   rows: number[];
   flashOn: boolean;
 }
+
+/** Výsledek jednoho snímku pádu (viz stepFalling v engine.ts) */
+export interface FallStep {
+  settled: SettledCube[]; // usazené kostičky po tomto snímku
+  loose: FallingPiece[]; // části, které padají dál samy
+  piece: FallingPiece | null; // hlavní dílek (null = dopadl nebo žádný nepadá)
+  landed: boolean; // v tomto snímku se něco usadilo (je třeba zkontrolovat plné řádky)
+  pieceLanded: boolean; // hlavní dílek dopadl (může padat další)
+  bombCol: number | null; // sloupec, kam dopadla bomba
+  isGameOver: boolean; // kostička přetekla přes horní okraj
+}

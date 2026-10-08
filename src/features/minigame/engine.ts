@@ -11,22 +11,39 @@ import {
   COLOR_RED,
   CUBE_SIZE,
   DEMO_MAX_COL,
+  DEMO_MAX_HEIGHT,
   DEMO_MIN_COL,
-  DEMO_PIECE_SHAPES,
+  DEMO_TETROMINOES,
+  FALL_SPEED_SCALE,
+  FIELD_GROW_SECONDS,
+  FIELD_MAX_GROWTH,
+  FIELD_TOP_SPACE,
   GAME_DURATION_SECONDS,
   HIGH_SCORES_LIMIT,
   MAX_ROWS,
   PIECE_SHAPES,
+  START_MAX_COL,
+  START_MIN_COL,
+  START_PIECE_SHAPES,
   STEP,
   TOTAL_COLS,
 } from './constants';
-import type { FallingPiece, GameState, Particle, ScoreRecord, SettledCube } from './types';
+import type {
+  FallingPiece,
+  FallStep,
+  GameState,
+  Particle,
+  PieceShape,
+  ScoreRecord,
+  SettledCube,
+} from './types';
 
 /** Funkce vracející náhodné číslo 0 až 1: ve hře Math.random, v testech předvídatelná. */
 export type Random = () => number;
 
+// Výška sloupce = nejvyšší kostička + 1
 const columnHeight = (cubes: SettledCube[], col: number): number =>
-  cubes.filter((b) => b.col === col).length;
+  cubes.reduce((height, b) => (b.col === col && b.row + 1 > height ? b.row + 1 : height), 0);
 
 /** Střed buňky (sloupec, řádek) v px uvnitř hrací plochy; sem míří výbuchy. */
 export const cellCenter = (col: number, row: number): { x: number; y: number } => ({
@@ -34,58 +51,107 @@ export const cellCenter = (col: number, row: number): { x: number; y: number } =
   y: BOARD_HEIGHT - row * STEP - CUBE_SIZE / 2,
 });
 
-/** Výchozí kostičky v ukázce (demo): tři kostičky ve spodním řádku a mezery mezi nimi. */
-export const createDemoStartCubes = (): SettledCube[] => [
-  { id: 'd1-1', col: 1, row: 0, color: COLOR_BLACK },
-  { id: 'd1-2', col: 2, row: 0, color: COLOR_BLACK },
-  { id: 'd1-4', col: 4, row: 0, color: COLOR_BLACK },
-];
+/** Ukázka (demo) začíná s prázdným polem jako opravdový Tetris. */
+export const createDemoStartCubes = (): SettledCube[] => [];
 
 /**
  * Aktivní sloupce podle času:
- * demo = sloupce 1 až 5; hra: 0-15 s sloupce 2-5, 15-30 s sloupce 1-6, potom všech 8 (0-7).
+ * demo = 8 sloupců (2 až 9); hra: začíná 4 sloupci (4 až 7) a každých 10 s o 2 víc (6, 8, 10, 12).
  */
 export const getActiveColBounds = (timeLeft: number, state: string): [number, number] => {
   if (state === 'demo') return [DEMO_MIN_COL, DEMO_MAX_COL];
   const elapsed = GAME_DURATION_SECONDS - timeLeft;
-  if (elapsed < 15) return [2, 5];
-  if (elapsed < 30) return [1, 6];
-  return [0, 7];
+  const growth = Math.min(FIELD_MAX_GROWTH, Math.floor(elapsed / FIELD_GROW_SECONDS));
+  return [START_MIN_COL - growth, START_MAX_COL + growth];
 };
 
-/** Rychlost pádu v px na snímek: v demu pomalu, v posledních 15 s rychleji. */
+/** Rychlost pádu v px na snímek: v demu pomaleji, v posledních 15 s rychleji (krát FALL_SPEED_SCALE). */
 export const getFallSpeed = (state: GameState, timeLeft: number): number => {
-  if (state === 'demo') return 0.75;
+  if (state === 'demo') return 0.75 * FALL_SPEED_SCALE;
   const elapsed = GAME_DURATION_SECONDS - timeLeft;
-  if (elapsed >= 45) return 1.8;
-  return 1.1;
+  if (elapsed >= 45) return 1.8 * FALL_SPEED_SCALE;
+  return 1.1 * FALL_SPEED_SCALE;
 };
 
-/** Nový dílek pro demo: jednoduché tvary, padá do jednoho ze dvou nejnižších sloupců. */
+/**
+ * Ohodnocení tahu pro ukázku: kostičky dílku v daném natočení a sloupci padají po sloupcích (jako ve hře).
+ * Víc plných řádků je lepší; díry, výška sloupců a nerovný povrch jsou horší.
+ */
+const scoreDemoMove = (cubes: SettledCube[], shape: PieceShape, col: number): number => {
+  // Každá kostička se opře o nejvyšší kostičku ve svém sloupci (přečnívající padá dál)
+  const filled = new Set(cubes.map((b) => `${b.col},${b.row}`));
+  const heights = new Map<number, number>();
+  for (const [dx] of shape.cells) {
+    const c = col + dx;
+    const row = heights.get(c) ?? columnHeight(cubes, c);
+    if (row >= MAX_ROWS) return -Infinity;
+    filled.add(`${c},${row}`);
+    heights.set(c, row + 1);
+  }
+
+  // Plné řádky se vymažou, hodnotí se pole až po jejich smazání
+  const fullRows: number[] = [];
+  for (let r = 0; r < MAX_ROWS; r++) {
+    let isFull = true;
+    for (let c = DEMO_MIN_COL; c <= DEMO_MAX_COL; c++) {
+      if (!filled.has(`${c},${r}`)) {
+        isFull = false;
+        break;
+      }
+    }
+    if (isFull) fullRows.push(r);
+  }
+  const lines = fullRows.length;
+  const after = new Set<string>();
+  for (const key of filled) {
+    const [c, r] = key.split(',').map(Number);
+    if (!fullRows.includes(r)) after.add(`${c},${r - fullRows.filter((f) => f < r).length}`);
+  }
+
+  let aggregateHeight = 0;
+  let holes = 0;
+  let bumpiness = 0;
+  let previousHeight = -1;
+  for (let c = DEMO_MIN_COL; c <= DEMO_MAX_COL; c++) {
+    let height = 0;
+    for (let r = MAX_ROWS - 1; r >= 0; r--) {
+      if (after.has(`${c},${r}`)) {
+        height = r + 1;
+        break;
+      }
+    }
+    for (let r = 0; r < height; r++) {
+      if (!after.has(`${c},${r}`)) holes++;
+    }
+    aggregateHeight += height;
+    if (previousHeight >= 0) bumpiness += Math.abs(height - previousHeight);
+    previousHeight = height;
+  }
+
+  return lines * 0.76 - aggregateHeight * 0.51 - holes * 0.36 - bumpiness * 0.18;
+};
+
+/** Nový dílek pro ukázku: náhodný Tetris dílek, ukázka sama vybere nejlepší natočení a sloupec. */
 export const spawnDemoPiece = (
   settled: SettledCube[],
   rand: Random = Math.random,
 ): FallingPiece => {
-  const shape = DEMO_PIECE_SHAPES[Math.floor(rand() * DEMO_PIECE_SHAPES.length)];
-  const maxDx = Math.max(...shape.cells.map((c) => c[0]));
-  const pieceWidth = maxDx + 1;
+  const orientations = DEMO_TETROMINOES[Math.floor(rand() * DEMO_TETROMINOES.length)];
 
-  const validCols: number[] = [];
-  for (let c = DEMO_MIN_COL; c <= DEMO_MAX_COL - pieceWidth + 1; c++) {
-    validCols.push(c);
+  let best = { shape: orientations[0], col: DEMO_MIN_COL, score: -Infinity };
+  for (const shape of orientations) {
+    const pieceWidth = Math.max(...shape.cells.map((c) => c[0])) + 1;
+    for (let c = DEMO_MIN_COL; c <= DEMO_MAX_COL - pieceWidth + 1; c++) {
+      const score = scoreDemoMove(settled, shape, c);
+      if (score > best.score) best = { shape, col: c, score };
+    }
   }
 
-  // Seřadíme podle nejnižší výšky, aby kostičky pěkně doplňovaly řádky
-  validCols.sort((colA, colB) => columnHeight(settled, colA) - columnHeight(settled, colB));
-
-  const topChoices = validCols.slice(0, Math.min(2, validCols.length));
-  const chosenCol =
-    topChoices.length > 0 ? topChoices[Math.floor(rand() * topChoices.length)] : DEMO_MIN_COL;
-
+  const pieceHeight = Math.max(...best.shape.cells.map((c) => c[1])) + 1;
   return {
-    cells: shape.cells,
-    col: chosenCol,
-    y: -CUBE_SIZE * 2,
+    cells: best.shape.cells,
+    col: best.col,
+    y: Math.max(-pieceHeight * STEP, -FIELD_TOP_SPACE),
     isBomb: false,
     color: COLOR_FALLING,
   };
@@ -100,10 +166,12 @@ export const spawnPlayPiece = (
 ): FallingPiece => {
   if (isBomb) {
     const col = Math.floor(minCol + rand() * (maxCol - minCol + 1));
-    return { cells: [[0, 0]], col, y: -CUBE_SIZE, isBomb: true, color: COLOR_RED };
+    return { cells: [[0, 0]], col, y: 0, isBomb: true, color: COLOR_RED };
   }
 
-  const shape = PIECE_SHAPES[Math.floor(rand() * PIECE_SHAPES.length)];
+  // První pole (4 sloupce): jen 1 kostička, 2 kostičky a kostka 2x2; od zvětšení pole všechny tvary
+  const pool = maxCol - minCol + 1 <= 4 ? START_PIECE_SHAPES : PIECE_SHAPES;
+  const shape = pool[Math.floor(rand() * pool.length)];
   const maxDx = Math.max(...shape.cells.map((c) => c[0]));
   const pieceWidth = maxDx + 1;
 
@@ -117,7 +185,7 @@ export const spawnPlayPiece = (
   return {
     cells: shape.cells,
     col: chosenCol,
-    y: -CUBE_SIZE * 2,
+    y: 0,
     isBomb: false,
     color: COLOR_FALLING,
   };
@@ -157,23 +225,6 @@ export const moveTarget = (
   return collides ? null : newCol;
 };
 
-/** Dopad dílku v demu: kostičky zčernají. */
-export const settleDemoPiece = (
-  settled: SettledCube[],
-  piece: FallingPiece,
-  now: number,
-): SettledCube[] => {
-  const result: SettledCube[] = [...settled];
-  for (const [dx] of piece.cells) {
-    const col = piece.col + dx;
-    const row = columnHeight(result, col);
-    if (row < MAX_ROWS) {
-      result.push({ id: `demo-landed-${now}-${col}-${row}`, col, row, color: COLOR_BLACK });
-    }
-  }
-  return result;
-};
-
 /** Dopad dílku v ostré hře; kostička v posledním řádku je červená (výstraha), přetečení = konec hry. */
 export const settlePlayingPiece = (
   settled: SettledCube[],
@@ -200,6 +251,79 @@ export const settlePlayingPiece = (
 
   return { cubes, isGameOver };
 };
+
+/** Rozdělí dílek po sloupcích: každý sloupec je samostatná část padající svisle (cells mají dx = 0). */
+export const splitByColumn = (piece: FallingPiece): FallingPiece[] => {
+  const columns = new Map<number, [number, number][]>();
+  for (const [dx, dy] of piece.cells) {
+    columns.set(dx, [...(columns.get(dx) ?? []), [0, dy]]);
+  }
+  return [...columns.entries()].map(([dx, cells]) => ({ ...piece, col: piece.col + dx, cells }));
+};
+
+/**
+ * Jeden snímek pádu: odpadlé části i hlavní dílek se posunou o `speed` px stejnou rychlostí.
+ * Když dílek narazí, usadí se jen sloupce, které se o něco opřely; přečnívající sloupce
+ * padají dál jako odpadlé části a dopadnou samy. Bomba se jen ohlásí (bombCol), řeší ji hra.
+ */
+export const stepFalling = (
+  settled: SettledCube[],
+  loose: FallingPiece[],
+  piece: FallingPiece | null,
+  speed: number,
+  now: number,
+): FallStep => {
+  let cubes = settled;
+  let landed = false;
+  let pieceLanded = false;
+  let isGameOver = false;
+  let bombCol: number | null = null;
+  let nextPiece: FallingPiece | null = null;
+  const nextLoose: FallingPiece[] = [];
+
+  const settlePart = (part: FallingPiece) => {
+    const result = settlePlayingPiece(cubes, part, now);
+    cubes = result.cubes;
+    isGameOver = isGameOver || result.isGameOver;
+    landed = true;
+  };
+
+  // Odpadlé části: nejnižší první, ať se vyšší část ve stejném sloupci opře o už usazenou
+  for (const part of [...loose].sort((a, b) => b.y - a.y)) {
+    const nextY = part.y + speed;
+    if (willLand(part, nextY, cubes)) settlePart(part);
+    else nextLoose.push({ ...part, y: nextY });
+  }
+
+  if (piece) {
+    const nextY = piece.y + speed;
+    if (!willLand(piece, nextY, cubes)) {
+      nextPiece = { ...piece, y: nextY };
+    } else if (piece.isBomb) {
+      bombCol = piece.col;
+    } else {
+      pieceLanded = true;
+      for (const part of splitByColumn(piece)) {
+        if (willLand(part, nextY, cubes)) settlePart(part);
+        else nextLoose.push({ ...part, y: nextY });
+      }
+    }
+  }
+
+  return {
+    settled: cubes,
+    loose: nextLoose,
+    piece: nextPiece,
+    landed,
+    pieceLanded,
+    bombCol,
+    isGameOver,
+  };
+};
+
+/** Kam by odpadlé části dopadly (ukázka s tím počítá při výběru dalšího tahu). */
+export const projectLooseParts = (settled: SettledCube[], loose: FallingPiece[]): SettledCube[] =>
+  loose.reduce((cubes, part) => settlePlayingPiece(cubes, part, 0).cubes, settled);
 
 /** Řádky (0 = dole), které jsou v aktivních sloupcích celé zaplněné. */
 export const findFullRows = (cubes: SettledCube[], minC: number, maxC: number): number[] => {
@@ -238,7 +362,7 @@ export const lineClearPoints = (clearedRows: number, activeWidth: number): numbe
   return basePoints * activeWidth;
 };
 
-/** Ukázka nikdy nezamrzne: když některý sloupec dosáhne výšky 4, odpaří se spodní řádek. */
+/** Ukázka nikdy nezamrzne: když některý sloupec dosáhne výšky DEMO_MAX_HEIGHT, odpaří se spodní řádek. */
 export const demoOverflowCleanup = (
   cubes: SettledCube[],
 ): { cubes: SettledCube[]; explodedCubes: SettledCube[] } | null => {
@@ -246,7 +370,7 @@ export const demoOverflowCleanup = (
   for (let c = DEMO_MIN_COL; c <= DEMO_MAX_COL; c++) demoCols.push(c);
 
   const maxColHeight = Math.max(...demoCols.map((c) => columnHeight(cubes, c)));
-  if (maxColHeight < 4) return null;
+  if (maxColHeight < DEMO_MAX_HEIGHT) return null;
 
   const inDemoCols = (b: SettledCube) => b.col >= DEMO_MIN_COL && b.col <= DEMO_MAX_COL;
   return {

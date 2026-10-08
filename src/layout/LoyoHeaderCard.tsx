@@ -1,5 +1,6 @@
-import React, { Suspense, lazy, useState, useEffect } from 'react';
+import React, { Suspense, lazy, useState, useEffect, useRef } from 'react';
 import { Menu, X, Sparkles, ArrowRight } from 'lucide-react';
+import { LoyoLogoBox } from '../components/brand/LoyoLogoBox';
 import { ZakladniKostkaLoyo90 } from '../components/brand/ZakladniKostkaLoyo90';
 import { CursorParticleMode, ServiceId } from '../types';
 import { BRAND } from '../lib/colors';
@@ -31,6 +32,71 @@ export const LoyoHeaderCard: React.FC<LoyoHeaderCardProps> = ({
   onScrollToTop,
 }) => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+
+  // Menu: myší se otevírá najetím a po odjetí se zavře, dotyk a klávesnice fungují klikem
+  const [menuMounted, setMenuMounted] = useState(false); // panel zůstane v DOM do konce animace zavření
+  const menuCloseTimer = useRef<number | null>(null);
+  const menuPointerType = useRef('mouse');
+
+  const openMenuHover = (e: React.PointerEvent) => {
+    menuPointerType.current = e.pointerType;
+    if (e.pointerType !== 'mouse') return;
+    if (menuCloseTimer.current !== null) {
+      window.clearTimeout(menuCloseTimer.current);
+      menuCloseTimer.current = null;
+    }
+    setIsMenuOpen(true);
+  };
+
+  const closeMenuHover = (e: React.PointerEvent) => {
+    if (e.pointerType !== 'mouse') return;
+    menuCloseTimer.current = window.setTimeout(() => setIsMenuOpen(false), 250); // čas na přejetí z tlačítka do panelu
+  };
+
+  useEffect(() => {
+    if (isMenuOpen) {
+      setMenuMounted(true);
+      return;
+    }
+    const t = window.setTimeout(() => setMenuMounted(false), 300); // délka animace zavření
+    return () => window.clearTimeout(t);
+  }, [isMenuOpen]);
+
+  // Podržení loga (0,6 s): kroužek se plní, pak glitch animace a přepnutí základní <-> neonová kostka
+  const [neonLogo, setNeonLogo] = useState(false);
+  const [logoPhase, setLogoPhase] = useState<'idle' | 'holding' | 'glitch' | 'pop'>('idle');
+  const logoTimers = useRef<number[]>([]);
+  const logoHoldFired = useRef(false); // po dlouhém podržení se nesmí spustit klik (otočení + scroll nahoru)
+
+  const startLogoHold = (e: React.PointerEvent) => {
+    if (e.button !== 0 || logoPhase !== 'idle') return; // jen levé tlačítko / dotyk
+    logoHoldFired.current = false;
+    setLogoPhase('holding');
+    logoTimers.current.push(
+      window.setTimeout(() => {
+        logoHoldFired.current = true;
+        setLogoPhase('glitch');
+        logoTimers.current.push(
+          window.setTimeout(() => {
+            setNeonLogo((prev) => !prev);
+            setLogoPhase('pop');
+            logoTimers.current.push(window.setTimeout(() => setLogoPhase('idle'), 600));
+          }, 600),
+        );
+      }, 600),
+    );
+  };
+
+  const endLogoHold = () => {
+    if (logoPhase !== 'holding') return; // po spuštění glitche se už nic neruší
+    logoTimers.current.splice(0).forEach((id) => window.clearTimeout(id));
+    setLogoPhase('idle');
+  };
+
+  useEffect(() => {
+    const timers = logoTimers.current; // pole se jen plní/vyprazdňuje, reference zůstává stejná
+    return () => timers.forEach((id) => window.clearTimeout(id));
+  }, []);
 
   const [animatingCube, setAnimatingCube] = useState<{ [key: string]: boolean }>({
     L: false,
@@ -99,7 +165,7 @@ export const LoyoHeaderCard: React.FC<LoyoHeaderCardProps> = ({
   return (
     <div className="relative w-full select-none bg-transparent">
       {/* FIXED HEADER */}
-      <header className="fixed top-0 left-0 right-0 z-[70] pointer-events-none">
+      <header className="fixed top-0 left-0 right-0 z-70 pointer-events-none">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 pt-3 sm:pt-4 pb-2 flex items-center justify-between gap-3 pointer-events-auto">
           {/* LOGO */}
           <div className="flex items-center shrink-0 ml-0">
@@ -112,14 +178,63 @@ export const LoyoHeaderCard: React.FC<LoyoHeaderCardProps> = ({
               className="w-28 h-28 sm:w-32 sm:h-32 md:w-36 md:h-36 flex items-center justify-center cursor-pointer group hover:scale-105 active:scale-95 transition-all relative z-30"
               title="LoYo • Zpět na začátek"
             >
-              <div className="relative flex items-center justify-center drop-shadow-[4px_4px_0px_#18181b]">
-                <ZakladniKostkaLoyo90
-                  size={56}
-                  scenePad={24}
-                  perspective={500}
-                  showInfo={false}
-                  className="scale-120 sm:scale-135 md:scale-150"
-                />
+              <div
+                className={`relative flex items-center justify-center drop-shadow-[4px_4px_0px_#18181b] ${
+                  logoPhase === 'glitch' ? 'anim-logo-glitch' : logoPhase === 'pop' ? 'anim-logo-pop' : ''
+                }`}
+                onPointerDown={startLogoHold}
+                onPointerUp={endLogoHold}
+                onPointerLeave={endLogoHold}
+                onPointerCancel={endLogoHold}
+                onClickCapture={(e) => {
+                  if (logoHoldFired.current) {
+                    e.stopPropagation(); // po dlouhém podržení žádný klik
+                    logoHoldFired.current = false;
+                  }
+                }}
+                onContextMenuCapture={(e) => {
+                  if (logoPhase !== 'idle') {
+                    e.preventDefault(); // dlouhý dotyk na mobilu jinak otevře menu / otočí kostku
+                    e.stopPropagation();
+                  }
+                }}
+              >
+                {logoPhase === 'holding' && (
+                  <svg
+                    className="absolute left-1/2 top-1/2 w-28 h-28 -translate-x-1/2 -translate-y-1/2 -rotate-90 pointer-events-none"
+                    viewBox="0 0 100 100"
+                    aria-hidden="true"
+                  >
+                    <circle
+                      cx="50"
+                      cy="50"
+                      r="46"
+                      fill="none"
+                      stroke="#18181b"
+                      strokeWidth="4"
+                      strokeLinecap="round"
+                      className="anim-hold-ring"
+                    />
+                  </svg>
+                )}
+                {neonLogo ? (
+                  <LoyoLogoBox
+                    activeSection={activeSection}
+                    currentPage={currentPage}
+                    defaultNeon
+                    holdEnabled={false}
+                    perspective={500}
+                    className="scale-145 sm:scale-135 md:scale-150"
+                  />
+                ) : (
+                  <ZakladniKostkaLoyo90
+                    size={56}
+                    scenePad={24}
+                    perspective={500}
+                    showInfo={false}
+                    className="scale-120 sm:scale-135 md:scale-150"
+                  />
+                )}
               </div>
             </button>
           </div>
@@ -202,7 +317,13 @@ export const LoyoHeaderCard: React.FC<LoyoHeaderCardProps> = ({
 
             {/* MENU BUTTON - now toggles dropdown */}
             <button
-              onClick={() => setIsMenuOpen(!isMenuOpen)}
+              onPointerEnter={openMenuHover}
+              onPointerLeave={closeMenuHover}
+              onClick={(e) => {
+                // myš: menu řídí najetí, klik řešíme jen pro dotyk a klávesnici (detail 0)
+                if (e.detail !== 0 && menuPointerType.current === 'mouse') return;
+                setIsMenuOpen(!isMenuOpen);
+              }}
               id="header-menu-button"
               className={`h-10 sm:h-11 px-4 sm:px-5 rounded-xl sm:rounded-2xl border-2 border-loyo-ink shadow-[3px_3px_0px_#000] flex items-center gap-2 cursor-pointer transition-all font-heading font-bold text-xs sm:text-sm tracking-wider uppercase select-none ${
                 isMenuOpen
@@ -210,12 +331,10 @@ export const LoyoHeaderCard: React.FC<LoyoHeaderCardProps> = ({
                   : 'bg-loyo-ink hover:bg-[#2c2c31] text-white hover:-translate-y-0.5 hover:shadow-[4px_4px_0px_#000]'
               } active:translate-x-0.5 active:translate-y-0.5 active:shadow-[1px_1px_0px_#000]`}
             >
-              {isMenuOpen ? (
-                <X className="w-4 h-4" />
-              ) : (
-                <Menu className="w-4 h-4 group-hover:rotate-90 transition-transform duration-200" />
-              )}
-              <span>{isMenuOpen ? 'ZAVŘÍT' : 'MENU'}</span>
+              <Menu
+                className={`w-4 h-4 transition-transform duration-300 ${isMenuOpen ? 'rotate-90' : ''}`}
+              />
+              <span>MENU</span>
             </button>
 
             <button
@@ -301,15 +420,17 @@ export const LoyoHeaderCard: React.FC<LoyoHeaderCardProps> = ({
               </div>
             </div>
 
-            <div className="w-full flex-1 flex items-start justify-center pt-1 relative z-40 overflow-visible">
+            <div className="w-full flex-1 flex items-stretch justify-center pt-1 relative z-40 overflow-visible">
               {/* Záložní prvek má stejnou výšku jako hra, aby se stránka při načtení neposunula */}
-              <Suspense fallback={<div className="w-full h-27.5 sm:h-30" aria-hidden="true" />}>
+              <Suspense
+                fallback={<div className="w-full min-h-42" aria-hidden="true" />}
+              >
                 <MiniFallingCubesInGap />
               </Suspense>
             </div>
           </div>
 
-          <div className="flex-1 w-full flex flex-col min-w-0 mt-0 sm:-ml-[2px] sm:mt-0 justify-start relative z-30">
+          <div className="flex-1 w-full flex flex-col min-w-0 mt-0 sm:-ml-0.5 sm:mt-0 justify-start relative z-30">
             <div
               id="card-premium-developer"
               className="bg-white border-2 border-loyo-ink sm:border-l-0 rounded-2xl sm:rounded-l-none sm:rounded-r-3xl p-4 sm:p-5 md:p-6 shadow-brutal-6 relative z-20"
@@ -422,17 +543,31 @@ export const LoyoHeaderCard: React.FC<LoyoHeaderCardProps> = ({
       </div>
 
       {/* NOVÉ MENU - VYSUNE SE DOLŮ Z HEADERU */}
-      {isMenuOpen && (
+      {(isMenuOpen || menuMounted) && (
         <>
           {/* backdrop */}
           <div
-            className="fixed inset-0 z-65 bg-black/20 backdrop-blur- animate-[fadeIn_0.2s_ease-out]"
+            className={`fixed inset-0 z-65 bg-black/20 backdrop-blur- ${
+              isMenuOpen
+                ? 'animate-[fadeIn_0.2s_ease-out]'
+                : 'pointer-events-none animate-[fadeOut_0.25s_ease-in_forwards]'
+            }`}
             onClick={() => setIsMenuOpen(false)}
           />
           {/* dropdown panel */}
           <div className="fixed top-22 sm:top-24 left-0 right-0 z-72 px-4 sm:px-6 pointer-events-none">
-            <div className="max-w-6xl mx-auto pointer-events-auto">
-              <div className="bg-white border-2 border-loyo-ink rounded-2xl sm:rounded-3xl shadow-brutal-8 overflow-hidden animate-[slideDown_0.35s_cubic-bezier(0.16,1,0.3,1)]">
+            <div
+              className="max-w-6xl mx-auto pointer-events-auto"
+              onPointerEnter={openMenuHover}
+              onPointerLeave={closeMenuHover}
+            >
+              <div
+                className={`bg-white border-2 border-loyo-ink rounded-2xl sm:rounded-3xl shadow-brutal-8 overflow-hidden ${
+                  isMenuOpen
+                    ? 'animate-[slideDown_0.35s_cubic-bezier(0.16,1,0.3,1)]'
+                    : 'animate-[slideUp_0.25s_ease-in_forwards]'
+                }`}
+              >
                 <div className="flex items-center justify-between px-5 sm:px-6 py-4 border-b-2 border-loyo-ink bg-neutral-50">
                   <div className="flex items-center gap-3">
                     <div className="w-8 h-8 rounded-lg bg-loyo-ink text-white flex items-center justify-center">

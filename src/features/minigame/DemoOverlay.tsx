@@ -1,11 +1,18 @@
 import React from 'react';
-import { INFO_TEXT } from './useInfoTeaser';
 import type { InfoPhase } from './types';
+
+// Ovládání v bublině u (i): klávesa + co dělá
+const CONTROLS: { key: string; label: string }[] = [
+  { key: '←', label: 'doleva' },
+  { key: '→', label: 'doprava' },
+  { key: '↓', label: 'pošle čtverečky zrychleně dolů' },
+  { key: 'MEZERNÍK', label: 'bomba' },
+];
 
 interface DemoOverlayProps {
   infoPhase: InfoPhase;
-  typedChars: number;
   loadProgress: number;
+  tryCount: number;
   showHighScoresModal: boolean;
   onToggleHighScores: () => void;
   onStart: () => void;
@@ -13,13 +20,13 @@ interface DemoOverlayProps {
 
 /*
  * Ukázka (demo): tlačítka HIGHSCORE (vlevo) a HRÁT? (vpravo).
- * Při najetí na (i) obě zmizí a objeví se bubliny MINIGAME a OVLÁDÁNÍ;
- * po odjetí se ještě 2,5 s vytrácejí a potom se tlačítka vrátí.
+ * Při najetí na (i) obě zmizí a objeví se jedna bublina: miniGAME Tetris + OVLÁDÁNÍ;
+ * po odjetí se ještě 2,5 s vytrácí a potom se tlačítka vrátí.
  */
 export const DemoOverlay: React.FC<DemoOverlayProps> = ({
   infoPhase,
-  typedChars,
   loadProgress,
+  tryCount,
   showHighScoresModal,
   onToggleHighScores,
   onStart,
@@ -56,43 +63,10 @@ export const DemoOverlay: React.FC<DemoOverlayProps> = ({
       </button>
     </div>
 
-    {/* 2. VLEVO: KOMIKSOVÁ BUBLINA "MINIGAME" JDE MÍRNĚ NAHORU A DOLEVA (POZICE LOCK NA VŠECH ZAŘÍZENÍCH) */}
-    {/* NADPIS: POUZE MINIGAME (HOŘČIČNÁ BARVA #CDA24D, JEDNOU ZA 5s PROBLIKNE), POPIS: ŠEDÝ */}
+    {/* 2. JEDNA BUBLINA U TLAČÍTKA (i) V PRAVÉM DOLNÍM ROHU: NADPIS "miniGAME Tetris" + OVLÁDÁNÍ POD NÍM */}
+    {/* OBSAH SE ODKRÝVÁ ZLEVA DOPRAVA (0% DO 100% ZA 3,2 s) A PŘI ODJETÍ SE 2,5 s ZATAHUJE ZPĚT */}
     <div
-      className={`absolute z-40 bg-loyo-ink border-2 border-loyo-ink rounded-xl p-2 shadow-[3px_3px_0px_#000] text-white flex flex-col justify-center min-w-31.25 max-w-37.5 -rotate-2 origin-bottom-right ${
-        infoPhase === 'active'
-          ? 'opacity-100 translate-x-0 -translate-y-1 transition-all duration-300 pointer-events-auto'
-          : infoPhase === 'exiting'
-            ? 'opacity-0 -translate-x-1 -translate-y-1 transition-all duration-2500 pointer-events-none'
-            : 'opacity-0 pointer-events-none -translate-x-2 translate-y-0'
-      }`}
-      style={{
-        right: 'calc(50% + 50px)',
-        top: '-10px',
-      }}
-    >
-      {/* Ocas komiksové bubliny mířící dolů doprava ke hře */}
-      <div className="absolute -bottom-1.5 right-3 w-3 h-3 bg-loyo-ink border-r-2 border-b-2 border-loyo-ink rotate-45 pointer-events-none" />
-
-      <div
-        className="font-heading font-black text-[11px] sm:text-3 text-loyo-mustard uppercase tracking-wider flex items-center gap-1.5 leading-tight whitespace-nowrap"
-        style={{ animation: 'blink-5s 5s infinite ease-in-out' }}
-      >
-        <span className="w-1.5 h-1.5 rounded-full bg-[#bef264] shrink-0" />
-        <span>MINIGAME</span>
-      </div>
-      <div className="font-sans text-[9px] sm:text-[10px] text-zinc-400 font-medium leading-tight mt-1 min-h-3.5">
-        {INFO_TEXT.slice(0, typedChars)}
-        {typedChars < INFO_TEXT.length && infoPhase === 'active' && (
-          <span className="inline-block w-1 h-2.5 bg-[#bef264] ml-0.5 animate-pulse align-middle" />
-        )}
-      </div>
-    </div>
-
-    {/* 3. VPRAVO: KOMIKSOVÁ BUBLINA "OVLÁDÁNÍ:" JDE MÍRNĚ NAHORU A DOPRAVA (POZICE LOCK) */}
-    {/* NADPIS: OVLÁDÁNÍ: (HOŘČIČNÁ #CDA24D), MEZERNÍK + ŠIPKY, 0% DO 100% V 3s, MIZÍ 2.5s */}
-    <div
-      className={`absolute z-40 bg-loyo-ink border-2 border-loyo-ink rounded-xl p-2 shadow-[3px_3px_0px_#000] text-white flex flex-col items-start min-w-35 rotate-2 origin-bottom-left ${
+      className={`absolute z-40 bg-loyo-ink border-2 border-loyo-ink rounded-xl p-2 shadow-[3px_3px_0px_#000] text-white flex flex-col items-start min-w-44 -rotate-2 origin-bottom-right ${
         infoPhase === 'active'
           ? 'opacity-100 pointer-events-auto -translate-y-1 transition-all duration-300'
           : infoPhase === 'exiting'
@@ -100,54 +74,63 @@ export const DemoOverlay: React.FC<DemoOverlayProps> = ({
             : 'opacity-0 pointer-events-none translate-y-0'
       }`}
       style={{
-        left: 'calc(50% + 50px)',
-        top: '-10px',
+        right: '8px',
+        bottom: '44px',
       }}
     >
-      {/* Ocas komiksové bubliny mířící dolů doleva ke hře */}
-      <div className="absolute -bottom-1.5 left-3 w-3 h-3 bg-loyo-ink border-l-2 border-b-2 border-loyo-ink -rotate-45 pointer-events-none" />
+      {/* Ocas komiksové bubliny mířící dolů k tlačítku (i) */}
+      <div className="absolute -bottom-1.5 right-2 w-3 h-3 bg-loyo-ink border-r-2 border-b-2 border-loyo-ink rotate-45 pointer-events-none" />
 
-      {/* NADPIS VPRAVO: OVLÁDÁNÍ: */}
-      <div className="font-heading font-black text-[10.5px] sm:text-[11px] text-loyo-mustard uppercase tracking-wider flex items-center gap-1.5 leading-tight mb-1 whitespace-nowrap">
-        <span className="w-1.5 h-1.5 rounded-full bg-loyo-mustard shrink-0" />
-        <span>OVLÁDÁNÍ:</span>
-      </div>
-
-      {/* PILULKA KLÁVES SE SPOJITÝM ODKRÝVÁNÍM Z 0% DO 100% A ZATAHOVÁNÍM 100% -> 0% */}
       <div
-        className="flex items-center gap-1 bg-loyo-ink-soft text-white border border-zinc-600 rounded-lg px-1.5 py-0.5 shadow-[1px_1px_0px_#000] overflow-hidden transition-all"
+        className="w-full"
         style={{
           clipPath: `inset(0 ${100 - loadProgress}% 0 0)`,
         }}
       >
-        {/* MEZERNÍK */}
-        <div className="px-1.5 py-0.5 rounded font-mono font-black text-[8.5px] sm:text-[9.5px] tracking-tight uppercase bg-loyo-mustard text-loyo-ink shadow-[1px_1px_0px_#fff] whitespace-nowrap">
-          MEZERNÍK
+        {/* NADPIS: miniGAME Tetris (HOŘČIČNÁ BARVA, JEDNOU ZA 5 s PROBLIKNE) */}
+        <div
+          className="font-heading font-black text-[11px] sm:text-xs text-loyo-mustard tracking-wider flex items-center gap-1.5 leading-tight whitespace-nowrap"
+          style={{ animation: 'blink-5s 5s infinite ease-in-out' }}
+        >
+          <span className="w-1.5 h-1.5 rounded-full bg-[#bef264] shrink-0" />
+          <span>miniGAME Tetris</span>
         </div>
 
-        {/* 3 KOSTIČKY ŠIPEK: ← ↓ → */}
-        <div className="flex items-center gap-0.5 shrink-0">
-          <div className="w-4 h-4 sm:w-4.5 sm:h-4.5 rounded bg-white text-loyo-ink border border-loyo-ink font-black text-[9px] flex items-center justify-center shadow-brutal-1">
-            ←
-          </div>
-          <div className="w-4 h-4 sm:w-4.5 sm:h-4.5 rounded bg-white text-loyo-ink border border-loyo-ink font-black text-[9px] flex items-center justify-center shadow-brutal-1">
-            ↓
-          </div>
-          <div className="w-4 h-4 sm:w-4.5 sm:h-4.5 rounded bg-white text-loyo-ink border border-loyo-ink font-black text-[9px] flex items-center justify-center shadow-brutal-1">
-            →
-          </div>
+        {/* POD NADPISEM: OVLÁDÁNÍ (seznam je nahoře v souboru v CONTROLS) */}
+        <div className="font-heading font-black text-[10px] text-zinc-400 uppercase tracking-wider mt-1.5 mb-1">
+          Ovládání:
         </div>
-      </div>
 
-      {/* INDIKÁTOR NAČÍTÁNÍ (0% -> 100% PŘI NAJETÍ, 100% -> 0% PŘI ODJETÍ) */}
-      <div
-        className="h-1 bg-zinc-700/60 rounded-full mt-1 overflow-hidden border border-loyo-ink w-full"
-        style={{
-          clipPath: `inset(0 ${100 - loadProgress}% 0 0)`,
-        }}
-      >
-        <div className="h-full bg-loyo-mustard" style={{ width: `${loadProgress}%` }} />
+        <div className="grid grid-cols-[auto_1fr] gap-x-2 gap-y-1 items-center">
+          {CONTROLS.map(({ key, label }) => (
+            <React.Fragment key={key}>
+              <div className="min-w-5 h-5 px-1 rounded bg-white text-loyo-ink border border-loyo-ink font-mono font-black text-[9px] flex items-center justify-center shadow-brutal-1 whitespace-nowrap">
+                {key}
+              </div>
+              <div className="font-sans text-[9px] sm:text-[10px] text-zinc-300 font-medium leading-tight">
+                {label}
+              </div>
+            </React.Fragment>
+          ))}
+        </div>
+
+        {/* INDIKÁTOR NAČÍTÁNÍ (0% -> 100% PŘI NAJETÍ, 100% -> 0% PŘI ODJETÍ) */}
+        <div className="h-1 bg-zinc-700/60 rounded-full mt-1.5 overflow-hidden border border-loyo-ink w-full">
+          <div className="h-full bg-loyo-mustard" style={{ width: `${loadProgress}%` }} />
+        </div>
       </div>
     </div>
+
+    {/* 3. VLEVO DOLE: KOLEČKO S POČÍTADLEM (HRÁT = +1); PŘI NAJETÍ / KLIKNUTÍ SE UKÁŽE, CO ZNAMENÁ */}
+    <button
+      type="button"
+      aria-label="Kolik lidí zkoušelo Tetris"
+      className="group absolute bottom-1.5 left-2 sm:left-3 z-40 min-w-6 h-6 sm:min-w-7 sm:h-7 px-1.5 rounded-full border-2 border-loyo-ink bg-white hover:bg-zinc-100 text-loyo-ink shadow-[1.5px_1.5px_0px_#18181b] flex items-center justify-center font-mono font-black text-[10px] leading-none cursor-pointer pointer-events-auto active:translate-x-0.5 active:translate-y-0.5 transition-all"
+    >
+      {tryCount}
+      <span className="pointer-events-none absolute bottom-full left-0 mb-2 whitespace-nowrap rounded-xl border-2 border-loyo-ink bg-loyo-ink px-2 py-1 font-heading text-[10px] font-black uppercase tracking-wider text-loyo-mustard shadow-[3px_3px_0px_#000] opacity-0 -translate-y-1 transition-all duration-300 group-hover:opacity-100 group-hover:translate-y-0 group-focus:opacity-100 group-focus:translate-y-0">
+        Kolik lidí zkoušelo Tetris
+      </span>
+    </button>
   </>
 );

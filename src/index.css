@@ -611,3 +611,79 @@ h4,
     opacity: 1;
   }
 }
+@keyframes slideUp {
+  0% {
+    transform: translateY(0);
+    opacity: 1;
+  }
+  100% {
+    transform: translateY(-20px);
+    opacity: 0;
+  }
+}
+@keyframes fadeOut {
+  0% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+  }
+}
+
+/* Podržení loga: kroužek se plní 0,6 s (r = 46, obvod ≈ 289) */
+@keyframes loyo-hold-ring {
+  from {
+    stroke-dashoffset: 289;
+  }
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+.anim-hold-ring {
+  stroke-dasharray: 289;
+  animation: loyo-hold-ring 0.6s linear forwards;
+}
+
+/* Scale glitch: kostka cuká a zmenšuje se těsně před přepnutím */
+@keyframes loyo-logo-glitch {
+  0% {
+    transform: scale(1);
+  }
+  15% {
+    transform: scale(0.94) translate(-2px, 1px);
+  }
+  30% {
+    transform: scale(1.06) translate(2px, -1px);
+  }
+  45% {
+    transform: scale(0.9) translate(-1px, -2px);
+  }
+  60% {
+    transform: scale(1.04) translate(2px, 1px);
+  }
+  80% {
+    transform: scale(0.88) translate(-2px, 0);
+  }
+  100% {
+    transform: scale(0.9);
+  }
+}
+.anim-logo-glitch {
+  animation: loyo-logo-glitch 0.6s steps(1, end) forwards;
+}
+
+/* Po přepnutí: nová kostka "naskočí" z menší na větší a usadí se */
+@keyframes loyo-logo-pop {
+  0% {
+    transform: scale(0.9);
+  }
+  60% {
+    transform: scale(1.12);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+.anim-logo-pop {
+  animation: loyo-logo-pop 0.6s cubic-bezier(0.68, -0.55, 0.265, 1.55) forwards;
+}

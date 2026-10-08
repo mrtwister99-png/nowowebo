@@ -5,8 +5,9 @@ import {
   COLOR_FALLING,
   COLOR_RED,
   CUBE_SIZE,
-  GAP,
+  FIELD_TOP_SPACE,
   STEP,
+  WALL_WIDTH,
 } from './constants';
 import type { FallingPiece, FlashingLines, FloatingScore, Particle, SettledCube } from './types';
 
@@ -16,6 +17,7 @@ interface BoardProps {
   settledCubes: SettledCube[];
   flashingLines: FlashingLines | null;
   fallingPiece: FallingPiece | null;
+  looseParts: FallingPiece[];
   particles: Particle[];
   floatingScores: FloatingScore[];
 }
@@ -27,6 +29,7 @@ export const Board: React.FC<BoardProps> = ({
   settledCubes,
   flashingLines,
   fallingPiece,
+  looseParts,
   particles,
   floatingScores,
 }) => (
@@ -37,19 +40,24 @@ export const Board: React.FC<BoardProps> = ({
       height: `${BOARD_HEIGHT}px`,
     }}
   >
-    {/* RED BOUNDARY LINES */}
+    {/* ZDI: tmavě červené, od podlahy až úplně nahoru, těsně za aktivními sloupci; s rozšířením pole se posunou */}
     <div
-      className="absolute top-0 bottom-0 w-0.625 bg-loyo-red shadow-[0_0_8px_rgba(172,0,1,0.8)] z-20 pointer-events-none transition-all duration-500"
+      className="absolute bottom-0 bg-loyo-red border-2 border-loyo-ink rounded-t-sm z-10 pointer-events-none transition-all duration-500"
       style={{
-        left: `${activeMinCol * STEP - 1}px`,
+        width: `${WALL_WIDTH}px`,
+        height: `${BOARD_HEIGHT + FIELD_TOP_SPACE}px`,
+        left: `${activeMinCol * STEP - WALL_WIDTH - 1}px`,
       }}
+      aria-hidden="true"
     />
-
     <div
-      className="absolute top-0 bottom-0 w-0.625 bg-loyo-red shadow-[0_0_8px_rgba(172,0,1,0.8)] z-20 pointer-events-none transition-all duration-500"
+      className="absolute bottom-0 bg-loyo-red border-2 border-loyo-ink rounded-t-sm z-10 pointer-events-none transition-all duration-500"
       style={{
-        left: `${(activeMaxCol + 1) * STEP - GAP + 1}px`,
+        width: `${WALL_WIDTH}px`,
+        height: `${BOARD_HEIGHT + FIELD_TOP_SPACE}px`,
+        left: `${activeMaxCol * STEP + CUBE_SIZE + 1}px`,
       }}
+      aria-hidden="true"
     />
 
     {/* SETTLED CUBES (černé po dopadu, při propojení řádku poblikávají barvou COLOR_FALLING) */}
@@ -62,7 +70,7 @@ export const Board: React.FC<BoardProps> = ({
       return (
         <div
           key={cube.id}
-          className={`absolute rounded-[3.5px] border-2 border-loyo-ink transition-all duration-75 ${
+          className={`absolute rounded-xs border border-loyo-ink transition-all duration-75 ${
             cube.isRedAlert ? 'animate-pulse' : ''
           }`}
           style={{
@@ -72,12 +80,12 @@ export const Board: React.FC<BoardProps> = ({
             bottom: `${bottom}px`,
             backgroundColor: isFlashing ? COLOR_FALLING : cube.color,
             boxShadow: isFlashing
-              ? `0 0 12px ${COLOR_FALLING}, 2px 2px 0px #18181b`
-              : '2px 2px 0px #18181b',
+              ? `0 0 8px ${COLOR_FALLING}, 1px 1px 0px #18181b`
+              : '1px 1px 0px #18181b',
           }}
         >
           <div
-            className={`absolute top-0 left-0 right-0 h-0.5 rounded-t-[2px] ${
+            className={`absolute top-0 left-0 right-0 h-px rounded-t-[1px] ${
               isFlashing ? 'bg-white' : 'bg-white/20'
             }`}
           />
@@ -90,7 +98,7 @@ export const Board: React.FC<BoardProps> = ({
       <>
         {fallingPiece.isBomb ? (
           <div
-            className="absolute rounded-full border-2 border-loyo-ink z-30 pointer-events-none shadow-brutal-2 animate-pulse"
+            className="absolute rounded-full border border-loyo-ink z-30 pointer-events-none shadow-brutal-1 animate-pulse"
             style={{
               width: `${CUBE_SIZE}px`,
               height: `${CUBE_SIZE}px`,
@@ -111,22 +119,42 @@ export const Board: React.FC<BoardProps> = ({
             return (
               <div
                 key={`fp-${idx}`}
-                className="absolute rounded-[3.5px] border-2 border-loyo-ink shadow-brutal-2 z-30 pointer-events-none"
+                className="absolute rounded-xs border border-loyo-ink shadow-brutal-1 z-30 pointer-events-none"
                 style={{
                   width: `${CUBE_SIZE}px`,
                   height: `${CUBE_SIZE}px`,
                   left: `${cellLeft}px`,
                   top: `${cellTop}px`,
                   backgroundColor: fallingPiece.color,
-                  boxShadow: '2px 2px 0px #18181b',
+                  boxShadow: '1px 1px 0px #18181b',
                 }}
               >
-                <div className="absolute top-0 left-0 right-0 h-0.5 bg-white/40 rounded-t-[2px]" />
+                <div className="absolute top-0 left-0 right-0 h-px bg-white/40 rounded-t-[1px]" />
               </div>
             );
           })
         )}
       </>
+    )}
+
+    {/* ODPADLÉ ČÁSTI: sloupce dílku, které přečnívaly, padají dál samy (stejnou rychlostí) */}
+    {looseParts.flatMap((part, partIdx) =>
+      part.cells.map(([, dy], idx) => (
+        <div
+          key={`lp-${partIdx}-${idx}`}
+          className="absolute rounded-xs border border-loyo-ink shadow-brutal-1 z-30 pointer-events-none"
+          style={{
+            width: `${CUBE_SIZE}px`,
+            height: `${CUBE_SIZE}px`,
+            left: `${part.col * STEP}px`,
+            top: `${part.y + dy * STEP}px`,
+            backgroundColor: part.color,
+            boxShadow: '1px 1px 0px #18181b',
+          }}
+        >
+          <div className="absolute top-0 left-0 right-0 h-px bg-white/40 rounded-t-[1px]" />
+        </div>
+      )),
     )}
 
     {/* EXPLOSION PARTICLES */}

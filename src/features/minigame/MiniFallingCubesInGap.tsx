@@ -7,6 +7,7 @@ import { HighScoresModal } from './HighScoresModal';
 import { LeaderboardOverlay } from './LeaderboardOverlay';
 import { NameEntryOverlay } from './NameEntryOverlay';
 import { TimerBadge } from './TimerBadge';
+import { BOARD_HEIGHT, FIELD_TOP_SPACE } from './constants';
 import { useCubesGame } from './useCubesGame';
 
 /*
@@ -19,16 +20,16 @@ export const MiniFallingCubesInGap: React.FC = () => {
 
   return (
     <div
-      className={`relative w-full h-27.5 sm:h-30 overflow-visible select-none flex flex-col justify-end items-center transition-colors duration-200 ${
+      className={`relative w-full overflow-visible select-none flex flex-col justify-end items-center transition-colors duration-200 ${
         game.flashBoard ? 'bg-amber-400/15' : 'bg-transparent'
       }`}
-      style={{ marginBottom: '0px' }}
+      style={{ marginBottom: '0px', minHeight: `${BOARD_HEIGHT + FIELD_TOP_SPACE}px` }}
     >
       {gameState === 'demo' && (
         <DemoOverlay
           infoPhase={info.infoPhase}
-          typedChars={info.typedChars}
           loadProgress={info.loadProgress}
+          tryCount={game.tryCount}
           showHighScoresModal={game.showHighScoresModal}
           onToggleHighScores={() => game.setShowHighScoresModal((prev) => !prev)}
           onStart={game.startGame}
@@ -47,11 +48,7 @@ export const MiniFallingCubesInGap: React.FC = () => {
       <BottomRightControls
         gameState={gameState}
         infoPhase={info.infoPhase}
-        bombCooldown={game.bombCooldown}
         setIsHovered={info.setIsHovered}
-        triggerBomb={game.triggerBomb}
-        moveHorizontal={game.moveHorizontal}
-        dropFast={game.dropFast}
       />
 
       {gameState === 'countdown' && <CountdownOverlay countdown={game.countdown} />}
@@ -84,6 +81,7 @@ export const MiniFallingCubesInGap: React.FC = () => {
         settledCubes={game.settledCubes}
         flashingLines={game.flashingLines}
         fallingPiece={game.fallingPiece}
+        looseParts={game.looseParts}
         particles={game.particles}
         floatingScores={game.floatingScores}
       />
