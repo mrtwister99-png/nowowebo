@@ -25,7 +25,7 @@ const TryCounter: React.FC<{ tryCount: number }> = ({ tryCount }) => {
       onMouseLeave={hide}
       onFocus={show}
       onBlur={hide}
-      className="absolute bottom-1.5 left-2 sm:left-3 z-40 min-w-9 h-9 sm:min-w-[42px] sm:h-[42px] px-2 rounded-full border-2 border-loyo-ink bg-white hover:bg-zinc-100 text-loyo-ink shadow-[1.5px_1.5px_0px_#18181b] flex items-center justify-center font-mono font-black text-[15px] leading-none cursor-pointer pointer-events-auto active:translate-x-0.5 active:translate-y-0.5 transition-all"
+      className="absolute bottom-1.5 left-2 sm:left-3 z-40 min-w-9 h-9 sm:min-w-10.5 sm:h-10.5 px-2 rounded-full border-2 border-loyo-ink bg-white hover:bg-zinc-100 text-loyo-ink shadow-[1.5px_1.5px_0px_#18181b] flex items-center justify-center font-mono font-black text-[15px] leading-none cursor-pointer pointer-events-auto active:translate-x-0.5 active:translate-y-0.5 transition-all"
     >
       {tryCount}
       {phase !== 'idle' && (

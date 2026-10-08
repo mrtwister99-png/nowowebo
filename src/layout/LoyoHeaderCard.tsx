@@ -1,5 +1,5 @@
 import React, { Suspense, lazy, useState, useEffect, useRef } from 'react';
-import { Menu, X, Sparkles, ArrowRight } from 'lucide-react';
+import { Menu, Sparkles, ArrowRight } from 'lucide-react';
 import { LoyoLogoBox } from '../components/brand/LoyoLogoBox';
 import { ZakladniKostkaLoyo90 } from '../components/brand/ZakladniKostkaLoyo90';
 import { CursorParticleMode, ServiceId } from '../types';
@@ -315,27 +315,83 @@ export const LoyoHeaderCard: React.FC<LoyoHeaderCardProps> = ({
               </div>
             )}
 
-            {/* MENU BUTTON - now toggles dropdown */}
-            <button
+            {/* MENU: po najetí myší vyjede pod tlačítkem seznam sekcí, dotyk a klávesnice fungují klikem */}
+            <div
+              className="relative"
               onPointerEnter={openMenuHover}
               onPointerLeave={closeMenuHover}
-              onClick={(e) => {
-                // myš: menu řídí najetí, klik řešíme jen pro dotyk a klávesnici (detail 0)
-                if (e.detail !== 0 && menuPointerType.current === 'mouse') return;
-                setIsMenuOpen(!isMenuOpen);
-              }}
-              id="header-menu-button"
-              className={`h-10 sm:h-11 px-4 sm:px-5 rounded-xl sm:rounded-2xl border-2 border-loyo-ink shadow-[3px_3px_0px_#000] flex items-center gap-2 cursor-pointer transition-all font-heading font-bold text-xs sm:text-sm tracking-wider uppercase select-none ${
-                isMenuOpen
-                  ? 'bg-white text-loyo-ink -translate-y-0.5 shadow-[4px_4px_0px_#000]'
-                  : 'bg-loyo-ink hover:bg-[#2c2c31] text-white hover:-translate-y-0.5 hover:shadow-[4px_4px_0px_#000]'
-              } active:translate-x-0.5 active:translate-y-0.5 active:shadow-[1px_1px_0px_#000]`}
             >
-              <Menu
-                className={`w-4 h-4 transition-transform duration-300 ${isMenuOpen ? 'rotate-90' : ''}`}
-              />
-              <span>MENU</span>
-            </button>
+              <button
+                onClick={(e) => {
+                  // myš: menu řídí najetí, klik řešíme jen pro dotyk a klávesnici (detail 0)
+                  if (e.detail !== 0 && menuPointerType.current === 'mouse') return;
+                  setIsMenuOpen(!isMenuOpen);
+                }}
+                id="header-menu-button"
+                aria-expanded={isMenuOpen}
+                className={`h-10 sm:h-11 px-4 sm:px-5 rounded-xl sm:rounded-2xl border-2 border-loyo-ink shadow-[3px_3px_0px_#000] flex items-center gap-2 cursor-pointer transition-all font-heading font-bold text-xs sm:text-sm tracking-wider uppercase select-none ${
+                  isMenuOpen
+                    ? 'bg-white text-loyo-ink -translate-y-0.5 shadow-[4px_4px_0px_#000]'
+                    : 'bg-loyo-ink hover:bg-[#2c2c31] text-white hover:-translate-y-0.5 hover:shadow-[4px_4px_0px_#000]'
+                } active:translate-x-0.5 active:translate-y-0.5 active:shadow-[1px_1px_0px_#000]`}
+              >
+                <Menu
+                  className={`w-4 h-4 transition-transform duration-300 ${isMenuOpen ? 'rotate-90' : ''}`}
+                />
+                <span>MENU</span>
+              </button>
+
+              {(isMenuOpen || menuMounted) && (
+                <>
+                  {/* neviditelná vrstva: klik nebo dotyk mimo menu ho zavře */}
+                  <div className="fixed inset-0 -z-10" onClick={() => setIsMenuOpen(false)} />
+
+                  {/* pt-3 = mezera pod tlačítkem, je součástí najetí (menu se nezavře při přejezdu myší) */}
+                  {/* na mobilu je panel přes šířku obrazovky, na větších displejích pod tlačítkem vpravo */}
+                  <div className="absolute right-0 top-full pt-3 w-88 z-10 max-sm:fixed max-sm:inset-x-4 max-sm:top-18 max-sm:w-auto">
+                    <div
+                      className={`bg-white border-2 border-loyo-ink rounded-2xl shadow-brutal-6 overflow-hidden p-3 flex flex-col gap-2.5 ${
+                        isMenuOpen
+                          ? 'animate-[slideDown_0.35s_cubic-bezier(0.16,1,0.3,1)]'
+                          : 'animate-[slideUp_0.25s_ease-in_forwards]'
+                      }`}
+                    >
+                      {menuItems.map((item) => (
+                        <button
+                          key={item.id}
+                          onClick={() => {
+                            setIsMenuOpen(false);
+                            if (item.page !== 'home') {
+                              onNavigateToPage(item.page);
+                            } else {
+                              const el = document.getElementById(item.id);
+                              if (el) el.scrollIntoView({ behavior: 'smooth' });
+                            }
+                          }}
+                          className="w-full p-3 bg-white hover:bg-neutral-50 border-2 border-loyo-ink rounded-xl shadow-brutal-3 hover:-translate-y-0.5 hover:shadow-brutal-4 active:translate-x-0.5 active:translate-y-0.5 active:shadow-brutal-1 flex items-center justify-between gap-3 text-left transition-all cursor-pointer group"
+                        >
+                          <div className="flex items-center gap-3">
+                            <span
+                              className="w-2.5 h-2.5 rounded-[3px] shrink-0"
+                              style={{ backgroundColor: item.color }}
+                            />
+                            <div>
+                              <div className="text-[10px] font-mono font-bold text-loyo-subtle">
+                                SEKCE {item.num}
+                              </div>
+                              <div className="font-heading font-bold text-[13px] leading-tight text-loyo-ink group-hover:text-loyo-blue transition-colors">
+                                {item.title}
+                              </div>
+                            </div>
+                          </div>
+                          <ArrowRight className="w-4 h-4 text-[#999] group-hover:text-loyo-ink group-hover:translate-x-1 transition-all shrink-0" />
+                        </button>
+                      ))}
+                    </div>
+                  </div>
+                </>
+              )}
+            </div>
 
             <button
               onClick={() => onOpenQuestionnaire()}
@@ -541,107 +597,6 @@ export const LoyoHeaderCard: React.FC<LoyoHeaderCardProps> = ({
           </div>
         </div>
       </div>
-
-      {/* NOVÉ MENU - VYSUNE SE DOLŮ Z HEADERU */}
-      {(isMenuOpen || menuMounted) && (
-        <>
-          {/* backdrop */}
-          <div
-            className={`fixed inset-0 z-65 bg-black/20 backdrop-blur- ${
-              isMenuOpen
-                ? 'animate-[fadeIn_0.2s_ease-out]'
-                : 'pointer-events-none animate-[fadeOut_0.25s_ease-in_forwards]'
-            }`}
-            onClick={() => setIsMenuOpen(false)}
-          />
-          {/* dropdown panel */}
-          <div className="fixed top-22 sm:top-24 left-0 right-0 z-72 px-4 sm:px-6 pointer-events-none">
-            <div
-              className="max-w-6xl mx-auto pointer-events-auto"
-              onPointerEnter={openMenuHover}
-              onPointerLeave={closeMenuHover}
-            >
-              <div
-                className={`bg-white border-2 border-loyo-ink rounded-2xl sm:rounded-3xl shadow-brutal-8 overflow-hidden ${
-                  isMenuOpen
-                    ? 'animate-[slideDown_0.35s_cubic-bezier(0.16,1,0.3,1)]'
-                    : 'animate-[slideUp_0.25s_ease-in_forwards]'
-                }`}
-              >
-                <div className="flex items-center justify-between px-5 sm:px-6 py-4 border-b-2 border-loyo-ink bg-neutral-50">
-                  <div className="flex items-center gap-3">
-                    <div className="w-8 h-8 rounded-lg bg-loyo-ink text-white flex items-center justify-center">
-                      <Menu className="w-4 h-4" />
-                    </div>
-                    <span className="font-heading font-black text-sm sm:text-base tracking-tight uppercase">
-                      Navigační menu
-                    </span>
-                    <span className="hidden sm:inline-flex ml-2 px-2 py-0.5 bg-loyo-bar border border-loyo-line text-[10px] font-mono font-bold uppercase">
-                      6 sekcí
-                    </span>
-                  </div>
-                  <button
-                    onClick={() => setIsMenuOpen(false)}
-                    className="w-9 h-9 rounded-xl bg-white hover:bg-loyo-ink hover:text-white border-2 border-loyo-ink shadow-brutal-2 active:translate-x-0.5 active:translate-y-0.5 active:shadow-none flex items-center justify-center cursor-pointer transition-all"
-                  >
-                    <X className="w-5 h-5" />
-                  </button>
-                </div>
-
-                <div className="p-4 sm:p-5 grid grid-cols-1 sm:grid-cols-2 gap-3">
-                  {menuItems.map((item) => (
-                    <button
-                      key={item.id}
-                      onClick={() => {
-                        setIsMenuOpen(false);
-                        if (item.page !== 'home') {
-                          onNavigateToPage(item.page);
-                        } else {
-                          const el = document.getElementById(item.id);
-                          if (el) el.scrollIntoView({ behavior: 'smooth' });
-                        }
-                      }}
-                      className="w-full p-3.5 bg-white hover:bg-neutral-50 border-2 border-loyo-ink rounded-xl shadow-brutal-3 hover:-translate-y-0.5 hover:shadow-brutal-4 active:translate-x-0.5 active:translate-y-0.5 active:shadow-brutal-1 flex items-center justify-between gap-3 text-left transition-all cursor-pointer group"
-                    >
-                      <div className="flex items-center gap-3">
-                        <span
-                          className="w-2.5 h-2.5 rounded-[3px] shrink-0"
-                          style={{ backgroundColor: item.color }}
-                        />
-                        <div>
-                          <div className="text-[10px] font-mono font-bold text-loyo-subtle">
-                            SEKCE {item.num}
-                          </div>
-                          <div className="font-heading font-bold text-sm text-loyo-ink group-hover:text-loyo-blue transition-colors">
-                            {item.title}
-                          </div>
-                        </div>
-                      </div>
-                      <ArrowRight className="w-4 h-4 text-[#999] group-hover:text-loyo-ink group-hover:translate-x-1 transition-all shrink-0" />
-                    </button>
-                  ))}
-                </div>
-
-                <div className="px-5 sm:px-6 py-4 bg-[#f5f5f5] border-t-2 border-loyo-ink flex flex-col sm:flex-row items-center justify-between gap-3">
-                  <div className="text-xs font-mono text-loyo-subtle text-center sm:text-left">
-                    loyo.gruup@gmail.com • LoYo PREMIUM DEVELOPER
-                  </div>
-                  <button
-                    onClick={() => {
-                      setIsMenuOpen(false);
-                      onOpenQuestionnaire();
-                    }}
-                    className="w-full sm:w-auto px-5 py-2.5 bg-loyo-blue hover:bg-[#03086b] text-white border-2 border-loyo-ink shadow-brutal-3 hover:-translate-y-0.5 hover:shadow-brutal-4 active:translate-x-0.5 active:translate-y-0.5 active:shadow-brutal-1 font-heading font-bold text-xs uppercase tracking-wider rounded-xl flex items-center justify-center gap-2 cursor-pointer transition-all"
-                  >
-                    <Sparkles className="w-4 h-4 text-amber-300" />
-                    <span>OTEVŘÍT DOTAZNÍK</span>
-                  </button>
-                </div>
-              </div>
-            </div>
-          </div>
-        </>
-      )}
     </div>
   );
 };
