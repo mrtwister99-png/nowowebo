@@ -29,9 +29,19 @@ import {
   stepFalling,
 } from './engine';
 import type { FallingPiece, FlashingLines, GameState, SettledCube } from './types';
+import { addTry, fetchTries, isTetrisApiConfigured } from './tetrisApi';
 import { useBoardEffects } from './useBoardEffects';
 import { useHighScores } from './useHighScores';
 import { useInfoTeaser } from './useInfoTeaser';
+
+/** Poslední známé číslo pokusů se schová do localStorage (zobrazí se hned, funguje i bez serveru). */
+const saveTryCount = (value: number) => {
+  try {
+    localStorage.setItem(TRIES_KEY, String(value));
+  } catch {
+    // úložiště nemusí být dostupné (soukromý režim): číslo pak platí jen do obnovení stránky
+  }
+};
 
 /**
  * Stav a časování celé minihry. Herní pravidla jsou v engine.ts,
@@ -51,7 +61,7 @@ export function useCubesGame() {
   const [flashingLines, setFlashingLines] = useState<FlashingLines | null>(null);
   const isProcessingLineClearRef = useRef<boolean>(false);
 
-  const { highScores, addScore } = useHighScores();
+  const { highScores, addScore, refreshScores } = useHighScores();
 
   // Počítadlo pokusů: každé kliknutí na HRÁT = +1 (zatím se ukládá jen v tomto prohlížeči)
   const [tryCount, setTryCount] = useState<number>(() => {
@@ -61,6 +71,24 @@ export function useCubesGame() {
       return 0;
     }
   });
+
+  // Při načtení stránky se stáhne společný počet pokusů
+  useEffect(() => {
+    if (!isTetrisApiConfigured) return;
+    fetchTries()
+      .then((total) => {
+        setTryCount(total);
+        saveTryCount(total);
+      })
+      .catch(() => {
+        // server nedostupný: zůstává poslední známé číslo
+      });
+  }, []);
+
+  // Při otevření tabulky HIGHSCORE se stáhnou čerstvé výsledky
+  useEffect(() => {
+    if (showHighScoresModal) void refreshScores();
+  }, [refreshScores, showHighScoresModal]);
 
   // Zadání přezdívky na konci hry (3 znaky)
   const [inputInitials, setInputInitials] = useState<string>('');
@@ -118,13 +146,19 @@ export function useCubesGame() {
     setActiveMinCol(START_MIN_COL); // pole začíná jen 4 sloupce široké
     setActiveMaxCol(START_MAX_COL);
 
-    // Počítadlo pokusů +1
+    // Počítadlo pokusů +1: hned se zobrazí, server pak vrátí společný součet všech návštěvníků
     const nextTryCount = tryCount + 1;
     setTryCount(nextTryCount);
-    try {
-      localStorage.setItem(TRIES_KEY, String(nextTryCount));
-    } catch {
-      // úložiště nemusí být dostupné (soukromý režim): počítadlo pak běží jen do obnovení stránky
+    saveTryCount(nextTryCount);
+    if (isTetrisApiConfigured) {
+      addTry()
+        .then((total) => {
+          setTryCount(total);
+          saveTryCount(total);
+        })
+        .catch(() => {
+          // server nedostupný: zůstává lokální číslo
+        });
     }
     setScore(0);
     setTimeLeft(GAME_DURATION_SECONDS);
