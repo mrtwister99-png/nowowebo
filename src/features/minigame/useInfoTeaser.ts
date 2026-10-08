@@ -62,7 +62,7 @@ export function useInfoTeaser() {
       if (infoPhaseRef.current === 'active') {
         setInfoPhase('exiting');
         const exitStartTime = Date.now();
-        const exitDuration = 2500;
+        const exitDuration = 450;
         const startPct = loadProgressRef.current > 0 ? loadProgressRef.current : 100;
 
         const tickOut = () => {

@@ -687,3 +687,103 @@ h4,
 .anim-logo-pop {
   animation: loyo-logo-pop 0.6s cubic-bezier(0.68, -0.55, 0.265, 1.55) forwards;
 }
+
+/* Bubliny (počítadlo, "i"): jednoduchý náběh = fade + malý posun + mírné zvětšení */
+@keyframes loyo-bubble-in {
+  0% {
+    opacity: 0;
+    transform: translateY(4px) scale(0.92);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+.anim-bubble-in {
+  animation: loyo-bubble-in 0.25s ease-out both;
+}
+
+/* Počítadlo: glitch odchod = cukání a probliknutí barev pozadí i textu */
+@keyframes loyo-bubble-glitch-out {
+  0% {
+    opacity: 1;
+    transform: translate(0, 0);
+  }
+  15% {
+    opacity: 1;
+    transform: translate(-2px, 1px);
+    background-color: var(--color-loyo-red);
+    color: #fff;
+  }
+  30% {
+    opacity: 0.35;
+    transform: translate(2px, -1px);
+    background-color: var(--color-loyo-blue);
+    color: #bef264;
+  }
+  45% {
+    opacity: 1;
+    transform: translate(-1px, -1px);
+    background-color: var(--color-loyo-mustard);
+    color: var(--color-loyo-ink);
+  }
+  60% {
+    opacity: 0.2;
+    transform: translate(2px, 1px);
+    background-color: var(--color-loyo-ink);
+    color: var(--color-loyo-red);
+  }
+  80% {
+    opacity: 0.7;
+    transform: translate(-2px, 0);
+    background-color: var(--color-loyo-red);
+    color: #fff;
+  }
+  100% {
+    opacity: 0;
+    transform: translate(0, 0);
+  }
+}
+.anim-bubble-glitch-out {
+  animation: loyo-bubble-glitch-out 0.4s steps(1, end) forwards;
+}
+
+/* Bublina "i": glitch odchod + zmenšování + šikmé cuknutí (zmenšuje se k tlačítku "i") */
+@keyframes loyo-bubble-glitch-out-i {
+  0% {
+    opacity: 1;
+    transform: scale(1) skewX(0deg);
+  }
+  15% {
+    opacity: 1;
+    transform: scale(1.04) skewX(-6deg);
+    background-color: var(--color-loyo-red);
+  }
+  30% {
+    opacity: 0.35;
+    transform: scale(0.95) skewX(5deg);
+    background-color: var(--color-loyo-blue);
+  }
+  45% {
+    opacity: 1;
+    transform: scale(0.9) skewX(-4deg);
+    background-color: var(--color-loyo-mustard);
+  }
+  60% {
+    opacity: 0.2;
+    transform: scale(0.8) skewX(3deg);
+    background-color: var(--color-loyo-ink);
+  }
+  80% {
+    opacity: 0.6;
+    transform: scale(0.65) skewX(0deg);
+    background-color: var(--color-loyo-red);
+  }
+  100% {
+    opacity: 0;
+    transform: scale(0.4);
+  }
+}
+.anim-bubble-glitch-out-i {
+  animation: loyo-bubble-glitch-out-i 0.4s steps(1, end) forwards;
+}

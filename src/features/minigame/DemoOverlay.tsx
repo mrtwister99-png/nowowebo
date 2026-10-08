@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import type { InfoPhase } from './types';
 
 // Ovládání v bublině u (i): klávesa + co dělá
@@ -9,9 +9,41 @@ const CONTROLS: { key: string; label: string }[] = [
   { key: 'MEZERNÍK', label: 'bomba' },
 ];
 
+type BubblePhase = 'idle' | 'in' | 'out';
+
+/* Kolečko s počítadlem: po najetí bublina naskočí, po odjetí zmizí glitchem (probliknutí barev) */
+const TryCounter: React.FC<{ tryCount: number }> = ({ tryCount }) => {
+  const [phase, setPhase] = useState<BubblePhase>('idle');
+  const show = () => setPhase('in');
+  const hide = () => setPhase((p) => (p === 'in' ? 'out' : p));
+
+  return (
+    <button
+      type="button"
+      aria-label="Lidí zkoušelo hru hrát"
+      onMouseEnter={show}
+      onMouseLeave={hide}
+      onFocus={show}
+      onBlur={hide}
+      className="absolute bottom-1.5 left-2 sm:left-3 z-40 min-w-9 h-9 sm:min-w-[42px] sm:h-[42px] px-2 rounded-full border-2 border-loyo-ink bg-white hover:bg-zinc-100 text-loyo-ink shadow-[1.5px_1.5px_0px_#18181b] flex items-center justify-center font-mono font-black text-[15px] leading-none cursor-pointer pointer-events-auto active:translate-x-0.5 active:translate-y-0.5 transition-all"
+    >
+      {tryCount}
+      {phase !== 'idle' && (
+        <span
+          onAnimationEnd={() => phase === 'out' && setPhase('idle')} // po glitchi se bublina odstraní
+          className={`pointer-events-none absolute bottom-full left-0 mb-2 whitespace-nowrap rounded-xl border-2 border-loyo-ink bg-loyo-ink px-2 py-1 font-heading text-[10px] font-black uppercase tracking-wider text-loyo-mustard shadow-[3px_3px_0px_#000] ${
+            phase === 'in' ? 'anim-bubble-in' : 'anim-bubble-glitch-out'
+          }`}
+        >
+          LIDÍ ZKOUŠELO HRU HRÁT
+        </span>
+      )}
+    </button>
+  );
+};
+
 interface DemoOverlayProps {
   infoPhase: InfoPhase;
-  loadProgress: number;
   tryCount: number;
   showHighScoresModal: boolean;
   onToggleHighScores: () => void;
@@ -25,7 +57,6 @@ interface DemoOverlayProps {
  */
 export const DemoOverlay: React.FC<DemoOverlayProps> = ({
   infoPhase,
-  loadProgress,
   tryCount,
   showHighScoresModal,
   onToggleHighScores,
@@ -68,9 +99,9 @@ export const DemoOverlay: React.FC<DemoOverlayProps> = ({
     <div
       className={`absolute z-40 bg-loyo-ink border-2 border-loyo-ink rounded-xl p-2 shadow-[3px_3px_0px_#000] text-white flex flex-col items-start min-w-44 -rotate-2 origin-bottom-right ${
         infoPhase === 'active'
-          ? 'opacity-100 pointer-events-auto -translate-y-1 transition-all duration-300'
+          ? 'opacity-100 pointer-events-auto -translate-y-1 anim-bubble-in'
           : infoPhase === 'exiting'
-            ? 'opacity-100 pointer-events-none -translate-y-1'
+            ? 'opacity-100 pointer-events-none -translate-y-1 anim-bubble-glitch-out-i'
             : 'opacity-0 pointer-events-none translate-y-0'
       }`}
       style={{
@@ -81,12 +112,7 @@ export const DemoOverlay: React.FC<DemoOverlayProps> = ({
       {/* Ocas komiksové bubliny mířící dolů k tlačítku (i) */}
       <div className="absolute -bottom-1.5 right-2 w-3 h-3 bg-loyo-ink border-r-2 border-b-2 border-loyo-ink rotate-45 pointer-events-none" />
 
-      <div
-        className="w-full"
-        style={{
-          clipPath: `inset(0 ${100 - loadProgress}% 0 0)`,
-        }}
-      >
+      <div className="w-full">
         {/* NADPIS: miniGAME Tetris (HOŘČIČNÁ BARVA, JEDNOU ZA 5 s PROBLIKNE) */}
         <div
           className="font-heading font-black text-[11px] sm:text-xs text-loyo-mustard tracking-wider flex items-center gap-1.5 leading-tight whitespace-nowrap"
@@ -113,24 +139,10 @@ export const DemoOverlay: React.FC<DemoOverlayProps> = ({
             </React.Fragment>
           ))}
         </div>
-
-        {/* INDIKÁTOR NAČÍTÁNÍ (0% -> 100% PŘI NAJETÍ, 100% -> 0% PŘI ODJETÍ) */}
-        <div className="h-1 bg-zinc-700/60 rounded-full mt-1.5 overflow-hidden border border-loyo-ink w-full">
-          <div className="h-full bg-loyo-mustard" style={{ width: `${loadProgress}%` }} />
-        </div>
       </div>
     </div>
 
-    {/* 3. VLEVO DOLE: KOLEČKO S POČÍTADLEM (HRÁT = +1); PŘI NAJETÍ / KLIKNUTÍ SE UKÁŽE, CO ZNAMENÁ */}
-    <button
-      type="button"
-      aria-label="Kolik lidí zkoušelo Tetris"
-      className="group absolute bottom-1.5 left-2 sm:left-3 z-40 min-w-6 h-6 sm:min-w-7 sm:h-7 px-1.5 rounded-full border-2 border-loyo-ink bg-white hover:bg-zinc-100 text-loyo-ink shadow-[1.5px_1.5px_0px_#18181b] flex items-center justify-center font-mono font-black text-[10px] leading-none cursor-pointer pointer-events-auto active:translate-x-0.5 active:translate-y-0.5 transition-all"
-    >
-      {tryCount}
-      <span className="pointer-events-none absolute bottom-full left-0 mb-2 whitespace-nowrap rounded-xl border-2 border-loyo-ink bg-loyo-ink px-2 py-1 font-heading text-[10px] font-black uppercase tracking-wider text-loyo-mustard shadow-[3px_3px_0px_#000] opacity-0 -translate-y-1 transition-all duration-300 group-hover:opacity-100 group-hover:translate-y-0 group-focus:opacity-100 group-focus:translate-y-0">
-        Kolik lidí zkoušelo Tetris
-      </span>
-    </button>
+    {/* 3. VLEVO DOLE: KOLEČKO S POČÍTADLEM (HRÁT = +1) */}
+    <TryCounter tryCount={tryCount} />
   </>
 );

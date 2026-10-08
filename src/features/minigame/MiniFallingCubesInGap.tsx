@@ -28,7 +28,6 @@ export const MiniFallingCubesInGap: React.FC = () => {
       {gameState === 'demo' && (
         <DemoOverlay
           infoPhase={info.infoPhase}
-          loadProgress={info.loadProgress}
           tryCount={game.tryCount}
           showHighScoresModal={game.showHighScoresModal}
           onToggleHighScores={() => game.setShowHighScoresModal((prev) => !prev)}

@@ -112,6 +112,11 @@ export function useCubesGame() {
   fallingRef.current = fallingPiece;
   const looseRef = useRef<FallingPiece[]>([]);
   looseRef.current = looseParts;
+  // Nejnovější kostičky a stav hry (mazání řádků běží za pohybu, nesmí pracovat se starým snímkem)
+  const settledRef = useRef<SettledCube[]>([]);
+  settledRef.current = settledCubes;
+  const gameStateRef = useRef<GameState>(gameState);
+  gameStateRef.current = gameState;
 
   // Speciální bomba (mezerník) s cooldownem 30 s
   const [bombCooldown, setBombCooldown] = useState<number>(0);
@@ -339,17 +344,19 @@ export function useCubesGame() {
 
   // Propojení řádků: 1 řádek = 1 bliknutí, 2 řádky = 2 bliknutí atd.; po výbuchu se připíšou body
   const triggerLineClearSequence = useCallback(
-    (
+    function runLineClearSequence(
       cubes: SettledCube[],
       minC: number,
       maxC: number,
       onComplete: (remainingCubes: SettledCube[]) => void,
-    ) => {
+    ): void {
+      // Hra běží dál: když mazání už probíhá, nové plné řádky se zkontrolují až po jeho konci
+      if (isProcessingLineClearRef.current) return;
+
       const activeWidth = maxC - minC + 1;
       const fullRows = findFullRows(cubes, minC, maxC);
 
       if (fullRows.length === 0) {
-        isProcessingLineClearRef.current = false;
         onComplete(cubes);
         return;
       }
@@ -380,7 +387,9 @@ export function useCubesGame() {
           flashBoardBriefly();
 
           // 2. Smazání plných řádků a posunutí vyšších kostiček dolů
-          const updatedCubes = clearFullRows(cubes, fullRows, minC, maxC);
+          // (hra mezitím běžela dál, proto se maže z nejnovějšího stavu, ne ze starého snímku)
+          const updatedCubes = clearFullRows(settledRef.current, fullRows, minC, maxC);
+          settledRef.current = updatedCubes;
           setSettledCubes(updatedCubes);
 
           // 3. Po výbuchu se připíšou body
@@ -397,7 +406,10 @@ export function useCubesGame() {
 
           setTimeout(() => {
             isProcessingLineClearRef.current = false;
-            onComplete(updatedCubes);
+            // Hra mezitím neskončila: zkontrolovat, jestli nevznikl další plný řádek
+            if (gameStateRef.current === gameState) {
+              runLineClearSequence(settledRef.current, minC, maxC, onComplete);
+            }
           }, 120);
         }
       }, 150);
@@ -411,9 +423,7 @@ export function useCubesGame() {
 
     const delay = gameState === 'demo' ? 240 : 60;
     const spawnTimer = setTimeout(() => {
-      if (!isProcessingLineClearRef.current) {
-        spawnPiece();
-      }
+      spawnPiece();
     }, delay);
     return () => clearTimeout(spawnTimer);
   }, [fallingPiece, gameState, spawnPiece]);
@@ -427,12 +437,6 @@ export function useCubesGame() {
     let animId: number;
 
     const tick = () => {
-      // Při blikání a mazání řádků se pohyb na chvíli zastaví
-      if (isProcessingLineClearRef.current) {
-        animId = requestAnimationFrame(tick);
-        return;
-      }
-
       const step = stepFalling(
         settledCubes,
         looseParts,
@@ -492,12 +496,12 @@ export function useCubesGame() {
               setSettledCubes(cleanup.cubes);
             }
           }
-
-          // Další dílek padá rovnou, odpadlé části dopadají mezitím
-          if (step.pieceLanded) {
-            setTimeout(() => spawnPieceRef.current(), 100);
-          }
         });
+
+        // Další dílek padá rovnou (nečeká na blikání řádků), odpadlé části dopadají mezitím
+        if (step.pieceLanded) {
+          setTimeout(() => spawnPieceRef.current(), 100);
+        }
       }
       // Jinak se jen posunuly: po změně stavu se efekt spustí znovu a naplánuje další snímek
     };
