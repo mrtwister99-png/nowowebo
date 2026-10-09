@@ -22,7 +22,7 @@ export const GAME_DURATION_SECONDS = 60;
 export const BOMB_COOLDOWN_SECONDS = 30;
 export const HIGH_SCORES_KEY = 'loyo_tetris_scores';
 export const HIGH_SCORES_LIMIT = 8;
-export const TRIES_KEY = 'loyo_tetris_tries'; // počítadlo kliknutí na HRÁT
+export const TRIES_KEY = 'loyo_tetris_tries'; // počítadlo lidí, kteří vydrželi celou minutu
 
 // Pole hry: začíná 4 sloupce široké (sloupce 4 až 7) a každých 10 s se zvětší o 2 (6, 8, 10, 12)
 export const START_MIN_COL = 4;
@@ -37,10 +37,17 @@ export const FIELD_TOP_SPACE = 0;
 // Pole má 21 řádků místo 7 (168 px místo 91 px), proto padá 2x rychleji (jinak by dílek padal moc dlouho)
 export const FALL_SPEED_SCALE = 2;
 
-// Ukázka (demo): pole 8 sloupců široké (sloupce 2 až 9); při výšce 14 se spodní řádek odpaří
-export const DEMO_MIN_COL = 2;
-export const DEMO_MAX_COL = 9;
+// Šipka dolů (držená): dílek padá 4x rychleji
+export const SOFT_DROP_MULTIPLIER = 4;
+
+// Ukázka (demo): pole jako opravdový Tetris, 10 sloupců široké (sloupce 1 až 10) a 20 řádků vysoké;
+// při výšce 14 se spodní řádek odpaří
+export const DEMO_MIN_COL = 1;
+export const DEMO_MAX_COL = 10;
 export const DEMO_MAX_HEIGHT = 14;
+
+// Ukázka: po kolika ms se dílek cestou dolů posune o sloupec k vybranému místu
+export const DEMO_STEER_MS = 110;
 
 // Všechny tvary pro ostrou hru
 export const PIECE_SHAPES: PieceShape[] = [

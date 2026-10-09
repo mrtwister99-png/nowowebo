@@ -26,6 +26,7 @@ export interface FallingPiece {
   y: number; // v px
   isBomb: boolean;
   color: string;
+  targetCol?: number; // jen ukázka: sloupec, kam se dílek cestou dolů sám přesune
 }
 
 /** Plovoucí text s body (+X) */

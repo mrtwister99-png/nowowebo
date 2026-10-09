@@ -56,7 +56,7 @@ export const createDemoStartCubes = (): SettledCube[] => [];
 
 /**
  * Aktivní sloupce podle času:
- * demo = 8 sloupců (2 až 9); hra: začíná 4 sloupci (4 až 7) a každých 10 s o 2 víc (6, 8, 10, 12).
+ * demo = 10 sloupců (1 až 10); hra: začíná 4 sloupci (4 až 7) a každých 10 s o 2 víc (6, 8, 10, 12).
  */
 export const getActiveColBounds = (timeLeft: number, state: string): [number, number] => {
   if (state === 'demo') return [DEMO_MIN_COL, DEMO_MAX_COL];
@@ -148,12 +148,16 @@ export const spawnDemoPiece = (
   }
 
   const pieceHeight = Math.max(...best.shape.cells.map((c) => c[1])) + 1;
+  // Dílek vzniká uprostřed pole jako v opravdovém Tetrisu a cestou dolů se posune na vybraný sloupec
+  const pieceWidth = Math.max(...best.shape.cells.map((c) => c[0])) + 1;
+  const fieldWidth = DEMO_MAX_COL - DEMO_MIN_COL + 1;
   return {
     cells: best.shape.cells,
-    col: best.col,
+    col: DEMO_MIN_COL + Math.floor((fieldWidth - pieceWidth) / 2),
     y: Math.max(-pieceHeight * STEP, -FIELD_TOP_SPACE),
     isBomb: false,
     color: COLOR_FALLING,
+    targetCol: best.col,
   };
 };
 
@@ -223,6 +227,18 @@ export const moveTarget = (
   });
 
   return collides ? null : newCol;
+};
+
+/** Ukázka: posune dílek o 1 sloupec k vybranému sloupci (targetCol); když to nejde, zůstane stát. */
+export const steerDemoPiece = (
+  piece: FallingPiece | null,
+  settled: SettledCube[],
+): FallingPiece | null => {
+  if (!piece || piece.targetCol === undefined || piece.targetCol === piece.col) return piece;
+
+  const direction = piece.targetCol > piece.col ? 1 : -1;
+  const newCol = moveTarget(piece, direction, settled, DEMO_MIN_COL, DEMO_MAX_COL);
+  return newCol === null ? piece : { ...piece, col: newCol };
 };
 
 /** Dopad dílku v ostré hře; kostička v posledním řádku je červená (výstraha), přetečení = konec hry. */

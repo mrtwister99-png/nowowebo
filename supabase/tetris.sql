@@ -44,7 +44,7 @@ as $$
   select tries from public.tetris_stats where id = 1;
 $$;
 
--- Kliknutí na HRÁT: +1, vrátí nový společný součet
+-- Dohraná celá minuta: +1, vrátí nový společný součet
 create or replace function public.tetris_add_try()
 returns bigint
 language sql

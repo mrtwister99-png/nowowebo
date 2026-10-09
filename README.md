@@ -80,7 +80,7 @@ supabase/
 - Je v `src/features/minigame/` a načítá se líně (`React.lazy` v `LoyoHeaderCard`), takže není v hlavním balíčku.
 - Tetris na 60 sekund: pole začíná 4 sloupce široké a každých 10 s se zvětší o 2 sloupce.
 - Ovládání: `←` `→` pohyb, `↓` rychlý pád, `MEZERNÍK` bomba (cooldown 30 s).
-- Kolečko vlevo dole ukazuje společný počet pokusů (každé kliknutí na HRÁT = +1), HIGHSCORE je společná tabulka všech hráčů.
+- Kolečko vlevo dole ukazuje, kolik lidí vydrželo celou minutu (dohraná minuta = +1, přetečení se nepočítá), HIGHSCORE je společná tabulka všech hráčů.
 - Herní pravidla jsou jako čisté funkce v `engine.ts`, stav a časování v `useCubesGame.ts`, komunikace se Supabase v `tetrisApi.ts`, vzhled v malých komponentách.
 
 ## Design tokeny a komponenty

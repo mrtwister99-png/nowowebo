@@ -2,7 +2,7 @@ import { HIGH_SCORES_LIMIT } from './constants';
 import type { ScoreRecord } from './types';
 
 /*
- * Společné počítadlo pokusů a žebříček HIGHSCORE v Supabase (funkce tetris_* ze supabase/tetris.sql).
+ * Společné počítadlo (kolik lidí vydrželo celou minutu) a žebříček HIGHSCORE v Supabase (funkce tetris_* ze supabase/tetris.sql).
  * Bez proměnných prostředí nebo při chybě sítě hra funguje dál s daty jen z tohoto prohlížeče.
  */
 const SUPABASE_URL = (import.meta.env.VITE_SUPABASE_URL as string | undefined)?.replace(/\/+$/, '');
@@ -41,7 +41,7 @@ const callRpc = async <T>(fn: string, args: Record<string, unknown> = {}): Promi
 /** Kolik lidí zatím zkoušelo Tetris (společné číslo). */
 export const fetchTries = async (): Promise<number> => Number(await callRpc<number>('tetris_get_tries'));
 
-/** Kliknutí na HRÁT: přičte 1 a vrátí nový společný součet. */
+/** Dohraná celá minuta: přičte 1 a vrátí nový společný součet. */
 export const addTry = async (): Promise<number> => Number(await callRpc<number>('tetris_add_try'));
 
 /** Nejlepší výsledky všech hráčů (nejlepší nahoře). */

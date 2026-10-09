@@ -6,7 +6,9 @@ import {
   COLOR_GOLD,
   DEMO_MAX_COL,
   DEMO_MIN_COL,
+  DEMO_STEER_MS,
   GAME_DURATION_SECONDS,
+  SOFT_DROP_MULTIPLIER,
   START_MAX_COL,
   START_MIN_COL,
   STEP,
@@ -26,6 +28,7 @@ import {
   resolveBomb,
   spawnDemoPiece,
   spawnPlayPiece,
+  steerDemoPiece,
   stepFalling,
 } from './engine';
 import type { FallingPiece, FlashingLines, GameState, SettledCube } from './types';
@@ -63,7 +66,7 @@ export function useCubesGame() {
 
   const { highScores, addScore, refreshScores } = useHighScores();
 
-  // Počítadlo pokusů: každé kliknutí na HRÁT = +1 (zatím se ukládá jen v tomto prohlížeči)
+  // Počítadlo: kolik lidí vydrželo celou minutu (konec hry přetečením se nepočítá)
   const [tryCount, setTryCount] = useState<number>(() => {
     try {
       return Number(localStorage.getItem(TRIES_KEY)) || 0;
@@ -71,8 +74,11 @@ export function useCubesGame() {
       return 0;
     }
   });
+  // Nejnovější číslo pro efekt na konci hry (ten se kvůli tomu nespouští znovu při každé změně čísla)
+  const tryCountRef = useRef<number>(tryCount);
+  tryCountRef.current = tryCount;
 
-  // Při načtení stránky se stáhne společný počet pokusů
+  // Při načtení stránky se stáhne společný počet
   useEffect(() => {
     if (!isTetrisApiConfigured) return;
     fetchTries()
@@ -84,6 +90,25 @@ export function useCubesGame() {
         // server nedostupný: zůstává poslední známé číslo
       });
   }, []);
+
+  // Hra vydržela celou minutu (ne přetečení): počítadlo +1, hned se zobrazí, server pak vrátí součet
+  useEffect(() => {
+    if (gameState !== 'name_entry' || endReason !== 'timeout') return;
+
+    const nextTryCount = tryCountRef.current + 1;
+    setTryCount(nextTryCount);
+    saveTryCount(nextTryCount);
+    if (isTetrisApiConfigured) {
+      addTry()
+        .then((total) => {
+          setTryCount(total);
+          saveTryCount(total);
+        })
+        .catch(() => {
+          // server nedostupný: zůstává lokální číslo
+        });
+    }
+  }, [endReason, gameState]);
 
   // Při otevření tabulky HIGHSCORE se stáhnou čerstvé výsledky
   useEffect(() => {
@@ -117,6 +142,10 @@ export function useCubesGame() {
   settledRef.current = settledCubes;
   const gameStateRef = useRef<GameState>(gameState);
   gameStateRef.current = gameState;
+  // Šipka dolů je držená: dílek padá rychleji (ref, ať se kvůli tomu nespouští efekty znovu)
+  const softDropRef = useRef<boolean>(false);
+  // Kdy se naposledy posunul dílek v ukázce doleva/doprava
+  const lastSteerRef = useRef<number>(0);
 
   // Speciální bomba (mezerník) s cooldownem 30 s
   const [bombCooldown, setBombCooldown] = useState<number>(0);
@@ -150,21 +179,6 @@ export function useCubesGame() {
     setSettledCubes([]); // prázdné pole
     setActiveMinCol(START_MIN_COL); // pole začíná jen 4 sloupce široké
     setActiveMaxCol(START_MAX_COL);
-
-    // Počítadlo pokusů +1: hned se zobrazí, server pak vrátí společný součet všech návštěvníků
-    const nextTryCount = tryCount + 1;
-    setTryCount(nextTryCount);
-    saveTryCount(nextTryCount);
-    if (isTetrisApiConfigured) {
-      addTry()
-        .then((total) => {
-          setTryCount(total);
-          saveTryCount(total);
-        })
-        .catch(() => {
-          // server nedostupný: zůstává lokální číslo
-        });
-    }
     setScore(0);
     setTimeLeft(GAME_DURATION_SECONDS);
     setBombCooldown(0);
@@ -264,11 +278,16 @@ export function useCubesGame() {
     [activeMaxCol, activeMinCol, fallingPiece, gameState, settledCubes],
   );
 
-  // Rychlý pád (šipka dolů)
+  // Rychlý pád (šipka dolů): dokud je klávesa držená, padá všechno (dílek i odpadlé části) rychleji
   const dropFast = useCallback(() => {
-    if (!fallingPiece || gameState !== 'playing') return;
-    setFallingPiece((prev) => (prev ? { ...prev, y: prev.y + 8 } : null));
-  }, [fallingPiece, gameState]);
+    if (gameState !== 'playing') return;
+    softDropRef.current = true;
+  }, [gameState]);
+
+  // Uvolnění šipky dolů: zpět na běžnou rychlost
+  const stopDropFast = useCallback(() => {
+    softDropRef.current = false;
+  }, []);
 
   // Po skončení hry se zaměří skryté pole pro přezdívku
   useEffect(() => {
@@ -338,9 +357,28 @@ export function useCubesGame() {
       }
     };
 
+    // Uvolnění šipky dolů (nebo odchod z okna) vrátí normální rychlost pádu
+    const handleKeyUp = (e: KeyboardEvent) => {
+      if (e.key === 'ArrowDown' || e.key === 's' || e.key === 'S') stopDropFast();
+    };
+
     window.addEventListener('keydown', handleKeyDown);
-    return () => window.removeEventListener('keydown', handleKeyDown);
-  }, [dropFast, gameState, inputInitials, moveHorizontal, submitInitials, triggerBomb]);
+    window.addEventListener('keyup', handleKeyUp);
+    window.addEventListener('blur', stopDropFast);
+    return () => {
+      window.removeEventListener('keydown', handleKeyDown);
+      window.removeEventListener('keyup', handleKeyUp);
+      window.removeEventListener('blur', stopDropFast);
+    };
+  }, [
+    dropFast,
+    gameState,
+    inputInitials,
+    moveHorizontal,
+    stopDropFast,
+    submitInitials,
+    triggerBomb,
+  ]);
 
   // Propojení řádků: 1 řádek = 1 bliknutí, 2 řádky = 2 bliknutí atd.; po výbuchu se připíšou body
   const triggerLineClearSequence = useCallback(
@@ -437,11 +475,13 @@ export function useCubesGame() {
     let animId: number;
 
     const tick = () => {
+      // Držená šipka dolů: pád je SOFT_DROP_MULTIPLIER krát rychlejší (jen v ostré hře)
+      const speedBoost = gameState === 'playing' && softDropRef.current ? SOFT_DROP_MULTIPLIER : 1;
       const step = stepFalling(
         settledCubes,
         looseParts,
         fallingPiece,
-        getFallSpeed(gameState, timeLeft),
+        getFallSpeed(gameState, timeLeft) * speedBoost,
         Date.now(),
       );
 
@@ -457,7 +497,14 @@ export function useCubesGame() {
         return;
       }
 
-      setFallingPiece(step.piece);
+      // Ukázka: dílek se cestou dolů posouvá doleva/doprava na vybrané místo (jako hráč)
+      let nextPiece = step.piece;
+      if (gameState === 'demo' && Date.now() - lastSteerRef.current >= DEMO_STEER_MS) {
+        nextPiece = steerDemoPiece(step.piece, step.settled);
+        lastSteerRef.current = Date.now();
+      }
+
+      setFallingPiece(nextPiece);
       setLooseParts(step.loose);
 
       // Dopad bomby: výbuch, body a slisování zbytku dolů

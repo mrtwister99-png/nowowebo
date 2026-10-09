@@ -41,9 +41,11 @@ export const NameEntryOverlay: React.FC<NameEntryOverlayProps> = ({
       className="absolute opacity-0 pointer-events-none w-1 h-1"
     />
 
-    <div className="text-[9px] font-mono uppercase font-bold text-loyo-red tracking-wider">
-      {endReason === 'gameover' ? 'PŘETEČENÍ KOSTIČEK!' : '1 MINUTA UPLYNULA!'}
-    </div>
+    {endReason === 'timeout' && (
+      <div className="text-[9px] font-mono uppercase font-bold text-loyo-red tracking-wider">
+        1 MINUTA UPLYNULA!
+      </div>
+    )}
 
     <div className="font-heading font-black text-base sm:text-lg text-loyo-ink tracking-tight">
       SKÓRE: <span className="text-loyo-blue">{score} BODŮ</span>

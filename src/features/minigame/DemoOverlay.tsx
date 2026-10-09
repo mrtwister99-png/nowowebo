@@ -20,7 +20,7 @@ const TryCounter: React.FC<{ tryCount: number }> = ({ tryCount }) => {
   return (
     <button
       type="button"
-      aria-label="Lidí zkoušelo hru hrát"
+      aria-label="Lidí vydrželo celou minutu"
       onMouseEnter={show}
       onMouseLeave={hide}
       onFocus={show}
@@ -35,7 +35,7 @@ const TryCounter: React.FC<{ tryCount: number }> = ({ tryCount }) => {
             phase === 'in' ? 'anim-bubble-in' : 'anim-bubble-glitch-out'
           }`}
         >
-          LIDÍ ZKOUŠELO HRU HRÁT
+          LIDÍ VYDRŽELO CELOU MINUTU
         </span>
       )}
     </button>
@@ -142,7 +142,7 @@ export const DemoOverlay: React.FC<DemoOverlayProps> = ({
       </div>
     </div>
 
-    {/* 3. VLEVO DOLE: KOLEČKO S POČÍTADLEM (HRÁT = +1) */}
+    {/* 3. VLEVO DOLE: KOLEČKO S POČÍTADLEM (DOHRANÁ CELÁ MINUTA = +1) */}
     <TryCounter tryCount={tryCount} />
   </>
 );
