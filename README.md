@@ -39,7 +39,7 @@ Soubor `.env` je v `.gitignore` a na hosting se nenahrává, proto se proměnné
 
 1. V Supabase otevři SQL Editor -> New query, vlož obsah `supabase/tetris.sql` a spusť (stačí jednou).
 2. Skript vytvoří tabulky `tetris_scores` a `tetris_stats` se zapnutým RLS a bez přístupu pro veřejný klíč.
-3. Web smí volat jen čtyři funkce: `tetris_get_tries`, `tetris_add_try`, `tetris_top_scores`, `tetris_submit_score`.
+3. Web smí volat jen čtyři funkce: `tetris_get_finished`, `tetris_add_finished`, `tetris_top_scores`, `tetris_submit_score`.
 4. Kontrola probíhá na serveru (přezdívka 3 znaky A-Z/0-9, skóre 1 až 150000, max. 60 uložených výsledků za minutu pro celý web).
 
 Při výpadku serveru nebo bez nastavených proměnných hra funguje dál a zobrazuje poslední známá data z tohoto prohlížeče.

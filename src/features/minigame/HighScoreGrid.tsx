@@ -6,6 +6,8 @@ interface HighScoreGridProps {
   /** Přezdívka, která se má zvýraznit (právě uložený výsledek) */
   highlightInitials?: string;
   className?: string;
+  /** Velikost písma a odsazení jednoho řádku */
+  rowClassName?: string;
 }
 
 const PLACES_PER_COLUMN = 4;
@@ -15,6 +17,7 @@ export const HighScoreGrid: React.FC<HighScoreGridProps> = ({
   scores,
   highlightInitials,
   className = 'grid grid-cols-2 gap-1 w-full',
+  rowClassName = 'text-[9px] sm:text-[10px] px-1 py-0.5',
 }) => (
   <div className={className}>
     {[0, 1].map((column) => (
@@ -29,13 +32,13 @@ export const HighScoreGrid: React.FC<HighScoreGridProps> = ({
           return (
             <div
               key={idx}
-              className={`flex items-center text-[9px] sm:text-[10px] font-mono px-1 py-0.5 rounded border ${
+              className={`flex items-center font-mono rounded border ${rowClassName} ${
                 isCurrentPlayer
                   ? 'bg-loyo-mustard/25 border-loyo-ink font-bold shadow-brutal-1'
                   : 'bg-[#f4f4f5] border-zinc-200'
               }`}
             >
-              <span className="font-bold text-loyo-ink w-3.5 shrink-0">{idx + 1}.</span>
+              <span className="font-bold text-loyo-ink min-w-3.5 shrink-0">{idx + 1}.</span>
               <span
                 className={`font-black tracking-wider ${
                   isPresent ? 'text-loyo-blue' : 'text-zinc-400'

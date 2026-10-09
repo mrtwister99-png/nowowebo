@@ -5,6 +5,7 @@ import type { InfoPhase } from './types';
 const CONTROLS: { key: string; label: string }[] = [
   { key: '←', label: 'doleva' },
   { key: '→', label: 'doprava' },
+  { key: '↑', label: 'otočí dílek' },
   { key: '↓', label: 'pošle čtverečky zrychleně dolů' },
   { key: 'MEZERNÍK', label: 'bomba' },
 ];

@@ -55,7 +55,6 @@ export const MiniFallingCubesInGap: React.FC = () => {
       {gameState === 'name_entry' && (
         <NameEntryOverlay
           score={game.score}
-          endReason={game.endReason}
           inputInitials={game.inputInitials}
           activeSlot={game.activeSlot}
           textInputRef={game.textInputRef}

@@ -2,7 +2,7 @@ import React from 'react';
 
 /* Odpočet před startem: 3 ... 2 ... 1 ... START! */
 export const CountdownOverlay: React.FC<{ countdown: number }> = ({ countdown }) => (
-  <div className="absolute inset-0 z-40 bg-white/90 backdrop-blur-xs flex flex-col items-center justify-center animate-in fade-in">
+  <div className="absolute inset-0 sm:-right-6 sm:pr-6 z-40 bg-white/90 backdrop-blur-xs flex flex-col items-center justify-center animate-in fade-in">
     <div className="font-heading font-black text-4xl sm:text-5xl text-loyo-blue tracking-tight animate-bounce">
       {countdown > 0 ? countdown : 'START!'}
     </div>

@@ -3,6 +3,7 @@ import {
   BOARD_HEIGHT,
   BOARD_WIDTH,
   BOMB_COOLDOWN_SECONDS,
+  COLOR_BLUE,
   COLOR_GOLD,
   DEMO_MAX_COL,
   DEMO_MIN_COL,
@@ -27,6 +28,7 @@ import {
   moveTarget,
   projectLooseParts,
   resolveBomb,
+  rotatePiece,
   spawnDemoPiece,
   spawnPlayPiece,
   steerDemoPiece,
@@ -290,6 +292,14 @@ export function useCubesGame() {
     softDropRef.current = false;
   }, []);
 
+  // Otočení dílku o 90° (šipka nahoru); když se nevejde, zůstane jak je
+  const rotate = useCallback(() => {
+    if (gameState !== 'playing') return;
+    setFallingPiece((prev) =>
+      prev ? (rotatePiece(prev, settledCubes, activeMinCol, activeMaxCol) ?? prev) : null,
+    );
+  }, [activeMaxCol, activeMinCol, gameState, settledCubes]);
+
   // Po skončení hry se zaměří skryté pole pro přezdívku
   useEffect(() => {
     if (gameState === 'name_entry' && textInputRef.current) {
@@ -351,6 +361,9 @@ export function useCubesGame() {
         } else if (e.key === 'ArrowRight' || e.key === 'd' || e.key === 'D') {
           e.preventDefault();
           moveHorizontal(1);
+        } else if (e.key === 'ArrowUp' || e.key === 'w' || e.key === 'W') {
+          e.preventDefault();
+          if (!e.repeat) rotate(); // držená klávesa netočí dokola
         } else if (e.key === 'ArrowDown' || e.key === 's' || e.key === 'S') {
           e.preventDefault();
           dropFast();
@@ -376,6 +389,7 @@ export function useCubesGame() {
     gameState,
     inputInitials,
     moveHorizontal,
+    rotate,
     stopDropFast,
     submitInitials,
     triggerBomb,
@@ -439,7 +453,7 @@ export function useCubesGame() {
               `+${addedScore}!`,
               ((minC + maxC) / 2) * STEP,
               BOARD_HEIGHT / 2,
-              COLOR_GOLD,
+              COLOR_BLUE,
             );
           }
 

@@ -2,7 +2,6 @@ import React from 'react';
 
 interface NameEntryOverlayProps {
   score: number;
-  endReason: 'gameover' | 'timeout';
   inputInitials: string;
   activeSlot: number;
   textInputRef: React.RefObject<HTMLInputElement | null>;
@@ -15,7 +14,6 @@ interface NameEntryOverlayProps {
 /* Konec hry: skóre, tři políčka na přezdívku (_ _ _), tlačítka OK a Zrušit */
 export const NameEntryOverlay: React.FC<NameEntryOverlayProps> = ({
   score,
-  endReason,
   inputInitials,
   activeSlot,
   textInputRef,
@@ -24,7 +22,7 @@ export const NameEntryOverlay: React.FC<NameEntryOverlayProps> = ({
   submitInitials,
   returnToDemo,
 }) => (
-  <div className="absolute inset-0 z-40 bg-white/95 backdrop-blur-xs flex flex-col items-center justify-center p-2 text-center animate-in zoom-in-95">
+  <div className="absolute inset-0 sm:-right-6 z-40 bg-white/95 backdrop-blur-xs flex flex-col items-center justify-center p-2 sm:pr-8 text-center animate-in zoom-in-95">
     <input
       ref={textInputRef}
       type="text"
@@ -40,12 +38,6 @@ export const NameEntryOverlay: React.FC<NameEntryOverlayProps> = ({
       }}
       className="absolute opacity-0 pointer-events-none w-1 h-1"
     />
-
-    {endReason === 'timeout' && (
-      <div className="text-[9px] font-mono uppercase font-bold text-loyo-red tracking-wider">
-        1 MINUTA UPLYNULA!
-      </div>
-    )}
 
     <div className="font-heading font-black text-base sm:text-lg text-loyo-ink tracking-tight">
       SKÓRE: <span className="text-loyo-blue">{score} BODŮ</span>

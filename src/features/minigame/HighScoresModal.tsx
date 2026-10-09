@@ -27,8 +27,7 @@ export const HighScoresModal: React.FC<HighScoresModalProps> = ({ highScores, on
       <HighScoreGrid scores={highScores} />
     </div>
 
-    <div className="flex items-center justify-between pt-0.5 border-t border-zinc-100">
-      <span className="text-[9px] font-mono text-zinc-500">--- = neumístěn</span>
+    <div className="flex items-center justify-end pt-0.5 border-t border-zinc-100">
       <button
         onClick={onClose}
         className="px-2 py-0.5 bg-loyo-ink hover:bg-zinc-800 text-white rounded font-heading font-bold text-[9px] uppercase cursor-pointer transition-all"

@@ -238,19 +238,41 @@ export const moveTarget = (
   return collides ? null : newCol;
 };
 
-/** Vejde se dílek s tvarem `cells` na sloupec `col` v ukázkovém poli a nenarazí do usazených kostiček? */
-const demoFits = (
+/** Vejde se dílek s tvarem `cells` na sloupec `col` mezi sloupce minCol až maxCol a nenarazí do usazených kostiček? */
+const fitsAt = (
   piece: FallingPiece,
   cells: [number, number][],
   col: number,
   settled: SettledCube[],
+  minCol: number,
+  maxCol: number,
 ): boolean =>
   cells.every(([dx, dy]) => {
     const c = col + dx;
-    if (c < DEMO_MIN_COL || c > DEMO_MAX_COL) return false;
+    if (c < minCol || c > maxCol) return false;
     const restingY = BOARD_HEIGHT - (columnHeight(settled, c) + 1) * STEP;
     return piece.y + dy * STEP < restingY;
   });
+
+/** Natočí dílek o 90° po směru hodin; u zdi ho odsune, a když se nevejde (kolize), vrátí null. */
+export const rotatePiece = (
+  piece: FallingPiece,
+  settled: SettledCube[],
+  minCol: number,
+  maxCol: number,
+): FallingPiece | null => {
+  if (piece.isBomb) return null;
+
+  // (dx, dy) -> (-dy, dx) je otočení po směru hodin (y roste dolů); pak se tvar posune zpět k nule
+  const turned = piece.cells.map(([dx, dy]): [number, number] => [-dy, dx]);
+  const minX = Math.min(...turned.map((c) => c[0]));
+  const minY = Math.min(...turned.map((c) => c[1]));
+  const cells = turned.map(([dx, dy]): [number, number] => [dx - minX, dy - minY]);
+
+  const width = Math.max(...cells.map((c) => c[0])) + 1;
+  const col = Math.min(piece.col, maxCol - width + 1);
+  return fitsAt(piece, cells, col, settled, minCol, maxCol) ? { ...piece, cells, col } : null;
+};
 
 /**
  * Ukázka: jeden krok "hráče". Nejdřív dílek natočí do vybraného natočení (jedno natočení za krok,
@@ -267,7 +289,7 @@ export const steerDemoPiece = (
   if (nextCells) {
     const width = Math.max(...nextCells.map((c) => c[0])) + 1;
     const col = Math.min(piece.col, DEMO_MAX_COL - width + 1);
-    return demoFits(piece, nextCells, col, settled)
+    return fitsAt(piece, nextCells, col, settled, DEMO_MIN_COL, DEMO_MAX_COL)
       ? { ...piece, cells: nextCells, col, rotationsLeft: restCells }
       : piece;
   }

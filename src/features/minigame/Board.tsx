@@ -2,6 +2,7 @@ import React from 'react';
 import {
   BOARD_HEIGHT,
   BOARD_WIDTH,
+  COLOR_BLUE,
   COLOR_FALLING,
   COLOR_RED,
   CUBE_SIZE,
@@ -178,12 +179,15 @@ export const Board: React.FC<BoardProps> = ({
     {floatingScores.map((fs) => (
       <div
         key={fs.id}
-        className="absolute font-heading font-black text-xs sm:text-sm z-50 pointer-events-none animate-bounce"
+        className="absolute font-heading font-black text-sm sm:text-lg whitespace-nowrap -translate-x-1/2 z-50 pointer-events-none"
         style={{
           left: `${fs.x}px`,
           top: `${fs.y}px`,
           color: fs.color,
-          textShadow: '0 0 4px #000, 1px 1px 0px #000',
+          // Modrý text má bílý obrys (čitelný i přes černé kostičky), ostatní barvy tmavý stín
+          ...(fs.color === COLOR_BLUE
+            ? { WebkitTextStroke: '4px #fff', paintOrder: 'stroke fill' }
+            : { textShadow: '0 0 4px #000, 1px 1px 0px #000' }),
         }}
       >
         {fs.text}

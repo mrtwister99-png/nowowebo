@@ -23,18 +23,18 @@ export const LeaderboardOverlay: React.FC<LeaderboardOverlayProps> = ({
       <HighScoreGrid
         scores={highScores}
         highlightInitials={inputInitials.toUpperCase().slice(0, 3)}
-        className="mt-1 grid grid-cols-2 gap-1 w-full max-w-67.5 mx-auto"
+        className="mt-1.5 grid grid-cols-2 gap-1.5 w-full max-w-80 mx-auto"
+        rowClassName="text-[11px] sm:text-xs px-1.5 py-[3px]"
       />
     </div>
 
-    <div className="flex items-center gap-2 pt-0.5">
+    <div className="flex items-center pt-0.5">
       <button
         onClick={returnToDemo}
-        className="h-6 px-3 bg-loyo-blue hover:bg-[#03086b] text-white border-2 border-loyo-ink shadow-brutal-2 rounded-lg font-heading font-bold text-[10px] uppercase tracking-wider cursor-pointer active:translate-y-0.5 transition-all"
+        className="h-6 px-10 bg-loyo-blue hover:bg-[#03086b] text-white border-2 border-loyo-ink shadow-brutal-2 rounded-lg font-heading font-bold text-[10px] uppercase tracking-wider cursor-pointer active:translate-y-0.5 transition-all"
       >
-        OK (ZPĚT DO UKÁZKY)
+        OK
       </button>
-      <span className="text-[9px] font-mono text-zinc-500">(zpět za 10s)</span>
     </div>
   </div>
 );
