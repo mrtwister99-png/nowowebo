@@ -12,7 +12,7 @@ const CONTROLS: { key: string; label: string }[] = [
 type BubblePhase = 'idle' | 'in' | 'out';
 
 /* Kolečko s počítadlem: po najetí bublina naskočí, po odjetí zmizí glitchem (probliknutí barev) */
-const TryCounter: React.FC<{ tryCount: number }> = ({ tryCount }) => {
+const FinishedCounter: React.FC<{ finishedCount: number }> = ({ finishedCount }) => {
   const [phase, setPhase] = useState<BubblePhase>('idle');
   const show = () => setPhase('in');
   const hide = () => setPhase((p) => (p === 'in' ? 'out' : p));
@@ -27,7 +27,7 @@ const TryCounter: React.FC<{ tryCount: number }> = ({ tryCount }) => {
       onBlur={hide}
       className="absolute bottom-1.5 left-2 sm:left-3 z-40 min-w-9 h-9 sm:min-w-10.5 sm:h-10.5 px-2 rounded-full border-2 border-loyo-ink bg-white hover:bg-zinc-100 text-loyo-ink shadow-[1.5px_1.5px_0px_#18181b] flex items-center justify-center font-mono font-black text-[15px] leading-none cursor-pointer pointer-events-auto active:translate-x-0.5 active:translate-y-0.5 transition-all"
     >
-      {tryCount}
+      {finishedCount}
       {phase !== 'idle' && (
         <span
           onAnimationEnd={() => phase === 'out' && setPhase('idle')} // po glitchi se bublina odstraní
@@ -44,7 +44,7 @@ const TryCounter: React.FC<{ tryCount: number }> = ({ tryCount }) => {
 
 interface DemoOverlayProps {
   infoPhase: InfoPhase;
-  tryCount: number;
+  finishedCount: number;
   showHighScoresModal: boolean;
   onToggleHighScores: () => void;
   onStart: () => void;
@@ -57,7 +57,7 @@ interface DemoOverlayProps {
  */
 export const DemoOverlay: React.FC<DemoOverlayProps> = ({
   infoPhase,
-  tryCount,
+  finishedCount,
   showHighScoresModal,
   onToggleHighScores,
   onStart,
@@ -143,6 +143,6 @@ export const DemoOverlay: React.FC<DemoOverlayProps> = ({
     </div>
 
     {/* 3. VLEVO DOLE: KOLEČKO S POČÍTADLEM (DOHRANÁ CELÁ MINUTA = +1) */}
-    <TryCounter tryCount={tryCount} />
+    <FinishedCounter finishedCount={finishedCount} />
   </>
 );

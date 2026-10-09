@@ -18,11 +18,14 @@ create index if not exists tetris_scores_rank_idx
 
 -- Počítadlo: vždy jediný řádek (id = 1)
 create table if not exists public.tetris_stats (
-  id    smallint primary key default 1 check (id = 1),
-  tries bigint   not null default 0
+  id       smallint primary key default 1 check (id = 1),
+  finished bigint   not null default 0
 );
 
-insert into public.tetris_stats (id, tries) values (1, 0) on conflict (id) do nothing;
+-- Starší verze měla sloupec tries (kliknutí na HRÁT): nový sloupec se doplní (u nové instalace už je)
+alter table public.tetris_stats add column if not exists finished bigint not null default 0;
+
+insert into public.tetris_stats (id, finished) values (1, 0) on conflict (id) do nothing;
 
 -- 2) Zámek tabulek -------------------------------------------------------------
 alter table public.tetris_scores enable row level security;
@@ -34,25 +37,25 @@ revoke all on table public.tetris_stats  from anon, authenticated;
 -- 3) Funkce, které smí volat web -------------------------------------------------
 
 -- Kolik lidí zkoušelo Tetris
-create or replace function public.tetris_get_tries()
+create or replace function public.tetris_get_finished()
 returns bigint
 language sql
 stable
 security definer
 set search_path = public
 as $$
-  select tries from public.tetris_stats where id = 1;
+  select finished from public.tetris_stats where id = 1;
 $$;
 
 -- Dohraná celá minuta: +1, vrátí nový společný součet
-create or replace function public.tetris_add_try()
+create or replace function public.tetris_add_finished()
 returns bigint
 language sql
 volatile
 security definer
 set search_path = public
 as $$
-  update public.tetris_stats set tries = tries + 1 where id = 1 returning tries;
+  update public.tetris_stats set finished = finished + 1 where id = 1 returning finished;
 $$;
 
 -- Nejlepší výsledky (výchozí 8 míst, nejvýš 20)
@@ -98,12 +101,12 @@ end;
 $$;
 
 -- 4) Oprávnění: jen tyto čtyři funkce -------------------------------------------
-revoke all on function public.tetris_get_tries()                      from public;
-revoke all on function public.tetris_add_try()                        from public;
+revoke all on function public.tetris_get_finished()                   from public;
+revoke all on function public.tetris_add_finished()                   from public;
 revoke all on function public.tetris_top_scores(integer)              from public;
 revoke all on function public.tetris_submit_score(text, integer)      from public;
 
-grant execute on function public.tetris_get_tries()                   to anon, authenticated;
-grant execute on function public.tetris_add_try()                     to anon, authenticated;
+grant execute on function public.tetris_get_finished()                to anon, authenticated;
+grant execute on function public.tetris_add_finished()                to anon, authenticated;
 grant execute on function public.tetris_top_scores(integer)           to anon, authenticated;
 grant execute on function public.tetris_submit_score(text, integer)   to anon, authenticated;

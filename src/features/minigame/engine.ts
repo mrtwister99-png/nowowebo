@@ -147,17 +147,26 @@ export const spawnDemoPiece = (
     }
   }
 
-  const pieceHeight = Math.max(...best.shape.cells.map((c) => c[1])) + 1;
-  // Dílek vzniká uprostřed pole jako v opravdovém Tetrisu a cestou dolů se posune na vybraný sloupec
-  const pieceWidth = Math.max(...best.shape.cells.map((c) => c[0])) + 1;
+  // Dílek vzniká uprostřed pole v základním natočení jako v opravdovém Tetrisu; cestou dolů se
+  // natočí (kratším směrem) do vybraného natočení a posune na vybraný sloupec
+  const spawnShape = orientations[0];
+  const targetIdx = orientations.indexOf(best.shape);
+  const rotations =
+    targetIdx <= orientations.length / 2
+      ? orientations.slice(1, targetIdx + 1)
+      : orientations.slice(targetIdx).reverse();
+
+  const pieceHeight = Math.max(...spawnShape.cells.map((c) => c[1])) + 1;
+  const pieceWidth = Math.max(...spawnShape.cells.map((c) => c[0])) + 1;
   const fieldWidth = DEMO_MAX_COL - DEMO_MIN_COL + 1;
   return {
-    cells: best.shape.cells,
+    cells: spawnShape.cells,
     col: DEMO_MIN_COL + Math.floor((fieldWidth - pieceWidth) / 2),
     y: Math.max(-pieceHeight * STEP, -FIELD_TOP_SPACE),
     isBomb: false,
     color: COLOR_FALLING,
     targetCol: best.col,
+    rotationsLeft: rotations.map((shape) => shape.cells),
   };
 };
 
@@ -229,12 +238,41 @@ export const moveTarget = (
   return collides ? null : newCol;
 };
 
-/** Ukázka: posune dílek o 1 sloupec k vybranému sloupci (targetCol); když to nejde, zůstane stát. */
+/** Vejde se dílek s tvarem `cells` na sloupec `col` v ukázkovém poli a nenarazí do usazených kostiček? */
+const demoFits = (
+  piece: FallingPiece,
+  cells: [number, number][],
+  col: number,
+  settled: SettledCube[],
+): boolean =>
+  cells.every(([dx, dy]) => {
+    const c = col + dx;
+    if (c < DEMO_MIN_COL || c > DEMO_MAX_COL) return false;
+    const restingY = BOARD_HEIGHT - (columnHeight(settled, c) + 1) * STEP;
+    return piece.y + dy * STEP < restingY;
+  });
+
+/**
+ * Ukázka: jeden krok "hráče". Nejdřív dílek natočí do vybraného natočení (jedno natočení za krok,
+ * u zdi se při tom odsune), potom ho posune o 1 sloupec k vybranému sloupci (targetCol).
+ * Když krok nejde (kolize), dílek zůstane stát a zkusí to příště.
+ */
 export const steerDemoPiece = (
   piece: FallingPiece | null,
   settled: SettledCube[],
 ): FallingPiece | null => {
-  if (!piece || piece.targetCol === undefined || piece.targetCol === piece.col) return piece;
+  if (!piece) return piece;
+
+  const [nextCells, ...restCells] = piece.rotationsLeft ?? [];
+  if (nextCells) {
+    const width = Math.max(...nextCells.map((c) => c[0])) + 1;
+    const col = Math.min(piece.col, DEMO_MAX_COL - width + 1);
+    return demoFits(piece, nextCells, col, settled)
+      ? { ...piece, cells: nextCells, col, rotationsLeft: restCells }
+      : piece;
+  }
+
+  if (piece.targetCol === undefined || piece.targetCol === piece.col) return piece;
 
   const direction = piece.targetCol > piece.col ? 1 : -1;
   const newCol = moveTarget(piece, direction, settled, DEMO_MIN_COL, DEMO_MAX_COL);

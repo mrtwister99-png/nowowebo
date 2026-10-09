@@ -6,13 +6,14 @@ import {
   COLOR_GOLD,
   DEMO_MAX_COL,
   DEMO_MIN_COL,
+  DEMO_STEER_JITTER_MS,
   DEMO_STEER_MS,
+  FINISHED_KEY,
   GAME_DURATION_SECONDS,
   SOFT_DROP_MULTIPLIER,
   START_MAX_COL,
   START_MIN_COL,
   STEP,
-  TRIES_KEY,
 } from './constants';
 import {
   cellCenter,
@@ -32,15 +33,15 @@ import {
   stepFalling,
 } from './engine';
 import type { FallingPiece, FlashingLines, GameState, SettledCube } from './types';
-import { addTry, fetchTries, isTetrisApiConfigured } from './tetrisApi';
+import { addFinished, fetchFinished, isTetrisApiConfigured } from './tetrisApi';
 import { useBoardEffects } from './useBoardEffects';
 import { useHighScores } from './useHighScores';
 import { useInfoTeaser } from './useInfoTeaser';
 
-/** Poslední známé číslo pokusů se schová do localStorage (zobrazí se hned, funguje i bez serveru). */
-const saveTryCount = (value: number) => {
+/** Poslední známé číslo se schová do localStorage (zobrazí se hned, funguje i bez serveru). */
+const saveFinishedCount = (value: number) => {
   try {
-    localStorage.setItem(TRIES_KEY, String(value));
+    localStorage.setItem(FINISHED_KEY, String(value));
   } catch {
     // úložiště nemusí být dostupné (soukromý režim): číslo pak platí jen do obnovení stránky
   }
@@ -67,24 +68,24 @@ export function useCubesGame() {
   const { highScores, addScore, refreshScores } = useHighScores();
 
   // Počítadlo: kolik lidí vydrželo celou minutu (konec hry přetečením se nepočítá)
-  const [tryCount, setTryCount] = useState<number>(() => {
+  const [finishedCount, setFinishedCount] = useState<number>(() => {
     try {
-      return Number(localStorage.getItem(TRIES_KEY)) || 0;
+      return Number(localStorage.getItem(FINISHED_KEY)) || 0;
     } catch {
       return 0;
     }
   });
   // Nejnovější číslo pro efekt na konci hry (ten se kvůli tomu nespouští znovu při každé změně čísla)
-  const tryCountRef = useRef<number>(tryCount);
-  tryCountRef.current = tryCount;
+  const finishedCountRef = useRef<number>(finishedCount);
+  finishedCountRef.current = finishedCount;
 
   // Při načtení stránky se stáhne společný počet
   useEffect(() => {
     if (!isTetrisApiConfigured) return;
-    fetchTries()
+    fetchFinished()
       .then((total) => {
-        setTryCount(total);
-        saveTryCount(total);
+        setFinishedCount(total);
+        saveFinishedCount(total);
       })
       .catch(() => {
         // server nedostupný: zůstává poslední známé číslo
@@ -95,14 +96,14 @@ export function useCubesGame() {
   useEffect(() => {
     if (gameState !== 'name_entry' || endReason !== 'timeout') return;
 
-    const nextTryCount = tryCountRef.current + 1;
-    setTryCount(nextTryCount);
-    saveTryCount(nextTryCount);
+    const nextFinishedCount = finishedCountRef.current + 1;
+    setFinishedCount(nextFinishedCount);
+    saveFinishedCount(nextFinishedCount);
     if (isTetrisApiConfigured) {
-      addTry()
+      addFinished()
         .then((total) => {
-          setTryCount(total);
-          saveTryCount(total);
+          setFinishedCount(total);
+          saveFinishedCount(total);
         })
         .catch(() => {
           // server nedostupný: zůstává lokální číslo
@@ -144,8 +145,8 @@ export function useCubesGame() {
   gameStateRef.current = gameState;
   // Šipka dolů je držená: dílek padá rychleji (ref, ať se kvůli tomu nespouští efekty znovu)
   const softDropRef = useRef<boolean>(false);
-  // Kdy se naposledy posunul dílek v ukázce doleva/doprava
-  const lastSteerRef = useRef<number>(0);
+  // Od kdy smí dílek v ukázce udělat další krok (natočení nebo posun); čas se při každém kroku losuje
+  const nextSteerAtRef = useRef<number>(0);
 
   // Speciální bomba (mezerník) s cooldownem 30 s
   const [bombCooldown, setBombCooldown] = useState<number>(0);
@@ -497,11 +498,11 @@ export function useCubesGame() {
         return;
       }
 
-      // Ukázka: dílek se cestou dolů posouvá doleva/doprava na vybrané místo (jako hráč)
+      // Ukázka: dílek se cestou dolů natáčí a posouvá na vybrané místo, tempo mírně kolísá (jako hráč)
       let nextPiece = step.piece;
-      if (gameState === 'demo' && Date.now() - lastSteerRef.current >= DEMO_STEER_MS) {
+      if (gameState === 'demo' && Date.now() >= nextSteerAtRef.current) {
         nextPiece = steerDemoPiece(step.piece, step.settled);
-        lastSteerRef.current = Date.now();
+        nextSteerAtRef.current = Date.now() + DEMO_STEER_MS + Math.random() * DEMO_STEER_JITTER_MS;
       }
 
       setFallingPiece(nextPiece);
@@ -608,7 +609,7 @@ export function useCubesGame() {
     fallingPiece,
     looseParts,
     bombCooldown,
-    tryCount,
+    finishedCount,
     particles,
     floatingScores,
     flashBoard,

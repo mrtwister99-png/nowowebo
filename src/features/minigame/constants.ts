@@ -22,7 +22,7 @@ export const GAME_DURATION_SECONDS = 60;
 export const BOMB_COOLDOWN_SECONDS = 30;
 export const HIGH_SCORES_KEY = 'loyo_tetris_scores';
 export const HIGH_SCORES_LIMIT = 8;
-export const TRIES_KEY = 'loyo_tetris_tries'; // počítadlo lidí, kteří vydrželi celou minutu
+export const FINISHED_KEY = 'loyo_tetris_finished'; // počítadlo lidí, kteří vydrželi celou minutu
 
 // Pole hry: začíná 4 sloupce široké (sloupce 4 až 7) a každých 10 s se zvětší o 2 (6, 8, 10, 12)
 export const START_MIN_COL = 4;
@@ -46,8 +46,9 @@ export const DEMO_MIN_COL = 1;
 export const DEMO_MAX_COL = 10;
 export const DEMO_MAX_HEIGHT = 14;
 
-// Ukázka: po kolika ms se dílek cestou dolů posune o sloupec k vybranému místu
+// Ukázka: dílek se cestou dolů natočí/posune každých 110 až 200 ms (náhodně, jako živý hráč)
 export const DEMO_STEER_MS = 110;
+export const DEMO_STEER_JITTER_MS = 90;
 
 // Všechny tvary pro ostrou hru
 export const PIECE_SHAPES: PieceShape[] = [

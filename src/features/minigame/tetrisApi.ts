@@ -39,10 +39,12 @@ const callRpc = async <T>(fn: string, args: Record<string, unknown> = {}): Promi
 };
 
 /** Kolik lidí zatím zkoušelo Tetris (společné číslo). */
-export const fetchTries = async (): Promise<number> => Number(await callRpc<number>('tetris_get_tries'));
+export const fetchFinished = async (): Promise<number> =>
+  Number(await callRpc<number>('tetris_get_finished'));
 
 /** Dohraná celá minuta: přičte 1 a vrátí nový společný součet. */
-export const addTry = async (): Promise<number> => Number(await callRpc<number>('tetris_add_try'));
+export const addFinished = async (): Promise<number> =>
+  Number(await callRpc<number>('tetris_add_finished'));
 
 /** Nejlepší výsledky všech hráčů (nejlepší nahoře). */
 export const fetchTopScores = async (): Promise<ScoreRecord[]> => {

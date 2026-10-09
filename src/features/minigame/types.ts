@@ -27,6 +27,7 @@ export interface FallingPiece {
   isBomb: boolean;
   color: string;
   targetCol?: number; // jen ukázka: sloupec, kam se dílek cestou dolů sám přesune
+  rotationsLeft?: [number, number][][]; // jen ukázka: natočení, která dílek cestou dolů ještě provede
 }
 
 /** Plovoucí text s body (+X) */
