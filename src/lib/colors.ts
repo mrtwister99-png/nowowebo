@@ -3,9 +3,10 @@
  * Hodnoty musí odpovídat tokenům v src/styles/tokens.css.
  * V Tailwind třídách používej tokeny (bg-loyo-blue, text-loyo-ink ...), ne tuto konstantu.
  */
-export const BRAND: Readonly<Record<'blue' | 'mustard' | 'red' | 'ink', string>> = {
+export const BRAND: Readonly<Record<'blue' | 'mustard' | 'mustardDark' | 'red' | 'ink', string>> = {
   blue: '#040b8d',
   mustard: '#cda24d',
+  mustardDark: '#8a6b28',
   red: '#ac0001',
   ink: '#18181b',
 };

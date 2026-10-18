@@ -13,7 +13,7 @@ export const ConsultationSlimBanner: React.FC<ConsultationSlimBannerProps> = ({
 }) => {
   return (
     <Section id="konzultace-banner" className="pt-0 pb-10">
-      <div className="group relative bg-white border-2 border-loyo-ink rounded-3xl p-5 sm:p-6 lg:p-7 shadow-brutal-6 hover:shadow-brutal-8 hover:-translate-y-0.5 transition-all duration-200">
+      <div className="group relative bg-white/80 border-2 border-loyo-ink rounded-3xl p-5 sm:p-6 lg:p-7 shadow-brutal-6 hover:shadow-brutal-8 hover:-translate-y-0.5 transition-all duration-200">
         {/* HLAVNÍ HORIZONTÁLNÍ ÚZKÝ ROZKLAD */}
         <div className="flex flex-col lg:flex-row items-stretch lg:items-center justify-between gap-5 sm:gap-6">
           {/* LEVÁ ČÁST: SVISLÝ / KOMPAKTNÍ NADPIS A IKONKA */}

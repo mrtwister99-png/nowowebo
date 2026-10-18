@@ -9,9 +9,11 @@
     "preview": "vite preview",
     "clean": "rm -rf .vite dist node_modules/.vite",
     "clean:win": "rmdir /s /q .vite dist node_modules\\.vite 2>nul || exit 0",
-    "lint": "tsc --noEmit",
+    "lint": "eslint .",
+    "lint:strict": "eslint . --max-warnings=0",
     "typecheck": "tsc --noEmit",
-    "check": "tsc --noEmit && vite build"
+    "check": "tsc --noEmit && vite build",
+    "prepare": "husky"
   },
   "dependencies": {
     "lucide-react": "^0.546.0",
@@ -20,19 +22,29 @@
     "react-router-dom": "^7.18.4"
   },
   "devDependencies": {
+    "@eslint/js": "^9.39.5",
     "@tailwindcss/vite": "^4.1.14",
     "@types/react": "^19.3.0",
     "@types/react-dom": "^19.3.0",
     "@vitejs/plugin-react": "^5.0.4",
     "esbuild": "^0.25.0",
+    "eslint": "^9.39.5",
+    "eslint-plugin-react-hooks": "^7.1.1",
+    "globals": "^17.13.0",
+    "husky": "^9.1.7",
+    "lint-staged": "^17.6.0",
     "tailwindcss": "^4.1.14",
     "tsx": "^4.21.0",
     "typescript": "~5.8.2",
+    "typescript-eslint": "^8.71.2",
     "vite": "^6.2.3"
   },
   "pnpm": {
     "onlyBuiltDependencies": [
       "esbuild"
     ]
+  },
+  "lint-staged": {
+    "*.{ts,tsx}": ["eslint --fix"]
   }
 }

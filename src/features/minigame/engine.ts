@@ -480,6 +480,9 @@ export const resolveBomb = (
   return { impactRow, points: destroyedCount * 50, cubes: compacted };
 };
 
+// Počítadlo pro unikátní id částic (víc výbuchů ve stejné milisekundě jinak sdílí id a klíče v Reactu)
+let particleSeq = 0;
+
 /** Částice výbuchu ve značkových barvách. */
 export const createExplosionParticles = (
   centerX: number,
@@ -494,7 +497,7 @@ export const createExplosionParticles = (
     const angle = (Math.PI * 2 * i) / count + (rand() - 0.5);
     const speed = 2.5 + rand() * 3.5;
     particles.push({
-      id: `p-${now}-${i}`,
+      id: `p-${now}-${particleSeq++}`,
       x: centerX,
       y: centerY,
       vx: Math.cos(angle) * speed,

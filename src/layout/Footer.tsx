@@ -8,6 +8,7 @@ import {
   ChevronDown,
   ExternalLink,
 } from 'lucide-react';
+import { scrollToTop } from '../lib/motion';
 
 export const Footer: React.FC = () => {
   const [isExpanded, setIsExpanded] = useState<boolean>(false);
@@ -37,10 +38,6 @@ export const Footer: React.FC = () => {
     handleScroll();
     return () => window.removeEventListener('scroll', handleScroll);
   }, [userManuallyToggled]);
-
-  const scrollToTop = () => {
-    window.scrollTo({ top: 0, behavior: 'smooth' });
-  };
 
   const handleToggle = () => {
     setUserManuallyToggled(true);

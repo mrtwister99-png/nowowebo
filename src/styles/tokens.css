@@ -47,6 +47,19 @@
   --shadow-brutal-5: 5px 5px 0px #18181b;
   --shadow-brutal-6: 6px 6px 0px #18181b;
   --shadow-brutal-8: 8px 8px 0px #18181b;
-
-  --animate-fade-in-up: fade-in-up 0.8s cubic-bezier(0.16, 1, 0.3, 1) both;
+--shadow-brutal-10: 10px 10px 0px #18181b;
+}
+@utility shadow-brutal-1 { box-shadow: var(--shadow-brutal-1); }
+@utility shadow-brutal-2 { box-shadow: var(--shadow-brutal-2); }
+@utility shadow-brutal-3 { box-shadow: var(--shadow-brutal-3); }
+@utility shadow-brutal-4 { box-shadow: var(--shadow-brutal-4); }
+@utility shadow-brutal-5 { box-shadow: var(--shadow-brutal-5); }
+@utility shadow-brutal-6 { box-shadow: var(--shadow-brutal-6); }
+@utility shadow-brutal-7 { box-shadow: var(--shadow-brutal-7); }
+@utility shadow-brutal-8 { box-shadow: var(--shadow-brutal-8); }
+@utility shadow-brutal-10 { box-shadow: var(--shadow-brutal-10); }
+@utility z-100 { z-index: 100; }
+@utility -translate-x-px { --tw-translate-x: -1px; translate: var(--tw-translate-x) var(--tw-translate-y); }
+@utility -translate-y-px { --tw-translate-y: -1px; translate: var(--tw-translate-x) var(--tw-translate-y); }
+@utility text-loyo-mustard { color: #cda24d; 
 }

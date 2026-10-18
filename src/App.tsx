@@ -3,13 +3,13 @@ import { Navigate, Route, Routes, useLocation, useNavigate, useNavigationType } 
 import { Navbar } from './layout/Navbar';
 import { HomeBody } from './features/home/HomeBody';
 import { QuestionnaireModal } from './features/inquiry/QuestionnaireModal';
-import { CursorOilBubbles } from './features/effects/CursorOilBubbles';
-import { InteractiveGridBackground } from './features/effects/InteractiveGridBackground';
+import { MatrixBackground } from './features/effects/MatrixBackground';
 import { useFaviconCubeAnimation } from './features/effects/useFaviconCubeAnimation';
 import { ServicePage } from './features/services/ServicePage';
-import { ServiceId, CursorParticleMode } from './types';
+import { ServiceId } from './types';
 import { SERVICE_IDS, SERVICE_ROUTES, SITE_NAME, SITE_URL, serviceIdFromPath } from './data/routes';
 import { SERVICES_DATA } from './data/servicesData';
+import { scrollToElement, scrollToTop } from './lib/motion';
 
 // Sekce hlavní stránky, které sleduje scroll-spy (zvýrazňuje aktivní položku v logu)
 const SPY_SECTION_IDS = [
@@ -25,24 +25,13 @@ const SPY_SECTION_IDS = [
 // Výchozí titulek stránky je z index.html
 const DEFAULT_TITLE = document.title;
 
-/** Plynule posune stránku na prvek s daným id (s odsazením o výšku fixní hlavičky). */
-function scrollToElement(id: string): boolean {
-  const el = document.getElementById(id);
-  if (!el) return false;
-  const header = document.querySelector('header');
-  const navOffset = header ? header.offsetHeight : 72;
-  const top = el.getBoundingClientRect().top + window.pageYOffset - navOffset;
-  window.scrollTo({ top: Math.max(0, top), behavior: 'smooth' });
-  return true;
-}
-
 /**
  * Posune na sekci; když prvek na stránce není (nebo jde o 'uvod'), posune nahoru.
  * Vrací id sekce pro scroll-spy, pokud jde o jednu ze sledovaných sekcí.
  */
 function scrollToSection(sectionId: string): string | null {
   if (sectionId === 'uvod' || !scrollToElement(sectionId)) {
-    window.scrollTo({ top: 0, behavior: 'smooth' });
+    scrollToTop();
     return 'uvod';
   }
   return SPY_SECTION_IDS.includes(sectionId) ? sectionId : null;
@@ -61,27 +50,6 @@ export default function App() {
   const [activeSection, setActiveSection] = useState<string>('uvod');
   const [modalOpen, setModalOpen] = useState<boolean>(false);
   const [selectedServiceForModal, setSelectedServiceForModal] = useState<ServiceId>('automation');
-  const [cursorMode, setCursorMode] = useState<CursorParticleMode>(() => {
-    try {
-      const saved = localStorage.getItem('loyo_cursor_mode');
-      if (saved === 'bubbles') return 'bubbles';
-    } catch {
-      // localStorage nedostupný (např. soukromý režim) - použije se výchozí hodnota
-    }
-    return 'none';
-  });
-
-  const handleToggleCursorMode = () => {
-    setCursorMode((prev) => {
-      const next = prev === 'bubbles' ? 'none' : 'bubbles';
-      try {
-        localStorage.setItem('loyo_cursor_mode', next);
-      } catch {
-        // uložení se nepovedlo - přepnutí funguje dál, jen se nezapamatuje
-      }
-      return next;
-    });
-  };
 
   // Přechod na stránku služby (page = id služby) nebo na hlavní stránku
   const handleNavigateToPage = (page: string) => {
@@ -168,19 +136,14 @@ export default function App() {
 
   return (
     <div className="min-h-screen bg-loyo-bg text-loyo-ink flex flex-col font-sans selection:bg-loyo-ink selection:text-white pb-12 relative">
-      {/* 3D Interactive Grid Background with LoYo Brand Colors & Cursor-Lifting Squares */}
-      <InteractiveGridBackground />
-
-      {/* Interactive cursor particles (Oil bubbles or 3 nested squares) */}
-      <CursorOilBubbles mode={cursorMode} />
+      {/* Pozadí: obrácený matrix (čtverce padají zdola nahoru), viditelné na 50 % */}
+      <MatrixBackground />
 
       {/* Na stránce služby se zobrazí horní Navbar pro snadný návrat */}
       {routeServiceId && (
         <Navbar
           activeSection={activeSection}
           currentPage={currentPage}
-          cursorMode={cursorMode}
-          onToggleCursorMode={handleToggleCursorMode}
           onOpenQuestionnaire={handleOpenQuestionnaire}
           onScrollToSection={handleScrollToSection}
           onNavigateToPage={handleNavigateToPage}
@@ -199,11 +162,9 @@ export default function App() {
               <HomeBody
                 activeSection={activeSection}
                 currentPage={currentPage}
-                cursorMode={cursorMode}
-                onToggleCursorMode={handleToggleCursorMode}
                 onOpenQuestionnaire={handleOpenQuestionnaire}
                 onNavigateToPage={handleNavigateToPage}
-                onScrollToTop={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
+                onScrollToTop={scrollToTop}
                 onOpenQuestionnaireForService={(serviceId) => {
                   setSelectedServiceForModal(serviceId);
                   setModalOpen(true);

@@ -1,7 +1,5 @@
 export type ServiceId = 'fullstack' | 'automation' | 'web-branding' | 'consultation';
 
-export type CursorParticleMode = 'bubbles' | 'none';
-
 export interface ServiceDetail {
   id: ServiceId;
   number: string;

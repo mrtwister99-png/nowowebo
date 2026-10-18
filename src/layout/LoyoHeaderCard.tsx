@@ -2,8 +2,9 @@ import React, { Suspense, lazy, useState, useEffect, useRef } from 'react';
 import { Menu, Sparkles, ArrowRight } from 'lucide-react';
 import { LoyoLogoBox } from '../components/brand/LoyoLogoBox';
 import { ZakladniKostkaLoyo90 } from '../components/brand/ZakladniKostkaLoyo90';
-import { CursorParticleMode, ServiceId } from '../types';
-import { BRAND } from '../lib/colors';
+import { ServiceId } from '../types';
+import { scrollToElement, scrollToTop, useMenuMount } from '../lib/motion';
+import { MENU_SECTIONS } from '../data/routes';
 
 // Minihra se stahuje samostatně (odděleně od hlavního balíčku), až když je potřeba
 const MiniFallingCubesInGap = lazy(() =>
@@ -15,8 +16,6 @@ const MiniFallingCubesInGap = lazy(() =>
 interface LoyoHeaderCardProps {
   activeSection: string;
   currentPage: string;
-  cursorMode?: CursorParticleMode;
-  onToggleCursorMode?: () => void;
   onOpenQuestionnaire: (serviceId?: ServiceId) => void;
   onNavigateToPage: (page: string) => void;
   onScrollToTop?: () => void;
@@ -25,8 +24,6 @@ interface LoyoHeaderCardProps {
 export const LoyoHeaderCard: React.FC<LoyoHeaderCardProps> = ({
   activeSection,
   currentPage,
-  cursorMode = 'none',
-  onToggleCursorMode,
   onOpenQuestionnaire,
   onNavigateToPage,
   onScrollToTop,
@@ -34,7 +31,7 @@ export const LoyoHeaderCard: React.FC<LoyoHeaderCardProps> = ({
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   // Menu: myší se otevírá najetím a po odjetí se zavře, dotyk a klávesnice fungují klikem
-  const [menuMounted, setMenuMounted] = useState(false); // panel zůstane v DOM do konce animace zavření
+  const menuMounted = useMenuMount(isMenuOpen); // panel zůstane v DOM do konce animace zavření
   const menuCloseTimer = useRef<number | null>(null);
   const menuPointerType = useRef('mouse');
 
@@ -52,15 +49,6 @@ export const LoyoHeaderCard: React.FC<LoyoHeaderCardProps> = ({
     if (e.pointerType !== 'mouse') return;
     menuCloseTimer.current = window.setTimeout(() => setIsMenuOpen(false), 250); // čas na přejetí z tlačítka do panelu
   };
-
-  useEffect(() => {
-    if (isMenuOpen) {
-      setMenuMounted(true);
-      return;
-    }
-    const t = window.setTimeout(() => setMenuMounted(false), 300); // délka animace zavření
-    return () => window.clearTimeout(t);
-  }, [isMenuOpen]);
 
   // Podržení loga (0,6 s): kroužek se plní, pak glitch animace a přepnutí základní <-> neonová kostka
   const [neonLogo, setNeonLogo] = useState(false);
@@ -116,6 +104,7 @@ export const LoyoHeaderCard: React.FC<LoyoHeaderCardProps> = ({
     const letters: Array<'L' | 'o1' | 'Y' | 'o2'> = ['L', 'o1', 'Y', 'o2'];
     let step = 0;
     const periodicInterval = setInterval(() => {
+      if (document.hidden) return; // skrytá záložka: kostky se nehýbou (stejně jako favicon)
       const targetLetter = letters[step % letters.length];
       triggerCubeAnim(targetLetter);
       step++;
@@ -123,44 +112,8 @@ export const LoyoHeaderCard: React.FC<LoyoHeaderCardProps> = ({
     return () => clearInterval(periodicInterval);
   }, []);
 
-  const menuItems = [
-    {
-      id: 'automatizace',
-      page: 'automation',
-      num: '01',
-      title: 'Automatizace procesů & ekosystém',
-      color: BRAND.blue,
-    },
-    {
-      id: 'fullstack',
-      page: 'fullstack',
-      num: '02',
-      title: 'Vývoj aplikací fullstack',
-      color: BRAND.mustard,
-    },
-    {
-      id: 'weby',
-      page: 'web-branding',
-      num: '03',
-      title: 'Tvorba webů, Restyling & Logo',
-      color: BRAND.red,
-    },
-    {
-      id: 'konzultace',
-      page: 'consultation',
-      num: '04',
-      title: 'Odborná osobní konzultace',
-      color: BRAND.ink,
-    },
-    { id: 'zprava', page: 'home', num: '05', title: 'Rychlá zpráva k projektu', color: '#666666' },
-    {
-      id: 'kontakty',
-      page: 'home',
-      num: '06',
-      title: 'Kontakty & Sociální sítě',
-      color: BRAND.ink,
-    },
-  ];
+  // položky menu jsou sdílené s Navbarem (src/data/routes.ts), tady jen ty, které patří do hlavičky
+  const menuItems = MENU_SECTIONS.filter((s) => s.inHeader);
 
   return (
     <div className="relative w-full select-none bg-transparent">
@@ -172,7 +125,7 @@ export const LoyoHeaderCard: React.FC<LoyoHeaderCardProps> = ({
             <button
               onClick={() => {
                 if (onScrollToTop) onScrollToTop();
-                else window.scrollTo({ top: 0, behavior: 'smooth' });
+                else scrollToTop();
               }}
               id="header-logo-cube"
               className="w-28 h-28 sm:w-32 sm:h-32 md:w-36 md:h-36 flex items-center justify-center cursor-pointer group hover:scale-105 active:scale-95 transition-all relative z-30"
@@ -241,80 +194,6 @@ export const LoyoHeaderCard: React.FC<LoyoHeaderCardProps> = ({
 
           {/* RIGHT BUTTONS */}
           <div className="flex items-center gap-2 sm:gap-3 flex-wrap justify-end">
-            {onToggleCursorMode && (
-              <div className="relative inline-flex items-center justify-center">
-                <div className="absolute -top-1 inset-x-0 h-0 pointer-events-none z-10">
-                  {cursorMode === 'bubbles' ? (
-                    <>
-                      <span className="anim-b-left1 absolute -left-1.5 w-2.5 h-2.5 rounded-full bg-loyo-blue shadow-[0_0_6px_rgba(4,11,141,0.6)] border border-white/80" />
-                      <span className="anim-b-left2 absolute left-0.5 w-3 h-3 rounded-full bg-loyo-mustard shadow-[0_0_6px_rgba(205,162,77,0.6)] border border-white/80" />
-                      <span className="anim-b-center1 absolute left-4 w-2 h-2 rounded-full bg-loyo-red shadow-[0_0_6px_rgba(172,0,1,0.6)] border border-white/80" />
-                      <span className="anim-b-center2 absolute left-5.5 w-3.5 h-3.5 rounded-full bg-loyo-blue shadow-[0_0_8px_rgba(4,11,141,0.7)] border border-white/90" />
-                      <span className="anim-b-right1 absolute left-8 w-2.5 h-2.5 rounded-full bg-loyo-mustard shadow-[0_0_6px_rgba(205,162,77,0.6)] border border-white/80" />
-                      <span className="anim-b-right2 absolute left-9.5 w-2 h-2 rounded-full bg-loyo-red shadow-[0_0_5px_rgba(172,0,1,0.6)] border border-white/80" />
-                    </>
-                  ) : (
-                    <>
-                      <span className="anim-b-left1 absolute -left-1.75 w-2 h-2 rounded-full bg-loyo-mustard shadow-[0_0_5px_rgba(205,162,77,0.5)] border border-white/70" />
-                      <span className="anim-b-left2 absolute left-px w-3.5 h-3.5 rounded-full bg-loyo-blue shadow-[0_0_6px_rgba(4,11,141,0.5)] border border-white/70" />
-                      <span className="anim-b-center1 absolute left-3.75 w-2.5 h-2.5 rounded-full bg-loyo-red shadow-[0_0_5px_rgba(172,0,1,0.5)] border border-white/70" />
-                      <span className="anim-b-center2 absolute left-5.25 w-3 h-3 rounded-full bg-loyo-mustard shadow-[0_0_6px_rgba(205,162,77,0.5)] border border-white/70" />
-                      <span className="anim-b-right1 absolute left-7.75 w-2 h-2 rounded-full bg-loyo-blue shadow-[0_0_5px_rgba(4,11,141,0.5)] border border-white/70" />
-                      <span className="anim-b-right2 absolute left-9.25 w-3 h-3 rounded-full bg-loyo-red shadow-[0_0_6px_rgba(172,0,1,0.5)] border border-white/70" />
-                    </>
-                  )}
-                </div>
-
-                <button
-                  onClick={onToggleCursorMode}
-                  id="header-bubbles-icon-button"
-                  className={`h-10 sm:h-11 w-10 sm:w-11 rounded-xl sm:rounded-2xl border-2 flex items-center justify-center cursor-pointer transition-all shadow-brutal-3 hover:-translate-y-0.5 hover:shadow-brutal-4 active:translate-x-0.5 active:translate-y-0.5 active:shadow-brutal-1 group relative ${
-                    cursorMode === 'bubbles'
-                      ? 'bg-loyo-blue border-loyo-ink text-white'
-                      : 'bg-white border-loyo-ink text-loyo-ink hover:bg-neutral-50'
-                  }`}
-                  title={cursorMode === 'bubbles' ? 'Bublinky: AKTIVNÍ' : 'Bublinky: VYPNUTO'}
-                >
-                  <svg
-                    className={`w-5 h-5 transition-transform duration-300 ${cursorMode === 'bubbles' ? 'scale-110' : 'group-hover:scale-105'}`}
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    stroke="currentColor"
-                    strokeWidth="2"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                  >
-                    <circle
-                      cx="9"
-                      cy="13"
-                      r="5"
-                      fill={
-                        cursorMode === 'bubbles' ? 'rgba(255,255,255,0.2)' : 'rgba(4,11,141,0.08)'
-                      }
-                    />
-                    <circle
-                      cx="16"
-                      cy="9"
-                      r="3.5"
-                      fill={
-                        cursorMode === 'bubbles'
-                          ? 'rgba(255,255,255,0.25)'
-                          : 'rgba(205,162,77,0.12)'
-                      }
-                    />
-                    <circle
-                      cx="14"
-                      cy="17"
-                      r="2"
-                      fill={
-                        cursorMode === 'bubbles' ? 'rgba(255,255,255,0.3)' : 'rgba(172,0,1,0.10)'
-                      }
-                    />
-                  </svg>
-                </button>
-              </div>
-            )}
-
             {/* MENU: po najetí myší vyjede pod tlačítkem seznam sekcí, dotyk a klávesnice fungují klikem */}
             <div
               className="relative"
@@ -352,20 +231,25 @@ export const LoyoHeaderCard: React.FC<LoyoHeaderCardProps> = ({
                     <div
                       className={`bg-white border-2 border-loyo-ink rounded-2xl shadow-brutal-6 overflow-hidden p-3 flex flex-col gap-2.5 ${
                         isMenuOpen
-                          ? 'animate-[slideDown_0.35s_cubic-bezier(0.16,1,0.3,1)]'
-                          : 'animate-[slideUp_0.25s_ease-in_forwards]'
+                          ? 'menu-enter'
+                          : 'menu-exit'
                       }`}
                     >
-                      {menuItems.map((item) => (
+                      {menuItems.map((item, i) => (
                         <button
                           key={item.id}
+                          /* stagger: při otevření shora dolů, při zavření obráceně; 'backwards' = před startem skryté, po doběhu nechá hover efekty volné */
+                          style={{
+                            animation: isMenuOpen
+                              ? `menuItemIn 0.25s ease-out ${80 + i * 50}ms backwards`
+                              : `menuItemOut 0.15s ease-in ${(menuItems.length - 1 - i) * 30}ms forwards`,
+                          }}
                           onClick={() => {
                             setIsMenuOpen(false);
                             if (item.page !== 'home') {
                               onNavigateToPage(item.page);
                             } else {
-                              const el = document.getElementById(item.id);
-                              if (el) el.scrollIntoView({ behavior: 'smooth' });
+                              scrollToElement(item.id); // s odsazením o výšku fixní hlavičky
                             }
                           }}
                           className="w-full p-3 bg-white hover:bg-neutral-50 border-2 border-loyo-ink rounded-xl shadow-brutal-3 hover:-translate-y-0.5 hover:shadow-brutal-4 active:translate-x-0.5 active:translate-y-0.5 active:shadow-brutal-1 flex items-center justify-between gap-3 text-left transition-all cursor-pointer group"

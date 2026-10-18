@@ -4,7 +4,7 @@ import tseslint from 'typescript-eslint';
 import reactHooks from 'eslint-plugin-react-hooks';
 
 export default [
-  { ignores: ['dist'] },
+  { ignores: ['dist', '.vercel', '.vite', '.cache', '.turbo'] },
   js.configs.recommended,
   ...tseslint.configs.recommended,
   {

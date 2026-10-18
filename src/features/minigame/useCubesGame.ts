@@ -63,6 +63,14 @@ export function useCubesGame() {
   const [score, setScore] = useState<number>(0);
   const [endReason, setEndReason] = useState<'gameover' | 'timeout'>('timeout');
 
+  // Skrytá záložka = pauza hry: odpočet, cooldown bomby i pád se zastaví a po návratu pokračují
+  const [isPaused, setIsPaused] = useState<boolean>(() => document.hidden);
+  useEffect(() => {
+    const onVisibility = () => setIsPaused(document.hidden);
+    document.addEventListener('visibilitychange', onVisibility);
+    return () => document.removeEventListener('visibilitychange', onVisibility);
+  }, []);
+
   // Blikání řádků před výbuchem (1x pro 1 řádek, 2x pro 2 řádky atd.)
   const [flashingLines, setFlashingLines] = useState<FlashingLines | null>(null);
   const isProcessingLineClearRef = useRef<boolean>(false);
@@ -208,7 +216,7 @@ export function useCubesGame() {
 
   // Odpočítávání času a cooldownu bomby během hry
   useEffect(() => {
-    if (gameState !== 'playing') return;
+    if (gameState !== 'playing' || isPaused) return;
 
     const secondTimer = setInterval(() => {
       setTimeLeft((prev) => {
@@ -226,7 +234,7 @@ export function useCubesGame() {
     }, 1000);
 
     return () => clearInterval(secondTimer);
-  }, [gameState]);
+  }, [gameState, isPaused]);
 
   // Aktivní sloupce se s časem rozšiřují
   useEffect(() => {
@@ -484,10 +492,8 @@ export function useCubesGame() {
   // Fyzika pádu (ukázka i hra): hlavní dílek i odpadlé části padají stejnou rychlostí.
   // Při dopadu se usadí jen sloupce, které se o něco opřely, přečnívající padají dál samy.
   useEffect(() => {
-    if (gameState !== 'playing' && gameState !== 'demo') return;
+    if ((gameState !== 'playing' && gameState !== 'demo') || isPaused) return;
     if (!fallingPiece && looseParts.length === 0) return;
-
-    let animId: number;
 
     const tick = () => {
       // Držená šipka dolů: pád je SOFT_DROP_MULTIPLIER krát rychlejší (jen v ostré hře)
@@ -568,13 +574,14 @@ export function useCubesGame() {
       // Jinak se jen posunuly: po změně stavu se efekt spustí znovu a naplánuje další snímek
     };
 
-    animId = requestAnimationFrame(tick);
+    const animId = requestAnimationFrame(tick);
     return () => cancelAnimationFrame(animId);
   }, [
     activeMaxCol,
     activeMinCol,
     fallingPiece,
     gameState,
+    isPaused,
     looseParts,
     settledCubes,
     showFloatingScore,

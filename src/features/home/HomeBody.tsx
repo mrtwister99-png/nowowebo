@@ -4,13 +4,11 @@ import { ThreeServiceBanners } from './ThreeServiceBanners';
 import { ConsultationSlimBanner } from './ConsultationSlimBanner';
 import { PoProjektu } from './PoProjektu';
 import { Footer } from '../../layout/Footer';
-import { CursorParticleMode, ServiceId } from '../../types';
+import { ServiceId } from '../../types';
 
 interface HomeBodyProps {
   activeSection: string;
   currentPage: string;
-  cursorMode?: CursorParticleMode;
-  onToggleCursorMode?: () => void;
   onOpenQuestionnaire: (serviceId?: ServiceId) => void;
   onNavigateToPage: (page: string) => void;
   onScrollToTop?: () => void;
@@ -20,8 +18,6 @@ interface HomeBodyProps {
 export const HomeBody: React.FC<HomeBodyProps> = ({
   activeSection,
   currentPage,
-  cursorMode = 'none',
-  onToggleCursorMode,
   onOpenQuestionnaire,
   onNavigateToPage,
   onScrollToTop,
@@ -33,8 +29,6 @@ export const HomeBody: React.FC<HomeBodyProps> = ({
       <LoyoHeaderCard
         activeSection={activeSection}
         currentPage={currentPage}
-        cursorMode={cursorMode}
-        onToggleCursorMode={onToggleCursorMode}
         onOpenQuestionnaire={onOpenQuestionnaire}
         onNavigateToPage={onNavigateToPage}
         onScrollToTop={onScrollToTop}

@@ -43,7 +43,11 @@ export function useFaviconCubeAnimation(enabled = true, intervalMs = 900) {
       ctx.shadowBlur = 6;
       ctx.fillText(face.text, 16, 16);
       ctx.shadowBlur = 0;
-      try { link.href = canvas.toDataURL('image/png'); } catch {}
+      try {
+        link.href = canvas.toDataURL('image/png');
+      } catch {
+        // canvas nejde exportovat: favicon se tentokrát nezmění
+      }
     };
 
     const animate = () => {

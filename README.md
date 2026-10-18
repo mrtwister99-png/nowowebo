@@ -50,13 +50,13 @@ Při výpadku serveru nebo bez nastavených proměnných hra funguje dál a zobr
 src/
   App.tsx, main.tsx, types.ts
   layout/            Navbar, hlavička (LoyoHeaderCard), patička (Footer)
-  components/ui/     základní komponenty (Button, Card, Badge, Section, MagneticButton)
+  components/ui/     základní komponenty (Button, Card, Badge, Section)
   components/brand/  logo (3D kostka)
   features/home/     hlavní stránka (HomeBody, banery služeb, Po projektu)
   features/services/ stránky služeb (šablona + obsah v servicePages.ts)
   features/inquiry/  dotazníky a formuláře
   features/minigame/ minihra v hlavičce (načítá se líně)
-  features/effects/  animované pozadí, kurzor, favicon
+  features/effects/  animované pozadí (matrix), favicon
   data/              adresy služeb (routes.ts) a data služeb
   lib/, styles/      pomocné funkce, barvy a design tokeny
 supabase/
@@ -89,6 +89,16 @@ supabase/
 - Stejné barvy pro JavaScript (canvas, SVG) jsou v `src/lib/colors.ts`. Při změně barvy uprav oba soubory.
 - Animace (keyframes) jsou v `src/index.css`.
 - Základní komponenty jsou v `src/components/ui/` (`Button`, `Card`, `Badge`, `Section`).
+
+## Animace menu a omezený pohyb
+
+- Menu v hlavičce i v Navbaru se otevírá a zavírá pružinou (`.menu-enter` / `.menu-exit` v `src/index.css`), položky naskakují postupně (`menuItemIn` / `menuItemOut`, zpoždění se počítá inline v TSX).
+- Dvě CSS proměnné v `:root` v `src/index.css` řídí chování na jednom místě:
+  - `--menu-close-ms` je délka zavření v milisekundách (výchozí `450`). Čte ji CSS i hook `useMenuMount`, který drží panel v DOM do konce animace.
+  - `--menu-overshoot` je překmit pružiny (`1.25` na počítači, `1.12` na telefonu pod 640 px).
+- Pomocné funkce a hook jsou v `src/lib/motion.ts`: `useMenuMount`, `smoothBehavior` (plynulé nebo okamžité rolování), `scrollToTop`, `scrollToElement` (s odsazením o výšku hlavičky). Ve zdrojácích nepoužívej přímo `behavior: 'smooth'`.
+- Při zapnutém `prefers-reduced-motion` v systému se vypnou animace menu, všechny ostatní animace a přechody doběhnou okamžitě (blok `@media (prefers-reduced-motion: reduce)` na konci menu animací v `index.css`), rolování je okamžité a Matrix pozadí zůstane stát jako jeden snímek.
+- Matrix pozadí (`src/features/effects/MatrixBackground.tsx`) se navíc zastaví na skryté záložce a reaguje na přepnutí nastavení systému i bez znovunačtení stránky.
 
 ## Nasazení (Vercel)
 

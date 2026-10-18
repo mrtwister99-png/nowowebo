@@ -1,15 +1,21 @@
 import React, { useState, useEffect } from 'react';
 import { Menu, X, ChevronDown, ArrowLeft } from 'lucide-react';
-import { ServiceId, CursorParticleMode } from '../types';
+import { ServiceId } from '../types';
 import { LoyoLogoBox } from '../components/brand/LoyoLogoBox';
-import { MagneticButton } from '../components/ui/MagneticButton';
 import { BRAND } from '../lib/colors';
+import { scrollToTop, useMenuMount } from '../lib/motion';
+import { MENU_SECTIONS, type MenuSection } from '../data/routes';
+
+// Vzhled tlačítek menu podle MenuSection.navStyle (data položek jsou v src/data/routes.ts)
+const NAV_BTN_STYLE: Record<MenuSection['navStyle'], string> = {
+  accent: 'border-2 border-loyo-ink font-semibold shadow-brutal-2',
+  dot: 'border border-loyo-line hover:border-loyo-ink font-semibold text-loyo-ink',
+  plain: 'border border-loyo-line hover:border-loyo-ink font-medium',
+};
 
 interface NavbarProps {
   activeSection: string;
   currentPage: string;
-  cursorMode?: CursorParticleMode;
-  onToggleCursorMode?: () => void;
   onOpenQuestionnaire: (serviceId?: ServiceId) => void;
   onScrollToSection: (sectionId: string) => void;
   onNavigateToPage: (page: string) => void;
@@ -19,13 +25,12 @@ interface NavbarProps {
 export const Navbar: React.FC<NavbarProps> = ({
   activeSection,
   currentPage = 'home',
-  cursorMode = 'bubbles',
-  onToggleCursorMode,
   onScrollToSection,
   onNavigateToPage,
   onBackToHome,
 }) => {
   const [menuOpen, setMenuOpen] = useState(false);
+  const menuMounted = useMenuMount(menuOpen); // panel zůstane v DOM do konce animace zavření
   const [dotaznikDropdownOpen, setDotaznikDropdownOpen] = useState(false);
 
   const sectionInfo: Record<string, { label: string; color: string; tag: string }> = {
@@ -88,7 +93,7 @@ export const Navbar: React.FC<NavbarProps> = ({
                 } else {
                   onScrollToSection('uvod');
                 }
-                window.scrollTo({ top: 0, behavior: 'smooth' });
+                scrollToTop();
               }}
               className="flex items-center gap-3 cursor-pointer group text-left"
               title="LoYo PREMIUM DEVELOPER - Hlavní stránka"
@@ -126,77 +131,6 @@ export const Navbar: React.FC<NavbarProps> = ({
                 <ArrowLeft className="w-3.5 h-3.5" />
                 <span className="hidden sm:inline">Zpět</span>
               </button>
-            )}
-
-            {onToggleCursorMode && (
-              <MagneticButton
-                onClick={onToggleCursorMode}
-                magneticStrength={0.28}
-                showCornerSquares={true}
-                squareColor={cursorMode === 'bubbles' ? BRAND.blue : '#888888'}
-                className={`h-9 sm:h-10 px-2.5 sm:px-3 border flex items-center justify-center gap-1.5 cursor-pointer transition-all ${
-                  cursorMode === 'bubbles'
-                    ? 'bg-white border-loyo-blue text-loyo-blue shadow-sm ring-1 ring-loyo-blue/25'
-                    : 'bg-loyo-bg hover:bg-[#ffffff] border-loyo-line-field text-loyo-muted hover:text-loyo-ink'
-                }`}
-                title={cursorMode === 'bubbles' ? 'Bublinky ZAPNUTÉ' : 'Bublinky VYPNUTÉ'}
-              >
-                <div className="flex items-center gap-1.5">
-                  <svg className="w-4 h-4" viewBox="0 0 24 24" fill="none">
-                    <circle
-                      cx="5.5"
-                      cy="15.5"
-                      r="4.2"
-                      fill={BRAND.blue}
-                      fillOpacity={cursorMode === 'bubbles' ? '0.95' : '0.35'}
-                      stroke={BRAND.blue}
-                      strokeWidth="1.2"
-                    />
-                    <circle
-                      cx="4.2"
-                      cy="14.2"
-                      r="1.1"
-                      fill="white"
-                      fillOpacity={cursorMode === 'bubbles' ? '0.95' : '0.6'}
-                    />
-                    <circle
-                      cx="12.5"
-                      cy="10"
-                      r="3.4"
-                      fill={BRAND.mustard}
-                      fillOpacity={cursorMode === 'bubbles' ? '0.95' : '0.35'}
-                      stroke={BRAND.mustard}
-                      strokeWidth="1.2"
-                    />
-                    <circle
-                      cx="11.5"
-                      cy="9"
-                      r="0.9"
-                      fill="white"
-                      fillOpacity={cursorMode === 'bubbles' ? '0.95' : '0.6'}
-                    />
-                    <circle
-                      cx="18.5"
-                      cy="5.5"
-                      r="2.6"
-                      fill={BRAND.red}
-                      fillOpacity={cursorMode === 'bubbles' ? '0.95' : '0.35'}
-                      stroke={BRAND.red}
-                      strokeWidth="1.2"
-                    />
-                    <circle
-                      cx="17.7"
-                      cy="4.7"
-                      r="0.7"
-                      fill="white"
-                      fillOpacity={cursorMode === 'bubbles' ? '0.95' : '0.6'}
-                    />
-                  </svg>
-                  <span className="hidden md:inline font-mono text-[10px] uppercase font-semibold tracking-wider">
-                    {cursorMode === 'bubbles' ? 'Bublinky ON' : 'Bublinky'}
-                  </span>
-                </div>
-              </MagneticButton>
             )}
 
             <div className="relative" id="nav-menu-container">
@@ -316,10 +250,12 @@ export const Navbar: React.FC<NavbarProps> = ({
       </header>
 
       {/* NOVÉ MENU PRO NAVBAR - VYSUNE SE DOLŮ */}
-      {menuOpen && (
+      {(menuOpen || menuMounted) && (
         <>
           <div
-            className="fixed inset-0 z-40 bg-black/10 backdrop-blur-[1px]"
+            className={`fixed inset-0 z-40 bg-black/10 backdrop-blur-[1px] ${
+              menuOpen ? 'menu-backdrop-in' : 'menu-backdrop-out pointer-events-none'
+            }`}
             onClick={() => setMenuOpen(false)}
           />
           <div
@@ -327,7 +263,11 @@ export const Navbar: React.FC<NavbarProps> = ({
             className="fixed top-18 sm:top-20 left-0 right-0 z-60 px-4 sm:px-6 lg:px-8 pointer-events-none"
           >
             <div className="max-w-7xl mx-auto pointer-events-auto">
-              <div className="bg-loyo-bg border-2 border-loyo-ink rounded-2xl shadow-brutal-6 overflow-hidden animate-[slideDownNav_0.35s_cubic-bezier(0.16,1,0.3,1)] origin-top">
+              <div
+                className={`bg-loyo-bg border-2 border-loyo-ink rounded-2xl shadow-brutal-6 overflow-hidden ${
+                  menuOpen ? 'menu-enter' : 'menu-exit'
+                }`}
+              >
                 <div className="px-4 sm:px-5 py-3 bg-white border-b-2 border-loyo-ink flex items-center justify-between">
                   <span className="font-heading font-black text-sm uppercase tracking-wide">
                     Menu • Sekce
@@ -338,88 +278,37 @@ export const Navbar: React.FC<NavbarProps> = ({
                 </div>
 
                 <div className="p-2 grid grid-cols-1 sm:grid-cols-2 gap-2">
-                  <button
-                    onClick={() => {
-                      onScrollToSection('uvod');
-                      setMenuOpen(false);
-                    }}
-                    className="w-full text-left px-3 py-2.5 bg-white hover:bg-neutral-50 border border-loyo-line hover:border-loyo-ink flex items-center justify-between cursor-pointer font-medium transition-colors rounded-xl"
-                  >
-                    <span>Úvod & Představení</span>
-                    <span className="text-[10px] font-mono text-loyo-faint">START</span>
-                  </button>
-                  <button
-                    onClick={() => {
-                      onScrollToSection('automatizace');
-                      setMenuOpen(false);
-                    }}
-                    className="w-full text-left px-3 py-2.5 bg-white hover:bg-neutral-50 border-2 border-loyo-ink flex items-center justify-between cursor-pointer font-semibold text-loyo-blue transition-colors rounded-xl shadow-brutal-2"
-                  >
-                    <span className="flex items-center gap-2">
-                      <span className="w-2 h-2 bg-loyo-blue rounded-xs" />
-                      01. Automatizace
-                    </span>
-                    <span className="text-[10px] font-mono">Modrá</span>
-                  </button>
-                  <button
-                    onClick={() => {
-                      onScrollToSection('fullstack');
-                      setMenuOpen(false);
-                    }}
-                    className="w-full text-left px-3 py-2.5 bg-white hover:bg-neutral-50 border-2 border-loyo-ink flex items-center justify-between cursor-pointer font-semibold text-loyo-mustard-dark transition-colors rounded-xl shadow-brutal-2"
-                  >
-                    <span className="flex items-center gap-2">
-                      <span className="w-2 h-2 bg-loyo-mustard rounded-xs" />
-                      02. Aplikace
-                    </span>
-                    <span className="text-[10px] font-mono">Zlatá</span>
-                  </button>
-                  <button
-                    onClick={() => {
-                      onScrollToSection('weby');
-                      setMenuOpen(false);
-                    }}
-                    className="w-full text-left px-3 py-2.5 bg-white hover:bg-neutral-50 border-2 border-loyo-ink flex items-center justify-between cursor-pointer font-semibold text-loyo-red transition-colors rounded-xl shadow-brutal-2"
-                  >
-                    <span className="flex items-center gap-2">
-                      <span className="w-2 h-2 bg-loyo-red rounded-xs" />
-                      03. Tvorba
-                    </span>
-                    <span className="text-[10px] font-mono">Červená</span>
-                  </button>
-                  <button
-                    onClick={() => {
-                      onScrollToSection('konzultace');
-                      setMenuOpen(false);
-                    }}
-                    className="w-full text-left px-3 py-2.5 bg-white hover:bg-neutral-50 border border-loyo-line hover:border-loyo-ink flex items-center justify-between cursor-pointer font-semibold text-loyo-ink transition-colors rounded-xl"
-                  >
-                    <span className="flex items-center gap-2">
-                      <span className="w-2 h-2 bg-loyo-ink rounded-xs" />
-                      04. Konzultace
-                    </span>
-                    <span className="text-[10px] font-mono">1-on-1</span>
-                  </button>
-                  <button
-                    onClick={() => {
-                      onScrollToSection('zprava');
-                      setMenuOpen(false);
-                    }}
-                    className="w-full text-left px-3 py-2.5 bg-white hover:bg-neutral-50 border border-loyo-line hover:border-loyo-ink flex items-center justify-between cursor-pointer font-medium transition-colors rounded-xl"
-                  >
-                    <span>05. Rychlá zpráva</span>
-                    <span className="text-[10px] font-mono text-loyo-faint">Zpráva</span>
-                  </button>
-                  <button
-                    onClick={() => {
-                      onScrollToSection('kontakty');
-                      setMenuOpen(false);
-                    }}
-                    className="w-full sm:col-span-2 text-left px-3 py-2.5 bg-white hover:bg-neutral-50 border border-loyo-line hover:border-loyo-ink flex items-center justify-between cursor-pointer font-medium transition-colors rounded-xl"
-                  >
-                    <span>06. Kontakty</span>
-                    <span className="text-[10px] font-mono text-loyo-faint">Info</span>
-                  </button>
+                  {MENU_SECTIONS.map((item, i) => (
+                    <button
+                      key={item.id}
+                      onClick={() => {
+                        onScrollToSection(item.id);
+                        setMenuOpen(false);
+                      }}
+                      /* stagger: při otevření shora dolů, při zavření obráceně (stejně jako v hlavičce) */
+                      style={{
+                        color: item.textColor,
+                        animation: menuOpen
+                          ? `menuItemIn 0.25s ease-out ${80 + i * 50}ms backwards`
+                          : `menuItemOut 0.15s ease-in ${(MENU_SECTIONS.length - 1 - i) * 30}ms forwards`,
+                      }}
+                      className={`w-full text-left px-3 py-2.5 bg-white hover:bg-neutral-50 flex items-center justify-between cursor-pointer transition-colors rounded-xl ${NAV_BTN_STYLE[item.navStyle]} ${
+                        i === MENU_SECTIONS.length - 1 ? 'sm:col-span-2' : '' // poslední položka přes celou šířku
+                      }`}
+                    >
+                      {item.navStyle !== 'plain' ? (
+                        <span className="flex items-center gap-2">
+                          <span className="w-2 h-2 rounded-xs" style={{ backgroundColor: item.color }} />
+                          {item.label}
+                        </span>
+                      ) : (
+                        <span>{item.label}</span>
+                      )}
+                      <span className={`text-[10px] font-mono ${item.navStyle === 'plain' ? 'text-loyo-faint' : ''}`}>
+                        {item.tag}
+                      </span>
+                    </button>
+                  ))}
                 </div>
               </div>
             </div>
