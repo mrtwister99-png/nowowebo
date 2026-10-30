@@ -22,7 +22,11 @@ const SITE_BG_FALLBACK: RGB = [237, 237, 237]; // #EDEDED = --color-loyo-bg
 
 const ANGLE = (-7.77 * Math.PI) / 180; // náklon
 const SCALE = 1.12;
-const COL_GAP = 18; // rozteč sloupců
+const COL_GAP = 18; // rozteč sloupců (počítač)
+const COL_GAP_MOBILE = 32; // telefon: řidší sloupce
+const GLITCH_RADIUS = 180; // dosah glitche kolem kurzoru (počítač)
+const GLITCH_RADIUS_MOBILE = 90; // telefon: menší dosah
+const GLITCH_AMP_MOBILE = 0.45; // telefon: slabší vychylování (1 = jako na počítači)
 const ROW_H = 20; // výška řádku
 const FONT_PX = 14;
 const BUCKETS = 40; // počet odstínů mezi hlavou a ocasem
@@ -61,6 +65,9 @@ export const MatrixBackground: React.FC = () => {
     if (!ctx) return;
 
     const coarse = window.matchMedia('(pointer: coarse)').matches; // telefon / tablet
+    const colGap = coarse ? COL_GAP_MOBILE : COL_GAP;
+    const glitchR = coarse ? GLITCH_RADIUS_MOBILE : GLITCH_RADIUS;
+    const glitchAmp = coarse ? GLITCH_AMP_MOBILE : 1;
     const reducedQuery = window.matchMedia('(prefers-reduced-motion: reduce)');
     let reduced = reducedQuery.matches; // omezený pohyb: jen jeden statický snímek (mění se i za běhu)
 
@@ -169,9 +176,9 @@ export const MatrixBackground: React.FC = () => {
       hy = ((W / 2) * Math.abs(sinA) + (H / 2) * Math.abs(cosA)) / SCALE + 20;
 
       buildAtlas();
-      const count = Math.ceil((2 * hx) / COL_GAP) + 2;
+      const count = Math.ceil((2 * hx) / colGap) + 2;
       columns = Array.from({ length: count }, (_, i) =>
-        newColumn(-hx + i * COL_GAP + (Math.random() * 4 - 2)),
+        newColumn(-hx + i * colGap + (Math.random() * 4 - 2)),
       );
     };
 
@@ -250,7 +257,7 @@ export const MatrixBackground: React.FC = () => {
           }
         }
 
-        const near = glitchOn && Math.abs(col.x - mx) < 220;
+        const near = glitchOn && Math.abs(col.x - mx) < glitchR + 40;
         const shiftY = parallax * (0.2 + col.speed * 0.1);
 
         for (let q = 0; q < col.length; q++) {
@@ -265,13 +272,14 @@ export const MatrixBackground: React.FC = () => {
 
           if (near) {
             const d = Math.hypot(col.x - mx, y - my);
-            if (d < 180) {
-              // glitch rádius 180 px
-              dist = 1 - d / 180;
+            if (d < glitchR) {
+              // glitch rádius (na telefonu menší)
+              dist = 1 - d / glitchR;
               offX =
-                Math.sin(y * 0.045 + time * 0.008 + col.phase) * dist * 22 +
-                (Math.random() - 0.5) * dist * 16;
-              offY = Math.cos(y * 0.03 + time * 0.012) * dist * 4;
+                (Math.sin(y * 0.045 + time * 0.008 + col.phase) * dist * 22 +
+                  (Math.random() - 0.5) * dist * 16) *
+                glitchAmp;
+              offY = Math.cos(y * 0.03 + time * 0.012) * dist * 4 * glitchAmp;
               col.timers[q] += (dist * 4 + 0.5) * step;
               if (col.timers[q] > 6 + Math.random() * 8) {
                 col.timers[q] = 0;
@@ -294,7 +302,7 @@ export const MatrixBackground: React.FC = () => {
           const gx = col.x + offX - half;
           const gy = y + offY - half;
 
-          if (dist > 0.4) {
+          if (!coarse && dist > 0.4) {
             // záře kolem kurzoru
             ctx.globalAlpha = alpha * 0.18 * dist;
             ctx.drawImage(
@@ -322,7 +330,7 @@ export const MatrixBackground: React.FC = () => {
             spriteSize,
             spriteSize,
           );
-          if (dist > 0.5 && q % 3 === 0) {
+          if (!coarse && dist > 0.5 && q % 3 === 0) {
             // jiskřičky
             ctx.globalAlpha = 0.06 * dist;
             ctx.fillStyle = t < 0.08 ? headCss : bucketCss[bucket];

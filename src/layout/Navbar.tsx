@@ -1,10 +1,14 @@
 import React, { useState, useEffect } from 'react';
-import { Menu, X, ChevronDown, ArrowLeft } from 'lucide-react';
+import { Menu, X, ChevronDown, ArrowLeft, Download } from 'lucide-react';
 import { ServiceId } from '../types';
 import { LoyoLogoBox } from '../components/brand/LoyoLogoBox';
 import { BRAND } from '../lib/colors';
 import { scrollToTop, useMenuMount } from '../lib/motion';
 import { MENU_SECTIONS, type MenuSection } from '../data/routes';
+
+// Soubor ke stažení leží ve složce public/ (na webu je dostupný jako /ho.zip).
+// Kdyby se zip jmenoval jinak, stačí přepsat jen tady.
+const ZIP_NAME = 'ho.zip';
 
 // Vzhled tlačítek menu podle MenuSection.navStyle (data položek jsou v src/data/routes.ts)
 const NAV_BTN_STYLE: Record<MenuSection['navStyle'], string> = {
@@ -309,6 +313,18 @@ export const Navbar: React.FC<NavbarProps> = ({
                       </span>
                     </button>
                   ))}
+                </div>
+
+                {/* Tlačítko ke stažení zipu úplně dole v menu */}
+                <div className="p-2 pt-0">
+                  <a
+                    href={`/${ZIP_NAME}`}
+                    download={ZIP_NAME}
+                    className="w-full px-3 py-2.5 bg-loyo-ink hover:bg-loyo-blue text-white rounded-xl border-2 border-loyo-ink text-xs font-bold uppercase tracking-wider flex items-center justify-center gap-2 cursor-pointer transition-colors"
+                  >
+                    <Download className="w-4 h-4" />
+                    <span>Stáhnout {ZIP_NAME}</span>
+                  </a>
                 </div>
               </div>
             </div>
