@@ -157,6 +157,8 @@ export function useCubesGame() {
   const softDropRef = useRef<boolean>(false);
   // Od kdy smí dílek v ukázce udělat další krok (natočení nebo posun); čas se při každém kroku losuje
   const nextSteerAtRef = useRef<number>(0);
+  // Čas předchozího snímku pádu (0 = nic nepadalo); z něj se počítá, o kolik se dílek posune
+  const lastTickRef = useRef<number>(0);
 
   // Speciální bomba (mezerník) s cooldownem 30 s
   const [bombCooldown, setBombCooldown] = useState<number>(0);
@@ -492,17 +494,30 @@ export function useCubesGame() {
   // Fyzika pádu (ukázka i hra): hlavní dílek i odpadlé části padají stejnou rychlostí.
   // Při dopadu se usadí jen sloupce, které se o něco opřely, přečnívající padají dál samy.
   useEffect(() => {
-    if ((gameState !== 'playing' && gameState !== 'demo') || isPaused) return;
-    if (!fallingPiece && looseParts.length === 0) return;
+    if ((gameState !== 'playing' && gameState !== 'demo') || isPaused) {
+      lastTickRef.current = 0;
+      return;
+    }
+    if (!fallingPiece && looseParts.length === 0) {
+      lastTickRef.current = 0;
+      return;
+    }
 
-    const tick = () => {
+    const tick = (ts: number) => {
+      // Rychlost pádu je daná časem, ne počtem snímků: na displeji se 144 Hz padá stejně rychle jako na 60 Hz
+      // (dřív na rychlém displeji ukázka padala moc rychle, dílky nestihly doletět na svoje místo
+      // a hromadily se v jednom sloupci). Delší prodlevu (např. přepnutá záložka) omezí strop 50 ms.
+      const frameMs = lastTickRef.current ? Math.min(ts - lastTickRef.current, 50) : 1000 / 60;
+      lastTickRef.current = ts;
+      const frameScale = frameMs / (1000 / 60);
+
       // Držená šipka dolů: pád je SOFT_DROP_MULTIPLIER krát rychlejší (jen v ostré hře)
       const speedBoost = gameState === 'playing' && softDropRef.current ? SOFT_DROP_MULTIPLIER : 1;
       const step = stepFalling(
         settledCubes,
         looseParts,
         fallingPiece,
-        getFallSpeed(gameState, timeLeft) * speedBoost,
+        getFallSpeed(gameState, timeLeft) * speedBoost * frameScale,
         Date.now(),
       );
 
@@ -555,14 +570,9 @@ export function useCubesGame() {
         triggerLineClearSequence(step.settled, minC, maxC, (afterCubes) => {
           if (gameState === 'demo') {
             // Ukázka se nikdy nezasekne: při výšce DEMO_MAX_HEIGHT se odpaří spodní řádek
+            // (spodní řádek zmizí bez výbuchu, výbuchy jsou jen u plných řádků)
             const cleanup = demoOverflowCleanup(afterCubes);
-            if (cleanup) {
-              cleanup.explodedCubes.forEach((b) => {
-                const { x, y } = cellCenter(b.col, b.row);
-                triggerExplosion(x, y, 6);
-              });
-              setSettledCubes(cleanup.cubes);
-            }
+            if (cleanup) setSettledCubes(cleanup.cubes);
           }
         });
 

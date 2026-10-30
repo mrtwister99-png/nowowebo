@@ -1,6 +1,5 @@
 import React from 'react';
 import { LoyoHeaderCard } from '../../layout/LoyoHeaderCard';
-import { ThreeServiceBanners } from './ThreeServiceBanners';
 import { ConsultationSlimBanner } from './ConsultationSlimBanner';
 import { PoProjektu } from './PoProjektu';
 import { Footer } from '../../layout/Footer';
@@ -11,7 +10,6 @@ interface HomeBodyProps {
   currentPage: string;
   onOpenQuestionnaire: (serviceId?: ServiceId) => void;
   onNavigateToPage: (page: string) => void;
-  onScrollToTop?: () => void;
   onOpenQuestionnaireForService: (serviceId: ServiceId) => void;
 }
 
@@ -20,7 +18,6 @@ export const HomeBody: React.FC<HomeBodyProps> = ({
   currentPage,
   onOpenQuestionnaire,
   onNavigateToPage,
-  onScrollToTop,
   onOpenQuestionnaireForService,
 }) => {
   return (
@@ -31,19 +28,15 @@ export const HomeBody: React.FC<HomeBodyProps> = ({
         currentPage={currentPage}
         onOpenQuestionnaire={onOpenQuestionnaire}
         onNavigateToPage={onNavigateToPage}
-        onScrollToTop={onScrollToTop}
       />
 
-      {/* 2. TŘiI BANYERY: AUTOMATIZACE (MODRÁ), APLIKACE (ZLATÁ), WEB (ČERVENÁ) */}
-      <ThreeServiceBanners onOpenQuestionnaireForService={onOpenQuestionnaireForService} />
-
-      {/* 3. KONZULTACE: PŘES CELOU ŠÍŘKU, ÚZKÝ / TENKÝ PÁS, VPRAVO DOLE VÍCE INFO */}
+      {/* 2. KONZULTACE: PŘES CELOU ŠÍŘKU, ÚZKÝ / TENKÝ PÁS, VPRAVO DOLE VÍCE INFO */}
       <ConsultationSlimBanner onOpenQuestionnaireForService={onOpenQuestionnaireForService} />
 
-      {/* 4. PO PROJEKTU: 100% VLASTNICTVÍ KÓDU, SPRÁVA & DOHLÍŽENÍ, ÚPRAVY & ROZŠÍŘENÍ */}
+      {/* 3. PO PROJEKTU: NADPIS A TLAČÍTKO NEZÁVAZNÉ POPTÁVKY */}
       <PoProjektu onOpenQuestionnaire={onOpenQuestionnaire} />
 
-      {/* 5. ZADEČEK / BOTTOM: VIDITELNÝ JAKO LINKA (POUZE EMAIL, INSTAGRAM, FACEBOOK), PŘI DOJETÍ DOLŮ VYJEDE ZÁVĚR */}
+      {/* 4. ZADEČEK / BOTTOM: VIDITELNÝ JAKO LINKA (POUZE EMAIL, INSTAGRAM, FACEBOOK), PŘI DOJETÍ DOLŮ VYJEDE ZÁVĚR */}
       <Footer />
     </>
   );

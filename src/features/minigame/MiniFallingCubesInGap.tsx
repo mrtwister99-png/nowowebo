@@ -47,6 +47,7 @@ export const MiniFallingCubesInGap: React.FC = () => {
       <BottomRightControls
         gameState={gameState}
         infoPhase={info.infoPhase}
+        hidden={game.showHighScoresModal}
         setIsHovered={info.setIsHovered}
       />
 

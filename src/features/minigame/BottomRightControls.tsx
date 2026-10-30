@@ -1,9 +1,11 @@
 import React from 'react';
 import type { GameState, InfoPhase } from './types';
+import { roundButtonClass } from './constants';
 
 interface BottomRightControlsProps {
   gameState: GameState;
   infoPhase: InfoPhase;
+  hidden?: boolean; // tabulka HIGHSCORE je otevřená: (i) se schová, ať nepřekrývá tabulku
   setIsHovered: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
@@ -11,6 +13,7 @@ interface BottomRightControlsProps {
 export const BottomRightControls: React.FC<BottomRightControlsProps> = ({
   gameState,
   infoPhase,
+  hidden = false,
   setIsHovered,
 }) => (
   <div
@@ -19,16 +22,12 @@ export const BottomRightControls: React.FC<BottomRightControlsProps> = ({
     onMouseLeave={() => setIsHovered(false)}
   >
     {/* KULATÉ TLAČÍTKO ( i ) V PRAVÉM DOLNÍM ROHU - JEN V DEMU, PŘI HŘE (A ODPOČTU) NENÍ */}
-    {gameState === 'demo' && (
+    {gameState === 'demo' && !hidden && (
       <button
         onMouseEnter={() => setIsHovered(true)}
         onMouseLeave={() => setIsHovered(false)}
         onClick={() => setIsHovered((prev) => !prev)}
-        className={`w-6 h-6 sm:w-7 sm:h-7 rounded-full border-2 border-loyo-ink shadow-[1.5px_1.5px_0px_#18181b] flex items-center justify-center font-heading font-black text-xs cursor-pointer active:translate-x-0.5 active:translate-y-0.5 transition-all shrink-0 z-40 ${
-          infoPhase !== 'idle'
-            ? 'bg-loyo-mustard text-loyo-ink scale-105 shadow-brutal-2'
-            : 'bg-white hover:bg-zinc-100 text-loyo-ink'
-        }`}
+        className={roundButtonClass(infoPhase !== 'idle')}
         title="Minigame pauza • Nápověda ovládání"
       >
         i

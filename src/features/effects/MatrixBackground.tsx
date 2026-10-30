@@ -15,6 +15,9 @@ const GLITCH_GLYPHS = ['■', '◼', '█', '▓', '◾'].map((g) => GLYPHS.inde
 
 const BG_COLOR = '#E6E6E6'; // POZADÍ
 const HEAD_COLOR = '#111111'; // ČTVERCE (hlava sloupce)
+const GLITCH_HEAD_COLOR = '#00bbff'; // barva, do které hlavy sloupců občas glitchnou
+const GLITCH_HEAD_EVERY_MS = 10000; // jednou za 10 s
+const GLITCH_HEAD_MS = 700; // jak dlouho glitch trvá
 const SPEED = 1; // rychlost 1.00x
 const GLITCH = true; // glitch kolem kurzoru (180 px)
 const LAYER_OPACITY = 0.5; // viditelnost celého pozadí
@@ -87,6 +90,8 @@ export const MatrixBackground: React.FC = () => {
 
     const head = parseHex(HEAD_COLOR) ?? [17, 17, 17];
     const headCss = toCss(bake(head));
+    // glitch hlav: čistá barva bez 50% zesvětlení, ať je vidět jako výrazná (krátká) vlna
+    const glitchHeadCss = toCss(parseHex(GLITCH_HEAD_COLOR) ?? [0, 187, 255]);
     const bucketCss: string[] = [];
     for (let b = 0; b < BUCKETS; b++) {
       const t = (b + 0.5) / BUCKETS;
@@ -114,6 +119,8 @@ export const MatrixBackground: React.FC = () => {
 
     let scrollY = window.scrollY;
     let time = 0;
+    let nextHeadGlitchAt = GLITCH_HEAD_EVERY_MS; // kdy začne další glitch hlav (podle času běhu, ne hodin)
+    let headGlitchUntil = 0;
     let last = performance.now();
     let frameInterval = 0; // 0 = bez omezení, jinak minimum ms mezi snímky
     let frames = 0;
@@ -133,15 +140,15 @@ export const MatrixBackground: React.FC = () => {
       cell = Math.ceil(font * 1.18 * 1.3) + 4;
       spriteSize = cell / ds;
       atlas.width = GLYPHS.length * cell;
-      atlas.height = (BUCKETS + 1) * cell; // poslední řádek = zvětšená hlava sloupce
+      atlas.height = (BUCKETS + 2) * cell; // řádek BUCKETS = zvětšená hlava sloupce, řádek BUCKETS + 1 = hlava v barvě glitche
       const a = atlas.getContext('2d');
       if (!a) return;
       a.textAlign = 'center';
       a.textBaseline = 'middle';
-      for (let row = 0; row <= BUCKETS; row++) {
-        const isHead = row === BUCKETS;
+      for (let row = 0; row <= BUCKETS + 1; row++) {
+        const isHead = row >= BUCKETS;
         a.font = `${isHead ? font * 1.18 : font}px ${FONT_FAMILY}`;
-        a.fillStyle = isHead ? headCss : bucketCss[row];
+        a.fillStyle = row === BUCKETS + 1 ? glitchHeadCss : isHead ? headCss : bucketCss[row];
         for (let g = 0; g < GLYPHS.length; g++) {
           a.fillText(GLYPHS[g], g * cell + cell / 2, row * cell + cell / 2);
         }
@@ -220,6 +227,11 @@ export const MatrixBackground: React.FC = () => {
 
       const step = Math.min(dt, 100) / 16.667; // pohyb nezávisí na FPS displeje
       time += Math.min(dt, 100);
+      if (time >= nextHeadGlitchAt) {
+        headGlitchUntil = time + GLITCH_HEAD_MS; // hlavy sloupců na chvíli glitchnou do modré
+        nextHeadGlitchAt = time + GLITCH_HEAD_EVERY_MS;
+      }
+      const headGlitch = time < headGlitchUntil;
 
       ctx.setTransform(rs, 0, 0, rs, 0, 0);
       ctx.globalAlpha = 1;
@@ -299,8 +311,26 @@ export const MatrixBackground: React.FC = () => {
           const alpha = Math.max(0.08, Math.min(1, fade));
           const bucket = Math.min(BUCKETS - 1, (t * BUCKETS) | 0);
           const sx = col.glyphs[q] * cell;
-          const gx = col.x + offX - half;
+          const isHead = t < 0.08;
+          const cyan = headGlitch && isHead; // hlava sloupce právě glitchuje do #00bbff
+          const gx = col.x + offX + (cyan ? (Math.random() - 0.5) * 6 : 0) - half;
           const gy = y + offY - half;
+
+          if (cyan) {
+            // posunutý "duch" za hlavou: efekt glitche
+            ctx.globalAlpha = alpha * 0.4;
+            ctx.drawImage(
+              atlas,
+              sx,
+              (BUCKETS + 1) * cell,
+              cell,
+              cell,
+              gx + (Math.random() < 0.5 ? 4 : -4),
+              gy,
+              spriteSize,
+              spriteSize,
+            );
+          }
 
           if (!coarse && dist > 0.4) {
             // záře kolem kurzoru
@@ -322,7 +352,7 @@ export const MatrixBackground: React.FC = () => {
           ctx.drawImage(
             atlas,
             sx,
-            (t < 0.08 ? BUCKETS : bucket) * cell,
+            (cyan ? BUCKETS + 1 : isHead ? BUCKETS : bucket) * cell,
             cell,
             cell,
             gx,

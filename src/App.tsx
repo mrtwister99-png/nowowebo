@@ -164,7 +164,6 @@ export default function App() {
                 currentPage={currentPage}
                 onOpenQuestionnaire={handleOpenQuestionnaire}
                 onNavigateToPage={handleNavigateToPage}
-                onScrollToTop={scrollToTop}
                 onOpenQuestionnaireForService={(serviceId) => {
                   setSelectedServiceForModal(serviceId);
                   setModalOpen(true);

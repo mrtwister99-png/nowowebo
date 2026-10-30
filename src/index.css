@@ -460,6 +460,24 @@ h4,
   animation: loyo-bubble-glitch-out-i 0.4s steps(1, end) forwards;
 }
 
+/* Ozubené kolečko u DOTAZNÍKU: po najetí se rozjede, zrychlí a plynule zastaví (2 otáčky) */
+@keyframes loyo-gear-spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(720deg);
+  }
+}
+.anim-gear-spin {
+  animation: loyo-gear-spin 1.6s cubic-bezier(0.45, 0, 0.2, 1) both;
+}
+@media (prefers-reduced-motion: reduce) {
+  .anim-gear-spin {
+    animation: none;
+  }
+}
+
 /* Brutal shadows moved to tokens.css - single source of truth */
 @utility shadow-brutal-2 {
   box-shadow: 2px 2px 0px #18181b;

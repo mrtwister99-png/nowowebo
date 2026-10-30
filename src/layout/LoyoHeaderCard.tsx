@@ -1,9 +1,7 @@
 import React, { Suspense, lazy, useState, useEffect, useRef } from 'react';
-import { Menu, Sparkles, ArrowRight } from 'lucide-react';
-import { LoyoLogoBox } from '../components/brand/LoyoLogoBox';
-import { ZakladniKostkaLoyo90 } from '../components/brand/ZakladniKostkaLoyo90';
+import { Menu, Settings, ArrowRight } from 'lucide-react';
 import { ServiceId } from '../types';
-import { scrollToElement, scrollToTop, useMenuMount } from '../lib/motion';
+import { scrollToElement, useMenuMount } from '../lib/motion';
 import { MENU_SECTIONS } from '../data/routes';
 
 // Minihra se stahuje samostatně (odděleně od hlavního balíčku), až když je potřeba
@@ -18,15 +16,11 @@ interface LoyoHeaderCardProps {
   currentPage: string;
   onOpenQuestionnaire: (serviceId?: ServiceId) => void;
   onNavigateToPage: (page: string) => void;
-  onScrollToTop?: () => void;
 }
 
 export const LoyoHeaderCard: React.FC<LoyoHeaderCardProps> = ({
-  activeSection,
-  currentPage,
   onOpenQuestionnaire,
   onNavigateToPage,
-  onScrollToTop,
 }) => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
@@ -50,40 +44,15 @@ export const LoyoHeaderCard: React.FC<LoyoHeaderCardProps> = ({
     menuCloseTimer.current = window.setTimeout(() => setIsMenuOpen(false), 250); // čas na přejetí z tlačítka do panelu
   };
 
-  // Podržení loga (0,6 s): kroužek se plní, pak glitch animace a přepnutí základní <-> neonová kostka
-  const [neonLogo, setNeonLogo] = useState(false);
-  const [logoPhase, setLogoPhase] = useState<'idle' | 'holding' | 'glitch' | 'pop'>('idle');
-  const logoTimers = useRef<number[]>([]);
-  const logoHoldFired = useRef(false); // po dlouhém podržení se nesmí spustit klik (otočení + scroll nahoru)
-
-  const startLogoHold = (e: React.PointerEvent) => {
-    if (e.button !== 0 || logoPhase !== 'idle') return; // jen levé tlačítko / dotyk
-    logoHoldFired.current = false;
-    setLogoPhase('holding');
-    logoTimers.current.push(
-      window.setTimeout(() => {
-        logoHoldFired.current = true;
-        setLogoPhase('glitch');
-        logoTimers.current.push(
-          window.setTimeout(() => {
-            setNeonLogo((prev) => !prev);
-            setLogoPhase('pop');
-            logoTimers.current.push(window.setTimeout(() => setLogoPhase('idle'), 600));
-          }, 600),
-        );
-      }, 600),
-    );
-  };
-
-  const endLogoHold = () => {
-    if (logoPhase !== 'holding') return; // po spuštění glitche se už nic neruší
-    logoTimers.current.splice(0).forEach((id) => window.clearTimeout(id));
-    setLogoPhase('idle');
-  };
+  // Ozubené kolečko u DOTAZNÍKU: jednou za 15 s se samo otočí o 90°, po najetí myší se rozjede a zase zastaví
+  const [gearTurns, setGearTurns] = useState(0); // počet čtvrtotáček (90°) z klidového otáčení
+  const [gearSpinning, setGearSpinning] = useState(false);
 
   useEffect(() => {
-    const timers = logoTimers.current; // pole se jen plní/vyprazdňuje, reference zůstává stejná
-    return () => timers.forEach((id) => window.clearTimeout(id));
+    const id = window.setInterval(() => {
+      if (!document.hidden) setGearTurns((t) => t + 1);
+    }, 15000);
+    return () => window.clearInterval(id);
   }, []);
 
   const [animatingCube, setAnimatingCube] = useState<{ [key: string]: boolean }>({
@@ -119,79 +88,7 @@ export const LoyoHeaderCard: React.FC<LoyoHeaderCardProps> = ({
     <div className="relative w-full select-none bg-transparent">
       {/* FIXED HEADER */}
       <header className="fixed top-0 left-0 right-0 z-70 pointer-events-none">
-        <div className="max-w-6xl mx-auto px-4 sm:px-6 pt-3 sm:pt-4 pb-2 flex items-center justify-between gap-3 pointer-events-auto">
-          {/* LOGO */}
-          <div className="flex items-center shrink-0 ml-0">
-            <button
-              onClick={() => {
-                if (onScrollToTop) onScrollToTop();
-                else scrollToTop();
-              }}
-              id="header-logo-cube"
-              className="w-28 h-28 sm:w-32 sm:h-32 md:w-36 md:h-36 flex items-center justify-center cursor-pointer group hover:scale-105 active:scale-95 transition-all relative z-30"
-              title="LoYo • Zpět na začátek"
-            >
-              <div
-                className={`relative flex items-center justify-center drop-shadow-[4px_4px_0px_#18181b] ${
-                  logoPhase === 'glitch' ? 'anim-logo-glitch' : logoPhase === 'pop' ? 'anim-logo-pop' : ''
-                }`}
-                onPointerDown={startLogoHold}
-                onPointerUp={endLogoHold}
-                onPointerLeave={endLogoHold}
-                onPointerCancel={endLogoHold}
-                onClickCapture={(e) => {
-                  if (logoHoldFired.current) {
-                    e.stopPropagation(); // po dlouhém podržení žádný klik
-                    logoHoldFired.current = false;
-                  }
-                }}
-                onContextMenuCapture={(e) => {
-                  if (logoPhase !== 'idle') {
-                    e.preventDefault(); // dlouhý dotyk na mobilu jinak otevře menu / otočí kostku
-                    e.stopPropagation();
-                  }
-                }}
-              >
-                {logoPhase === 'holding' && (
-                  <svg
-                    className="absolute left-1/2 top-1/2 w-28 h-28 -translate-x-1/2 -translate-y-1/2 -rotate-90 pointer-events-none"
-                    viewBox="0 0 100 100"
-                    aria-hidden="true"
-                  >
-                    <circle
-                      cx="50"
-                      cy="50"
-                      r="46"
-                      fill="none"
-                      stroke="#18181b"
-                      strokeWidth="4"
-                      strokeLinecap="round"
-                      className="anim-hold-ring"
-                    />
-                  </svg>
-                )}
-                {neonLogo ? (
-                  <LoyoLogoBox
-                    activeSection={activeSection}
-                    currentPage={currentPage}
-                    defaultNeon
-                    holdEnabled={false}
-                    perspective={500}
-                    className="scale-145 sm:scale-135 md:scale-150"
-                  />
-                ) : (
-                  <ZakladniKostkaLoyo90
-                    size={86}
-                    scenePad={24}
-                    perspective={500}
-                    showInfo={false}
-                    className="scale-120 sm:scale-135 md:scale-150"
-                  />
-                )}
-              </div>
-            </button>
-          </div>
-
+        <div className="max-w-6xl mx-auto px-4 sm:px-6 pt-3 sm:pt-4 pb-2 flex items-center justify-end gap-3 pointer-events-auto">
           {/* RIGHT BUTTONS */}
           <div className="flex items-center gap-2 sm:gap-3 flex-wrap justify-end">
             {/* MENU: po najetí myší vyjede pod tlačítkem seznam sekcí, dotyk a klávesnice fungují klikem */}
@@ -279,10 +176,23 @@ export const LoyoHeaderCard: React.FC<LoyoHeaderCardProps> = ({
 
             <button
               onClick={() => onOpenQuestionnaire()}
+              onPointerEnter={(e) => {
+                if (e.pointerType === 'mouse') setGearSpinning(true); // rozjede se jen při najetí myší
+              }}
               id="header-dotaznik-button"
               className="h-10 sm:h-11 px-4 sm:px-5 rounded-xl sm:rounded-2xl bg-loyo-blue hover:bg-[#03086b] text-white border-2 border-loyo-ink shadow-brutal-3 hover:-translate-y-0.5 hover:shadow-brutal-4 active:translate-x-0.5 active:translate-y-0.5 active:shadow-brutal-1 flex items-center gap-2 cursor-pointer transition-all font-heading font-bold text-xs sm:text-sm tracking-wider uppercase select-none"
             >
-              <Sparkles className="w-4 h-4 text-amber-300 animate-pulse" />
+              {/* vnější prvek: klidové otočení o 90° každých 15 s; vnitřní: rozjezd po najetí (hotovo = zpět do klidu) */}
+              <span
+                className="inline-flex transition-transform duration-700 ease-in-out motion-reduce:transition-none"
+                style={{ transform: `rotate(${gearTurns * 90}deg)` }}
+                aria-hidden="true"
+              >
+                <Settings
+                  className={`w-4 h-4 text-amber-300 ${gearSpinning ? 'anim-gear-spin' : ''}`}
+                  onAnimationEnd={() => setGearSpinning(false)}
+                />
+              </span>
               <span>DOTAZNÍK</span>
             </button>
           </div>
@@ -295,7 +205,7 @@ export const LoyoHeaderCard: React.FC<LoyoHeaderCardProps> = ({
           <div className="shrink-0 w-full sm:w-auto flex flex-col items-center sm:items-stretch justify-between relative z-30">
             <div
               id="card-loyo-cubes"
-              className="w-full sm:w-auto bg-white border-2 border-loyo-ink rounded-3xl sm:rounded-tr-none p-3.5 sm:p-4 md:p-5 shadow-brutal-6 relative z-10 flex justify-center"
+              className="w-full sm:w-auto bg-white/80 border-2 border-loyo-ink rounded-3xl sm:rounded-tr-none p-3.5 sm:p-4 md:p-5 shadow-brutal-6 relative z-10 flex justify-center"
             >
               <div className="grid grid-cols-2 gap-2.5 sm:gap-3 select-none">
                 <div
@@ -373,7 +283,7 @@ export const LoyoHeaderCard: React.FC<LoyoHeaderCardProps> = ({
           <div className="flex-1 w-full flex flex-col min-w-0 mt-0 sm:-ml-0.5 sm:mt-0 justify-start relative z-30">
             <div
               id="card-premium-developer"
-              className="bg-white border-2 border-loyo-ink sm:border-l-0 rounded-2xl sm:rounded-l-none sm:rounded-r-3xl p-4 sm:p-5 md:p-6 shadow-brutal-6 relative z-20"
+              className="bg-white/80 border-2 border-loyo-ink sm:border-l-0 rounded-2xl sm:rounded-l-none sm:rounded-r-3xl p-4 sm:p-5 md:p-6 shadow-brutal-6 relative z-20"
             >
               <div className="inline-flex items-center gap-2 mb-1.5">
                 <span className="font-mono text-xs sm:text-sm font-bold uppercase tracking-[0.35em] text-loyo-muted">
@@ -389,7 +299,7 @@ export const LoyoHeaderCard: React.FC<LoyoHeaderCardProps> = ({
 
             <div
               id="card-uvod"
-              className="bg-white border-2 border-loyo-ink rounded-2xl sm:rounded-3xl p-3.5 sm:p-4 md:p-5 shadow-brutal-4 mt-4 sm:mt-5 mb-2.5 sm:mb-3 sm:ml-3 text-center relative z-10"
+              className="bg-white/80 border-2 border-loyo-ink rounded-2xl sm:rounded-3xl p-3.5 sm:p-4 md:p-5 shadow-brutal-4 mt-4 sm:mt-5 mb-2.5 sm:mb-3 sm:ml-3 text-center relative z-10"
             >
               <div className="flex justify-center mb-2">
                 <div className="text-xs sm:text-sm font-mono font-bold uppercase tracking-wider text-loyo-blue flex items-center gap-2 px-3 py-0.5 bg-loyo-blue/8 rounded-full border border-loyo-blue/20">
@@ -400,20 +310,18 @@ export const LoyoHeaderCard: React.FC<LoyoHeaderCardProps> = ({
 
               {/* Úvodní věta (claim) */}
               <p className="font-heading font-black text-base sm:text-lg md:text-xl text-loyo-ink leading-snug max-w-2xl mx-auto">
-                Automatizuji. Vyvíjím. Přetvářím nápady v realitu.
+                Stavím bezpečné automatizace, které vám vrací čas.
               </p>
 
               {/* Hlavní odstavec */}
               <p className="text-sm sm:text-base text-loyo-ink font-medium leading-relaxed max-w-2xl mx-auto mt-2">
-                Tvořím weby, aplikace a chytré systémy, které šetří desítky hodin práce. Kombinuji
-                sílu AI s hlubokou znalostí vývoje, díky čemuž dokážu rychle navrhnout, postavit i
-                upravit řešení přesně podle vašich potřeb. Každý projekt vzniká na míru s důrazem
-                na výkon, jednoduchost a dlouhodobou hodnotu.
+                Všechno, co lze, převádím do čistého kódu. AI používám jen tam, kde je opravdu
+                nutná. Žádné vysoké účty za model, 100% kontrola nad workflow.
               </p>
 
-              {/* Závěrečná výzva */}
+              {/* Závěrečná věta */}
               <p className="text-sm sm:text-base text-loyo-ink font-bold leading-relaxed max-w-2xl mx-auto mt-3">
-                Pojďme postavit něco, co vám vrátí čas zpět.
+                Backend je moje specialita a koníček – je to na výsledku poznat.
               </p>
             </div>
           </div>
@@ -422,7 +330,7 @@ export const LoyoHeaderCard: React.FC<LoyoHeaderCardProps> = ({
         <div className="mt-0">
           <div
             id="card-hlavni-info"
-            className="bg-white border-2 border-loyo-ink rounded-3xl p-5 sm:p-7 shadow-brutal-6"
+            className="bg-white/80 border-2 border-loyo-ink rounded-3xl p-5 sm:p-7 shadow-brutal-6"
           >
             <div className="flex items-center justify-between gap-2 mb-4 pb-3 border-b border-[#e4e4e7]">
               <div className="inline-flex items-center gap-2 px-3 py-1 bg-loyo-ink text-white text-xs font-mono font-bold uppercase tracking-wider rounded-xs">
@@ -435,46 +343,42 @@ export const LoyoHeaderCard: React.FC<LoyoHeaderCardProps> = ({
 
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6">
               <div className="border-l-3 border-loyo-blue pl-3.5">
-                <div className="font-heading font-bold text-sm text-loyo-ink uppercase tracking-wide flex items-center gap-1.5">
-                  <span className="w-1.5 h-1.5 rounded-full bg-loyo-blue" />
-                  100% Vlastnictví
+                <div className="font-heading font-bold text-sm text-loyo-ink uppercase tracking-wide flex items-start gap-1.5">
+                  <span className="w-1.5 h-1.5 mt-1.25 shrink-0 rounded-full bg-loyo-blue" />
+                  MAXimální bezpečnost
                 </div>
                 <div className="text-xs text-loyo-muted mt-1.5 leading-relaxed">
-                  Zdrojový kód, databáze a cloudová infrastruktura jsou od prvního dne kompletně
-                  vaším majetkem.
+                  Každý pohyb v systému je zaevidovaný v logu. Vždy je dohledatelné, kdo, kdy a co udělal.
                 </div>
               </div>
 
               <div className="border-l-3 border-loyo-mustard pl-3.5">
-                <div className="font-heading font-bold text-sm text-loyo-ink uppercase tracking-wide flex items-center gap-1.5">
-                  <span className="w-1.5 h-1.5 rounded-full bg-loyo-mustard" />
-                  Vývoj bez šablon
+                <div className="font-heading font-bold text-sm text-loyo-ink uppercase tracking-wide flex items-start gap-1.5">
+                  <span className="w-1.5 h-1.5 mt-1.25 shrink-0 rounded-full bg-loyo-mustard" />
+                  Ušetřím X hodin týdně
                 </div>
                 <div className="text-xs text-loyo-muted mt-1.5 leading-relaxed">
-                  Žádné restriktivní CMS šablony ani univerzální pluginy. Vše je navrženo přímo pro
-                  vaše procesy.
+                  Dlouhodobý nárůst času pro vás samotné: méně ruční práce a víc prostoru na to, co vás posouvá.
                 </div>
               </div>
 
               <div className="border-l-3 border-loyo-red pl-3.5">
-                <div className="font-heading font-bold text-sm text-loyo-ink uppercase tracking-wide flex items-center gap-1.5">
-                  <span className="w-1.5 h-1.5 rounded-full bg-loyo-red" />
-                  AI & Automatizace
+                <div className="font-heading font-bold text-sm text-loyo-ink uppercase tracking-wide flex items-start gap-1.5">
+                  <span className="w-1.5 h-1.5 mt-1.25 shrink-0 rounded-full bg-loyo-red" />
+                  Důkladná analýza firmy a procesů
                 </div>
                 <div className="text-xs text-loyo-muted mt-1.5 leading-relaxed">
-                  Autonomní agenti, chytré zpracování dat a full-stack aplikace šetřící desítky
-                  hodin měsíčně.
+                  Kompletní audit celé firmy zevnitř: prozkoumám procesy, nástroje i data, než cokoli postavím.
                 </div>
               </div>
 
               <div className="border-l-3 border-loyo-ink pl-3.5">
-                <div className="font-heading font-bold text-sm text-loyo-ink uppercase tracking-wide flex items-center gap-1.5">
-                  <span className="w-1.5 h-1.5 rounded-full bg-loyo-ink" />
-                  Přímý kontakt
+                <div className="font-heading font-bold text-sm text-loyo-ink uppercase tracking-wide flex items-start gap-1.5">
+                  <span className="w-1.5 h-1.5 mt-1.25 shrink-0 rounded-full bg-loyo-ink" />
+                  Individuální přístup
                 </div>
                 <div className="text-xs text-loyo-muted mt-1.5 leading-relaxed">
-                  Žádná agenturní byrokracie ani prostředníci. Řešíte zadání i detaily přímo se
-                  samotným vývojářem.
+                  Jakékoli možnosti stacku: web, OS, aplikace, NFC. Vždy a všude vše správně propojené a monitorované.
                 </div>
               </div>
             </div>

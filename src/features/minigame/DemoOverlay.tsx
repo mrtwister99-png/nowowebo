@@ -1,5 +1,6 @@
-import React, { useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import type { InfoPhase } from './types';
+import { roundButtonClass } from './constants';
 
 // Ovládání v bublině u (i): klávesa + co dělá
 const CONTROLS: { key: string; label: string }[] = [
@@ -12,34 +13,86 @@ const CONTROLS: { key: string; label: string }[] = [
 
 type BubblePhase = 'idle' | 'in' | 'out';
 
-/* Kolečko s počítadlem: po najetí bublina naskočí, po odjetí zmizí glitchem (probliknutí barev) */
+/* Text v bublině u počítadla (správný tvar slova podle počtu: 1 člověk vydržel, 2-4 lidé vydrželi, jinak lidí vydrželo) */
+const finishedText = (n: number): string => {
+  if (n === 1) return 'Celkem 1 člověk vydržel celou minutu';
+  if (n >= 2 && n <= 4) return `Celkem ${n} lidé vydrželi celou minutu`;
+  return `Celkem ${n} lidí vydrželo celou minutu`;
+};
+
+/*
+ * Kolečko s počítadlem vlevo dole. Bublina s textem vyjede stejně jako u (i):
+ * myš = po najetí, dotyk (telefon) = po klepnutí (po 3 s sama zmizí, nebo dalším klepnutím).
+ */
 const FinishedCounter: React.FC<{ finishedCount: number }> = ({ finishedCount }) => {
   const [phase, setPhase] = useState<BubblePhase>('idle');
-  const show = () => setPhase('in');
-  const hide = () => setPhase((p) => (p === 'in' ? 'out' : p));
+  const pointerType = useRef('mouse');
+  const hideTimer = useRef<number | null>(null);
+
+  const clearHideTimer = () => {
+    if (hideTimer.current !== null) {
+      window.clearTimeout(hideTimer.current);
+      hideTimer.current = null;
+    }
+  };
+  const show = () => {
+    clearHideTimer();
+    setPhase('in');
+  };
+  const hide = () => {
+    clearHideTimer();
+    setPhase((p) => (p === 'in' ? 'out' : p));
+  };
+  // při zrušení komponenty se časovač zruší
+   
+  useEffect(() => clearHideTimer, []);
 
   return (
-    <button
-      type="button"
-      aria-label="Lidí vydrželo celou minutu"
-      onMouseEnter={show}
-      onMouseLeave={hide}
-      onFocus={show}
-      onBlur={hide}
-      className="absolute bottom-1.5 left-2 sm:left-3 z-40 min-w-9 h-9 sm:min-w-10.5 sm:h-10.5 px-2 rounded-full border-2 border-loyo-ink bg-white hover:bg-zinc-100 text-loyo-ink shadow-[1.5px_1.5px_0px_#18181b] flex items-center justify-center font-mono font-black text-[15px] leading-none cursor-pointer pointer-events-auto active:translate-x-0.5 active:translate-y-0.5 transition-all"
-    >
-      {finishedCount}
+    <>
       {phase !== 'idle' && (
-        <span
+        <div
           onAnimationEnd={() => phase === 'out' && setPhase('idle')} // po glitchi se bublina odstraní
-          className={`pointer-events-none absolute bottom-full left-0 mb-2 whitespace-nowrap rounded-xl border-2 border-loyo-ink bg-loyo-ink px-2 py-1 font-heading text-[10px] font-black uppercase tracking-wider text-loyo-mustard shadow-[3px_3px_0px_#000] ${
-            phase === 'in' ? 'anim-bubble-in' : 'anim-bubble-glitch-out'
+          className={`absolute z-40 pointer-events-none bg-loyo-ink border-2 border-loyo-ink rounded-xl px-2 py-1.5 shadow-[3px_3px_0px_#000] -rotate-2 origin-bottom-left whitespace-nowrap ${
+            phase === 'in' ? 'anim-bubble-in -translate-y-1' : 'anim-bubble-glitch-out-i -translate-y-1'
           }`}
+          style={{ left: '8px', bottom: '44px' }}
         >
-          LIDÍ VYDRŽELO CELOU MINUTU
-        </span>
+          {/* Ocas bubliny mířící dolů ke kolečku */}
+          <div className="absolute -bottom-1.5 left-3 w-3 h-3 bg-loyo-ink border-r-2 border-b-2 border-loyo-ink rotate-45" />
+          <span className="font-heading font-black text-[11px] sm:text-xs text-loyo-mustard tracking-wider leading-tight">
+            {finishedText(finishedCount)}
+          </span>
+        </div>
       )}
-    </button>
+
+      <button
+        type="button"
+        aria-label={finishedText(finishedCount)}
+        onPointerDown={(e) => {
+          pointerType.current = e.pointerType;
+        }}
+        onPointerEnter={(e) => {
+          if (e.pointerType === 'mouse') show();
+        }}
+        onPointerLeave={(e) => {
+          if (e.pointerType === 'mouse') hide();
+        }}
+        onBlur={hide}
+        onClick={(e) => {
+          // myš: bublinu řídí najetí; dotyk a klávesnice: klepnutí ji zobrazí / schová
+          if (pointerType.current === 'mouse' && e.detail !== 0) return;
+          if (phase === 'in') {
+            hide();
+          } else {
+            show();
+            hideTimer.current = window.setTimeout(hide, 3000);
+          }
+        }}
+        className={`absolute bottom-1.5 left-2 sm:left-3 ${roundButtonClass(phase === 'in')}`}
+      >
+        {finishedCount}
+      </button>
+    </>
   );
 };
 
@@ -144,6 +197,6 @@ export const DemoOverlay: React.FC<DemoOverlayProps> = ({
     </div>
 
     {/* 3. VLEVO DOLE: KOLEČKO S POČÍTADLEM (DOHRANÁ CELÁ MINUTA = +1) */}
-    <FinishedCounter finishedCount={finishedCount} />
+    {!showHighScoresModal && <FinishedCounter finishedCount={finishedCount} />}
   </>
 );

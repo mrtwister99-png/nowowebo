@@ -131,3 +131,11 @@ export const DEMO_TETROMINOES: PieceShape[][] = [
     { cells: [[0, 0], [1, 0], [1, 1], [1, 2]] },
   ], // L
 ];
+
+/* Společný vzhled kulatých tlačítek v rozích ukázky (počítadlo vlevo, (i) vpravo) */
+export const roundButtonClass = (active: boolean): string =>
+  `min-w-7 h-7 sm:min-w-8 sm:h-8 px-1.5 rounded-full border-2 border-loyo-ink font-heading font-black text-xs leading-none flex items-center justify-center cursor-pointer shrink-0 z-40 pointer-events-auto transition-all hover:-translate-y-0.5 active:translate-x-0.5 active:translate-y-0.5 ${
+    active
+      ? 'bg-loyo-mustard text-loyo-ink scale-105 shadow-brutal-2'
+      : 'bg-white hover:bg-zinc-100 text-loyo-ink shadow-[1.5px_1.5px_0px_#18181b]'
+  }`;
