@@ -15,9 +15,38 @@ const GLITCH_GLYPHS = ['■', '◼', '█', '▓', '◾'].map((g) => GLYPHS.inde
 
 const BG_COLOR = '#E6E6E6'; // POZADÍ
 const HEAD_COLOR = '#111111'; // ČTVERCE (hlava sloupce)
-const GLITCH_HEAD_COLOR = '#00bbff'; // barva, do které hlavy sloupců občas glitchnou
-const GLITCH_HEAD_EVERY_MS = 10000; // jednou za 10 s
+// Glitch hlav sloupců do #00bbff: každý sloupec má svůj vlastní čas (jednou za 10 s) a při něm je šance 44,22 %
+const GLITCH_HEAD_COLOR = '#00bbff';
+const GLITCH_HEAD_EVERY_MS = 10000;
+const GLITCH_HEAD_CHANCE = 0.4422;
 const GLITCH_HEAD_MS = 700; // jak dlouho glitch trvá
+
+// Sloupec, kterým projde kurzor, zableskne do #ff4800; mezery mezi bliknutími se zkracují, až zůstane celý oranžový
+const HIT_COLOR = '#ff4800';
+const HIT_BLINK_MS = 160; // jak dlouho jedno bliknutí svítí
+const HIT_FIRST_GAP_MS = 900; // pauza po prvním bliknutí
+const HIT_GAP_FACTOR = 0.7; // každá další pauza je o tolik kratší (0.7 = o 30 %)
+const HIT_MIN_GAP_MS = 80; // kratší pauza už není: sloupec zůstane oranžový
+// Oranžový sloupec má hlavu, která náhodně glitchne do #bbff00 (v náhodném čase 0 až 7,88 s)
+const HIT_HEAD_COLOR = '#bbff00';
+const HIT_HEAD_MAX_MS = 7880;
+const HIT_HEAD_MS = 400;
+
+// Začátky jednotlivých bliknutí (ms od zásahu); od posledního je sloupec oranžový napořád
+const HIT_BLINK_STARTS: number[] = (() => {
+  const starts = [0];
+  let gap = HIT_FIRST_GAP_MS;
+  while (gap >= HIT_MIN_GAP_MS) {
+    starts.push(starts[starts.length - 1] + HIT_BLINK_MS + gap);
+    gap *= HIT_GAP_FACTOR;
+  }
+  return starts;
+})();
+const hitIsOn = (elapsed: number): boolean => {
+  if (elapsed >= HIT_BLINK_STARTS[HIT_BLINK_STARTS.length - 1]) return true; // už napořád
+  return HIT_BLINK_STARTS.some((start) => elapsed >= start && elapsed < start + HIT_BLINK_MS);
+};
+
 const SPEED = 1; // rychlost 1.00x
 const GLITCH = true; // glitch kolem kurzoru (180 px)
 const LAYER_OPACITY = 0.5; // viditelnost celého pozadí
@@ -33,6 +62,13 @@ const GLITCH_AMP_MOBILE = 0.45; // telefon: slabší vychylování (1 = jako na 
 const ROW_H = 20; // výška řádku
 const FONT_PX = 14;
 const BUCKETS = 40; // počet odstínů mezi hlavou a ocasem
+// Řádky atlasu za odstíny: hlava, hlava glitch modrá, hlava glitch zelenožlutá, oranžový znak, oranžová hlava
+const ROW_HEAD = BUCKETS;
+const ROW_GLITCH = BUCKETS + 1;
+const ROW_HIT_HEAD_GLITCH = BUCKETS + 2;
+const ROW_HIT = BUCKETS + 3;
+const ROW_HIT_BIG = BUCKETS + 4;
+const ATLAS_ROWS = BUCKETS + 5;
 const FONT_FAMILY = '"Geist Mono", "IBM Plex Mono", monospace';
 
 type RGB = [number, number, number];
@@ -45,6 +81,11 @@ interface Column {
   glyphs: number[]; // indexy do GLYPHS
   timers: number[];
   phase: number;
+  glitchAt: number; // kdy má sloupec další šanci na glitch hlavy do #00bbff (čas běhu v ms)
+  glitchUntil: number; // do kdy glitch hlavy trvá
+  hitStart: number; // kdy sloupcem prošel kurzor (-1 = ještě ne, nebo od posledního vynoření nic)
+  hitHeadAt: number; // kdy zkusí hlava oranžového sloupce glitchnout do #bbff00
+  hitHeadUntil: number;
 }
 
 const randomGlyph = () => Math.floor(Math.random() * GLYPHS.length);
@@ -71,6 +112,7 @@ export const MatrixBackground: React.FC = () => {
     const colGap = coarse ? COL_GAP_MOBILE : COL_GAP;
     const glitchR = coarse ? GLITCH_RADIUS_MOBILE : GLITCH_RADIUS;
     const glitchAmp = coarse ? GLITCH_AMP_MOBILE : 1;
+    const hitHalfWidth = Math.min(colGap / 2, 11); // jak blízko sloupci musí být kurzor, aby ho "protnul"
     const reducedQuery = window.matchMedia('(prefers-reduced-motion: reduce)');
     let reduced = reducedQuery.matches; // omezený pohyb: jen jeden statický snímek (mění se i za běhu)
 
@@ -92,6 +134,8 @@ export const MatrixBackground: React.FC = () => {
     const headCss = toCss(bake(head));
     // glitch hlav: čistá barva bez 50% zesvětlení, ať je vidět jako výrazná (krátká) vlna
     const glitchHeadCss = toCss(parseHex(GLITCH_HEAD_COLOR) ?? [0, 187, 255]);
+    const hitCss = toCss(parseHex(HIT_COLOR) ?? [255, 72, 0]);
+    const hitHeadCss = toCss(parseHex(HIT_HEAD_COLOR) ?? [187, 255, 0]);
     const bucketCss: string[] = [];
     for (let b = 0; b < BUCKETS; b++) {
       const t = (b + 0.5) / BUCKETS;
@@ -119,8 +163,6 @@ export const MatrixBackground: React.FC = () => {
 
     let scrollY = window.scrollY;
     let time = 0;
-    let nextHeadGlitchAt = GLITCH_HEAD_EVERY_MS; // kdy začne další glitch hlav (podle času běhu, ne hodin)
-    let headGlitchUntil = 0;
     let last = performance.now();
     let frameInterval = 0; // 0 = bez omezení, jinak minimum ms mezi snímky
     let frames = 0;
@@ -140,15 +182,24 @@ export const MatrixBackground: React.FC = () => {
       cell = Math.ceil(font * 1.18 * 1.3) + 4;
       spriteSize = cell / ds;
       atlas.width = GLYPHS.length * cell;
-      atlas.height = (BUCKETS + 2) * cell; // řádek BUCKETS = zvětšená hlava sloupce, řádek BUCKETS + 1 = hlava v barvě glitche
+      atlas.height = ATLAS_ROWS * cell; // odstíny, pak zvětšená hlava a její barevné varianty (viz ROW_*)
       const a = atlas.getContext('2d');
       if (!a) return;
       a.textAlign = 'center';
       a.textBaseline = 'middle';
-      for (let row = 0; row <= BUCKETS + 1; row++) {
-        const isHead = row >= BUCKETS;
+      for (let row = 0; row < ATLAS_ROWS; row++) {
+        const isHead = row >= BUCKETS && row !== ROW_HIT; // hlavy jsou o 18 % větší
         a.font = `${isHead ? font * 1.18 : font}px ${FONT_FAMILY}`;
-        a.fillStyle = row === BUCKETS + 1 ? glitchHeadCss : isHead ? headCss : bucketCss[row];
+        a.fillStyle =
+          row < BUCKETS
+            ? bucketCss[row]
+            : row === ROW_GLITCH
+              ? glitchHeadCss
+              : row === ROW_HIT_HEAD_GLITCH
+                ? hitHeadCss
+                : row === ROW_HIT || row === ROW_HIT_BIG
+                  ? hitCss
+                  : headCss;
         for (let g = 0; g < GLYPHS.length; g++) {
           a.fillText(GLYPHS[g], g * cell + cell / 2, row * cell + cell / 2);
         }
@@ -165,6 +216,11 @@ export const MatrixBackground: React.FC = () => {
         glyphs: Array.from({ length }, randomGlyph),
         timers: Array.from({ length }, () => Math.random() * 100),
         phase: Math.random() * Math.PI * 2,
+        glitchAt: time + Math.random() * GLITCH_HEAD_EVERY_MS, // každý sloupec má svůj čas
+        glitchUntil: 0,
+        hitStart: -1,
+        hitHeadAt: 0,
+        hitHeadUntil: 0,
       };
     };
 
@@ -227,11 +283,6 @@ export const MatrixBackground: React.FC = () => {
 
       const step = Math.min(dt, 100) / 16.667; // pohyb nezávisí na FPS displeje
       time += Math.min(dt, 100);
-      if (time >= nextHeadGlitchAt) {
-        headGlitchUntil = time + GLITCH_HEAD_MS; // hlavy sloupců na chvíli glitchnou do modré
-        nextHeadGlitchAt = time + GLITCH_HEAD_EVERY_MS;
-      }
-      const headGlitch = time < headGlitchUntil;
 
       ctx.setTransform(rs, 0, 0, rs, 0, 0);
       ctx.globalAlpha = 1;
@@ -260,13 +311,25 @@ export const MatrixBackground: React.FC = () => {
       for (const col of columns) {
         col.baseY -= col.speed * SPEED * 1.2 * step; // proud zdola nahoru
         if (col.baseY + col.length * ROW_H < top - ROW_H) {
-          // vyjel nahoře ven -> objeví se dole
+          // vyjel nahoře ven -> objeví se dole (oranžová se tím vynuluje)
           col.baseY = bottom + Math.random() * 200;
+          col.hitStart = -1;
           if (Math.random() < 0.3) {
             col.length = 8 + Math.floor(Math.random() * 20);
             col.glyphs = Array.from({ length: col.length }, randomGlyph);
             col.timers = Array.from({ length: col.length }, () => 0);
           }
+        }
+
+        // vlastní čas sloupce: jednou za 10 s je šance 44,22 % na glitch hlavy do #00bbff
+        if (time >= col.glitchAt) {
+          if (Math.random() < GLITCH_HEAD_CHANCE) col.glitchUntil = time + GLITCH_HEAD_MS;
+          col.glitchAt = time + GLITCH_HEAD_EVERY_MS;
+        }
+        // oranžový sloupec: hlava občas (v náhodném čase 0 až 7,88 s) glitchne do #bbff00
+        if (col.hitStart >= 0 && time >= col.hitHeadAt) {
+          col.hitHeadUntil = time + HIT_HEAD_MS;
+          col.hitHeadAt = time + Math.random() * HIT_HEAD_MAX_MS;
         }
 
         const near = glitchOn && Math.abs(col.x - mx) < glitchR + 40;
@@ -312,17 +375,26 @@ export const MatrixBackground: React.FC = () => {
           const bucket = Math.min(BUCKETS - 1, (t * BUCKETS) | 0);
           const sx = col.glyphs[q] * cell;
           const isHead = t < 0.08;
-          const cyan = headGlitch && isHead; // hlava sloupce právě glitchuje do #00bbff
-          const gx = col.x + offX + (cyan ? (Math.random() - 0.5) * 6 : 0) - half;
+
+          // kurzor prošel přímo sloupcem: začne oranžové blikání
+          if (near && col.hitStart < 0 && Math.abs(col.x - mx) < hitHalfWidth && Math.abs(y - my) < ROW_H * 0.6) {
+            col.hitStart = time;
+            col.hitHeadAt = time + Math.random() * HIT_HEAD_MAX_MS;
+          }
+          const hitOn = col.hitStart >= 0 && hitIsOn(time - col.hitStart); // sloupec teď svítí oranžově
+          const hitGlitch = isHead && col.hitStart >= 0 && time < col.hitHeadUntil; // hlava oranžového sloupce: #bbff00
+          const cyan = isHead && !hitGlitch && time < col.glitchUntil; // hlava glitchuje do #00bbff
+          const glitchRow = hitGlitch ? ROW_HIT_HEAD_GLITCH : ROW_GLITCH;
+          const gx = col.x + offX + (cyan || hitGlitch ? (Math.random() - 0.5) * 6 : 0) - half;
           const gy = y + offY - half;
 
-          if (cyan) {
+          if (cyan || hitGlitch) {
             // posunutý "duch" za hlavou: efekt glitche
             ctx.globalAlpha = alpha * 0.4;
             ctx.drawImage(
               atlas,
               sx,
-              (BUCKETS + 1) * cell,
+              glitchRow * cell,
               cell,
               cell,
               gx + (Math.random() < 0.5 ? 4 : -4),
@@ -352,7 +424,15 @@ export const MatrixBackground: React.FC = () => {
           ctx.drawImage(
             atlas,
             sx,
-            (cyan ? BUCKETS + 1 : isHead ? BUCKETS : bucket) * cell,
+            (cyan || hitGlitch
+              ? glitchRow
+              : hitOn
+                ? isHead
+                  ? ROW_HIT_BIG
+                  : ROW_HIT
+                : isHead
+                  ? ROW_HEAD
+                  : bucket) * cell,
             cell,
             cell,
             gx,
