@@ -175,7 +175,7 @@ h4,
   18% {
     transform: scale(1.16) translate(-2px, -2px);
     box-shadow: 7px 7px 0px var(--color-loyo-ink);
-    border-color: #bef264;
+    border-color: #0088ff;
   }
   38% {
     transform: scale(1.02) translate(0, 0);
@@ -184,7 +184,7 @@ h4,
   56% {
     transform: scale(1.2) translate(-3px, -3px);
     box-shadow: 8px 8px 0px var(--color-loyo-ink);
-    border-color: #bef264;
+    border-color: #0088ff;
   }
   76% {
     transform: scale(0.96) translate(1px, 1px);
@@ -391,7 +391,7 @@ h4,
     opacity: 0.35;
     transform: translate(2px, -1px);
     background-color: var(--color-loyo-blue);
-    color: #bef264;
+    color: #0088ff;
   }
   45% {
     opacity: 1;
@@ -500,19 +500,19 @@ h4,
 
 /* Brutal shadows moved to tokens.css - single source of truth */
 @utility shadow-brutal-2 {
-  box-shadow: 2px 2px 0px #18181b;
+  box-shadow: 2px 2px 0px #121212;
 }
 @utility shadow-brutal-3 {
-  box-shadow: 3px 3px 0px #18181b;
+  box-shadow: 3px 3px 0px #121212;
 }
 @utility shadow-brutal-4 {
-  box-shadow: 4px 4px 0px #18181b;
+  box-shadow: 4px 4px 0px #121212;
 }
 @utility shadow-brutal-5 {
-  box-shadow: 5px 5px 0px #18181b;
+  box-shadow: 5px 5px 0px #121212;
 }
 @utility text-loyo-mustard {
-  color: #cda24d;
+  color: var(--color-loyo-mustard);
 }
 @utility z-100 {
   z-index: 100;
@@ -534,8 +534,8 @@ h4,
   translate: var(--tw-translate-x) var(--tw-translate-y);
 }
 @utility shadow-brutal-7 {
-  box-shadow: 7px 7px 0px #18181b;
+  box-shadow: 7px 7px 0px #121212;
 }
 @utility shadow-brutal-10 {
-  box-shadow: 10px 10px 0px #18181b;
+  box-shadow: 10px 10px 0px #121212;
 }

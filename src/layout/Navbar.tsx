@@ -152,7 +152,7 @@ export const Navbar: React.FC<NavbarProps> = ({
             <div className="relative" id="nav-dotaznik-container">
               <button
                 onClick={() => setDotaznikDropdownOpen(!dotaznikDropdownOpen)}
-                className="px-3 sm:px-4 py-1.5 bg-loyo-ink hover:bg-loyo-blue text-white text-xs font-bold uppercase tracking-wider flex items-center gap-1.5 cursor-pointer shadow-xs transition-colors"
+                className="px-3 sm:px-4 py-1.5 bg-loyo-ink hover:bg-loyo-orange text-white text-xs font-bold uppercase tracking-wider flex items-center gap-1.5 cursor-pointer shadow-xs transition-colors"
               >
                 <span>Dotazník</span>
                 <ChevronDown
@@ -318,7 +318,7 @@ export const Navbar: React.FC<NavbarProps> = ({
                   <a
                     href={`/${ZIP_NAME}`}
                     download={ZIP_NAME}
-                    className="w-full px-3 py-2.5 bg-loyo-ink hover:bg-loyo-blue text-white rounded-xl border-2 border-loyo-ink text-xs font-bold uppercase tracking-wider flex items-center justify-center gap-2 cursor-pointer transition-colors"
+                    className="w-full px-3 py-2.5 bg-loyo-ink hover:bg-loyo-orange text-white rounded-xl border-2 border-loyo-ink text-xs font-bold uppercase tracking-wider flex items-center justify-center gap-2 cursor-pointer transition-colors"
                   >
                     <Download className="w-4 h-4" />
                     <span>Stáhnout {ZIP_NAME}</span>

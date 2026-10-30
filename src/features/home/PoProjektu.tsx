@@ -44,7 +44,7 @@ export const PoProjektu: React.FC<PoProjektuProps> = ({ onOpenQuestionnaire }) =
           {onOpenQuestionnaire && (
             <button
               onClick={() => onOpenQuestionnaire()}
-              className="w-full sm:w-auto px-5 py-2 bg-loyo-ink hover:bg-[#2c2c31] text-white border-2 border-loyo-ink rounded-xl shadow-[2px_2px_0px_#000] text-xs font-bold uppercase tracking-wider shrink-0 cursor-pointer transition-all flex items-center justify-center gap-1.5"
+              className="w-full sm:w-auto px-5 py-2 bg-loyo-ink hover:bg-loyo-orange text-white border-2 border-loyo-ink rounded-xl shadow-[2px_2px_0px_#000] text-xs font-bold uppercase tracking-wider shrink-0 cursor-pointer transition-all flex items-center justify-center gap-1.5"
             >
               <span>Nezávazná poptávka</span>
               <ArrowRight className="w-3.5 h-3.5" />

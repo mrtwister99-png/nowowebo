@@ -3,10 +3,10 @@ import { PieceShape } from './types';
 
 // Barvy hry: 3 značkové barvy + černá; padající kostičky jsou žlutozelené
 export const COLOR_BLUE = BRAND.blue;
-export const COLOR_GOLD = BRAND.mustard;
+export const COLOR_GOLD = BRAND.orange;
 export const COLOR_RED = BRAND.red;
 export const COLOR_BLACK = BRAND.ink;
-export const COLOR_FALLING = '#bef264';
+export const COLOR_FALLING = '#0088ff';
 
 export const CUBE_SIZE = 7; // 7 px na kostičku (20 řádků se musí vejít do výšky hlavičky)
 export const GAP = 1; // 1 px mezera
@@ -136,6 +136,6 @@ export const DEMO_TETROMINOES: PieceShape[][] = [
 export const roundButtonClass = (active: boolean): string =>
   `min-w-7 h-7 sm:min-w-8 sm:h-8 px-1.5 rounded-full border-2 border-loyo-ink font-heading font-black text-xs leading-none flex items-center justify-center cursor-pointer shrink-0 z-40 pointer-events-auto transition-all hover:-translate-y-0.5 active:translate-x-0.5 active:translate-y-0.5 ${
     active
-      ? 'bg-loyo-mustard text-loyo-ink scale-105 shadow-brutal-2'
-      : 'bg-white hover:bg-zinc-100 text-loyo-ink shadow-[1.5px_1.5px_0px_#18181b]'
+      ? 'bg-loyo-orange text-loyo-ink scale-105 shadow-brutal-2'
+      : 'bg-white hover:bg-zinc-100 text-loyo-ink shadow-[1.5px_1.5px_0px_#121212]'
   }`;

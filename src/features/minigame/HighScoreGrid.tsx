@@ -34,7 +34,7 @@ export const HighScoreGrid: React.FC<HighScoreGridProps> = ({
               key={idx}
               className={`flex items-center font-mono rounded border ${rowClassName} ${
                 isCurrentPlayer
-                  ? 'bg-loyo-mustard/25 border-loyo-ink font-bold shadow-brutal-1'
+                  ? 'bg-loyo-orange/25 border-loyo-ink font-bold shadow-brutal-1'
                   : 'bg-[#f4f4f5] border-zinc-200'
               }`}
             >

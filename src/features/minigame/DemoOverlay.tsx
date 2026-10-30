@@ -59,7 +59,7 @@ const FinishedCounter: React.FC<{ finishedCount: number }> = ({ finishedCount })
         >
           {/* Ocas bubliny mířící dolů ke kolečku */}
           <div className="absolute -bottom-1.5 left-3 w-3 h-3 bg-loyo-ink border-r-2 border-b-2 border-loyo-ink rotate-45" />
-          <span className="font-heading font-black text-[11px] sm:text-xs text-loyo-mustard tracking-wider leading-tight">
+          <span className="font-heading font-black text-[11px] sm:text-xs text-loyo-orange tracking-wider leading-tight">
             {finishedText(finishedCount)}
           </span>
         </div>
@@ -130,7 +130,7 @@ export const DemoOverlay: React.FC<DemoOverlayProps> = ({
         onClick={onToggleHighScores}
         className={`h-6 sm:h-7 px-2.5 rounded-lg border-2 border-loyo-ink font-heading font-black text-[10px] sm:text-xs tracking-wider uppercase flex items-center cursor-pointer transition-all ${
           showHighScoresModal
-            ? 'bg-loyo-mustard text-loyo-ink shadow-brutal-2 -translate-y-0.5'
+            ? 'bg-loyo-orange text-loyo-ink shadow-brutal-2 -translate-y-0.5'
             : 'bg-white hover:bg-zinc-100 text-loyo-ink shadow-brutal-2 hover:-translate-y-0.5 active:translate-x-0.5 active:translate-y-0.5 active:shadow-brutal-1'
         }`}
         title="Zobrazit HIGHSCORE"
@@ -141,10 +141,10 @@ export const DemoOverlay: React.FC<DemoOverlayProps> = ({
       {/* VPRAVO: HRÁT? */}
       <button
         onClick={onStart}
-        className="h-6 sm:h-7 px-3 rounded-lg bg-loyo-blue hover:bg-[#03086b] text-white border-2 border-loyo-ink shadow-brutal-2 hover:-translate-y-0.5 hover:shadow-brutal-3 active:translate-x-0.5 active:translate-y-0.5 active:shadow-brutal-1 font-heading font-black text-[10px] sm:text-xs tracking-wider uppercase flex items-center gap-1.5 cursor-pointer transition-all"
+        className="h-6 sm:h-7 px-3 rounded-lg bg-loyo-blue hover:bg-loyo-orange text-white border-2 border-loyo-ink shadow-brutal-2 hover:-translate-y-0.5 hover:shadow-brutal-3 active:translate-x-0.5 active:translate-y-0.5 active:shadow-brutal-1 font-heading font-black text-[10px] sm:text-xs tracking-wider uppercase flex items-center gap-1.5 cursor-pointer transition-all"
       >
         <span>HRÁT?</span>
-        <span className="text-loyo-mustard">▶</span>
+        <span className="text-white">▶</span>
       </button>
     </div>
 
@@ -169,10 +169,10 @@ export const DemoOverlay: React.FC<DemoOverlayProps> = ({
       <div className="w-full">
         {/* NADPIS: miniGAME Tetris (HOŘČIČNÁ BARVA, JEDNOU ZA 5 s PROBLIKNE) */}
         <div
-          className="font-heading font-black text-[11px] sm:text-xs text-loyo-mustard tracking-wider flex items-center gap-1.5 leading-tight whitespace-nowrap"
+          className="font-heading font-black text-[11px] sm:text-xs text-loyo-orange tracking-wider flex items-center gap-1.5 leading-tight whitespace-nowrap"
           style={{ animation: 'blink-5s 5s infinite ease-in-out' }}
         >
-          <span className="w-1.5 h-1.5 rounded-full bg-[#bef264] shrink-0" />
+          <span className="w-1.5 h-1.5 rounded-full bg-loyo-blue shrink-0" />
           <span>miniGAME Tetris</span>
         </div>
 

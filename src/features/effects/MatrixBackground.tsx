@@ -14,7 +14,7 @@ const GLYPHS = ['■', '□', '▪', '▫', '▬', '▭', '▮', '▯', '░', '
 const GLITCH_GLYPHS = ['■', '◼', '█', '▓', '◾'].map((g) => GLYPHS.indexOf(g)); // indexy do GLYPHS
 
 const BG_COLOR = '#E6E6E6'; // POZADÍ
-const HEAD_COLOR = '#111111'; // ČTVERCE (hlava sloupce)
+const HEAD_COLOR = '#121212'; // ČTVERCE (hlava sloupce)
 // Glitch hlav sloupců do #00bbff: každý sloupec má svůj vlastní čas (jednou za 10 s) a při něm je šance 44,22 %
 const GLITCH_HEAD_COLOR = '#00bbff';
 const GLITCH_HEAD_EVERY_MS = 10000;
@@ -50,7 +50,7 @@ const hitIsOn = (elapsed: number): boolean => {
 const SPEED = 1; // rychlost 1.00x
 const GLITCH = true; // glitch kolem kurzoru (180 px)
 const LAYER_OPACITY = 0.5; // viditelnost celého pozadí
-const SITE_BG_FALLBACK: RGB = [237, 237, 237]; // #EDEDED = --color-loyo-bg
+const SITE_BG_FALLBACK: RGB = [232, 232, 232]; // #E8E8E8 = --color-loyo-bg
 
 const ANGLE = (-7.77 * Math.PI) / 180; // náklon
 const SCALE = 1.12;

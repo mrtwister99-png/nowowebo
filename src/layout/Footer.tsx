@@ -106,7 +106,7 @@ export const Footer: React.FC = () => {
                       className="flex items-center justify-between p-3 rounded-xl bg-[#222226] hover:bg-[#2a2a30] border border-[#333338] text-xs font-mono transition-colors group"
                     >
                       <span className="flex items-center gap-2 text-white font-bold">
-                        <Mail className="w-4 h-4 text-emerald-400" />
+                        <Mail className="w-4 h-4 text-loyo-blue" />
                         loyo.gruup@gmail.com
                       </span>
                       <ExternalLink className="w-3.5 h-3.5 text-[#71717a] group-hover:text-white transition-colors" />
@@ -138,10 +138,10 @@ export const Footer: React.FC = () => {
             {/* 1. EMAIL */}
             <a
               href="mailto:loyo.gruup@gmail.com"
-              className="flex items-center gap-2 text-xs sm:text-sm font-mono font-bold text-white hover:text-emerald-400 transition-colors shrink-0 group"
+              className="flex items-center gap-2 text-xs sm:text-sm font-mono font-bold text-white hover:text-loyo-orange transition-colors shrink-0 group"
               title="Napsat e-mail"
             >
-              <Mail className="w-4 h-4 text-[#a1a1aa] group-hover:text-emerald-400 transition-colors" />
+              <Mail className="w-4 h-4 text-[#a1a1aa] group-hover:text-loyo-orange transition-colors" />
               <span>loyo.gruup@gmail.com</span>
             </a>
 
@@ -152,10 +152,10 @@ export const Footer: React.FC = () => {
               href="https://instagram.com"
               target="_blank"
               rel="noopener noreferrer"
-              className="flex items-center gap-1.5 text-xs sm:text-sm font-mono font-bold text-[#d4d4d8] hover:text-[#e1306c] transition-colors shrink-0 group"
+              className="flex items-center gap-1.5 text-xs sm:text-sm font-mono font-bold text-[#d4d4d8] hover:text-loyo-orange transition-colors shrink-0 group"
               title="Instagram profil"
             >
-              <Instagram className="w-4 h-4 text-[#a1a1aa] group-hover:text-[#e1306c] transition-colors" />
+              <Instagram className="w-4 h-4 text-[#a1a1aa] group-hover:text-loyo-orange transition-colors" />
               <span>Instagram</span>
             </a>
 
@@ -166,10 +166,10 @@ export const Footer: React.FC = () => {
               href="https://facebook.com"
               target="_blank"
               rel="noopener noreferrer"
-              className="flex items-center gap-1.5 text-xs sm:text-sm font-mono font-bold text-[#d4d4d8] hover:text-[#1877f2] transition-colors shrink-0 group"
+              className="flex items-center gap-1.5 text-xs sm:text-sm font-mono font-bold text-[#d4d4d8] hover:text-loyo-orange transition-colors shrink-0 group"
               title="Facebook stránka"
             >
-              <Facebook className="w-4 h-4 text-[#a1a1aa] group-hover:text-[#1877f2] transition-colors" />
+              <Facebook className="w-4 h-4 text-[#a1a1aa] group-hover:text-loyo-orange transition-colors" />
               <span>Facebook</span>
             </a>
           </div>

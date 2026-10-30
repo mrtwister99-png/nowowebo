@@ -57,8 +57,8 @@ export const NameEntryOverlay: React.FC<NameEntryOverlayProps> = ({
             }}
             className={`w-8 h-9 rounded-lg border-2 flex items-center justify-center font-heading font-black text-base transition-all cursor-text ${
               isCurrent
-                ? 'border-loyo-ink bg-loyo-mustard/25 shadow-[1.5px_1.5px_0px_#18181b] ring-2 ring-loyo-ink'
-                : 'border-loyo-ink bg-white shadow-[1.5px_1.5px_0px_#18181b]'
+                ? 'border-loyo-ink bg-loyo-orange/25 shadow-[1.5px_1.5px_0px_#121212] ring-2 ring-loyo-ink'
+                : 'border-loyo-ink bg-white shadow-[1.5px_1.5px_0px_#121212]'
             }`}
           >
             {char ? (
@@ -84,7 +84,7 @@ export const NameEntryOverlay: React.FC<NameEntryOverlayProps> = ({
         disabled={inputInitials.length !== 3}
         className={`h-6 px-3 rounded-lg font-heading font-bold text-[10px] uppercase tracking-wider border-2 transition-all ${
           inputInitials.length === 3
-            ? 'bg-loyo-blue hover:bg-[#03086b] text-white border-loyo-ink shadow-brutal-2 cursor-pointer active:translate-y-0.5'
+            ? 'bg-loyo-blue hover:bg-loyo-orange text-white border-loyo-ink shadow-brutal-2 cursor-pointer active:translate-y-0.5'
             : 'bg-zinc-200 text-zinc-400 border-zinc-400 cursor-not-allowed shadow-none'
         }`}
       >

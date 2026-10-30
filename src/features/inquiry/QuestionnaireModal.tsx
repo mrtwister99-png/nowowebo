@@ -90,7 +90,7 @@ export const QuestionnaireModal: React.FC<Props> = ({ isOpen, initialServiceId =
   return (
     <div className="fixed inset-0 z-100 flex items-center justify-center p-3 sm:p-4">
       <div className="absolute inset-0 bg-black/60 backdrop-blur-" onClick={onClose} />
-      <div className="relative w-full max-w- max-h- bg-white border- border-loyo-ink rounded- shadow-[10px_10px_0px_#18181b] flex flex-col overflow-hidden">
+      <div className="relative w-full max-w- max-h- bg-white border- border-loyo-ink rounded- shadow-[10px_10px_0px_#121212] flex flex-col overflow-hidden">
         {/* HEADER 56px s animovaným nadpisem */}
         <div className="h- shrink-0 flex items-center justify-between px-5 border-b- border-loyo-ink bg-white">
           <div className="flex items-center gap-3 min-w-0 flex-1">
@@ -114,7 +114,7 @@ export const QuestionnaireModal: React.FC<Props> = ({ isOpen, initialServiceId =
         </div>
 
         {/* LEVEL SWITCHER + PROGRESS */}
-        <div className="px-4 py-3 bg-[#f5f5f3] border-b- border-loyo-ink space-y-3">
+        <div className="px-4 py-3 bg-[#f0f0f0] border-b- border-loyo-ink space-y-3">
           <div className="flex p-1 bg-white border-[2.5px] border-loyo-ink rounded- gap-1">
             {(Object.keys(LEVEL_CONFIG) as LeadLevel[]).map((l) => {
               const c = LEVEL_CONFIG[l];
@@ -145,7 +145,7 @@ export const QuestionnaireModal: React.FC<Props> = ({ isOpen, initialServiceId =
           <div className="flex-1 flex flex-col items-center justify-center p-10 text-center bg-white">
             <div className="w-20 h-20 bg-loyo-ink text-white rounded-full flex items-center justify-center mb-4 
             ">
-              <CheckCircle2 className="w-10 h-10 text-loyo-mustard" />
+              <CheckCircle2 className="w-10 h-10 text-loyo-blue" />
             </div>
             <h3 className="font-heading font-black text-2xl">Odesláno do složky + na email!</h3>
             <p className="font-mono text- mt-3 opacity-70 max-w- leading-relaxed">Uloženo do <b>data/leads/</b> (localStorage + API <b>/api/loyo-lead</b>) + odesláno na <b>loyo.gruup@gmail.com</b>. Ozvu se do 24h s rozborem.</p>
@@ -202,7 +202,7 @@ export const QuestionnaireModal: React.FC<Props> = ({ isOpen, initialServiceId =
                       <label className="text- font-mono font-bold uppercase opacity-60 flex items-center gap-1"><FileText className="w-3 h-3" /> Nástroje které používáte</label>
                       <div className="flex gap-1.5 flex-wrap mt-1.5">
                         {TOOLS.map(t=>(
-                          <button key={t} type="button" onClick={()=>toggle('nastroje', t)} className={`h-7 px-3 rounded-full border-2 border-loyo-ink text- font-bold transition-all ${f.nastroje.includes(t)?'bg-loyo-ink text-white shadow-[2px_2px_0px_#18181b]':'bg-white hover:bg-loyo-bar'}`}>{t}</button>
+                          <button key={t} type="button" onClick={()=>toggle('nastroje', t)} className={`h-7 px-3 rounded-full border-2 border-loyo-ink text- font-bold transition-all ${f.nastroje.includes(t)?'bg-loyo-ink text-white shadow-[2px_2px_0px_#121212]':'bg-white hover:bg-loyo-bar'}`}>{t}</button>
                         ))}
                       </div>
                     </div>
@@ -218,7 +218,7 @@ export const QuestionnaireModal: React.FC<Props> = ({ isOpen, initialServiceId =
               </div>
 
               {level === 'deep' && (
-                <div className="space-y-4 border- border-loyo-ink rounded- p-4 bg-[#fffbeb] shadow-[4px_4px_0px_#18181b]">
+                <div className="space-y-4 border- border-loyo-ink rounded- p-4 bg-[#f2f2f2] shadow-[4px_4px_0px_#121212]">
                   <div className="flex items-center gap-2">
                     <div className="w-6 h-6 bg-loyo-red text-white rounded-full flex items-center justify-center text- font-black">3</div>
                     <h3 className="font-heading font-black text- uppercase tracking-widest">Deep dive - pro nejlevnější řešení</h3>
@@ -280,7 +280,7 @@ export const QuestionnaireModal: React.FC<Props> = ({ isOpen, initialServiceId =
                   <h4 className="font-mono font-black text- uppercase tracking-widest">Poslední krok</h4>
                 </div>
                 <div className="grid grid-cols-2 gap-2">
-                  <textarea className="min-h- p-3 border-[2.5px] border-loyo-ink rounded- text- bg-[#eef2ff] resize-none" placeholder="Otázka na mě? Co vás zajímá? (např. jak to bude fungovat, co když...)" value={f.otazkaNaMe} onChange={e=>upd('otazkaNaMe', e.target.value)} />
+                  <textarea className="min-h- p-3 border-[2.5px] border-loyo-ink rounded- text- bg-[#e6f3ff] resize-none" placeholder="Otázka na mě? Co vás zajímá? (např. jak to bude fungovat, co když...)" value={f.otazkaNaMe} onChange={e=>upd('otazkaNaMe', e.target.value)} />
                   <textarea className="min-h- p-3 border-2 border-loyo-ink rounded- text- resize-none" placeholder="Doplňující info, odkazy, cokoliv co pomůže" value={f.doplnujici} onChange={e=>upd('doplnujici', e.target.value)} />
                 </div>
               </div>

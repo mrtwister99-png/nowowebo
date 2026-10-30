@@ -21,7 +21,7 @@ export const MiniFallingCubesInGap: React.FC = () => {
   return (
     <div
       className={`relative w-full overflow-visible select-none flex flex-col justify-end items-center transition-colors duration-200 ${
-        game.flashBoard ? 'bg-amber-400/15' : 'bg-transparent'
+        game.flashBoard ? 'bg-loyo-orange/15' : 'bg-transparent'
       }`}
       style={{ marginBottom: '0px', minHeight: `${BOARD_HEIGHT + FIELD_TOP_SPACE}px` }}
     >

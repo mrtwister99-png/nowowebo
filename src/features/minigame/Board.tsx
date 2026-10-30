@@ -43,7 +43,7 @@ export const Board: React.FC<BoardProps> = ({
   >
     {/* ZDI: tmavě červené, od podlahy až úplně nahoru, těsně za aktivními sloupci; s rozšířením pole se posunou */}
     <div
-      className="absolute bottom-0 bg-loyo-red border-2 border-loyo-ink rounded-t-sm z-10 pointer-events-none transition-all duration-500"
+      className="absolute bottom-0 bg-loyo-ink border-2 border-loyo-ink rounded-t-sm z-10 pointer-events-none transition-all duration-500"
       style={{
         width: `${WALL_WIDTH}px`,
         height: `${BOARD_HEIGHT + FIELD_TOP_SPACE}px`,
@@ -52,7 +52,7 @@ export const Board: React.FC<BoardProps> = ({
       aria-hidden="true"
     />
     <div
-      className="absolute bottom-0 bg-loyo-red border-2 border-loyo-ink rounded-t-sm z-10 pointer-events-none transition-all duration-500"
+      className="absolute bottom-0 bg-loyo-ink border-2 border-loyo-ink rounded-t-sm z-10 pointer-events-none transition-all duration-500"
       style={{
         width: `${WALL_WIDTH}px`,
         height: `${BOARD_HEIGHT + FIELD_TOP_SPACE}px`,
@@ -81,8 +81,8 @@ export const Board: React.FC<BoardProps> = ({
             bottom: `${bottom}px`,
             backgroundColor: isFlashing ? COLOR_FALLING : cube.color,
             boxShadow: isFlashing
-              ? `0 0 8px ${COLOR_FALLING}, 1px 1px 0px #18181b`
-              : '1px 1px 0px #18181b',
+              ? `0 0 8px ${COLOR_FALLING}, 1px 1px 0px #121212`
+              : '1px 1px 0px #121212',
           }}
         >
           <div
@@ -127,7 +127,7 @@ export const Board: React.FC<BoardProps> = ({
                   left: `${cellLeft}px`,
                   top: `${cellTop}px`,
                   backgroundColor: fallingPiece.color,
-                  boxShadow: '1px 1px 0px #18181b',
+                  boxShadow: '1px 1px 0px #121212',
                 }}
               >
                 <div className="absolute top-0 left-0 right-0 h-px bg-white/40 rounded-t-[1px]" />
@@ -150,7 +150,7 @@ export const Board: React.FC<BoardProps> = ({
             left: `${part.col * STEP}px`,
             top: `${part.y + dy * STEP}px`,
             backgroundColor: part.color,
-            boxShadow: '1px 1px 0px #18181b',
+            boxShadow: '1px 1px 0px #121212',
           }}
         >
           <div className="absolute top-0 left-0 right-0 h-px bg-white/40 rounded-t-[1px]" />

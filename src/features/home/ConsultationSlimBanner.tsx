@@ -22,8 +22,8 @@ export const ConsultationSlimBanner: React.FC<ConsultationSlimBannerProps> = ({
             <div className="relative w-16 h-16 sm:w-18 sm:h-18 rounded-full bg-loyo-ink text-white border-2 border-loyo-ink shadow-[3px_3px_0px_#555] flex items-center justify-center shrink-0 group-hover:scale-105 transition-transform">
               <Coffee className="w-8 h-8 sm:w-9 sm:h-9 stroke-[2.2]" />
               <span className="absolute -top-1 -right-1 flex h-3 w-3">
-                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
-                <span className="relative inline-flex rounded-full h-3 w-3 bg-emerald-500"></span>
+                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-loyo-blue opacity-75"></span>
+                <span className="relative inline-flex rounded-full h-3 w-3 bg-loyo-blue"></span>
               </span>
             </div>
 
@@ -75,7 +75,7 @@ export const ConsultationSlimBanner: React.FC<ConsultationSlimBannerProps> = ({
             <button
               onClick={() => onOpenQuestionnaireForService('consultation')}
               id="btn-more-info-consultation"
-              className="w-full sm:w-auto py-2.5 px-6 bg-loyo-ink hover:bg-[#2c2c31] text-white border-2 border-loyo-ink rounded-xl shadow-[3px_3px_0px_#000] hover:shadow-[4px_4px_0px_#000] hover:-translate-y-0.5 active:translate-x-0.5 active:translate-y-0.5 active:shadow-[1px_1px_0px_#000] font-heading font-bold text-xs sm:text-sm tracking-wider uppercase flex items-center justify-center gap-2 cursor-pointer transition-all"
+              className="w-full sm:w-auto py-2.5 px-6 bg-loyo-ink hover:bg-loyo-orange text-white border-2 border-loyo-ink rounded-xl shadow-[3px_3px_0px_#000] hover:shadow-[4px_4px_0px_#000] hover:-translate-y-0.5 active:translate-x-0.5 active:translate-y-0.5 active:shadow-[1px_1px_0px_#000] font-heading font-bold text-xs sm:text-sm tracking-wider uppercase flex items-center justify-center gap-2 cursor-pointer transition-all"
             >
               <span>VÍCE INFO</span>
               <ArrowRight className="w-4 h-4 stroke-[2.5] group-hover:translate-x-1 transition-transform" />

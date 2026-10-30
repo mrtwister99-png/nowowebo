@@ -6,17 +6,18 @@
  */
 @theme static {
   /* Značkové barvy */
-  --color-loyo-bg: #ededed;
-  --color-loyo-bar: #dbdbdb;
-  --color-loyo-blue: #040b8d;
-  --color-loyo-red: #ac0001;
-  --color-loyo-mustard: #cda24d;
-  --color-loyo-mustard-dark: #8a6b28;
+  --color-loyo-bg: #e8e8e8;
+  --color-loyo-bar: #d8d8d8;
+  --color-loyo-blue: #0088ff;
+  --color-loyo-orange: #ff4800; /* jen hover a aktivní stavy */
+  --color-loyo-red: #ff4800;
+  --color-loyo-mustard: #8c8c8c;
+  --color-loyo-mustard-dark: #6b6b6b;
 
   /* Inkoust (hlavní tmavá) a papír */
-  --color-loyo-ink: #18181b;
-  --color-loyo-ink-soft: #27272a;
-  --color-loyo-paper: #fafafa;
+  --color-loyo-ink: #121212;
+  --color-loyo-ink-soft: #1f1f1f;
+  --color-loyo-paper: #ffffff;
 
   /* Text - od nejtmavšího po nejsvětlejší */
   --color-loyo-strong: #333333;
@@ -31,7 +32,7 @@
   --color-loyo-line-strong: #999999;
 
   /* Plochy při najetí myší */
-  --color-loyo-hover: #e4e4e4;
+  --color-loyo-hover: #dedede;
 
   /* Fonty */
   --font-sans:
@@ -40,14 +41,14 @@
   --font-display: 'Syne', 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
 
   /* Tvrdé "brutalistické" stíny (barva = --color-loyo-ink, hex zapsán natvrdo kvůli Tailwindu) */
-  --shadow-brutal-1: 1px 1px 0px #18181b;
-  --shadow-brutal-2: 2px 2px 0px #18181b;
-  --shadow-brutal-3: 3px 3px 0px #18181b;
-  --shadow-brutal-4: 4px 4px 0px #18181b;
-  --shadow-brutal-5: 5px 5px 0px #18181b;
-  --shadow-brutal-6: 6px 6px 0px #18181b;
-  --shadow-brutal-8: 8px 8px 0px #18181b;
---shadow-brutal-10: 10px 10px 0px #18181b;
+  --shadow-brutal-1: 1px 1px 0px #121212;
+  --shadow-brutal-2: 2px 2px 0px #121212;
+  --shadow-brutal-3: 3px 3px 0px #121212;
+  --shadow-brutal-4: 4px 4px 0px #121212;
+  --shadow-brutal-5: 5px 5px 0px #121212;
+  --shadow-brutal-6: 6px 6px 0px #121212;
+  --shadow-brutal-8: 8px 8px 0px #121212;
+--shadow-brutal-10: 10px 10px 0px #121212;
 }
 @utility shadow-brutal-1 { box-shadow: var(--shadow-brutal-1); }
 @utility shadow-brutal-2 { box-shadow: var(--shadow-brutal-2); }
@@ -61,5 +62,4 @@
 @utility z-100 { z-index: 100; }
 @utility -translate-x-px { --tw-translate-x: -1px; translate: var(--tw-translate-x) var(--tw-translate-y); }
 @utility -translate-y-px { --tw-translate-y: -1px; translate: var(--tw-translate-x) var(--tw-translate-y); }
-@utility text-loyo-mustard { color: #cda24d; 
-}
+@utility text-loyo-mustard { color: var(--color-loyo-mustard); }

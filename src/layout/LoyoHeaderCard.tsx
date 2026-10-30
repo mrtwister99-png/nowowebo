@@ -108,7 +108,7 @@ export const LoyoHeaderCard: React.FC<LoyoHeaderCardProps> = ({
                 className={`h-10 sm:h-11 px-4 sm:px-5 rounded-xl sm:rounded-2xl border-2 border-loyo-ink shadow-[3px_3px_0px_#000] flex items-center gap-2 cursor-pointer transition-all font-heading font-bold text-xs sm:text-sm tracking-wider uppercase select-none ${
                   isMenuOpen
                     ? 'bg-white text-loyo-ink -translate-y-0.5 shadow-[4px_4px_0px_#000]'
-                    : 'bg-loyo-ink hover:bg-[#2c2c31] text-white hover:-translate-y-0.5 hover:shadow-[4px_4px_0px_#000]'
+                    : 'bg-loyo-ink hover:bg-loyo-orange text-white hover:-translate-y-0.5 hover:shadow-[4px_4px_0px_#000]'
                 } active:translate-x-0.5 active:translate-y-0.5 active:shadow-[1px_1px_0px_#000]`}
               >
                 <Menu
@@ -161,7 +161,7 @@ export const LoyoHeaderCard: React.FC<LoyoHeaderCardProps> = ({
                               <div className="text-[10px] font-mono font-bold text-loyo-subtle">
                                 SEKCE {item.num}
                               </div>
-                              <div className="font-heading font-bold text-[13px] leading-tight text-loyo-ink group-hover:text-loyo-blue transition-colors">
+                              <div className="font-heading font-bold text-[13px] leading-tight text-loyo-ink group-hover:text-loyo-orange transition-colors">
                                 {item.title}
                               </div>
                             </div>
@@ -181,7 +181,7 @@ export const LoyoHeaderCard: React.FC<LoyoHeaderCardProps> = ({
                 if (e.pointerType === 'mouse') setGearSpinning(true); // rozjede se jen při najetí myší
               }}
               id="header-dotaznik-button"
-              className="h-10 sm:h-11 px-4 sm:px-5 rounded-xl sm:rounded-2xl bg-loyo-blue hover:bg-[#03086b] text-white border-2 border-loyo-ink shadow-brutal-3 hover:-translate-y-0.5 hover:shadow-brutal-4 active:translate-x-0.5 active:translate-y-0.5 active:shadow-brutal-1 flex items-center gap-2 cursor-pointer transition-all font-heading font-bold text-xs sm:text-sm tracking-wider uppercase select-none"
+              className="h-10 sm:h-11 px-4 sm:px-5 rounded-xl sm:rounded-2xl bg-loyo-blue hover:bg-loyo-orange text-white border-2 border-loyo-ink shadow-brutal-3 hover:-translate-y-0.5 hover:shadow-brutal-4 active:translate-x-0.5 active:translate-y-0.5 active:shadow-brutal-1 flex items-center gap-2 cursor-pointer transition-all font-heading font-bold text-xs sm:text-sm tracking-wider uppercase select-none"
             >
               {/* vnější prvek: klidové otočení o 90° každých 15 s; vnitřní: rozjezd po najetí (hotovo = zpět do klidu) */}
               <span
@@ -190,7 +190,7 @@ export const LoyoHeaderCard: React.FC<LoyoHeaderCardProps> = ({
                 aria-hidden="true"
               >
                 <Settings
-                  className={`w-4 h-4 text-amber-300 ${gearSpinning ? 'anim-gear-spin' : ''}`}
+                  className={`w-4 h-4 text-white ${gearSpinning ? 'anim-gear-spin' : ''}`}
                   onAnimationEnd={() => setGearSpinning(false)}
                 />
               </span>
@@ -206,7 +206,7 @@ export const LoyoHeaderCard: React.FC<LoyoHeaderCardProps> = ({
           <div className="shrink-0 w-full sm:w-auto flex flex-col items-center sm:items-stretch justify-between relative z-30">
             <div
               id="card-loyo-cubes"
-              className="w-full sm:w-auto bg-white/80 border-2 border-loyo-ink rounded-3xl sm:rounded-tr-none p-3.5 sm:p-4 md:p-5 shadow-brutal-6 sm:shadow-[0_6px_0_#18181b] relative z-10 flex justify-center"
+              className="w-full sm:w-auto bg-white/80 border-2 border-loyo-ink rounded-3xl sm:rounded-tr-none p-3.5 sm:p-4 md:p-5 shadow-brutal-6 sm:shadow-[0_6px_0_#121212] relative z-10 flex justify-center"
             >
               <div className="grid grid-cols-2 gap-2.5 sm:gap-3 select-none">
                 <div
@@ -233,7 +233,7 @@ export const LoyoHeaderCard: React.FC<LoyoHeaderCardProps> = ({
                 >
                   <div className="absolute top-0 left-0 right-0 h-2 sm:h-2.5 bg-loyo-mustard" />
                   <span
-                    className={`tracking-tight lowercase transition-transform duration-300 ${animatingCube.o1 ? 'scale-120 text-loyo-mustard' : ''}`}
+                    className={`tracking-tight lowercase transition-transform duration-300 ${animatingCube.o1 ? 'scale-120 text-loyo-orange' : ''}`}
                   >
                     o
                   </span>
@@ -263,7 +263,7 @@ export const LoyoHeaderCard: React.FC<LoyoHeaderCardProps> = ({
                 >
                   <div className="absolute top-0 left-0 right-0 h-2 sm:h-2.5 bg-loyo-ink" />
                   <span
-                    className={`tracking-tight lowercase transition-transform duration-300 ${animatingCube.o2 ? 'scale-120 text-[#bef264]' : ''}`}
+                    className={`tracking-tight lowercase transition-transform duration-300 ${animatingCube.o2 ? 'scale-120 text-loyo-blue' : ''}`}
                   >
                     o
                   </span>
