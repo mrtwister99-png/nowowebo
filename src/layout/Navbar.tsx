@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Menu, X, ChevronDown, ArrowLeft, Download } from 'lucide-react';
 import { ServiceId } from '../types';
-import { LoyoLogoBox } from '../components/brand/LoyoLogoBox';
 import { BRAND } from '../lib/colors';
 import { scrollToTop, useMenuMount } from '../lib/motion';
 import { MENU_SECTIONS, type MenuSection } from '../data/routes';
@@ -102,8 +101,7 @@ export const Navbar: React.FC<NavbarProps> = ({
               className="flex items-center gap-3 cursor-pointer group text-left"
               title="LoYo PREMIUM DEVELOPER - Hlavní stránka"
             >
-              <LoyoLogoBox activeSection={activeSection} currentPage={currentPage} />
-              <div className="hidden sm:block">
+              <div>
                 <span className="font-heading font-black text-sm sm:text-base tracking-tight text-loyo-ink block leading-none">
                   LoYo
                 </span>

@@ -460,6 +460,26 @@ h4,
   animation: loyo-bubble-glitch-out-i 0.4s steps(1, end) forwards;
 }
 
+/* Kolečko u nápisu ÚVOD: horní vrstva plynule bliká (přes spodní, která je vidět napořád) */
+@keyframes loyo-dot-blink {
+  0%,
+  100% {
+    opacity: 0;
+  }
+  50% {
+    opacity: 1;
+  }
+}
+.anim-dot-blink {
+  animation: loyo-dot-blink 1.6s ease-in-out infinite;
+}
+@media (prefers-reduced-motion: reduce) {
+  .anim-dot-blink {
+    animation: none;
+    opacity: 0;
+  }
+}
+
 /* Ozubené kolečko u DOTAZNÍKU: po najetí se rozjede, zrychlí a plynule zastaví (2 otáčky) */
 @keyframes loyo-gear-spin {
   from {

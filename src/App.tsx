@@ -153,7 +153,7 @@ export default function App() {
 
       {/* 2. MAIN CONTENT AREA */}
       <main
-        className={`flex-1 flex flex-col justify-start ${routeServiceId ? 'pt-24' : 'pt-6 sm:pt-10'}`}
+        className={`flex-1 flex flex-col justify-start ${routeServiceId ? 'pt-24' : 'pt-0'}`}
       >
         <Routes>
           <Route

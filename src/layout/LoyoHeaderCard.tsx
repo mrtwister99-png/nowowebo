@@ -1,7 +1,7 @@
 import React, { Suspense, lazy, useState, useEffect, useRef } from 'react';
 import { Menu, Settings, ArrowRight } from 'lucide-react';
 import { ServiceId } from '../types';
-import { scrollToElement, useMenuMount } from '../lib/motion';
+import { scrollToElement, scrollToTop, useMenuMount } from '../lib/motion';
 import { MENU_SECTIONS } from '../data/routes';
 
 // Minihra se stahuje samostatně (odděleně od hlavního balíčku), až když je potřeba
@@ -146,7 +146,8 @@ export const LoyoHeaderCard: React.FC<LoyoHeaderCardProps> = ({
                             if (item.page !== 'home') {
                               onNavigateToPage(item.page);
                             } else {
-                              scrollToElement(item.id); // s odsazením o výšku fixní hlavičky
+                              if (item.id === 'uvod') scrollToTop();
+                              else scrollToElement(item.id); // s odsazením o výšku fixní hlavičky
                             }
                           }}
                           className="w-full p-3 bg-white hover:bg-neutral-50 border-2 border-loyo-ink rounded-xl shadow-brutal-3 hover:-translate-y-0.5 hover:shadow-brutal-4 active:translate-x-0.5 active:translate-y-0.5 active:shadow-brutal-1 flex items-center justify-between gap-3 text-left transition-all cursor-pointer group"
@@ -200,12 +201,12 @@ export const LoyoHeaderCard: React.FC<LoyoHeaderCardProps> = ({
       </header>
 
       {/* OBSAH ÚVODU */}
-      <div className="max-w-6xl mx-auto px-4 sm:px-6 pt-20 sm:pt-22 pb-8 bg-transparent">
+      <div className="max-w-6xl mx-auto px-4 sm:px-6 pt-16 sm:pt-18 pb-8 bg-transparent">
         <div className="flex flex-col sm:flex-row items-stretch">
           <div className="shrink-0 w-full sm:w-auto flex flex-col items-center sm:items-stretch justify-between relative z-30">
             <div
               id="card-loyo-cubes"
-              className="w-full sm:w-auto bg-white/80 border-2 border-loyo-ink rounded-3xl sm:rounded-tr-none p-3.5 sm:p-4 md:p-5 shadow-brutal-6 relative z-10 flex justify-center"
+              className="w-full sm:w-auto bg-white/80 border-2 border-loyo-ink rounded-3xl sm:rounded-tr-none p-3.5 sm:p-4 md:p-5 shadow-brutal-6 sm:shadow-[0_6px_0_#18181b] relative z-10 flex justify-center"
             >
               <div className="grid grid-cols-2 gap-2.5 sm:gap-3 select-none">
                 <div
@@ -301,10 +302,26 @@ export const LoyoHeaderCard: React.FC<LoyoHeaderCardProps> = ({
               id="card-uvod"
               className="bg-white/80 border-2 border-loyo-ink rounded-2xl sm:rounded-3xl p-3.5 sm:p-4 md:p-5 shadow-brutal-4 mt-4 sm:mt-5 mb-2.5 sm:mb-3 sm:ml-3 text-center relative z-10"
             >
+              {/* Nápis ÚVOD jako obrázek. Všechny 3 obrázky mají stejné plátno (stejnou velikost), proto se jen
+                  překryjí: uvod.png = nápis, kolecko-down.png = kolečko napořád, kolecko-up.png = kolečko, které bliká.
+                  Velikost se mění jen výškou (h-14 / sm:h-16), šířka se dopočítá. Soubory jsou ve složce public/img. */}
               <div className="flex justify-center mb-2">
-                <div className="text-xs sm:text-sm font-mono font-bold uppercase tracking-wider text-loyo-blue flex items-center gap-2 px-3 py-0.5 bg-loyo-blue/8 rounded-full border border-loyo-blue/20">
-                  <span className="w-2 h-2 rounded-full bg-loyo-blue" />
-                  <span>ÚVOD</span>
+                <div className="relative inline-block h-14 sm:h-16 select-none" role="img" aria-label="Úvod">
+                  <img src="/img/uvod.png" alt="" draggable={false} className="block h-full w-auto" />
+                  <img
+                    src="/img/kolecko-down.png"
+                    alt=""
+                    aria-hidden="true"
+                    draggable={false}
+                    className="absolute inset-0 h-full w-full"
+                  />
+                  <img
+                    src="/img/kolecko-up.png"
+                    alt=""
+                    aria-hidden="true"
+                    draggable={false}
+                    className="absolute inset-0 h-full w-full anim-dot-blink"
+                  />
                 </div>
               </div>
 

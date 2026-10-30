@@ -56,11 +56,7 @@ export interface MenuSection {
 }
 
 export const MENU_SECTIONS: MenuSection[] = [
-  { id: 'uvod', page: 'home', num: '', title: 'Úvod & Představení', label: 'Úvod & Představení', tag: 'START', color: BRAND.ink, navStyle: 'plain', inHeader: false },
-  { id: 'automatizace', page: 'automation', num: '01', title: 'Automatizace procesů & ekosystém', label: '01. Automatizace', tag: 'Modrá', color: BRAND.blue, textColor: BRAND.blue, navStyle: 'accent', inHeader: true },
-  { id: 'fullstack', page: 'fullstack', num: '02', title: 'Vývoj aplikací fullstack', label: '02. Aplikace', tag: 'Zlatá', color: BRAND.mustard, textColor: BRAND.mustardDark, navStyle: 'accent', inHeader: true },
-  { id: 'weby', page: 'web-branding', num: '03', title: 'Tvorba webů, Restyling & Logo', label: '03. Tvorba', tag: 'Červená', color: BRAND.red, textColor: BRAND.red, navStyle: 'accent', inHeader: true },
-  { id: 'konzultace', page: 'consultation', num: '04', title: 'Odborná osobní konzultace', label: '04. Konzultace', tag: '1-on-1', color: BRAND.ink, navStyle: 'dot', inHeader: true },
-  { id: 'zprava', page: 'home', num: '05', title: 'Rychlá zpráva k projektu', label: '05. Rychlá zpráva', tag: 'Zpráva', color: '#666666', navStyle: 'plain', inHeader: true },
-  { id: 'kontakty', page: 'home', num: '06', title: 'Kontakty & Sociální sítě', label: '06. Kontakty', tag: 'Info', color: BRAND.ink, navStyle: 'plain', inHeader: true },
+  { id: 'uvod', page: 'home', num: '01', title: 'Úvod & Představení', label: 'Úvod', tag: 'START', color: BRAND.ink, navStyle: 'plain', inHeader: true },
+  { id: 'konzultace', page: 'consultation', num: '02', title: 'Odborná osobní konzultace', label: 'Konzultace', tag: '1-on-1', color: BRAND.ink, navStyle: 'dot', inHeader: true },
+  { id: 'kontakty', page: 'home', num: '03', title: 'Kontakty & Sociální sítě', label: 'Kontakty', tag: 'Info', color: BRAND.ink, navStyle: 'plain', inHeader: true },
 ];
