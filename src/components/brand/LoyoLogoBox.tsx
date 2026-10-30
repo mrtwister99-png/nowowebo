@@ -64,7 +64,7 @@ export const LoyoLogoBox: React.FC<LoyoLogoBoxProps> = ({activeSection,currentPa
   const scale=isExpl?0.9:isImpl?1.12:1; const tiltX=isExpl?-12:0; const tiltY=isExpl?-13:0;
 
   return(
-    <div id="loyo-logo-box" className={`relative w-20 h-20 sm:w-24 sm:h-24 flex items-center justify-center shrink-0 cursor-pointer select-none bg-transparent ${className}`}
+    <div id="loyo-logo-box" className={`relative w-32 h-32 sm:w-32 sm:h-32 flex items-center justify-center shrink-0 cursor-pointer select-none bg-transparent ${className}`}
       onMouseDown={startHold} onMouseUp={endHold} onMouseLeave={endHold} onTouchStart={startHold} onTouchEnd={endHold}
       onKeyDown={e=>{ if(e.key==='Enter'||e.key===' '){ e.preventDefault(); rotateNext(); } }} role="button" tabIndex={0} aria-label="LoYo logo - přepnout stranu">
       <div className="relative w-full h-full flex items-center justify-center" style={{perspective:`${perspective}px`}}>
@@ -74,7 +74,7 @@ export const LoyoLogoBox: React.FC<LoyoLogoBoxProps> = ({activeSection,currentPa
             const bg=isNeon?'#0a0a0a':d.bg; const border=isNeon?`2px solid ${d.neonBorder}`:'3px solid black';
             const shadow=isNeon?`0 0 10px ${d.neonBorder},0 0 20px ${d.neonBorder}`:'2.5px 2.5px 0px 0px black';
             return(
-              <div key={f.key} className="absolute inset-0 flex items-center justify-center" style={{transform:`${f.baseRot} translateZ(22px)`,backgroundColor:bg,border,boxShadow:shadow,backfaceVisibility:'hidden'}}>
+              <div key={f.key} className="absolute inset-0 flex items-center justify-center" style={{transform:`${f.baseRot} translateZ(36px)`,backgroundColor:bg,border,boxShadow:shadow,backfaceVisibility:'hidden'}}>
                 {show&&<span className="font-black leading-none select-none text-[16px] sm:text-[18px]" style={{color:isNeon?d.neonText:d.text,textShadow:isNeon?`0 0 7px ${d.neonGlow}`:'none'}}>{isNeon?d.labelNeon:d.labelNormal|| (isTB?'•':'')}</span>}
               </div>
             )

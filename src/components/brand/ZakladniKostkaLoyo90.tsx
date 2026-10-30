@@ -12,7 +12,7 @@ interface Props {
 export const ZakladniKostkaLoyo90: React.FC<Props> = ({
   className = '',
   perspective = 1400,
-  size = 300,
+  size = 600,
   scenePad = 200,
   showInfo = true,
   startRot = 28,
@@ -73,13 +73,13 @@ export const ZakladniKostkaLoyo90: React.FC<Props> = ({
           position: absolute;
           width: ${size}px;
           height: ${size}px;
-          border: 4px solid black;
+          border: 3px solid black;
           display: flex;
           align-items: center;
           justify-content: center;
           font-family: 'Inter', sans-serif;
           font-weight: 900;
-          font-size: ${size * 0.28}px;
+          font-size: ${size * 0.68}px;
           color: white;
           background: var(--bg);
           line-height: 1;

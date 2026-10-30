@@ -6,10 +6,15 @@ import {
   CheckCircle2,
   HeartHandshake,
   ArrowRight,
+  Download,
 } from 'lucide-react';
 import { ServiceId } from '../../types';
 import { Section } from '../../components/ui/Section';
 import { Badge } from '../../components/ui/Badge';
+
+// Soubor ke stažení leží ve složce public/ (na webu je pak dostupný jako /ho.zip).
+// Kdyby se zip jmenoval jinak, stačí přepsat jen tady.
+const ZIP_NAME = 'ho.zip';
 
 interface PoProjektuProps {
   onOpenQuestionnaire?: (serviceId?: ServiceId) => void;
@@ -54,10 +59,19 @@ export const PoProjektu: React.FC<PoProjektuProps> = ({ onOpenQuestionnaire }) =
               </p>
             </div>
             <div className="pt-3 border-t border-loyo-ink/15 text-xs text-loyo-ink-soft space-y-1.5 font-mono">
-              <div className="flex items-center gap-1.5">
+              {/* Řádek je zároveň tlačítko ke stažení zipu */}
+              <a
+                href={`/${ZIP_NAME}`}
+                download={ZIP_NAME}
+                className="flex items-center gap-1.5 hover:text-loyo-ink transition-colors group"
+                title={`Stáhnout ${ZIP_NAME}`}
+              >
                 <CheckCircle2 className="w-3.5 h-3.5 text-emerald-600 shrink-0" />
-                <span className="text-[11px]">Zdrojový kód (Git / ZIP)</span>
-              </div>
+                <span className="text-[11px] underline decoration-dotted underline-offset-2">
+                  Zdrojový kód (Git / ZIP)
+                </span>
+                <Download className="w-3.5 h-3.5 shrink-0 ml-auto group-hover:translate-y-0.5 transition-transform" />
+              </a>
               <div className="flex items-center gap-1.5">
                 <CheckCircle2 className="w-3.5 h-3.5 text-emerald-600 shrink-0" />
                 <span className="text-[11px]">Veškeré přihlašovací klíče</span>

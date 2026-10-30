@@ -181,7 +181,7 @@ export const LoyoHeaderCard: React.FC<LoyoHeaderCardProps> = ({
                   />
                 ) : (
                   <ZakladniKostkaLoyo90
-                    size={56}
+                    size={86}
                     scenePad={24}
                     perspective={500}
                     showInfo={false}
