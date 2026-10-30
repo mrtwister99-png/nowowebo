@@ -303,24 +303,38 @@ export const LoyoHeaderCard: React.FC<LoyoHeaderCardProps> = ({
               className="bg-white/80 border-2 border-loyo-ink rounded-2xl sm:rounded-3xl p-3.5 sm:p-4 md:p-5 shadow-brutal-4 mt-4 sm:mt-5 mb-2.5 sm:mb-3 sm:ml-3 text-center relative z-10"
             >
               {/* Nápis ÚVOD jako obrázek. Všechny 3 obrázky mají stejné plátno (stejnou velikost), proto se jen
-                  překryjí: uvod.png = nápis, kolecko-down.png = kolečko napořád, kolecko-up.png = kolečko, které bliká.
-                  Velikost se mění jen výškou (h-14 / sm:h-16), šířka se dopočítá. Soubory jsou ve složce public/img. */}
+                  překryjí: uvod.png = nápis (roztažený do šířky), kolecko-down.png = kolečko napořád,
+                  kolecko-up.png = kolečko, které bliká. Velikost se mění výškou (h-14 / sm:h-16);
+                  roztažení nápisu je scale-x-150 (1.5x), pr-9 / sm:pr-10 dělá místo pro roztažený konec.
+                  Soubory jsou ve složce public/img; když některý chybí, jen se nezobrazí (bez rozbité ikonky). */}
               <div className="flex justify-center mb-2">
-                <div className="relative inline-block h-14 sm:h-16 select-none" role="img" aria-label="Úvod">
-                  <img src="/img/uvod.png" alt="" draggable={false} className="block h-full w-auto" />
+                <div
+                  className="relative inline-block h-14 sm:h-16 pr-9 sm:pr-10 select-none"
+                  role="img"
+                  aria-label="Úvod"
+                >
+                  <img
+                    src="/img/uvod.png"
+                    alt=""
+                    draggable={false}
+                    onError={(e) => (e.currentTarget.style.display = 'none')}
+                    className="block h-full w-auto origin-[20%_50%] scale-x-150"
+                  />
                   <img
                     src="/img/kolecko-down.png"
                     alt=""
                     aria-hidden="true"
                     draggable={false}
-                    className="absolute inset-0 h-full w-full"
+                    onError={(e) => (e.currentTarget.style.display = 'none')}
+                    className="absolute left-0 top-0 h-full w-auto"
                   />
                   <img
                     src="/img/kolecko-up.png"
                     alt=""
                     aria-hidden="true"
                     draggable={false}
-                    className="absolute inset-0 h-full w-full anim-dot-blink"
+                    onError={(e) => (e.currentTarget.style.display = 'none')}
+                    className="absolute left-0 top-0 h-full w-auto anim-dot-blink"
                   />
                 </div>
               </div>
