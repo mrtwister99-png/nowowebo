@@ -11,6 +11,148 @@ const MiniFallingCubesInGap = lazy(() =>
   })),
 );
 
+// ---------- Mem nad kartou: vykoukne zpoza loga a Developera ----------
+// Obrázky jsou ve složce public/img (všechny mají stejné plátno, takže se jen překrývají).
+type MemeFrame = 'right' | 'left' | 'in' | 'out' | 'sad';
+const MEME_FRAMES: Record<MemeFrame, string> = {
+  right: '/img/meme_face.png', // kouká doprava
+  left: '/img/mem_oci_doleva.png', // kouká doleva
+  in: '/img/mem_oci_in.png', // oči k nosu
+  out: '/img/mem_oci_ven.png', // oči od sebe
+  sad: '/img/mem_nos_drzka_up.png', // nakyslý obličej (schovává se dolů)
+};
+const MEME_SIZE = 96; // výška obličeje v px
+const MEME_UP_Y = -64; // nahoře: hlava a oči jsou nad horním okrajem karty (0 = horní okraj karty)
+const MEME_DOWN_Y = 12; // dole: celý je schovaný za kartou (skrz průhlednou kartu je slabě vidět)
+const MEME_WINDOW_MS = 60000; // jeden výstup za minutu, ve zvoleném okně 60 s se začátek náhodně posune
+
+const randBetween = (min: number, max: number) => min + Math.random() * (max - min);
+
+const MemeFace: React.FC = () => {
+  const [frame, setFrame] = useState<MemeFrame>('right');
+  const [up, setUp] = useState(false);
+  const [x, setX] = useState(12); // vodorovná poloha ve % šířky karet
+  const [moveMs, setMoveMs] = useState(0); // délka posunu do strany (0 = skok bez animace)
+
+  useEffect(() => {
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return; // omezený pohyb: mem zůstane schovaný
+    let cancelled = false;
+    let timer = 0;
+    const wait = (ms: number) =>
+      new Promise<void>((resolve) => {
+        timer = window.setTimeout(resolve, ms);
+      });
+
+    // Koukání doleva a doprava po dobu ms (občas na chvíli šilhá dovnitř nebo ven)
+    const lookAround = async (ms: number, first: MemeFrame) => {
+      const end = performance.now() + ms;
+      let current = first;
+      while (!cancelled && performance.now() < end) {
+        setFrame(current);
+        const goofy = current === 'in' || current === 'out';
+        await wait(goofy ? randBetween(500, 900) : randBetween(900, 2200));
+        current =
+          Math.random() < 0.15
+            ? Math.random() < 0.5
+              ? 'in'
+              : 'out'
+            : current === 'left'
+              ? 'right'
+              : 'left';
+      }
+    };
+
+    const run = async () => {
+      while (!cancelled) {
+        // Naplánování jednoho výstupu: délky částí se losují
+        const look1 = randBetween(10000, 15000); // kouká po vyjetí (10 až 15 s)
+        const walk = randBetween(1800, 2600); // cesta doprava
+        const look2 = randBetween(4000, 8000); // kouká na druhém místě
+        const walkBack = randBetween(1800, 2600); // cesta zpátky doleva
+        const look3 = randBetween(2500, 4500); // kouká naposled
+        const total = 900 + look1 + walk + look2 + walkBack + look3 + 1400;
+
+        // Začátek je náhodně kdekoli v rámci minuty, ale tak, aby výstup stihl skončit
+        const windowStart = performance.now();
+        await wait(randBetween(0, Math.max(0, MEME_WINDOW_MS - total)));
+        if (cancelled) return;
+
+        const startX = randBetween(8, 16);
+        const farX = randBetween(48, 70);
+        const backX = randBetween(18, 34);
+
+        // 1) vyjede nahoru zpoza karet (koukne doprava a pak doleva)
+        setMoveMs(0);
+        setX(startX);
+        setFrame('right');
+        await wait(60);
+        setUp(true);
+        await wait(900);
+        await lookAround(look1, 'right');
+        if (cancelled) return;
+
+        // 2) rozejde se doprava, zastaví a kouká
+        setMoveMs(walk);
+        setX(farX);
+        setFrame('right');
+        await wait(walk);
+        await lookAround(look2, 'right');
+        if (cancelled) return;
+
+        // 3) jde zpátky doleva a kouká
+        setMoveMs(walkBack);
+        setX(backX);
+        setFrame('left');
+        await wait(walkBack);
+        await lookAround(look3, 'left');
+        if (cancelled) return;
+
+        // 4) nakvašeně se schová dolů za kartu
+        setFrame('sad');
+        await wait(500);
+        setUp(false);
+        await wait(900);
+
+        // zbytek minuty klid
+        await wait(Math.max(0, MEME_WINDOW_MS - (performance.now() - windowStart)));
+      }
+    };
+    void run();
+
+    return () => {
+      cancelled = true;
+      window.clearTimeout(timer);
+    };
+  }, []);
+
+  return (
+    <div
+      aria-hidden="true"
+      className="pointer-events-none absolute top-0 z-20 select-none"
+      style={{
+        left: `${x}%`,
+        width: MEME_SIZE,
+        height: MEME_SIZE,
+        transform: `translate(-50%, ${up ? MEME_UP_Y : MEME_DOWN_Y}px)`,
+        // nahoru vyskočí s malým překmitem, dolů zajede plynule
+        transition: `left ${moveMs}ms ease-in-out, transform ${up ? '0.9s cubic-bezier(0.3, 1.4, 0.5, 1)' : '0.9s ease-in'}`,
+      }}
+    >
+      {(Object.keys(MEME_FRAMES) as MemeFrame[]).map((key) => (
+        <img
+          key={key}
+          src={MEME_FRAMES[key]}
+          alt=""
+          draggable={false}
+          onError={(e) => (e.currentTarget.style.display = 'none')}
+          className="absolute inset-0 h-full w-full object-contain"
+          style={{ opacity: frame === key ? 1 : 0 }}
+        />
+      ))}
+    </div>
+  );
+};
+
 interface LoyoHeaderCardProps {
   activeSection: string;
   currentPage: string;
@@ -202,7 +344,9 @@ export const LoyoHeaderCard: React.FC<LoyoHeaderCardProps> = ({
 
       {/* OBSAH ÚVODU */}
       <div className="max-w-6xl mx-auto px-4 sm:px-6 pt-16 sm:pt-18 pb-8 bg-transparent">
-        <div className="flex flex-col sm:flex-row items-stretch">
+        <div className="relative flex flex-col sm:flex-row items-stretch">
+          {/* mem schovaný za kartami (z-20 je pod kartami) */}
+          <MemeFace />
           <div className="shrink-0 w-full sm:w-auto flex flex-col items-center sm:items-stretch justify-between relative z-30">
             <div
               id="card-loyo-cubes"
@@ -286,6 +430,12 @@ export const LoyoHeaderCard: React.FC<LoyoHeaderCardProps> = ({
               id="card-premium-developer"
               className="bg-white/80 border-2 border-loyo-ink sm:border-l-0 rounded-2xl sm:rounded-l-none sm:rounded-r-3xl p-4 sm:p-5 md:p-6 shadow-brutal-6 relative z-20"
             >
+              {/* 2px pás přes pravý okraj karty s logem: čára mezi logem a Developerem zmizí, je to jedna oblast */}
+              <span
+                aria-hidden="true"
+                className="hidden sm:block absolute inset-y-0 left-0 w-0.5 bg-white pointer-events-none"
+              />
+
               <div className="inline-flex items-center gap-2 mb-1.5">
                 <span className="font-mono text-xs sm:text-sm font-bold uppercase tracking-[0.35em] text-loyo-muted">
                   PREMIUM
