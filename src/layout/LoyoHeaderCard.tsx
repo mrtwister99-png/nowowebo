@@ -24,6 +24,7 @@ const MEME_FRAMES: Record<MemeFrame, string> = {
 const MEME_SIZE = 96; // výška obličeje v px
 const MEME_UP_Y = -64; // nahoře: hlava a oči jsou nad horním okrajem karty (0 = horní okraj karty)
 const MEME_DOWN_Y = 12; // dole: celý je schovaný za kartou (skrz průhlednou kartu je slabě vidět)
+const MEME_Z = 100; // vrstva: 100 = úplně nahoře (nad kartami, vidět celý). Pro schování za kartami dej 20 (karty mají 30)
 const MEME_WINDOW_MS = 60000; // jeden výstup za minutu, ve zvoleném okně 60 s se začátek náhodně posune
 
 const randBetween = (min: number, max: number) => min + Math.random() * (max - min);
@@ -63,6 +64,7 @@ const MemeFace: React.FC = () => {
     };
 
     const run = async () => {
+      let firstRun = true; // poprvé vyjede hned po načtení stránky (ať je to vidět), dál náhodně v minutě
       while (!cancelled) {
         // Naplánování jednoho výstupu: délky částí se losují
         const look1 = randBetween(10000, 15000); // kouká po vyjetí (10 až 15 s)
@@ -74,7 +76,8 @@ const MemeFace: React.FC = () => {
 
         // Začátek je náhodně kdekoli v rámci minuty, ale tak, aby výstup stihl skončit
         const windowStart = performance.now();
-        await wait(randBetween(0, Math.max(0, MEME_WINDOW_MS - total)));
+        await wait(firstRun ? 1500 : randBetween(0, Math.max(0, MEME_WINDOW_MS - total)));
+        firstRun = false;
         if (cancelled) return;
 
         const startX = randBetween(8, 16);
@@ -128,9 +131,10 @@ const MemeFace: React.FC = () => {
   return (
     <div
       aria-hidden="true"
-      className="pointer-events-none absolute top-0 z-20 select-none"
+      className="pointer-events-none absolute top-0 select-none"
       style={{
         left: `${x}%`,
+        zIndex: MEME_Z,
         width: MEME_SIZE,
         height: MEME_SIZE,
         transform: `translate(-50%, ${up ? MEME_UP_Y : MEME_DOWN_Y}px)`,
@@ -345,7 +349,7 @@ export const LoyoHeaderCard: React.FC<LoyoHeaderCardProps> = ({
       {/* OBSAH ÚVODU */}
       <div className="max-w-6xl mx-auto px-4 sm:px-6 pt-16 sm:pt-18 pb-8 bg-transparent">
         <div className="relative flex flex-col sm:flex-row items-stretch">
-          {/* mem schovaný za kartami (z-20 je pod kartami) */}
+          {/* mem (vrstva se nastavuje konstantou MEME_Z) */}
           <MemeFace />
           <div className="shrink-0 w-full sm:w-auto flex flex-col items-center sm:items-stretch justify-between relative z-30">
             <div
