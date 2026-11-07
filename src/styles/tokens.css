@@ -1,54 +1,64 @@
 /*
- * Design tokeny LoYo - jediný zdroj pravdy pro barvy, stíny a fonty.
+ * Design tokeny LoYo OS — Royal Dark. Jediný zdroj pravdy pro barvy, stíny a fonty.
  * `static` = všechny proměnné se vždy vygenerují (dají se použít i v inline stylech
  * jako var(--color-loyo-blue)), ne jen ty, které Tailwind najde v třídách.
  * Hodnoty pro JS/canvas jsou zrcadlené v src/lib/colors.ts - při změně upravit oba soubory.
+ *
+ * Poměr barev: šedé plochy ~85 %, modrá ~10 % (primární tlačítko, aktivní stav, progress,
+ * jedno zvýrazněné slovo), červená ~4 % (jen malá live tečka), zlatá ~1 % (PREMIUM).
  */
 @theme static {
-  /* Značkové barvy */
-  --color-loyo-bg: #e8e8e8;
-  --color-loyo-bar: #d8d8d8;
-  --color-loyo-blue: #0088ff;
-  --color-loyo-orange: #ff4800; /* jen hover a aktivní stavy */
-  --color-loyo-red: #ff4800;
-  --color-loyo-mustard: #8c8c8c;
-  --color-loyo-mustard-dark: #6b6b6b;
+  /* Plochy - jen šedé */
+  --color-loyo-bg: #2b2b2b; /* stránka */
+  --color-loyo-surface: #353535; /* karty */
+  --color-loyo-panel: #3a3a3a; /* panely, tlačítka, pole uvnitř karet */
+  --color-loyo-bar: #3a3a3a;
+  --color-loyo-paper: #3a3a3a;
+  --color-loyo-raised: #3a3a3a;
+  --color-loyo-hover: #444444; /* plochy při najetí myší */
 
-  /* Inkoust (hlavní tmavá) a papír */
-  --color-loyo-ink: #121212;
-  --color-loyo-ink-soft: #1f1f1f;
-  --color-loyo-paper: #ffffff;
+  /* Akcenty */
+  --color-loyo-blue: #12a4ff; /* 10 % */
+  --color-loyo-blue-hover: #3db5ff;
+  --color-loyo-red: #ff1e00; /* 4 % - jen live tečka */
+  --color-loyo-gold: #c9a45c; /* 1 % */
+  --color-loyo-orange: #12a4ff; /* dřívější hover barva = teď modrá */
+  --color-loyo-mustard: #9a9a9a;
+  --color-loyo-mustard-dark: #9a9a9a;
 
-  /* Text - od nejtmavšího po nejsvětlejší */
-  --color-loyo-strong: #333333;
-  --color-loyo-body: #444444;
-  --color-loyo-muted: #555555;
-  --color-loyo-subtle: #666666;
-  --color-loyo-faint: #777777;
+  /* Text */
+  --color-loyo-text: #f0f0f0; /* primární */
+  --color-loyo-ink: #f0f0f0;
+  --color-loyo-ink-soft: #f0f0f0;
+  --color-loyo-strong: #f0f0f0;
+  --color-loyo-body: #f0f0f0;
+  --color-loyo-muted: #9a9a9a; /* sekundární */
+  --color-loyo-subtle: #9a9a9a;
+  --color-loyo-faint: #9a9a9a;
 
   /* Čáry a rámečky */
-  --color-loyo-line: #c2c2c2;
-  --color-loyo-line-field: #c8c8c8;
-  --color-loyo-line-strong: #999999;
+  --color-loyo-line: #444444;
+  --color-loyo-line-field: #444444;
+  --color-loyo-line-strong: #9a9a9a;
 
-  /* Plochy při najetí myší */
-  --color-loyo-hover: #dedede;
-
-  /* Fonty */
+  /* Fonty: Playfair Display na nadpisy a logo, zbytek čisté UI sans */
   --font-sans:
-    'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial,
-    sans-serif;
-  --font-display: 'Syne', 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+    'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+  --font-mono:
+    'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+  --font-display: 'Playfair Display', Georgia, 'Times New Roman', serif;
+  --font-heading: 'Playfair Display', Georgia, 'Times New Roman', serif;
 
-  /* Tvrdé "brutalistické" stíny (barva = --color-loyo-ink, hex zapsán natvrdo kvůli Tailwindu) */
-  --shadow-brutal-1: 1px 1px 0px #121212;
-  --shadow-brutal-2: 2px 2px 0px #121212;
-  --shadow-brutal-3: 3px 3px 0px #121212;
-  --shadow-brutal-4: 4px 4px 0px #121212;
-  --shadow-brutal-5: 5px 5px 0px #121212;
-  --shadow-brutal-6: 6px 6px 0px #121212;
-  --shadow-brutal-8: 8px 8px 0px #121212;
---shadow-brutal-10: 10px 10px 0px #121212;
+  /* Měkké "royal" stíny (název brutal zůstal kvůli třídám, číslo = síla) */
+  --shadow-brutal-1: 0 1px 2px rgba(0, 0, 0, 0.35);
+  --shadow-brutal-2: 0 2px 6px -1px rgba(0, 0, 0, 0.4);
+  --shadow-brutal-3: 0 4px 10px -2px rgba(0, 0, 0, 0.45);
+  --shadow-brutal-4: 0 6px 14px -3px rgba(0, 0, 0, 0.5);
+  --shadow-brutal-5: 0 8px 18px -4px rgba(0, 0, 0, 0.5);
+  --shadow-brutal-6: 0 12px 28px -8px rgba(0, 0, 0, 0.6), inset 0 1px 0 rgba(255, 255, 255, 0.04);
+  --shadow-brutal-7: 0 14px 32px -8px rgba(0, 0, 0, 0.62), inset 0 1px 0 rgba(255, 255, 255, 0.04);
+  --shadow-brutal-8: 0 18px 38px -10px rgba(0, 0, 0, 0.65), inset 0 1px 0 rgba(255, 255, 255, 0.05);
+  --shadow-brutal-10: 0 24px 60px -12px rgba(0, 0, 0, 0.7), inset 0 1px 0 rgba(255, 255, 255, 0.05);
 }
 @utility shadow-brutal-1 { box-shadow: var(--shadow-brutal-1); }
 @utility shadow-brutal-2 { box-shadow: var(--shadow-brutal-2); }

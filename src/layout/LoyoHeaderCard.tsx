@@ -251,11 +251,11 @@ export const LoyoHeaderCard: React.FC<LoyoHeaderCardProps> = ({
                 }}
                 id="header-menu-button"
                 aria-expanded={isMenuOpen}
-                className={`h-10 sm:h-11 px-4 sm:px-5 rounded-xl sm:rounded-2xl border-2 border-loyo-ink shadow-[3px_3px_0px_#000] flex items-center gap-2 cursor-pointer transition-all font-heading font-bold text-xs sm:text-sm tracking-wider uppercase select-none ${
+                className={`h-10 sm:h-11 px-4 sm:px-5 rounded-xl sm:rounded-2xl border border-loyo-line shadow-brutal-3 flex items-center gap-2 cursor-pointer transition-all font-sans font-bold text-xs sm:text-sm tracking-wider uppercase select-none ${
                   isMenuOpen
-                    ? 'bg-white text-loyo-ink -translate-y-0.5 shadow-[4px_4px_0px_#000]'
-                    : 'bg-loyo-ink hover:bg-loyo-orange text-white hover:-translate-y-0.5 hover:shadow-[4px_4px_0px_#000]'
-                } active:translate-x-0.5 active:translate-y-0.5 active:shadow-[1px_1px_0px_#000]`}
+                    ? 'bg-loyo-surface text-loyo-text -translate-y-0.5 shadow-brutal-4'
+                    : 'bg-loyo-panel hover:bg-loyo-hover text-loyo-text hover:-translate-y-0.5 hover:shadow-brutal-4'
+                } active:translate-x-0.5 active:translate-y-0.5 active:shadow-brutal-1`}
               >
                 <Menu
                   className={`w-4 h-4 transition-transform duration-300 ${isMenuOpen ? 'rotate-90' : ''}`}
@@ -272,7 +272,7 @@ export const LoyoHeaderCard: React.FC<LoyoHeaderCardProps> = ({
                   {/* na mobilu je panel přes šířku obrazovky, na větších displejích pod tlačítkem vpravo */}
                   <div className="absolute right-0 top-full pt-3 w-88 z-10 max-sm:fixed max-sm:inset-x-4 max-sm:top-18 max-sm:w-auto">
                     <div
-                      className={`bg-white border-2 border-loyo-ink rounded-2xl shadow-brutal-6 overflow-hidden p-3 flex flex-col gap-2.5 ${
+                      className={`bg-loyo-surface border border-loyo-line rounded-2xl shadow-brutal-6 overflow-hidden p-3 flex flex-col gap-2.5 ${
                         isMenuOpen
                           ? 'menu-enter'
                           : 'menu-exit'
@@ -296,7 +296,7 @@ export const LoyoHeaderCard: React.FC<LoyoHeaderCardProps> = ({
                               else scrollToElement(item.id); // s odsazením o výšku fixní hlavičky
                             }
                           }}
-                          className="w-full p-3 bg-white hover:bg-neutral-50 border-2 border-loyo-ink rounded-xl shadow-brutal-3 hover:-translate-y-0.5 hover:shadow-brutal-4 active:translate-x-0.5 active:translate-y-0.5 active:shadow-brutal-1 flex items-center justify-between gap-3 text-left transition-all cursor-pointer group"
+                          className="w-full p-3 bg-loyo-surface hover:bg-loyo-hover border border-loyo-line rounded-xl shadow-brutal-3 hover:-translate-y-0.5 hover:shadow-brutal-4 active:translate-x-0.5 active:translate-y-0.5 active:shadow-brutal-1 flex items-center justify-between gap-3 text-left transition-all cursor-pointer group"
                         >
                           <div className="flex items-center gap-3">
                             <span
@@ -307,12 +307,12 @@ export const LoyoHeaderCard: React.FC<LoyoHeaderCardProps> = ({
                               <div className="text-[10px] font-mono font-bold text-loyo-subtle">
                                 SEKCE {item.num}
                               </div>
-                              <div className="font-heading font-bold text-[13px] leading-tight text-loyo-ink group-hover:text-loyo-orange transition-colors">
+                              <div className="font-heading font-bold text-[13px] leading-tight text-loyo-text group-hover:text-loyo-blue transition-colors">
                                 {item.title}
                               </div>
                             </div>
                           </div>
-                          <ArrowRight className="w-4 h-4 text-[#999] group-hover:text-loyo-ink group-hover:translate-x-1 transition-all shrink-0" />
+                          <ArrowRight className="w-4 h-4 text-loyo-muted group-hover:text-loyo-text group-hover:translate-x-1 transition-all shrink-0" />
                         </button>
                       ))}
                     </div>
@@ -327,7 +327,7 @@ export const LoyoHeaderCard: React.FC<LoyoHeaderCardProps> = ({
                 if (e.pointerType === 'mouse') setGearSpinning(true); // rozjede se jen při najetí myší
               }}
               id="header-dotaznik-button"
-              className="h-10 sm:h-11 px-4 sm:px-5 rounded-xl sm:rounded-2xl bg-loyo-blue hover:bg-loyo-orange text-white border-2 border-loyo-ink shadow-brutal-3 hover:-translate-y-0.5 hover:shadow-brutal-4 active:translate-x-0.5 active:translate-y-0.5 active:shadow-brutal-1 flex items-center gap-2 cursor-pointer transition-all font-heading font-bold text-xs sm:text-sm tracking-wider uppercase select-none"
+              className="h-10 sm:h-11 px-4 sm:px-5 rounded-xl sm:rounded-2xl bg-loyo-blue hover:bg-loyo-blue-hover text-loyo-text border border-loyo-line shadow-brutal-3 hover:-translate-y-0.5 hover:shadow-brutal-4 active:translate-x-0.5 active:translate-y-0.5 active:shadow-brutal-1 flex items-center gap-2 cursor-pointer transition-all font-sans font-bold text-xs sm:text-sm tracking-wider uppercase select-none"
             >
               {/* vnější prvek: klidové otočení o 90° každých 15 s; vnitřní: rozjezd po najetí (hotovo = zpět do klidu) */}
               <span
@@ -336,7 +336,7 @@ export const LoyoHeaderCard: React.FC<LoyoHeaderCardProps> = ({
                 aria-hidden="true"
               >
                 <Settings
-                  className={`w-4 h-4 text-white ${gearSpinning ? 'anim-gear-spin' : ''}`}
+                  className={`w-4 h-4 text-loyo-text ${gearSpinning ? 'anim-gear-spin' : ''}`}
                   onAnimationEnd={() => setGearSpinning(false)}
                 />
               </span>
@@ -354,13 +354,13 @@ export const LoyoHeaderCard: React.FC<LoyoHeaderCardProps> = ({
           <div className="shrink-0 w-full sm:w-auto flex flex-col items-center sm:items-stretch justify-between relative z-30">
             <div
               id="card-loyo-cubes"
-              className="w-full sm:w-auto bg-white/80 border-2 border-loyo-ink rounded-3xl sm:rounded-tr-none p-3.5 sm:p-4 md:p-5 shadow-brutal-6 sm:shadow-[0_6px_0_#121212] relative z-10 flex justify-center"
+              className="w-full sm:w-auto bg-loyo-surface/90 backdrop-blur-[2px] border border-loyo-line rounded-3xl sm:rounded-tr-none p-3.5 sm:p-4 md:p-5 shadow-brutal-6 sm:shadow-brutal-6 relative z-10 flex justify-center"
             >
               <div className="grid grid-cols-2 gap-2.5 sm:gap-3 select-none">
                 <div
                   onMouseEnter={() => triggerCubeAnim('L')}
                   onClick={() => triggerCubeAnim('L')}
-                  className={`w-20 h-20 sm:w-24 sm:h-24 md:w-28 md:h-28 lg:w-30 lg:h-30 bg-white border-2 border-loyo-ink rounded-2xl shadow-brutal-3 flex items-center justify-center font-heading font-black text-4xl sm:text-5xl md:text-6xl text-loyo-ink relative overflow-hidden group hover:-translate-y-1 hover:shadow-brutal-5 transition-all cursor-pointer ${
+                  className={`w-20 h-20 sm:w-24 sm:h-24 md:w-28 md:h-28 lg:w-30 lg:h-30 bg-loyo-panel border border-loyo-line rounded-2xl shadow-brutal-3 flex items-center justify-center font-heading font-bold text-4xl sm:text-5xl md:text-6xl text-loyo-text relative overflow-hidden group hover:-translate-y-1 hover:shadow-brutal-5 transition-all cursor-pointer ${
                     animatingCube.L ? 'anim-cube-L' : ''
                   }`}
                 >
@@ -375,13 +375,13 @@ export const LoyoHeaderCard: React.FC<LoyoHeaderCardProps> = ({
                 <div
                   onMouseEnter={() => triggerCubeAnim('o1')}
                   onClick={() => triggerCubeAnim('o1')}
-                  className={`w-20 h-20 sm:w-24 sm:h-24 md:w-28 md:h-28 lg:w-30 lg:h-30 bg-white border-2 border-loyo-ink rounded-2xl shadow-brutal-3 flex items-center justify-center font-heading font-black text-4xl sm:text-5xl md:text-6xl text-loyo-ink relative overflow-hidden group hover:-translate-y-1 hover:shadow-brutal-5 transition-all cursor-pointer ${
+                  className={`w-20 h-20 sm:w-24 sm:h-24 md:w-28 md:h-28 lg:w-30 lg:h-30 bg-loyo-panel border border-loyo-line rounded-2xl shadow-brutal-3 flex items-center justify-center font-heading font-bold text-4xl sm:text-5xl md:text-6xl text-loyo-text relative overflow-hidden group hover:-translate-y-1 hover:shadow-brutal-5 transition-all cursor-pointer ${
                     animatingCube.o1 ? 'anim-cube-o1' : ''
                   }`}
                 >
-                  <div className="absolute top-0 left-0 right-0 h-2 sm:h-2.5 bg-loyo-mustard" />
+                  <div className="absolute top-0 left-0 right-0 h-2 sm:h-2.5 bg-loyo-hover" />
                   <span
-                    className={`tracking-tight lowercase transition-transform duration-300 ${animatingCube.o1 ? 'scale-120 text-loyo-orange' : ''}`}
+                    className={`tracking-tight lowercase transition-transform duration-300 ${animatingCube.o1 ? 'scale-120 text-white' : ''}`}
                   >
                     o
                   </span>
@@ -390,13 +390,13 @@ export const LoyoHeaderCard: React.FC<LoyoHeaderCardProps> = ({
                 <div
                   onMouseEnter={() => triggerCubeAnim('Y')}
                   onClick={() => triggerCubeAnim('Y')}
-                  className={`w-20 h-20 sm:w-24 sm:h-24 md:w-28 md:h-28 lg:w-30 lg:h-30 bg-white border-2 border-loyo-ink rounded-2xl shadow-brutal-3 flex items-center justify-center font-heading font-black text-4xl sm:text-5xl md:text-6xl text-loyo-ink relative overflow-hidden group hover:-translate-y-1 hover:shadow-brutal-5 transition-all cursor-pointer ${
+                  className={`w-20 h-20 sm:w-24 sm:h-24 md:w-28 md:h-28 lg:w-30 lg:h-30 bg-loyo-panel border border-loyo-line rounded-2xl shadow-brutal-3 flex items-center justify-center font-heading font-bold text-4xl sm:text-5xl md:text-6xl text-loyo-text relative overflow-hidden group hover:-translate-y-1 hover:shadow-brutal-5 transition-all cursor-pointer ${
                     animatingCube.Y ? 'anim-cube-Y' : ''
                   }`}
                 >
-                  <div className="absolute top-0 left-0 right-0 h-2 sm:h-2.5 bg-loyo-red" />
+                  <div className="absolute top-0 left-0 right-0 h-2 sm:h-2.5 bg-loyo-muted" />
                   <span
-                    className={`tracking-tight transition-transform duration-300 ${animatingCube.Y ? 'scale-115 text-loyo-red' : ''}`}
+                    className={`tracking-tight transition-transform duration-300 ${animatingCube.Y ? 'scale-115 text-white' : ''}`}
                   >
                     Y
                   </span>
@@ -405,13 +405,13 @@ export const LoyoHeaderCard: React.FC<LoyoHeaderCardProps> = ({
                 <div
                   onMouseEnter={() => triggerCubeAnim('o2')}
                   onClick={() => triggerCubeAnim('o2')}
-                  className={`w-20 h-20 sm:w-24 sm:h-24 md:w-28 md:h-28 lg:w-30 lg:h-30 bg-white border-2 border-loyo-ink rounded-2xl shadow-brutal-3 flex items-center justify-center font-heading font-black text-4xl sm:text-5xl md:text-6xl text-loyo-ink relative overflow-hidden group hover:-translate-y-1 hover:shadow-brutal-5 transition-all cursor-pointer ${
+                  className={`w-20 h-20 sm:w-24 sm:h-24 md:w-28 md:h-28 lg:w-30 lg:h-30 bg-loyo-panel border border-loyo-line rounded-2xl shadow-brutal-3 flex items-center justify-center font-heading font-bold text-4xl sm:text-5xl md:text-6xl text-loyo-text relative overflow-hidden group hover:-translate-y-1 hover:shadow-brutal-5 transition-all cursor-pointer ${
                     animatingCube.o2 ? 'anim-cube-o2' : ''
                   }`}
                 >
-                  <div className="absolute top-0 left-0 right-0 h-2 sm:h-2.5 bg-loyo-ink" />
+                  <div className="absolute top-0 left-0 right-0 h-2 sm:h-2.5 bg-loyo-hover" />
                   <span
-                    className={`tracking-tight lowercase transition-transform duration-300 ${animatingCube.o2 ? 'scale-120 text-loyo-blue' : ''}`}
+                    className={`tracking-tight lowercase transition-transform duration-300 ${animatingCube.o2 ? 'scale-120 text-white' : ''}`}
                   >
                     o
                   </span>
@@ -432,29 +432,29 @@ export const LoyoHeaderCard: React.FC<LoyoHeaderCardProps> = ({
           <div className="flex-1 w-full flex flex-col min-w-0 mt-0 sm:-ml-0.5 sm:mt-0 justify-start relative z-30">
             <div
               id="card-premium-developer"
-              className="bg-white/80 border-2 border-loyo-ink sm:border-l-0 rounded-2xl sm:rounded-l-none sm:rounded-r-3xl p-4 sm:p-5 md:p-6 shadow-brutal-6 relative z-20"
+              className="bg-loyo-surface/90 backdrop-blur-[2px] border border-loyo-line sm:border-l-0 rounded-2xl sm:rounded-l-none sm:rounded-r-3xl p-4 sm:p-5 md:p-6 shadow-brutal-6 relative z-20"
             >
               {/* 2px pás přes pravý okraj karty s logem: čára mezi logem a Developerem zmizí, je to jedna oblast */}
               <span
                 aria-hidden="true"
-                className="hidden sm:block absolute inset-y-0 left-0 w-0.5 bg-white pointer-events-none"
+                className="hidden sm:block absolute inset-y-0 left-0 w-0.5 bg-loyo-surface pointer-events-none"
               />
 
               <div className="inline-flex items-center gap-2 mb-1.5">
-                <span className="font-mono text-xs sm:text-sm font-bold uppercase tracking-[0.35em] text-loyo-muted">
+                <span className="font-sans text-xs sm:text-sm font-semibold uppercase tracking-[0.35em] text-loyo-gold">
                   PREMIUM
                 </span>
-                <span className="h-0.5 w-10 sm:w-16 bg-loyo-ink" />
+                <span className="h-px w-10 sm:w-16 bg-loyo-gold/70" />
               </div>
 
-              <h1 className="font-heading font-black text-3xl sm:text-4xl md:text-5xl lg:text-6xl tracking-wider text-loyo-ink leading-tight uppercase wrap-break-word">
+              <h1 className="font-heading font-bold text-3xl sm:text-4xl md:text-5xl lg:text-6xl tracking-wider text-loyo-text leading-tight uppercase wrap-break-word">
                 DEVELOPER
               </h1>
             </div>
 
             <div
               id="card-uvod"
-              className="bg-white/80 border-2 border-loyo-ink rounded-2xl sm:rounded-3xl p-3.5 sm:p-4 md:p-5 shadow-brutal-4 mt-4 sm:mt-5 mb-2.5 sm:mb-3 sm:ml-3 text-center relative z-10"
+              className="bg-loyo-surface/90 backdrop-blur-[2px] border border-loyo-line rounded-2xl sm:rounded-3xl p-3.5 sm:p-4 md:p-5 shadow-brutal-4 mt-4 sm:mt-5 mb-2.5 sm:mb-3 sm:ml-3 text-center relative z-10"
             >
               {/* Nápis ÚVOD jako obrázek. Všechny 3 obrázky mají stejné plátno (stejnou velikost), proto se jen
                   překryjí: uvod.png = nápis (roztažený do šířky), kolecko-down.png = kolečko napořád,
@@ -473,6 +473,8 @@ export const LoyoHeaderCard: React.FC<LoyoHeaderCardProps> = ({
                     draggable={false}
                     onError={(e) => (e.currentTarget.style.display = 'none')}
                     className="block h-full w-auto origin-[20%_50%] scale-x-150"
+                    /* tmavý spodek nápisu je na tmavé kartě málo vidět: jemný světlý obrys */
+                    style={{ filter: 'drop-shadow(0 0 0.6px rgba(240,240,240,0.9)) drop-shadow(0 0 0.6px rgba(240,240,240,0.6))' }}
                   />
                   <img
                     src="/img/kolecko-down.png"
@@ -494,18 +496,19 @@ export const LoyoHeaderCard: React.FC<LoyoHeaderCardProps> = ({
               </div>
 
               {/* Úvodní věta (claim) */}
-              <p className="font-heading font-black text-base sm:text-lg md:text-xl text-loyo-ink leading-snug max-w-2xl mx-auto">
-                Stavím bezpečné automatizace, které vám vrací čas.
+              <p className="font-heading font-bold text-base sm:text-lg md:text-xl text-loyo-text leading-snug max-w-2xl mx-auto">
+                Stavím bezpečné automatizace, které vám vrací{' '}
+                <span className="text-loyo-blue italic">čas</span>.
               </p>
 
               {/* Hlavní odstavec */}
-              <p className="text-sm sm:text-base text-loyo-ink font-medium leading-relaxed max-w-2xl mx-auto mt-2">
+              <p className="text-sm sm:text-base text-loyo-muted font-medium leading-relaxed max-w-2xl mx-auto mt-2">
                 Všechno, co lze, převádím do čistého kódu. AI používám jen tam, kde je opravdu
                 nutná. Žádné vysoké účty za model, 100% kontrola nad workflow.
               </p>
 
               {/* Závěrečná věta */}
-              <p className="text-sm sm:text-base text-loyo-ink font-bold leading-relaxed max-w-2xl mx-auto mt-3">
+              <p className="text-sm sm:text-base text-loyo-text font-bold leading-relaxed max-w-2xl mx-auto mt-3">
                 Backend je moje specialita a koníček – je to na výsledku poznat.
               </p>
             </div>
@@ -515,10 +518,10 @@ export const LoyoHeaderCard: React.FC<LoyoHeaderCardProps> = ({
         <div className="mt-0">
           <div
             id="card-hlavni-info"
-            className="bg-white/80 border-2 border-loyo-ink rounded-3xl p-5 sm:p-7 shadow-brutal-6"
+            className="bg-loyo-surface/90 backdrop-blur-[2px] border border-loyo-line rounded-3xl p-5 sm:p-7 shadow-brutal-6"
           >
-            <div className="flex items-center justify-between gap-2 mb-4 pb-3 border-b border-[#e4e4e7]">
-              <div className="inline-flex items-center gap-2 px-3 py-1 bg-loyo-ink text-white text-xs font-mono font-bold uppercase tracking-wider rounded-xs">
+            <div className="flex items-center justify-between gap-2 mb-4 pb-3 border-b border-loyo-line">
+              <div className="inline-flex items-center gap-2 px-3 py-1 bg-loyo-panel border border-loyo-line text-loyo-text text-xs font-mono font-semibold uppercase tracking-wider rounded-md">
                 <span>HLAVNÍ INFO</span>
               </div>
               <span className="text-[11px] font-mono text-loyo-faint font-medium hidden sm:inline">
@@ -528,7 +531,7 @@ export const LoyoHeaderCard: React.FC<LoyoHeaderCardProps> = ({
 
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6">
               <div className="border-l-3 border-loyo-blue pl-3.5">
-                <div className="font-heading font-bold text-sm text-loyo-ink uppercase tracking-wide flex items-start gap-1.5">
+                <div className="font-heading font-bold text-sm text-loyo-text uppercase tracking-wide flex items-start gap-1.5">
                   <span className="w-1.5 h-1.5 mt-1.25 shrink-0 rounded-full bg-loyo-blue" />
                   MAXimální bezpečnost
                 </div>
@@ -537,9 +540,9 @@ export const LoyoHeaderCard: React.FC<LoyoHeaderCardProps> = ({
                 </div>
               </div>
 
-              <div className="border-l-3 border-loyo-mustard pl-3.5">
-                <div className="font-heading font-bold text-sm text-loyo-ink uppercase tracking-wide flex items-start gap-1.5">
-                  <span className="w-1.5 h-1.5 mt-1.25 shrink-0 rounded-full bg-loyo-mustard" />
+              <div className="border-l-3 border-loyo-line pl-3.5">
+                <div className="font-heading font-bold text-sm text-loyo-text uppercase tracking-wide flex items-start gap-1.5">
+                  <span className="w-1.5 h-1.5 mt-1.25 shrink-0 rounded-full bg-loyo-muted" />
                   Ušetřím X hodin týdně
                 </div>
                 <div className="text-xs text-loyo-muted mt-1.5 leading-relaxed">
@@ -547,9 +550,9 @@ export const LoyoHeaderCard: React.FC<LoyoHeaderCardProps> = ({
                 </div>
               </div>
 
-              <div className="border-l-3 border-loyo-red pl-3.5">
-                <div className="font-heading font-bold text-sm text-loyo-ink uppercase tracking-wide flex items-start gap-1.5">
-                  <span className="w-1.5 h-1.5 mt-1.25 shrink-0 rounded-full bg-loyo-red" />
+              <div className="border-l-3 border-loyo-line-strong pl-3.5">
+                <div className="font-heading font-bold text-sm text-loyo-text uppercase tracking-wide flex items-start gap-1.5">
+                  <span className="w-1.5 h-1.5 mt-1.25 shrink-0 rounded-full bg-loyo-muted" />
                   Důkladná analýza firmy a procesů
                 </div>
                 <div className="text-xs text-loyo-muted mt-1.5 leading-relaxed">
@@ -557,9 +560,9 @@ export const LoyoHeaderCard: React.FC<LoyoHeaderCardProps> = ({
                 </div>
               </div>
 
-              <div className="border-l-3 border-loyo-ink pl-3.5">
-                <div className="font-heading font-bold text-sm text-loyo-ink uppercase tracking-wide flex items-start gap-1.5">
-                  <span className="w-1.5 h-1.5 mt-1.25 shrink-0 rounded-full bg-loyo-ink" />
+              <div className="border-l-3 border-loyo-line pl-3.5">
+                <div className="font-heading font-bold text-sm text-loyo-text uppercase tracking-wide flex items-start gap-1.5">
+                  <span className="w-1.5 h-1.5 mt-1.25 shrink-0 rounded-full bg-loyo-muted" />
                   Individuální přístup
                 </div>
                 <div className="text-xs text-loyo-muted mt-1.5 leading-relaxed">

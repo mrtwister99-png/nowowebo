@@ -135,8 +135,8 @@ export default function App() {
   }, [routeServiceId]);
 
   return (
-    <div className="min-h-screen bg-loyo-bg text-loyo-ink flex flex-col font-sans selection:bg-loyo-ink selection:text-white pb-12 relative">
-      {/* Pozadí: obrácený matrix (čtverce padají zdola nahoru), viditelné na 50 % */}
+    <div className="min-h-screen bg-loyo-bg text-loyo-text flex flex-col font-sans selection:bg-loyo-blue selection:text-white pb-12 relative">
+      {/* Pozadí: matrix (šedé sloupce, hlavy blikají do bílé) */}
       <MatrixBackground />
 
       {/* Na stránce služby se zobrazí horní Navbar pro snadný návrat */}

@@ -1,9 +1,10 @@
 import React, { useEffect, useRef } from 'react';
 
 /**
- * "Obrácený matrix": čtverce padají zdola nahoru (port z Matrix-Ctverce-Scroll-77).
- * Barvy jsou z originálu: pozadí #E6E6E6, hlava sloupce #111111, ocas plynule do #BBBBBB.
- * Celé pozadí je viditelné na 50 % (LAYER_OPACITY), zbytek je barva pozadí webu.
+ * "Obrácený matrix": čtverce padají shora dolů a hlava sloupce je nahoře (FALL_DOWN; port z Matrix-Ctverce-Scroll-77).
+ * Barvy (LoYo OS — Royal Dark): pozadí #2b2b2b, sloupce světle šedé #b5b5b5 (ocas se vytrácí průhledností
+ * do pozadí), hlava sloupce bliká do bílé (každý sloupec svým tempem, HEAD_BLINK_*).
+ * Viditelnost celého pozadí je LAYER_OPACITY (1 = barvy přesně jak jsou zadané, 0.5 = napůl, zbytek je barva webu).
  *
  * Rychlost: znaky se předkreslí jednou do atlasu (sprite sheet) a pak se jen kopírují (drawImage),
  * canvas má velikost obrazovky a otáčí se uvnitř (ne přes CSS), filtr a průhlednost jsou
@@ -13,10 +14,15 @@ import React, { useEffect, useRef } from 'react';
 const GLYPHS = ['■', '□', '▪', '▫', '▬', '▭', '▮', '▯', '░', '▒', '▓', '█', '▄', '▀', '▌', '▐', '◼', '◻', '◾', '◽'];
 const GLITCH_GLYPHS = ['■', '◼', '█', '▓', '◾'].map((g) => GLYPHS.indexOf(g)); // indexy do GLYPHS
 
-const BG_COLOR = '#E6E6E6'; // POZADÍ
-const HEAD_COLOR = '#121212'; // ČTVERCE (hlava sloupce)
-// Glitch hlav sloupců do #00bbff: každý sloupec má svůj vlastní čas (jednou za 10 s) a při něm je šance 44,22 %
-const GLITCH_HEAD_COLOR = '#00bbff';
+const BG_COLOR = '#2b2b2b'; // POZADÍ (tmavší šedá)
+const HEAD_COLOR = '#b5b5b5'; // ČTVERCE (sloupce, hlava i ocas) - světlá šedá
+// Hlava sloupce bliká do bílé: každý sloupec má vlastní tempo (perioda HEAD_BLINK_MIN_MS až MAX_MS)
+const HEAD_BLINK_COLOR = '#ffffff';
+const HEAD_BLINK_MIN_MS = 700;
+const HEAD_BLINK_MAX_MS = 1800;
+const FALL_DOWN = true; // true = padá shora dolů a hlava je nahoře; false = zdola nahoru, hlava dole (dřívější stav)
+// Glitch hlav sloupců do červené: každý sloupec má svůj vlastní čas (jednou za 10 s) a při něm je šance 44,22 %
+const GLITCH_HEAD_COLOR = '#ff1a1a';
 const GLITCH_HEAD_EVERY_MS = 10000;
 const GLITCH_HEAD_CHANCE = 0.4422;
 const GLITCH_HEAD_MS = 700; // jak dlouho glitch trvá
@@ -49,8 +55,8 @@ const hitIsOn = (elapsed: number): boolean => {
 
 const SPEED = 1; // rychlost 1.00x
 const GLITCH = true; // glitch kolem kurzoru (180 px)
-const LAYER_OPACITY = 0.5; // viditelnost celého pozadí
-const SITE_BG_FALLBACK: RGB = [232, 232, 232]; // #E8E8E8 = --color-loyo-bg
+const LAYER_OPACITY = 1; // viditelnost celého pozadí (1 = barvy přesně jak jsou zadané)
+const SITE_BG_FALLBACK: RGB = [43, 43, 43]; // #2B2B2B = --color-loyo-bg
 
 const ANGLE = (-7.77 * Math.PI) / 180; // náklon
 const SCALE = 1.12;
@@ -68,7 +74,8 @@ const ROW_GLITCH = BUCKETS + 1;
 const ROW_HIT_HEAD_GLITCH = BUCKETS + 2;
 const ROW_HIT = BUCKETS + 3;
 const ROW_HIT_BIG = BUCKETS + 4;
-const ATLAS_ROWS = BUCKETS + 5;
+const ROW_HEAD_BLINK = BUCKETS + 5; // hlava v bílé fázi blikání
+const ATLAS_ROWS = BUCKETS + 6;
 const FONT_FAMILY = '"Geist Mono", "IBM Plex Mono", monospace';
 
 type RGB = [number, number, number];
@@ -86,10 +93,10 @@ interface Column {
   hitStart: number; // kdy sloupcem prošel kurzor (-1 = ještě ne, nebo od posledního vynoření nic)
   hitHeadAt: number; // kdy zkusí hlava oranžového sloupce glitchnout do #bbff00
   hitHeadUntil: number;
+  blinkSpeed: number; // rychlost blikání hlavy do bílé (rad/ms)
 }
 
 const randomGlyph = () => Math.floor(Math.random() * GLYPHS.length);
-const clamp255 = (v: number) => Math.max(0, Math.min(255, v));
 const toCss = (c: RGB) => `rgb(${Math.round(c[0])},${Math.round(c[1])},${Math.round(c[2])})`;
 
 const parseHex = (hex: string): RGB | null => {
@@ -120,33 +127,22 @@ export const MatrixBackground: React.FC = () => {
     const siteBg =
       parseHex(getComputedStyle(document.documentElement).getPropertyValue('--color-loyo-bg')) ??
       SITE_BG_FALLBACK;
-    // původní filtr contrast(1.05) a 50% průhlednost nad pozadím webu jsou vypálené rovnou do barev
+    // průhlednost vrstvy nad pozadím webu je vypálená rovnou do barev
     const bake = (c: RGB): RGB =>
-      c.map(
-        (v, i) => LAYER_OPACITY * clamp255(1.05 * v - 6.375) + (1 - LAYER_OPACITY) * siteBg[i],
-      ) as RGB;
+      c.map((v, i) => LAYER_OPACITY * v + (1 - LAYER_OPACITY) * siteBg[i]) as RGB;
 
-    const bgRaw = parseHex(BG_COLOR) ?? [230, 230, 230];
-    const bgDark = bgRaw.map((v) => v * 0.985 * 0.985) as RGB; // původní 2× lehké ztmavení
-    const bgCss = toCss(bake(bgDark));
+    const bgRaw = parseHex(BG_COLOR) ?? [51, 51, 51];
+    const bgCss = toCss(bake(bgRaw));
 
-    const head = parseHex(HEAD_COLOR) ?? [17, 17, 17];
+    const head = parseHex(HEAD_COLOR) ?? [181, 181, 181];
     const headCss = toCss(bake(head));
+    const headBlinkCss = toCss(bake(parseHex(HEAD_BLINK_COLOR) ?? [255, 255, 255]));
     // glitch hlav: čistá barva bez 50% zesvětlení, ať je vidět jako výrazná (krátká) vlna
-    const glitchHeadCss = toCss(parseHex(GLITCH_HEAD_COLOR) ?? [0, 187, 255]);
+    const glitchHeadCss = toCss(parseHex(GLITCH_HEAD_COLOR) ?? [255, 26, 26]);
     const hitCss = toCss(parseHex(HIT_COLOR) ?? [255, 72, 0]);
     const hitHeadCss = toCss(parseHex(HIT_HEAD_COLOR) ?? [187, 255, 0]);
-    const bucketCss: string[] = [];
-    for (let b = 0; b < BUCKETS; b++) {
-      const t = (b + 0.5) / BUCKETS;
-      let c: RGB = head;
-      if (t >= 0.15) {
-        const k = Math.min(1, (t - 0.15) / 0.85);
-        const target = t > 0.6 ? 187 : 102 + 85 * k; // ocas -> #BBBBBB
-        c = head.map((h) => Math.round(h + (target - h) * k)) as RGB;
-      }
-      bucketCss.push(toCss(bake(c)));
-    }
+    // ocas má stejnou barvu jako hlava, vytrácí se průhledností (viz fade níže)
+    const bucketCss: string[] = Array.from({ length: BUCKETS }, () => headCss);
 
     // ---------- stav ----------
     let rs = Math.min(window.devicePixelRatio || 1, coarse ? 1.25 : 1.5); // pixely canvasu na CSS px
@@ -199,7 +195,9 @@ export const MatrixBackground: React.FC = () => {
                 ? hitHeadCss
                 : row === ROW_HIT || row === ROW_HIT_BIG
                   ? hitCss
-                  : headCss;
+                  : row === ROW_HEAD_BLINK
+                    ? headBlinkCss
+                    : headCss;
         for (let g = 0; g < GLYPHS.length; g++) {
           a.fillText(GLYPHS[g], g * cell + cell / 2, row * cell + cell / 2);
         }
@@ -221,6 +219,9 @@ export const MatrixBackground: React.FC = () => {
         hitStart: -1,
         hitHeadAt: 0,
         hitHeadUntil: 0,
+        blinkSpeed:
+          (2 * Math.PI) /
+          (HEAD_BLINK_MIN_MS + Math.random() * (HEAD_BLINK_MAX_MS - HEAD_BLINK_MIN_MS)),
       };
     };
 
@@ -309,7 +310,7 @@ export const MatrixBackground: React.FC = () => {
       const half = spriteSize / 2;
 
       for (const col of columns) {
-        col.baseY -= col.speed * SPEED * 1.2 * step; // proud zdola nahoru
+        col.baseY -= col.speed * SPEED * 1.2 * step; // pohyb (na obrazovce podle FALL_DOWN)
         if (col.baseY + col.length * ROW_H < top - ROW_H) {
           // vyjel nahoře ven -> objeví se dole (oranžová se tím vynuluje)
           col.baseY = bottom + Math.random() * 200;
@@ -333,10 +334,13 @@ export const MatrixBackground: React.FC = () => {
         }
 
         const near = glitchOn && Math.abs(col.x - mx) < glitchR + 40;
+        const headWhite = Math.sin(time * col.blinkSpeed + col.phase) > 0.35; // hlava právě svítí bíle
         const shiftY = parallax * (0.2 + col.speed * 0.1);
 
         for (let q = 0; q < col.length; q++) {
-          const y = col.baseY - q * ROW_H + shiftY;
+          // pohyb se počítá zdola nahoru, na obrazovce se zrcadlí (FALL_DOWN: padá dolů, hlava nahoře)
+          const yBase = col.baseY - q * ROW_H;
+          const y = (FALL_DOWN ? -yBase : yBase) + shiftY;
           if (y < top - ROW_H || y > bottom + ROW_H) continue;
 
           const t = q / col.length; // 0 = hlava, 1 = konec ocasu
@@ -431,7 +435,9 @@ export const MatrixBackground: React.FC = () => {
                   ? ROW_HIT_BIG
                   : ROW_HIT
                 : isHead
-                  ? ROW_HEAD
+                  ? headWhite
+                    ? ROW_HEAD_BLINK
+                    : ROW_HEAD
                   : bucket) * cell,
             cell,
             cell,

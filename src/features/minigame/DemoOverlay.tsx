@@ -52,14 +52,14 @@ const FinishedCounter: React.FC<{ finishedCount: number }> = ({ finishedCount })
       {phase !== 'idle' && (
         <div
           onAnimationEnd={() => phase === 'out' && setPhase('idle')} // po glitchi se bublina odstraní
-          className={`absolute z-40 pointer-events-none bg-loyo-ink border-2 border-loyo-ink rounded-xl px-2 py-1.5 shadow-[3px_3px_0px_#000] -rotate-2 origin-bottom-left whitespace-nowrap ${
+          className={`absolute z-40 pointer-events-none bg-loyo-panel border border-loyo-line rounded-xl px-2 py-1.5 shadow-brutal-3 -rotate-2 origin-bottom-left whitespace-nowrap ${
             phase === 'in' ? 'anim-bubble-in -translate-y-1' : 'anim-bubble-glitch-out-i -translate-y-1'
           }`}
           style={{ left: '8px', bottom: '44px' }}
         >
           {/* Ocas bubliny mířící dolů ke kolečku */}
-          <div className="absolute -bottom-1.5 left-3 w-3 h-3 bg-loyo-ink border-r-2 border-b-2 border-loyo-ink rotate-45" />
-          <span className="font-heading font-black text-[11px] sm:text-xs text-loyo-orange tracking-wider leading-tight">
+          <div className="absolute -bottom-1.5 left-3 w-3 h-3 bg-loyo-panel border-r-2 border-b-2 border-loyo-line rotate-45" />
+          <span className="font-sans font-black text-[11px] sm:text-xs text-loyo-blue tracking-wider leading-tight">
             {finishedText(finishedCount)}
           </span>
         </div>
@@ -128,10 +128,10 @@ export const DemoOverlay: React.FC<DemoOverlayProps> = ({
       {/* VLEVO: HIGHSCORE */}
       <button
         onClick={onToggleHighScores}
-        className={`h-6 sm:h-7 px-2.5 rounded-lg border-2 border-loyo-ink font-heading font-black text-[10px] sm:text-xs tracking-wider uppercase flex items-center cursor-pointer transition-all ${
+        className={`h-6 sm:h-7 px-2.5 rounded-lg border border-loyo-line font-sans font-black text-[10px] sm:text-xs tracking-wider uppercase flex items-center cursor-pointer transition-all ${
           showHighScoresModal
-            ? 'bg-loyo-orange text-loyo-ink shadow-brutal-2 -translate-y-0.5'
-            : 'bg-white hover:bg-zinc-100 text-loyo-ink shadow-brutal-2 hover:-translate-y-0.5 active:translate-x-0.5 active:translate-y-0.5 active:shadow-brutal-1'
+            ? 'bg-loyo-blue text-loyo-text shadow-brutal-2 -translate-y-0.5'
+            : 'bg-loyo-surface hover:bg-loyo-hover text-loyo-text shadow-brutal-2 hover:-translate-y-0.5 active:translate-x-0.5 active:translate-y-0.5 active:shadow-brutal-1'
         }`}
         title="Zobrazit HIGHSCORE"
       >
@@ -141,17 +141,17 @@ export const DemoOverlay: React.FC<DemoOverlayProps> = ({
       {/* VPRAVO: HRÁT? */}
       <button
         onClick={onStart}
-        className="h-6 sm:h-7 px-3 rounded-lg bg-loyo-blue hover:bg-loyo-orange text-white border-2 border-loyo-ink shadow-brutal-2 hover:-translate-y-0.5 hover:shadow-brutal-3 active:translate-x-0.5 active:translate-y-0.5 active:shadow-brutal-1 font-heading font-black text-[10px] sm:text-xs tracking-wider uppercase flex items-center gap-1.5 cursor-pointer transition-all"
+        className="h-6 sm:h-7 px-3 rounded-lg bg-loyo-blue hover:bg-loyo-blue-hover text-loyo-text border border-loyo-line shadow-brutal-2 hover:-translate-y-0.5 hover:shadow-brutal-3 active:translate-x-0.5 active:translate-y-0.5 active:shadow-brutal-1 font-sans font-black text-[10px] sm:text-xs tracking-wider uppercase flex items-center gap-1.5 cursor-pointer transition-all"
       >
         <span>HRÁT?</span>
-        <span className="text-white">▶</span>
+        <span className="text-loyo-text">▶</span>
       </button>
     </div>
 
     {/* 2. JEDNA BUBLINA U TLAČÍTKA (i) V PRAVÉM DOLNÍM ROHU: NADPIS "miniGAME Tetris" + OVLÁDÁNÍ POD NÍM */}
     {/* OBSAH SE ODKRÝVÁ ZLEVA DOPRAVA (0% DO 100% ZA 3,2 s) A PŘI ODJETÍ SE 2,5 s ZATAHUJE ZPĚT */}
     <div
-      className={`absolute z-40 bg-loyo-ink border-2 border-loyo-ink rounded-xl p-2 shadow-[3px_3px_0px_#000] text-white flex flex-col items-start min-w-44 -rotate-2 origin-bottom-right ${
+      className={`absolute z-40 bg-loyo-panel border border-loyo-line rounded-xl p-2 shadow-brutal-3 text-loyo-text flex flex-col items-start min-w-44 -rotate-2 origin-bottom-right ${
         infoPhase === 'active'
           ? 'opacity-100 pointer-events-auto -translate-y-1 anim-bubble-in'
           : infoPhase === 'exiting'
@@ -164,12 +164,12 @@ export const DemoOverlay: React.FC<DemoOverlayProps> = ({
       }}
     >
       {/* Ocas komiksové bubliny mířící dolů k tlačítku (i) */}
-      <div className="absolute -bottom-1.5 right-2 w-3 h-3 bg-loyo-ink border-r-2 border-b-2 border-loyo-ink rotate-45 pointer-events-none" />
+      <div className="absolute -bottom-1.5 right-2 w-3 h-3 bg-loyo-panel border-r-2 border-b-2 border-loyo-line rotate-45 pointer-events-none" />
 
       <div className="w-full">
         {/* NADPIS: miniGAME Tetris (HOŘČIČNÁ BARVA, JEDNOU ZA 5 s PROBLIKNE) */}
         <div
-          className="font-heading font-black text-[11px] sm:text-xs text-loyo-orange tracking-wider flex items-center gap-1.5 leading-tight whitespace-nowrap"
+          className="font-sans font-black text-[11px] sm:text-xs text-loyo-blue tracking-wider flex items-center gap-1.5 leading-tight whitespace-nowrap"
           style={{ animation: 'blink-5s 5s infinite ease-in-out' }}
         >
           <span className="w-1.5 h-1.5 rounded-full bg-loyo-blue shrink-0" />
@@ -177,17 +177,17 @@ export const DemoOverlay: React.FC<DemoOverlayProps> = ({
         </div>
 
         {/* POD NADPISEM: OVLÁDÁNÍ (seznam je nahoře v souboru v CONTROLS) */}
-        <div className="font-heading font-black text-[10px] text-zinc-400 uppercase tracking-wider mt-1.5 mb-1">
+        <div className="font-sans font-black text-[10px] text-loyo-muted uppercase tracking-wider mt-1.5 mb-1">
           Ovládání:
         </div>
 
         <div className="grid grid-cols-[auto_1fr] gap-x-2 gap-y-1 items-center">
           {CONTROLS.map(({ key, label }) => (
             <React.Fragment key={key}>
-              <div className="min-w-5 h-5 px-1 rounded bg-white text-loyo-ink border border-loyo-ink font-mono font-black text-[9px] flex items-center justify-center shadow-brutal-1 whitespace-nowrap">
+              <div className="min-w-5 h-5 px-1 rounded bg-loyo-surface text-loyo-text border border-loyo-line font-mono font-black text-[9px] flex items-center justify-center shadow-brutal-1 whitespace-nowrap">
                 {key}
               </div>
-              <div className="font-sans text-[9px] sm:text-[10px] text-zinc-300 font-medium leading-tight">
+              <div className="font-sans text-[9px] sm:text-[10px] text-loyo-muted font-medium leading-tight">
                 {label}
               </div>
             </React.Fragment>

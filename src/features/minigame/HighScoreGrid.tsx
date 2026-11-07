@@ -34,21 +34,21 @@ export const HighScoreGrid: React.FC<HighScoreGridProps> = ({
               key={idx}
               className={`flex items-center font-mono rounded border ${rowClassName} ${
                 isCurrentPlayer
-                  ? 'bg-loyo-orange/25 border-loyo-ink font-bold shadow-brutal-1'
-                  : 'bg-[#f4f4f5] border-zinc-200'
+                  ? 'bg-loyo-blue/25 border-loyo-line font-bold shadow-brutal-1'
+                  : 'bg-loyo-panel border-loyo-line'
               }`}
             >
-              <span className="font-bold text-loyo-ink min-w-3.5 shrink-0">{idx + 1}.</span>
+              <span className="font-bold text-loyo-text min-w-3.5 shrink-0">{idx + 1}.</span>
               <span
                 className={`font-black tracking-wider ${
-                  isPresent ? 'text-loyo-blue' : 'text-zinc-400'
+                  isPresent ? 'text-loyo-blue' : 'text-loyo-muted'
                 }`}
               >
                 {isPresent ? item.initials : '---'}
               </span>
               <strong
-                className={`ml-1.5 font-heading font-black truncate ${
-                  isPresent ? 'text-loyo-ink' : 'text-zinc-400'
+                className={`ml-1.5 font-sans font-black truncate ${
+                  isPresent ? 'text-loyo-text' : 'text-loyo-muted'
                 }`}
               >
                 {isPresent ? `${item.score}b` : '-'}

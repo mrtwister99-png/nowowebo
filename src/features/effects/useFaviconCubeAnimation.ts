@@ -1,9 +1,9 @@
 import { useEffect, useRef } from 'react';
 
 const FACES = [
-  { bg: '#0088ff', text: 'L', glow: '#0088ff' },
-  { bg: '#8c8c8c', text: 'o', glow: '#8c8c8c' },
-  { bg: '#ff4800', text: 'Y', glow: '#ff4800' },
+  { bg: '#12a4ff', text: 'L', glow: '#12a4ff' },
+  { bg: '#3a3a3a', text: 'o', glow: '#9a9a9a' },
+  { bg: '#c9a45c', text: 'Y', glow: '#c9a45c' },
   { bg: '#2E2E2E', text: 'o', glow: '#ffffff' },
 ];
 

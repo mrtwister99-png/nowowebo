@@ -43,7 +43,7 @@ export const Board: React.FC<BoardProps> = ({
   >
     {/* ZDI: tmavě červené, od podlahy až úplně nahoru, těsně za aktivními sloupci; s rozšířením pole se posunou */}
     <div
-      className="absolute bottom-0 bg-loyo-ink border-2 border-loyo-ink rounded-t-sm z-10 pointer-events-none transition-all duration-500"
+      className="absolute bottom-0 bg-loyo-panel border border-loyo-line rounded-t-sm z-10 pointer-events-none transition-all duration-500"
       style={{
         width: `${WALL_WIDTH}px`,
         height: `${BOARD_HEIGHT + FIELD_TOP_SPACE}px`,
@@ -52,7 +52,7 @@ export const Board: React.FC<BoardProps> = ({
       aria-hidden="true"
     />
     <div
-      className="absolute bottom-0 bg-loyo-ink border-2 border-loyo-ink rounded-t-sm z-10 pointer-events-none transition-all duration-500"
+      className="absolute bottom-0 bg-loyo-panel border border-loyo-line rounded-t-sm z-10 pointer-events-none transition-all duration-500"
       style={{
         width: `${WALL_WIDTH}px`,
         height: `${BOARD_HEIGHT + FIELD_TOP_SPACE}px`,
@@ -71,7 +71,7 @@ export const Board: React.FC<BoardProps> = ({
       return (
         <div
           key={cube.id}
-          className={`absolute rounded-xs border border-loyo-ink transition-all duration-75 ${
+          className={`absolute rounded-xs border border-loyo-line transition-all duration-75 ${
             cube.isRedAlert ? 'animate-pulse' : ''
           }`}
           style={{
@@ -87,7 +87,7 @@ export const Board: React.FC<BoardProps> = ({
         >
           <div
             className={`absolute top-0 left-0 right-0 h-px rounded-t-[1px] ${
-              isFlashing ? 'bg-white' : 'bg-white/20'
+              isFlashing ? 'bg-loyo-surface' : 'bg-loyo-surface/20'
             }`}
           />
         </div>
@@ -99,7 +99,7 @@ export const Board: React.FC<BoardProps> = ({
       <>
         {fallingPiece.isBomb ? (
           <div
-            className="absolute rounded-full border border-loyo-ink z-30 pointer-events-none shadow-brutal-1 animate-pulse"
+            className="absolute rounded-full border border-loyo-line z-30 pointer-events-none shadow-brutal-1 animate-pulse"
             style={{
               width: `${CUBE_SIZE}px`,
               height: `${CUBE_SIZE}px`,
@@ -108,7 +108,7 @@ export const Board: React.FC<BoardProps> = ({
               backgroundColor: COLOR_RED,
             }}
           >
-            <div className="absolute inset-0 flex items-center justify-center font-mono font-black text-[9px] text-white">
+            <div className="absolute inset-0 flex items-center justify-center font-mono font-black text-[9px] text-loyo-text">
               💣
             </div>
           </div>
@@ -120,7 +120,7 @@ export const Board: React.FC<BoardProps> = ({
             return (
               <div
                 key={`fp-${idx}`}
-                className="absolute rounded-xs border border-loyo-ink shadow-brutal-1 z-30 pointer-events-none"
+                className="absolute rounded-xs border border-loyo-line shadow-brutal-1 z-30 pointer-events-none"
                 style={{
                   width: `${CUBE_SIZE}px`,
                   height: `${CUBE_SIZE}px`,
@@ -130,7 +130,7 @@ export const Board: React.FC<BoardProps> = ({
                   boxShadow: '1px 1px 0px #121212',
                 }}
               >
-                <div className="absolute top-0 left-0 right-0 h-px bg-white/40 rounded-t-[1px]" />
+                <div className="absolute top-0 left-0 right-0 h-px bg-loyo-surface/40 rounded-t-[1px]" />
               </div>
             );
           })
@@ -143,7 +143,7 @@ export const Board: React.FC<BoardProps> = ({
       part.cells.map(([, dy], idx) => (
         <div
           key={`lp-${partIdx}-${idx}`}
-          className="absolute rounded-xs border border-loyo-ink shadow-brutal-1 z-30 pointer-events-none"
+          className="absolute rounded-xs border border-loyo-line shadow-brutal-1 z-30 pointer-events-none"
           style={{
             width: `${CUBE_SIZE}px`,
             height: `${CUBE_SIZE}px`,
@@ -153,7 +153,7 @@ export const Board: React.FC<BoardProps> = ({
             boxShadow: '1px 1px 0px #121212',
           }}
         >
-          <div className="absolute top-0 left-0 right-0 h-px bg-white/40 rounded-t-[1px]" />
+          <div className="absolute top-0 left-0 right-0 h-px bg-loyo-surface/40 rounded-t-[1px]" />
         </div>
       )),
     )}
@@ -179,14 +179,14 @@ export const Board: React.FC<BoardProps> = ({
     {floatingScores.map((fs) => (
       <div
         key={fs.id}
-        className="absolute font-heading font-black text-sm sm:text-lg whitespace-nowrap -translate-x-1/2 z-50 pointer-events-none"
+        className="absolute font-sans font-black text-sm sm:text-lg whitespace-nowrap -translate-x-1/2 z-50 pointer-events-none"
         style={{
           left: `${fs.x}px`,
           top: `${fs.y}px`,
           color: fs.color,
           // Modrý text má bílý obrys (čitelný i přes černé kostičky), ostatní barvy tmavý stín
           ...(fs.color === COLOR_BLUE
-            ? { WebkitTextStroke: '4px #fff', paintOrder: 'stroke fill' }
+            ? { WebkitTextStroke: '4px #2b2b2b', paintOrder: 'stroke fill' }
             : { textShadow: '0 0 4px #000, 1px 1px 0px #000' }),
         }}
       >

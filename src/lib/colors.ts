@@ -1,13 +1,13 @@
 /**
- * Značkové barvy pro JavaScript: canvas, SVG atributy, inline styly a data.
+ * Značkové barvy pro JavaScript: canvas, SVG atributy, inline styly a data (LoYo OS — Royal Dark).
  * Hodnoty musí odpovídat tokenům v src/styles/tokens.css.
- * V Tailwind třídách používej tokeny (bg-loyo-blue, text-loyo-ink ...), ne tuto konstantu.
+ * V Tailwind třídách používej tokeny (bg-loyo-blue, text-loyo-text ...), ne tuto konstantu.
  */
-export const BRAND: Readonly<Record<'blue' | 'orange' | 'mustard' | 'mustardDark' | 'red' | 'ink', string>> = {
-  blue: '#0088ff',
-  orange: '#ff4800', // jen hover a aktivní stavy
-  mustard: '#8c8c8c',
-  mustardDark: '#6b6b6b',
-  red: '#ff4800',
-  ink: '#121212',
+export const BRAND: Readonly<Record<'blue' | 'gold' | 'mustard' | 'red' | 'ink' | 'line', string>> = {
+  blue: '#12a4ff', // 10 %: primární akce, aktivní stav, progress
+  gold: '#c9a45c', // 1 %: PREMIUM
+  mustard: '#9a9a9a', // dřív "zlatá" služba, teď neutrální šedá
+  red: '#ff1e00', // 4 %: jen malá live tečka
+  ink: '#9a9a9a', // neutrální značka (tečky v menu)
+  line: '#444444',
 };

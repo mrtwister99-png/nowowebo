@@ -14,7 +14,7 @@ type BadgeProps = React.HTMLAttributes<HTMLSpanElement> & {
 export const Badge: React.FC<BadgeProps> = ({ size = 'md', className, ...props }) => (
   <span
     className={cn(
-      'py-0.5 bg-loyo-ink text-white font-mono font-black uppercase tracking-wider rounded',
+      'py-0.5 bg-loyo-panel border border-loyo-line text-loyo-text font-mono font-semibold uppercase tracking-wider rounded',
       SIZES[size],
       className,
     )}

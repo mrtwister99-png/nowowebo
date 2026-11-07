@@ -14,9 +14,9 @@ export const LeaderboardOverlay: React.FC<LeaderboardOverlayProps> = ({
   inputInitials,
   returnToDemo,
 }) => (
-  <div className="absolute inset-0 z-40 bg-white/95 backdrop-blur-xs flex flex-col items-center justify-between p-1.5 text-center animate-in zoom-in-95">
+  <div className="absolute inset-0 z-40 bg-loyo-surface/95 backdrop-blur-xs flex flex-col items-center justify-between p-1.5 text-center animate-in zoom-in-95">
     <div className="w-full">
-      <div className="text-[11px] font-heading font-black text-loyo-blue uppercase tracking-wider">
+      <div className="text-[11px] font-sans font-black text-loyo-blue uppercase tracking-wider">
         HIGHSCORE
       </div>
 
@@ -31,7 +31,7 @@ export const LeaderboardOverlay: React.FC<LeaderboardOverlayProps> = ({
     <div className="flex items-center pt-0.5">
       <button
         onClick={returnToDemo}
-        className="h-6 px-10 bg-loyo-blue hover:bg-loyo-orange text-white border-2 border-loyo-ink shadow-brutal-2 rounded-lg font-heading font-bold text-[10px] uppercase tracking-wider cursor-pointer active:translate-y-0.5 transition-all"
+        className="h-6 px-10 bg-loyo-blue hover:bg-loyo-blue-hover text-loyo-text border border-loyo-line shadow-brutal-2 rounded-lg font-sans font-bold text-[10px] uppercase tracking-wider cursor-pointer active:translate-y-0.5 transition-all"
       >
         OK
       </button>

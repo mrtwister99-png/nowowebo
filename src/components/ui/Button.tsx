@@ -2,8 +2,8 @@ import React from 'react';
 import { cn } from '../../lib/cn';
 
 const VARIANTS = {
-  primary: 'bg-loyo-ink text-white hover:bg-loyo-orange',
-  secondary: 'bg-loyo-bar hover:bg-loyo-ink hover:text-white border border-loyo-line',
+  primary: 'bg-loyo-panel text-loyo-text border border-loyo-line hover:bg-loyo-hover',
+  secondary: 'bg-transparent hover:bg-loyo-hover text-loyo-text border border-loyo-line',
 } as const;
 
 const SIZES = {

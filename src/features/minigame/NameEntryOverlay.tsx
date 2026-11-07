@@ -22,7 +22,7 @@ export const NameEntryOverlay: React.FC<NameEntryOverlayProps> = ({
   submitInitials,
   returnToDemo,
 }) => (
-  <div className="absolute inset-0 sm:-right-6 z-40 bg-white/95 backdrop-blur-xs flex flex-col items-center justify-center p-2 sm:pr-8 text-center animate-in zoom-in-95">
+  <div className="absolute inset-0 sm:-right-6 z-40 bg-loyo-surface/95 backdrop-blur-xs flex flex-col items-center justify-center p-2 sm:pr-8 text-center animate-in zoom-in-95">
     <input
       ref={textInputRef}
       type="text"
@@ -39,7 +39,7 @@ export const NameEntryOverlay: React.FC<NameEntryOverlayProps> = ({
       className="absolute opacity-0 pointer-events-none w-1 h-1"
     />
 
-    <div className="font-heading font-black text-base sm:text-lg text-loyo-ink tracking-tight">
+    <div className="font-heading font-bold text-base sm:text-lg text-loyo-text tracking-tight">
       SKÓRE: <span className="text-loyo-blue">{score} BODŮ</span>
     </div>
 
@@ -55,18 +55,18 @@ export const NameEntryOverlay: React.FC<NameEntryOverlayProps> = ({
             onClick={() => {
               textInputRef.current?.focus();
             }}
-            className={`w-8 h-9 rounded-lg border-2 flex items-center justify-center font-heading font-black text-base transition-all cursor-text ${
+            className={`w-8 h-9 rounded-lg border flex items-center justify-center font-sans font-black text-base transition-all cursor-text ${
               isCurrent
-                ? 'border-loyo-ink bg-loyo-orange/25 shadow-[1.5px_1.5px_0px_#121212] ring-2 ring-loyo-ink'
-                : 'border-loyo-ink bg-white shadow-[1.5px_1.5px_0px_#121212]'
+                ? 'border-loyo-line bg-loyo-blue/25 shadow-brutal-2 ring-2 ring-loyo-blue'
+                : 'border-loyo-line bg-loyo-surface shadow-brutal-2'
             }`}
           >
             {char ? (
-              <span className="text-loyo-ink">{char}</span>
+              <span className="text-loyo-text">{char}</span>
             ) : isCurrent ? (
-              <span className="text-loyo-ink animate-ping font-mono font-bold text-sm">_</span>
+              <span className="text-loyo-text animate-ping font-mono font-bold text-sm">_</span>
             ) : (
-              <span className="text-zinc-300 font-mono text-xs">_</span>
+              <span className="text-loyo-muted font-mono text-xs">_</span>
             )}
           </div>
         );
@@ -82,10 +82,10 @@ export const NameEntryOverlay: React.FC<NameEntryOverlayProps> = ({
           }
         }}
         disabled={inputInitials.length !== 3}
-        className={`h-6 px-3 rounded-lg font-heading font-bold text-[10px] uppercase tracking-wider border-2 transition-all ${
+        className={`h-6 px-3 rounded-lg font-sans font-bold text-[10px] uppercase tracking-wider border transition-all ${
           inputInitials.length === 3
-            ? 'bg-loyo-blue hover:bg-loyo-orange text-white border-loyo-ink shadow-brutal-2 cursor-pointer active:translate-y-0.5'
-            : 'bg-zinc-200 text-zinc-400 border-zinc-400 cursor-not-allowed shadow-none'
+            ? 'bg-loyo-blue hover:bg-loyo-blue-hover text-loyo-text border-loyo-line shadow-brutal-2 cursor-pointer active:translate-y-0.5'
+            : 'bg-loyo-panel text-loyo-muted border-loyo-line cursor-not-allowed shadow-none'
         }`}
       >
         OK
@@ -93,7 +93,7 @@ export const NameEntryOverlay: React.FC<NameEntryOverlayProps> = ({
 
       <button
         onClick={returnToDemo}
-        className="h-6 px-2 font-mono font-bold text-[10px] text-loyo-muted hover:text-loyo-ink underline cursor-pointer"
+        className="h-6 px-2 font-mono font-bold text-[10px] text-loyo-muted hover:text-loyo-text underline cursor-pointer"
       >
         Zrušit
       </button>

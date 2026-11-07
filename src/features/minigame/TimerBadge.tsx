@@ -4,15 +4,15 @@ import React from 'react';
 export const TimerBadge: React.FC<{ timeLeft: number }> = ({ timeLeft }) => (
   <div className="absolute top-1 right-2 z-30 pointer-events-none">
     <div
-      className={`w-8 h-8 sm:w-9 sm:h-9 rounded-full bg-loyo-ink border-2 shadow-brutal-2 flex items-center justify-center transition-all duration-200 ${
+      className={`w-8 h-8 sm:w-9 sm:h-9 rounded-full bg-loyo-panel border shadow-brutal-2 flex items-center justify-center transition-all duration-200 ${
         [10, 5, 4, 3, 2, 1].includes(timeLeft)
-          ? 'border-loyo-orange scale-125 shadow-[0_0_10px_rgba(255,72,0,0.85)]'
-          : 'border-loyo-orange scale-100'
+          ? 'border-loyo-blue scale-125 shadow-[0_0_10px_rgba(18,164,255,0.85)]'
+          : 'border-loyo-blue scale-100'
       }`}
     >
       <span
         className={`font-mono font-black text-xs sm:text-sm leading-none transition-all duration-200 ${
-          [10, 5, 4, 3, 2, 1].includes(timeLeft) ? 'text-loyo-orange scale-135' : 'text-white'
+          [10, 5, 4, 3, 2, 1].includes(timeLeft) ? 'text-loyo-blue scale-135' : 'text-loyo-text'
         }`}
       >
         {timeLeft}

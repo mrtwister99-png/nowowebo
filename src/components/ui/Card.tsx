@@ -5,11 +5,11 @@ import { cn } from '../../lib/cn';
    Skládá se z: Card > CardEyebrow + CardTitle + CardText + CardNote */
 
 export const Card: React.FC<React.HTMLAttributes<HTMLDivElement>> = ({ className, ...props }) => (
-  <div className={cn('bg-loyo-bar border-2 border-loyo-ink p-6 shadow-xs', className)} {...props} />
+  <div className={cn('bg-loyo-bar border border-loyo-line p-6 shadow-xs', className)} {...props} />
 );
 
 const EYEBROW_TONES = {
-  ink: 'text-loyo-ink',
+  ink: 'text-loyo-text',
   blue: 'text-loyo-blue',
   red: 'text-loyo-red',
   mustard: 'text-loyo-mustard-dark',
@@ -35,12 +35,12 @@ export const CardEyebrow: React.FC<CardEyebrowProps> = ({ tone = 'ink', classNam
 export const CardTitle: React.FC<React.HTMLAttributes<HTMLHeadingElement>> = ({
   className,
   ...props
-}) => <h3 className={cn('font-heading font-black text-xl text-loyo-ink', className)} {...props} />;
+}) => <h3 className={cn('font-heading font-bold text-xl text-loyo-text', className)} {...props} />;
 
 export const CardText: React.FC<React.HTMLAttributes<HTMLParagraphElement>> = ({
   className,
   ...props
-}) => <p className={cn('text-xs text-loyo-body mt-2.5 leading-relaxed', className)} {...props} />;
+}) => <p className={cn('text-xs text-loyo-muted mt-2.5 leading-relaxed', className)} {...props} />;
 
 /** Poznámka pod čárou na konci karty */
 export const CardNote: React.FC<React.HTMLAttributes<HTMLDivElement>> = ({

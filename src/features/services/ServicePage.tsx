@@ -17,7 +17,7 @@ export const ServicePage: React.FC<ServicePageProps> = ({ serviceId, onBackToHom
   }, [serviceId]);
 
   return (
-    <div className="min-h-screen bg-transparent text-loyo-ink pt-20 pb-28">
+    <div className="min-h-screen bg-transparent text-loyo-text pt-20 pb-28">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Bottom Back Button */}
         <div className="pt-8 border-t border-loyo-line-field flex items-center justify-between">
@@ -34,7 +34,7 @@ export const ServicePage: React.FC<ServicePageProps> = ({ serviceId, onBackToHom
           <button
             type="button"
             onClick={scrollToTop}
-            className="text-xs font-mono font-bold text-loyo-subtle hover:text-loyo-ink uppercase cursor-pointer"
+            className="text-xs font-mono font-bold text-loyo-subtle hover:text-loyo-text uppercase cursor-pointer"
           >
             Nahoru ↑
           </button>
