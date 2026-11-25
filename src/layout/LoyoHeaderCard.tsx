@@ -1,8 +1,8 @@
 import React, { Suspense, lazy, useState, useEffect, useRef } from 'react';
-import { Menu, Settings, ArrowRight } from 'lucide-react';
+import { Menu, Settings, ArrowRight, Download, ChevronDown } from 'lucide-react';
 import { ServiceId } from '../types';
 import { scrollToElement, scrollToTop, useMenuMount } from '../lib/motion';
-import { MENU_SECTIONS } from '../data/routes';
+import { MENU_SECTIONS, DOWNLOADS } from '../data/routes';
 
 // Minihra se stahuje samostatně (odděleně od hlavního balíčku), až když je potřeba
 const MiniFallingCubesInGap = lazy(() =>
@@ -169,6 +169,7 @@ export const LoyoHeaderCard: React.FC<LoyoHeaderCardProps> = ({
   onNavigateToPage,
 }) => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [downloadsOpen, setDownloadsOpen] = useState(false);
 
   // Menu: myší se otevírá najetím a po odjetí se zavře, dotyk a klávesnice fungují klikem
   const menuMounted = useMenuMount(isMenuOpen); // panel zůstane v DOM do konce animace zavření
@@ -315,6 +316,59 @@ export const LoyoHeaderCard: React.FC<LoyoHeaderCardProps> = ({
                           <ArrowRight className="w-4 h-4 text-loyo-muted group-hover:text-loyo-text group-hover:translate-x-1 transition-all shrink-0" />
                         </button>
                       ))}
+
+                      {/* Ke stažení: poslední položka (červená), rozbalí seznam souborů */}
+                      <button
+                        style={{
+                          animation: isMenuOpen
+                            ? `menuItemIn 0.25s ease-out ${80 + menuItems.length * 50}ms backwards`
+                            : 'menuItemOut 0.15s ease-in forwards',
+                        }}
+                        onClick={() => setDownloadsOpen(!downloadsOpen)}
+                        aria-expanded={downloadsOpen}
+                        className="w-full p-3 bg-loyo-surface hover:bg-loyo-hover border border-loyo-red/60 hover:border-loyo-red rounded-xl shadow-brutal-3 hover:-translate-y-0.5 hover:shadow-brutal-4 active:translate-x-0.5 active:translate-y-0.5 active:shadow-brutal-1 flex items-center justify-between gap-3 text-left transition-all cursor-pointer"
+                      >
+                        <div className="flex items-center gap-3">
+                          <Download className="w-4 h-4 text-loyo-red shrink-0" />
+                          <div className="font-heading font-bold text-[13px] leading-tight text-loyo-red">
+                            Ke stažení
+                          </div>
+                        </div>
+                        <ChevronDown
+                          className={`w-4 h-4 text-loyo-red transition-transform shrink-0 ${downloadsOpen ? 'rotate-180' : ''}`}
+                        />
+                      </button>
+                      {downloadsOpen &&
+                        DOWNLOADS.map((d) =>
+                          d.href ? (
+                            <a
+                              key={d.id}
+                              href={d.href}
+                              download
+                              className="w-full px-3 py-2.5 bg-loyo-panel hover:bg-loyo-hover border border-loyo-line border-l-2 border-l-loyo-red rounded-xl flex items-center justify-between gap-3 cursor-pointer transition-colors"
+                            >
+                              <span className="font-heading font-bold text-[13px] leading-tight text-loyo-text">
+                                {d.label}
+                              </span>
+                              <span className="text-[10px] font-mono font-bold text-loyo-red uppercase flex items-center gap-1 shrink-0">
+                                <Download className="w-3.5 h-3.5" />
+                                {d.note}
+                              </span>
+                            </a>
+                          ) : (
+                            <div
+                              key={d.id}
+                              className="w-full px-3 py-2.5 bg-loyo-panel border border-loyo-line border-l-2 border-l-loyo-red rounded-xl flex items-center justify-between gap-3"
+                            >
+                              <span className="font-heading font-bold text-[13px] leading-tight text-loyo-text">
+                                {d.label}
+                              </span>
+                              <span className="text-[10px] font-mono font-bold text-loyo-faint uppercase">
+                                Již brzy
+                              </span>
+                            </div>
+                          ),
+                        )}
                     </div>
                   </div>
                 </>

@@ -3,11 +3,7 @@ import { Menu, X, ChevronDown, ArrowLeft, Download } from 'lucide-react';
 import { ServiceId } from '../types';
 import { BRAND } from '../lib/colors';
 import { scrollToTop, useMenuMount } from '../lib/motion';
-import { MENU_SECTIONS, type MenuSection } from '../data/routes';
-
-// Soubor ke stažení leží ve složce public/ (na webu je dostupný jako /ho.zip).
-// Kdyby se zip jmenoval jinak, stačí přepsat jen tady.
-const ZIP_NAME = 'ho.zip';
+import { MENU_SECTIONS, DOWNLOADS, type MenuSection } from '../data/routes';
 
 // Vzhled tlačítek menu podle MenuSection.navStyle (data položek jsou v src/data/routes.ts)
 const NAV_BTN_STYLE: Record<MenuSection['navStyle'], string> = {
@@ -35,6 +31,7 @@ export const Navbar: React.FC<NavbarProps> = ({
   const [menuOpen, setMenuOpen] = useState(false);
   const menuMounted = useMenuMount(menuOpen); // panel zůstane v DOM do konce animace zavření
   const [dotaznikDropdownOpen, setDotaznikDropdownOpen] = useState(false);
+  const [downloadsOpen, setDownloadsOpen] = useState(false);
 
   const sectionInfo: Record<string, { label: string; color: string; tag: string }> = {
     uvod: { label: 'Úvod • LoYo Premium Developer', color: BRAND.ink, tag: 'START' },
@@ -313,16 +310,49 @@ export const Navbar: React.FC<NavbarProps> = ({
                   ))}
                 </div>
 
-                {/* Tlačítko ke stažení zipu úplně dole v menu */}
+                {/* Ke stažení: poslední položka menu (červená), rozbalí seznam souborů */}
                 <div className="p-2 pt-0">
-                  <a
-                    href={`/${ZIP_NAME}`}
-                    download={ZIP_NAME}
-                    className="w-full px-3 py-2.5 bg-loyo-panel hover:bg-loyo-hover text-loyo-text rounded-xl border border-loyo-line text-xs font-bold uppercase tracking-wider flex items-center justify-center gap-2 cursor-pointer transition-colors"
+                  <button
+                    onClick={() => setDownloadsOpen(!downloadsOpen)}
+                    aria-expanded={downloadsOpen}
+                    className="w-full px-3 py-2.5 bg-loyo-panel hover:bg-loyo-hover rounded-xl border border-loyo-red/60 hover:border-loyo-red text-loyo-red text-xs font-bold uppercase tracking-wider flex items-center justify-between cursor-pointer transition-colors"
                   >
-                    <Download className="w-4 h-4" />
-                    <span>Stáhnout {ZIP_NAME}</span>
-                  </a>
+                    <span className="flex items-center gap-2">
+                      <Download className="w-4 h-4" />
+                      Ke stažení
+                    </span>
+                    <ChevronDown
+                      className={`w-4 h-4 transition-transform ${downloadsOpen ? 'rotate-180' : ''}`}
+                    />
+                  </button>
+                  {downloadsOpen && (
+                    <div className="mt-2 grid gap-2 animate-[slideDownNav_0.2s_cubic-bezier(0.16,1,0.3,1)]">
+                      {DOWNLOADS.map((d) =>
+                        d.href ? (
+                          <a
+                            key={d.id}
+                            href={d.href}
+                            download
+                            className="w-full px-3 py-2.5 bg-loyo-panel hover:bg-loyo-hover rounded-xl border border-loyo-line border-l-2 border-l-loyo-red flex items-center justify-between text-xs cursor-pointer transition-colors"
+                          >
+                            <span className="font-heading font-bold text-loyo-text">{d.label}</span>
+                            <span className="text-[10px] font-mono text-loyo-red uppercase flex items-center gap-1">
+                              <Download className="w-3.5 h-3.5" />
+                              {d.note}
+                            </span>
+                          </a>
+                        ) : (
+                          <div
+                            key={d.id}
+                            className="w-full px-3 py-2.5 bg-loyo-panel rounded-xl border border-loyo-line border-l-2 border-l-loyo-red flex items-center justify-between text-xs"
+                          >
+                            <span className="font-heading font-bold text-loyo-text">{d.label}</span>
+                            <span className="text-[10px] font-mono text-loyo-faint uppercase">Již brzy</span>
+                          </div>
+                        ),
+                      )}
+                    </div>
+                  )}
                 </div>
               </div>
             </div>

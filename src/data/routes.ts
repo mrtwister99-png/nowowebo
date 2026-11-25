@@ -60,3 +60,24 @@ export const MENU_SECTIONS: MenuSection[] = [
   { id: 'konzultace', page: 'consultation', num: '02', title: 'Odborná osobní konzultace', label: 'Konzultace', tag: '1-on-1', color: BRAND.ink, navStyle: 'dot', inHeader: true },
   { id: 'kontakty', page: 'home', num: '03', title: 'Kontakty & Sociální sítě', label: 'Kontakty', tag: 'Info', color: BRAND.ink, navStyle: 'plain', inHeader: true },
 ];
+
+/**
+ * Položky v červené sekci menu "Ke stažení" (hlavička i Navbar).
+ * Soubory leží v public/downloads/. Bez href se ukáže "Již brzy".
+ */
+export interface DownloadItem {
+  id: string;
+  label: string;
+  href?: string;
+  /** štítek vpravo (např. typ a velikost souboru) */
+  note?: string;
+}
+
+export const DOWNLOADS: DownloadItem[] = [
+  {
+    id: 'fazt',
+    label: 'Klávesnice – FAZT! v1.36.1',
+    href: '/downloads/FAZT_v1.36.1.apk',
+    note: 'APK • 13 MB',
+  },
+];
