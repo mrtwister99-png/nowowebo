@@ -76,8 +76,8 @@ export interface DownloadItem {
 export const DOWNLOADS: DownloadItem[] = [
   {
     id: 'fazt',
-    label: 'Klávesnice – FAZT! v1.36.1',
-    href: '/downloads/FAZT_v1.36.1.apk',
-    note: 'APK • 13 MB',
+    label: 'Klávesnice – FAZT! v1.53',
+    href: '/downloads/fazt_v.1.53.apk',
+    note: 'APK • 10 MB',
   },
 ];
