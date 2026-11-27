@@ -37,7 +37,8 @@ Definují se v souboru `.env` (lokálně) a ve Vercelu (Settings -> Environment 
 
 ### Dotazník → e-mail → LoYo OS
 Formulář (`src/features/inquiry/QuestionnaireModal.tsx`) pošle odpovědi na Vercel funkci `api/loyo-lead.ts`. Ta je zkontroluje (jen známá pole, skryté pole proti botům, max 5 odeslání z IP za 10 min) a pošle e-mail s předmětem `[LOYO-DOTAZNIK] <úroveň> · <firma>`. **Reply-To** je adresa zákazníka, na konci mailu je blok JSON mezi značkami `LOYO-DOTAZNIK-JSON`. Podle něj dotazník najde agent Luuu v LoYo OS (`/dotazniky`, kontrola každou hodinu), uloží ho, založí úkol „Ozvat se“ a pošle oznámení.
-Bez `LEAD_SMTP_*` vrátí funkce 503 a formulář použije zálohu: otevře návštěvníkovi poštovní program s vyplněným mailem. Aby dotazníky viděl Luuu, `LEAD_TO` musí být schránka, kterou Luuu čte (nebo ji tam přeposílat).
+Formulář odesílá rovnou z webu, poštovní program návštěvníka se neotevírá. Když odeslání selže (bez `LEAD_SMTP_*` vrátí funkce 503), ukáže se ve formuláři chyba s tlačítkem „zkusit znovu“ a odkazem na odeslání z vlastního e-mailu.
+Stačí nastavit `LEAD_SMTP_USER` a `LEAD_SMTP_PASS`. Bez `LEAD_TO` jde mail na `LEAD_SMTP_USER`, tedy do stejné schránky. Aby dotazníky viděl Luuu, musí to být schránka, kterou Luuu čte.
 
 **Nikdy** nevkládej `sb_secret_...` ani `service_role` klíč. Proměnné s předponou `VITE_` jsou součástí webu a vidí je každý.
 Soubor `.env` je v `.gitignore` a na hosting se nenahrává, proto se proměnné musí zadat i ve Vercelu a po jejich změně udělat nový deploy.

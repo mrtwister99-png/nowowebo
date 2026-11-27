@@ -29,8 +29,10 @@ export const QuestionnaireModal: React.FC<Props> = ({ isOpen, initialServiceId =
   const [titleKey, setTitleKey] = useState(0);
   const [isSending, setIsSending] = useState(false);
   const [sent, setSent] = useState(false);
-  // 'api' = odešlo e-mailem z webu · 'mailto' = záloha, otevřel se poštovní program návštěvníka
-  const [sentVia, setSentVia] = useState<'api' | 'mailto'>('api');
+  // chyba odeslání se ukáže přímo ve formuláři (žádný alert ani poštovní program)
+  const [sendError, setSendError] = useState('');
+  const [lastLead, setLastLead] = useState<LoyoLead | null>(null);
+  const [sentId, setSentId] = useState('');
   // proti botům: skryté pole (člověk ho nevyplní) a čas otevření formuláře
   const [website2, setWebsite2] = useState('');
   const [openedAt] = useState(() => Date.now());
@@ -62,7 +64,9 @@ export const QuestionnaireModal: React.FC<Props> = ({ isOpen, initialServiceId =
 
   const submit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!f.jmeno || !f.email) { alert('Jméno + email povinné'); return; }
+    if (!f.jmeno.trim() || !f.email.trim()) { setSendError('Vyplňte prosím jméno a e-mail, ať vám mám kam odpovědět.'); return; }
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(f.email.trim())) { setSendError('E-mail nevypadá správně, zkontrolujte ho prosím.'); return; }
+    setSendError('');
     setIsSending(true);
     
     const lead: LoyoLeadExtended = {
@@ -84,14 +88,17 @@ export const QuestionnaireModal: React.FC<Props> = ({ isOpen, initialServiceId =
     };
 
     saveLeadToFolder(lead);
-    // hlavní cesta: web pošle výsledky e-mailem sám (api/loyo-lead.ts); záloha: poštovní program návštěvníka
+    // web pošle výsledky e-mailem sám (api/loyo-lead.ts), poštovní program návštěvníka se neotevírá
     const r = await saveLeadToApi(lead, { website2, openedAt });
-    if (!r.ok) {
-      if (r.error && /povinn|příliš mnoho/.test(r.error)) { setIsSending(false); alert(r.error); return; }
-      sendLeadToEmail(lead);
-    }
-    setSentVia(r.ok ? 'api' : 'mailto');
     setIsSending(false);
+    if (!r.ok) {
+      setLastLead(lead);
+      setSendError(r.error && /povinn|příliš mnoho|e-mail/i.test(r.error)
+        ? r.error
+        : 'Odeslání se teď nepovedlo. Zkuste to prosím znovu za chvilku.');
+      return;
+    }
+    setSentId(lead.id);
     setSent(true);
   };
 
@@ -158,15 +165,27 @@ export const QuestionnaireModal: React.FC<Props> = ({ isOpen, initialServiceId =
             ">
               <CheckCircle2 className="w-10 h-10 text-loyo-blue" />
             </div>
-            <h3 className="font-heading font-bold text-2xl">{sentVia === 'api' ? 'Odesláno, díky!' : 'Skoro hotovo'}</h3>
+            <h3 className="font-heading font-bold text-2xl animate-[titleIn_0.5s_cubic-bezier(0.16,1,0.3,1)]">Dotazník je u mě, díky!</h3>
             <p className="font-mono text-xs mt-3 opacity-70 max-w-md leading-relaxed">
-              {sentVia === 'api'
-                ? <>Dotazník mi přišel e-mailem. Ozvu se do 24 h s rozborem na <b>{f.email}</b>.</>
-                : <>Odeslání z webu teď nešlo, otevřel se vám e-mail s vyplněným dotazníkem — stačí ho odeslat na <b>loyo.gruup@gmail.com</b>. Ozvu se do 24 h.</>}
+              Odpovědi mi právě přišly. Rozbor pošlu na <b>{f.email}</b>.
             </p>
+            <ol className="mt-6 w-full max-w-sm space-y-2 text-left">
+              {[
+                ['Přečtu si odpovědi', 'ještě dnes'],
+                ['Projdu, co vám žere čas, a navrhnu řešení', 'zdarma'],
+                ['Ozvu se s rozborem a odhadem', 'do 24 h'],
+              ].map(([t, k], i) => (
+                <li key={t} className="flex items-center gap-3 p-3 bg-loyo-panel border border-loyo-line rounded-xl animate-[fadeIn_0.4s_ease_both]" style={{ animationDelay: `${150 + i * 120}ms` }}>
+                  <span className="w-6 h-6 shrink-0 rounded-full bg-loyo-blue text-white text-[11px] font-bold flex items-center justify-center">{i + 1}</span>
+                  <span className="text-xs flex-1">{t}</span>
+                  <span className="font-mono text-[10px] uppercase opacity-50">{k}</span>
+                </li>
+              ))}
+            </ol>
+            {sentId && <p className="font-mono text-[10px] mt-4 opacity-40">číslo dotazníku {sentId}</p>}
             <div className="mt-6 flex gap-2">
               <button type="button" onClick={onClose} className="h-11 px-6 bg-loyo-blue hover:bg-loyo-blue-hover text-white rounded-full font-bold text-xs tracking-wider">ZAVŘÍT</button>
-              <button type="button" onClick={()=>{ setSent(false); setF(s=>({ ...s, coZereCas:'', detailPoptavka:'' })); }} className="h-11 px-6 bg-loyo-panel hover:bg-loyo-hover border border-loyo-line rounded-full font-bold text-xs tracking-wider">POSLAT DALŠÍ</button>
+              <button type="button" onClick={()=>{ setSent(false); setSentId(''); setF(s=>({ ...s, coZereCas:'', detailPoptavka:'' })); }} className="h-11 px-6 bg-loyo-panel hover:bg-loyo-hover border border-loyo-line rounded-full font-bold text-xs tracking-wider">POSLAT DALŠÍ</button>
             </div>
           </div>
         ) : (
@@ -305,12 +324,27 @@ export const QuestionnaireModal: React.FC<Props> = ({ isOpen, initialServiceId =
             </div>
 
             <div className="p-4 border-t border-loyo-line bg-loyo-surface shrink-0">
-                           <button type="submit" disabled={isSending} className="w-full h-13 bg-loyo-blue hover:bg-loyo-blue-hover text-white rounded-xl font-bold text-xs sm:text-sm tracking-widest flex items-center justify-center gap-3 shadow-brutal-5 hover:-translate-x-px hover:-translate-y-px hover:shadow-brutal-7 active:translate-x-0 active:translate-y-0 active:shadow-brutal-3 transition-all disabled:opacity-50">
-                {isSending ? 'UKLÁDÁM DO SLOŽKY + POSÍLÁM NA EMAIL...' : `ODESLAT ${level.toUpperCase()} DOTAZNÍK NA EMAIL`}
-                <span className="w-8 h-8 bg-white/15 text-white rounded-full flex items-center justify-center"><Send className="w-4 h-4" /></span>
+              {sendError && (
+                <div role="alert" className="mb-3 p-3 rounded-xl border border-red-400/40 bg-red-500/10 text-xs flex items-start gap-2 animate-[fadeIn_0.3s_ease]">
+                  <span className="font-bold">!</span>
+                  <span className="flex-1">
+                    {sendError}
+                    {lastLead && (
+                      <> Nebo <button type="button" onClick={() => sendLeadToEmail(lastLead)} className="underline font-bold">pošlete odpovědi ze svého e-mailu</button>.</>
+                    )}
+                  </span>
+                </div>
+              )}
+              <button type="submit" disabled={isSending} className="w-full h-13 bg-loyo-blue hover:bg-loyo-blue-hover text-white rounded-xl font-bold text-xs sm:text-sm tracking-widest flex items-center justify-center gap-3 shadow-brutal-5 hover:-translate-x-px hover:-translate-y-px hover:shadow-brutal-7 active:translate-x-0 active:translate-y-0 active:shadow-brutal-3 transition-all disabled:opacity-60 disabled:cursor-wait">
+                {isSending ? 'ODESÍLÁM DOTAZNÍK…' : sendError && lastLead ? 'ZKUSIT ODESLAT ZNOVU' : `ODESLAT ${level.toUpperCase()} DOTAZNÍK`}
+                <span className="w-8 h-8 bg-white/15 text-white rounded-full flex items-center justify-center">
+                  {isSending
+                    ? <span className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin" />
+                    : <Send className="w-4 h-4" />}
+                </span>
               </button>
               <div className="flex items-center justify-center gap-3 mt-2">
-                <span className="font-mono text-xs opacity-40">Uloží se do složky data/leads/ + email</span>
+                <span className="font-mono text-xs opacity-40">Odejde rovnou odsud, nic dalšího neotvírá</span>
                 <span className="w-1 h-1 bg-loyo-line rounded-full" />
                 <span className="font-mono text-xs opacity-40">Odpověď do 24h • žádný spam</span>
               </div>

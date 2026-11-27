@@ -12,7 +12,7 @@
 //   LEAD_SMTP_PASS   heslo pro aplikace té schránky (Google účet → Zabezpečení → Hesla aplikací)
 //   LEAD_TO          kam výsledky poslat (víc adres oddělit čárkou), nevyplněno = LEAD_SMTP_USER
 //   LEAD_SMTP_HOST / LEAD_SMTP_PORT   nepovinné, výchozí smtp.gmail.com:465
-// Bez SMTP údajů vrátí 503 a formulář použije zálohu (otevře návštěvníkovi poštovní program).
+// Bez SMTP údajů vrátí 503 a formulář ukáže chybu s možností poslat odpovědi z vlastního e-mailu.
 import nodemailer from 'nodemailer';
 
 type VercelRequest = { method?: string; body: unknown; headers: Record<string, string | string[] | undefined> };
