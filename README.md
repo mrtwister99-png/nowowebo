@@ -31,6 +31,13 @@ Definují se v souboru `.env` (lokálně) a ve Vercelu (Settings -> Environment 
 | ------------------------ | ----------------------------------------------------------- |
 | `VITE_SUPABASE_URL`      | adresa Supabase projektu                                    |
 | `VITE_SUPABASE_ANON_KEY` | **veřejný** klíč (`sb_publishable_...` nebo starý `anon`)   |
+| `LEAD_SMTP_USER`         | schránka, ze které web posílá dotazníky (Gmail)             |
+| `LEAD_SMTP_PASS`         | **tajné** heslo pro aplikace té schránky (jen Vercel)       |
+| `LEAD_TO`                | kam výsledky dotazníku poslat (víc adres čárkou)            |
+
+### Dotazník → e-mail → LoYo OS
+Formulář (`src/features/inquiry/QuestionnaireModal.tsx`) pošle odpovědi na Vercel funkci `api/loyo-lead.ts`. Ta je zkontroluje (jen známá pole, skryté pole proti botům, max 5 odeslání z IP za 10 min) a pošle e-mail s předmětem `[LOYO-DOTAZNIK] <úroveň> · <firma>`. **Reply-To** je adresa zákazníka, na konci mailu je blok JSON mezi značkami `LOYO-DOTAZNIK-JSON`. Podle něj dotazník najde agent Luuu v LoYo OS (`/dotazniky`, kontrola každou hodinu), uloží ho, založí úkol „Ozvat se“ a pošle oznámení.
+Bez `LEAD_SMTP_*` vrátí funkce 503 a formulář použije zálohu: otevře návštěvníkovi poštovní program s vyplněným mailem. Aby dotazníky viděl Luuu, `LEAD_TO` musí být schránka, kterou Luuu čte (nebo ji tam přeposílat).
 
 **Nikdy** nevkládej `sb_secret_...` ani `service_role` klíč. Proměnné s předponou `VITE_` jsou součástí webu a vidí je každý.
 Soubor `.env` je v `.gitignore` a na hosting se nenahrává, proto se proměnné musí zadat i ve Vercelu a po jejich změně udělat nový deploy.

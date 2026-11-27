@@ -73,16 +73,21 @@ export function sendLeadToEmail(lead: LoyoLead) {
   window.open(mailto, '_blank');
 }
 
-export async function saveLeadToApi(lead: LoyoLead) {
+/**
+ * Odešle dotazník na Vercel funkci /api/loyo-lead, která výsledky pošle e-mailem (api/loyo-lead.ts).
+ * extra = pole proti botům (skryté pole website2, čas otevření formuláře).
+ * Vrací ok: false, když odesílání selže nebo není nastavené → volající použije zálohu (mailto).
+ */
+export async function saveLeadToApi(lead: LoyoLead, extra: { website2?: string; openedAt?: number } = {}): Promise<{ ok: boolean; error?: string }> {
   try {
-    // Pokud budeš mít Vercel function /api/loyo-lead, pošle se tam
     const res = await fetch('/api/loyo-lead', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(lead),
+      body: JSON.stringify({ ...lead, ...extra }),
     });
-    return res.ok;
+    const j = await res.json().catch(() => ({}));
+    return { ok: res.ok && j.ok !== false, error: j.error };
   } catch {
-    return false;
+    return { ok: false };
   }
 }

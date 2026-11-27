@@ -29,6 +29,11 @@ export const QuestionnaireModal: React.FC<Props> = ({ isOpen, initialServiceId =
   const [titleKey, setTitleKey] = useState(0);
   const [isSending, setIsSending] = useState(false);
   const [sent, setSent] = useState(false);
+  // 'api' = odešlo e-mailem z webu · 'mailto' = záloha, otevřel se poštovní program návštěvníka
+  const [sentVia, setSentVia] = useState<'api' | 'mailto'>('api');
+  // proti botům: skryté pole (člověk ho nevyplní) a čas otevření formuláře
+  const [website2, setWebsite2] = useState('');
+  const [openedAt] = useState(() => Date.now());
   const [serviceId] = useState<ServiceId>(initialServiceId);
   const [step, setStep] = useState(1);
 
@@ -79,9 +84,15 @@ export const QuestionnaireModal: React.FC<Props> = ({ isOpen, initialServiceId =
     };
 
     saveLeadToFolder(lead);
-    await saveLeadToApi(lead);
-    sendLeadToEmail(lead);
-    setTimeout(()=>{ setIsSending(false); setSent(true); }, 600);
+    // hlavní cesta: web pošle výsledky e-mailem sám (api/loyo-lead.ts); záloha: poštovní program návštěvníka
+    const r = await saveLeadToApi(lead, { website2, openedAt });
+    if (!r.ok) {
+      if (r.error && /povinn|příliš mnoho/.test(r.error)) { setIsSending(false); alert(r.error); return; }
+      sendLeadToEmail(lead);
+    }
+    setSentVia(r.ok ? 'api' : 'mailto');
+    setIsSending(false);
+    setSent(true);
   };
 
   if (!isOpen) return null;
@@ -147,8 +158,12 @@ export const QuestionnaireModal: React.FC<Props> = ({ isOpen, initialServiceId =
             ">
               <CheckCircle2 className="w-10 h-10 text-loyo-blue" />
             </div>
-            <h3 className="font-heading font-bold text-2xl">Odesláno do složky + na email!</h3>
-            <p className="font-mono text-xs mt-3 opacity-70 max-w-md leading-relaxed">Uloženo do <b>data/leads/</b> (localStorage + API <b>/api/loyo-lead</b>) + odesláno na <b>loyo.gruup@gmail.com</b>. Ozvu se do 24h s rozborem.</p>
+            <h3 className="font-heading font-bold text-2xl">{sentVia === 'api' ? 'Odesláno, díky!' : 'Skoro hotovo'}</h3>
+            <p className="font-mono text-xs mt-3 opacity-70 max-w-md leading-relaxed">
+              {sentVia === 'api'
+                ? <>Dotazník mi přišel e-mailem. Ozvu se do 24 h s rozborem na <b>{f.email}</b>.</>
+                : <>Odeslání z webu teď nešlo, otevřel se vám e-mail s vyplněným dotazníkem — stačí ho odeslat na <b>loyo.gruup@gmail.com</b>. Ozvu se do 24 h.</>}
+            </p>
             <div className="mt-6 flex gap-2">
               <button type="button" onClick={onClose} className="h-11 px-6 bg-loyo-blue hover:bg-loyo-blue-hover text-white rounded-full font-bold text-xs tracking-wider">ZAVŘÍT</button>
               <button type="button" onClick={()=>{ setSent(false); setF(s=>({ ...s, coZereCas:'', detailPoptavka:'' })); }} className="h-11 px-6 bg-loyo-panel hover:bg-loyo-hover border border-loyo-line rounded-full font-bold text-xs tracking-wider">POSLAT DALŠÍ</button>
@@ -156,6 +171,9 @@ export const QuestionnaireModal: React.FC<Props> = ({ isOpen, initialServiceId =
           </div>
         ) : (
           <form onSubmit={submit} className="flex-1 flex flex-col overflow-hidden bg-loyo-surface text-loyo-text">
+            {/* past na boty — člověk pole nevidí, bot ho vyplní a odeslání se tiše zahodí */}
+            <input type="text" name="website2" value={website2} onChange={(e) => setWebsite2(e.target.value)} tabIndex={-1} autoComplete="off" aria-hidden="true"
+              style={{ position: 'absolute', left: '-9999px', width: 1, height: 1, opacity: 0 }} />
             <div className="flex-1 overflow-y-auto p-5 space-y-6">
               <div className="space-y-4">
                 <div className="flex items-center gap-2">
